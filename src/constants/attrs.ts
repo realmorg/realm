@@ -5,5 +5,5 @@ export enum RealmAttributeNames {
   MODULE = "module",
   SRC = "src",
   CHILDREN = "children",
-  DATA_SCRIPT_ID = "data-script-id",
+  DATA_SCRIPT_ID = "script-id",
 }
