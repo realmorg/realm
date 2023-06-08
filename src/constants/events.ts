@@ -6,3 +6,8 @@ export enum RealmEventNames {
   STATES_UPDATE = "onStatesDidUpdate",
   ON = "on",
 }
+
+export enum RealmEventAliases {
+  TRIGGER = "trigger",
+  RAMA = "rama",
+}
