@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsup src/index.ts --minify --dts",
+    "build": "tsup src/index.ts --minify terser --dts",
     "dev": "tsup src/index.ts --dts --watch",
     "start:example-server": "node dist/server",
     "dev:example-server": "tsup examples/server.ts --watch"
@@ -15,6 +15,7 @@
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^20.1.0",
+    "terser": "^5.17.6",
     "tsup": "^6.7.0",
     "typescript": "^5.0.4"
   },
