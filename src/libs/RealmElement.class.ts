@@ -11,7 +11,6 @@ export class RealmElement extends HTMLElement {
   // Get name attribute
   readonly name: string;
   readonly id: string;
-  readonly stateName: string;
 
   // Get innerHTML
   #html: string;
@@ -27,9 +26,7 @@ export class RealmElement extends HTMLElement {
     super();
     this.name = name;
 
-    const elementId = this.$randId();
-    this.id = elementId;
-    this.stateName = `$${elementId}`;
+    this.id = this.$randId();
 
     this.onMounted = onMounted;
 
@@ -128,12 +125,14 @@ export class RealmElement extends HTMLElement {
       | Array<Element | HTMLElement | HTMLSlotElement | Text>
       | NodeListOf<Element | HTMLElement | HTMLSlotElement | Text>
   ) => slot && !!nodes && slot.assign(...nodes);
+
+  // _runtimeId = (id: string) => (this.runtimeId = id);
   //#endregion
 
   //#region Getter utilities
   // Generate random ID
   $randId = () =>
-    parseInt(Math.random().toString().replace(".", "")).toString(0x24);
+    parseInt(Math.random().toString().replace(".", "")).toString(0x10);
 
   // Get innerHTML
   $html = (element?: Element) => (element?.innerHTML || this.#html).trim();
