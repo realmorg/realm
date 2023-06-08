@@ -1,7 +1,7 @@
 import { RealmElement } from "../libs/RealmElement.class";
 
 export interface CreateElementParams {
-  onRegistered?: (customElementName: string) => void;
+  onRegistered?: (elementName: string) => void;
   onPrepare?: (element: RealmElement) => void;
   onInit?: (element: RealmElement) => void;
   onMounted?: (element: RealmElement) => void;
@@ -9,19 +9,24 @@ export interface CreateElementParams {
 }
 
 export const registerElement =
-  (name: string, { onRegistered, ...params }: CreateElementParams) =>
+  (elementName: string, { onRegistered, ...params }: CreateElementParams) =>
   () => {
-    const isNameValid = name.includes("-");
-    const isDefined = customElements.get(name);
+    const isNameValid = elementName.includes("-");
+    const isDefined = customElements.get(elementName);
     if (!isNameValid || isDefined)
-      throw new Error(`Element ${name} has invalid name or already defined`);
+      throw new Error(
+        `Element ${elementName} has invalid name or already defined`
+      );
 
-    customElements.whenDefined(name).then(() => onRegistered?.(name));
+    customElements
+      .whenDefined(elementName)
+      .then(() => onRegistered?.(elementName));
+
     customElements.define(
-      name,
+      elementName,
       class extends RealmElement {
         constructor() {
-          super({ name, ...params });
+          super({ name: elementName, ...params });
         }
       }
     );
