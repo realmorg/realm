@@ -1,5 +1,4 @@
 import { RealmAttributeNames } from "../constants/attrs";
-import { RealmEventAliases } from "../constants/events";
 import { RealmTagNames } from "../constants/tags";
 import { RealmElement } from "../libs/RealmElement.class";
 import { camel } from "./string";
@@ -10,6 +9,12 @@ export interface CreateElementParams {
   onInit?: (element: RealmElement) => void;
   onMounted?: (element: RealmElement) => void;
   onUnmounted?: (element: RealmElement) => void;
+  onAttributeChanged?: (
+    element: RealmElement,
+    attrName: string,
+    oldValue: any,
+    newValue: any
+  ) => void;
 }
 
 export enum ElementAttributeTypes {
@@ -27,6 +32,8 @@ export interface ElementAttribute {
 
 export type ElementRuntimeEventArgs = {
   $: RealmElement;
+  $$?: HTMLElement;
+  event?: Event;
   attrs?: Object;
 };
 

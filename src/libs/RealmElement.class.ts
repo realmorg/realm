@@ -1,10 +1,17 @@
 import { RealmTagNames } from "../constants/tags";
 
-interface ReamlElementParams {
+export interface ReamlElementParams {
   name: string;
   onPrepare?: (element: HTMLElement) => void;
   onInit?: (element: HTMLElement) => void;
   onMounted?: (element: HTMLElement) => void;
+  onUnmounted?: (element: HTMLElement) => void;
+  onAttributeChanged?: (
+    element: HTMLElement,
+    attrName: string,
+    oldValue: any,
+    newValue: any
+  ) => void;
 }
 
 export class RealmElement extends HTMLElement {
@@ -18,17 +25,27 @@ export class RealmElement extends HTMLElement {
   // Get shadow root
   shadow: ShadowRoot;
 
-  onInit?: (element: HTMLElement) => void;
-  onMounted?: (element: HTMLElement) => void;
-  onUnmounted?: (element: HTMLElement) => void;
+  onInit?: ReamlElementParams["onInit"];
+  onMounted?: ReamlElementParams["onMounted"];
+  onUnmounted?: ReamlElementParams["onUnmounted"];
+  onAttributeChanged?: ReamlElementParams["onAttributeChanged"];
 
-  constructor({ name, onInit, onPrepare, onMounted }: ReamlElementParams) {
+  constructor({
+    name,
+    onInit,
+    onPrepare,
+    onMounted,
+    onUnmounted,
+    onAttributeChanged,
+  }: ReamlElementParams) {
     super();
     this.name = name;
 
     this.id = this.$randId();
 
     this.onMounted = onMounted;
+    this.onUnmounted = onUnmounted;
+    this.onAttributeChanged = onAttributeChanged;
 
     onPrepare?.(this);
     this._html(this.innerHTML);
@@ -37,6 +54,25 @@ export class RealmElement extends HTMLElement {
 
   // Events
   connectedCallback() {
+    const mutationObsrver = new MutationObserver((mutationList, observer) => {
+      for (const mutation of mutationList) {
+        if (mutation.type !== "attributes") return;
+        const attrName = mutation.attributeName;
+        // @ts-expect-error
+        const value = mutation.target.getAttribute(attrName);
+        const oldValue = mutation.oldValue;
+        if (oldValue !== value) {
+          this._reqAnimFrame(() => {
+            this.onAttributeChanged?.(this, attrName, oldValue, value);
+          });
+        }
+      }
+    });
+    mutationObsrver.observe(this, {
+      attributes: true,
+      attributeOldValue: true,
+    });
+
     this._reqAnimFrame(() => {
       this.onMounted?.(this);
     });
@@ -62,7 +98,7 @@ export class RealmElement extends HTMLElement {
 
   // Set content of element
   _content = (content: string, element?: Element) =>
-    element ? (element.textContent = content) : (this.textContent = content);
+    ((element ?? this).textContent = content);
 
   // Attach to shadow root
   _attach = () =>
@@ -189,5 +225,11 @@ export class RealmElement extends HTMLElement {
     tagOrAttr?: string,
     attrValue?: string
   ) => this.$qsAll<T>(this.$qsString(selector, tagOrAttr, attrValue), true);
+
+  // Get attribute slot's name
+  $slotAttrName = (name: string) => `@${name}`;
+
+  // Get state slot's name
+  $slotStateName = (name: string) => `#${name}`;
   //#endregion
 }

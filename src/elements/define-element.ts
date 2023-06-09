@@ -19,6 +19,7 @@ import { replaceKeywords } from "../utils/string";
 
 type ElementRuntimeEvents = {
   [RealmEventNames.ON]?: Map<
+    // Element's ID
     string,
     Map<string, Set<(args: ElementRuntimeEventArgs) => void>>
   >;
@@ -92,20 +93,29 @@ const getRegisteredElement = (element: RealmElement) => {
 
 const replaceEventsKeyword = (content: string, elementId: string) =>
   replaceKeywords(content, {
-    [RealmEventAliases.TRIGGER]: `${__RL_STRING_CONST.trigger}('${elementId}')`,
+    [RealmEventAliases.TRIGGER]: `${__RL_STRING_CONST.trigger}(['${elementId}',this,event])`,
   });
 
-const getDispatchEventScriptArgs = (
-  element: RealmElement,
-  attrs: Record<string, unknown>
-) => [{ $: element, attrs }];
+const getDispatchEventScriptArgs = ([
+  customElement,
+  attrs,
+  element = null,
+  isArray = true,
+]: [RealmElement, Record<string, unknown>, HTMLElement?, boolean?]) => {
+  const obj = { $: customElement, $$: element, attrs };
+  return isArray ? [obj] : obj;
+};
 
-const dispatchEvent = (element: RealmElement, eventName: RealmEventNames) => {
+const dispatchEvent = (
+  element: RealmElement,
+  eventName: RealmEventNames,
+  args: unknown[] = []
+) => {
   const attrs = geCustomElementtAttributes(element);
-  const callbackArgs = getDispatchEventScriptArgs(element, attrs);
+  const callbackArgs = getDispatchEventScriptArgs([element, attrs]);
   element._reqAnimFrame(() => {
     __RL_RUNTIME_LIST.get(element.id)?.[eventName]?.forEach((callback) => {
-      callback.apply(this, callbackArgs);
+      callback.apply(this, [...args, ...(callbackArgs as unknown[])]);
     });
   });
 };
@@ -119,12 +129,15 @@ const __RL_UTILS = {
   // Runtime closure
   runtime: (elementId: string, scriptId: string) => {
     const element = __RL_ELEMENT_MAP.get(elementId);
+    const attrs = geCustomElementtAttributes(element);
+
     const runtimeEvents = __RL_RUNTIME_LIST.get(elementId);
     const localState = new RealmStates();
 
     return __RL_EVENT_LIST.reduce((acc, eventName) => {
       const isCustomEvent = eventName === RealmEventNames.ON;
       const isEventStateUpdate = eventName === RealmEventNames.STATES_UPDATE;
+      const currentEvent = runtimeEvents?.[eventName];
 
       if (!(isCustomEvent || isEventStateUpdate)) {
         return [
@@ -143,13 +156,13 @@ const __RL_UTILS = {
             callback: (args: ElementRuntimeEventArgs) => void
           ) => {
             const currentCustomEvent =
-              runtimeEvents?.[eventName]?.get(scriptId) ?? new Map();
-
-            const callbackList =
+              (currentEvent as ElementRuntimeEvents[RealmEventNames.ON])?.get(
+                scriptId
+              ) ?? new Map();
+            const triggerEvents =
               currentCustomEvent?.get(customEventName) ?? new Set();
-
-            callbackList.add(callback);
-            currentCustomEvent.set(customEventName, callbackList);
+            triggerEvents.add(callback);
+            currentCustomEvent.set(customEventName, triggerEvents);
             runtimeEvents?.[eventName]?.set(scriptId, currentCustomEvent);
           };
 
@@ -158,14 +171,20 @@ const __RL_UTILS = {
       }
 
       if (isEventStateUpdate) {
+        const callbackArgs = getDispatchEventScriptArgs([element, attrs]);
         const onStateUpdateEvent = (callback) => {
-          runtimeEvents?.[eventName]?.set(scriptId, callback);
-          localState.subscribe((newValue, oldValue, key) => {
-            callback?.apply?.(element, [newValue, oldValue, key]);
+          currentEvent?.set(scriptId, callback);
+          localState.subscribe((newValue, oldValue, stateName) => {
+            callback?.apply?.(null, [
+              newValue,
+              oldValue,
+              stateName,
+              ...(callbackArgs as unknown[]),
+            ]);
             if (!newValue) return;
 
             const htmlValue = `${newValue}`;
-            const slotStateName = `#${key}`;
+            const slotStateName = element.$slotStateName(stateName);
             const slotStateKey = `${scriptId}-${slotStateName}`;
             const isStateDefined = __RL_ELEMENT_STATES.has(slotStateKey);
 
@@ -206,16 +225,21 @@ const __RL_UTILS = {
   },
 
   // Event trigger
-  trigger: (elementId: string) => {
+  trigger: ([elementId, element, event]: [string, HTMLElement, Event]) => {
     const runtimeEvents = __RL_RUNTIME_LIST.get(elementId);
-    const element = __RL_ELEMENT_MAP.get(elementId);
+    const hostElement = __RL_ELEMENT_MAP.get(elementId);
     const eventTriggers = runtimeEvents?.[RealmEventNames.ON];
-    const attrs = geCustomElementtAttributes(element);
-    const args = getDispatchEventScriptArgs(element, attrs);
+    const attrs = geCustomElementtAttributes(hostElement);
+    const args = getDispatchEventScriptArgs([
+      hostElement,
+      attrs,
+      element,
+      false,
+    ]);
     return (customEventName: string) => {
       eventTriggers.forEach((eventTrigger) => {
         eventTrigger.get(customEventName)?.forEach((callback) => {
-          callback?.apply?.(null, args);
+          callback?.apply?.(null, [{ event, ...args }]);
         });
       });
     };
@@ -269,7 +293,7 @@ export const defineElement = registerElement(RealmTagNames.DEFINE_ELEMENT, {
       // Assign all slotted attributes
       (props.get(RealmElementPropKey.ATTRS) as Array<[string, string]>).forEach(
         ([name, value]) => {
-          const slotName = `@${name}`;
+          const slotName = element.$slotAttrName(name);
           const slot = element._createTag<HTMLSlotElement>(RealmTagNames.SLOT);
           const shadowSlot = element.$shadowEl<HTMLSlotElement>(
             RealmTagNames.SLOT,
@@ -278,7 +302,7 @@ export const defineElement = registerElement(RealmTagNames.DEFINE_ELEMENT, {
           );
           element._attr(name, value);
           element._attr(RealmAttributeNames.SLOT, slotName, slot);
-          element._content(value, slot);
+          element._html(value, slot);
           element._append(slot);
           element._slotTo(shadowSlot, [slot]);
         }
@@ -361,6 +385,22 @@ export const defineElement = registerElement(RealmTagNames.DEFINE_ELEMENT, {
             []
           )
         );
+      },
+
+      onAttributeChanged(element, attrName, oldValue, newValue) {
+        const slot = element.$el<HTMLSlotElement>(
+          RealmTagNames.SLOT,
+          RealmAttributeNames.SLOT,
+          element.$slotAttrName(attrName)
+        );
+        if (element) element._html(newValue, slot);
+        element._reqAnimFrame(() => {
+          dispatchEvent(element, RealmEventNames.ATTR_UPDATE, [
+            newValue,
+            oldValue,
+            attrName,
+          ]);
+        });
       },
 
       onInit(element) {
