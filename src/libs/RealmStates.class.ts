@@ -15,12 +15,12 @@ export class RealmStates {
     this.#observers = new Set();
   }
 
-  setItem(name: string, value: (prevState: unknown) => void | unknown) {
+  setItem(name: string, value: (prevState: unknown) => unknown) {
     const oldValue = this.#states.get(name);
     const newValue = typeof value === "function" ? value(oldValue) : value;
     this.#states.set(name, newValue);
     this.#observers.forEach((fn) =>
-      fn?.apply?.(this, [oldValue, newValue, name])
+      fn?.apply?.(this, [newValue, oldValue, name])
     );
   }
 

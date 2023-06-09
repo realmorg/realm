@@ -1,29 +1,21 @@
 import { RealmTagNames } from "../constants/tags";
 import { RealmAttributeNames } from "../constants/attrs";
-import { RealmElement } from "../libs/RealmElement.class";
-import { registerElement } from "./element.helper";
 import { RealmElementPropKey } from "../constants/props";
 import { RealmEventAliases, RealmEventNames } from "../constants/events";
+import { RealmElement } from "../libs/RealmElement.class";
 import { RealmStates, StateObserver } from "../libs/RealmStates.class";
-import { MimeTypes } from "../constants/mime";
-
-enum ElementAttributeTypes {
-  STRING = "string",
-  NUMBER = "number",
-  BOOLEAN = "boolean",
-  OBJECT = "object",
-}
-
-interface ElementAttribute {
-  name: string;
-  type: ElementAttributeTypes;
-  value: string | number | object | boolean;
-}
-
-type ElementRuntimeEventArgs = {
-  $: RealmElement;
-  attrs?: Object;
-};
+import {
+  ElementAttribute,
+  ElementRuntimeEventArgs,
+  getCustomElementAttrs,
+  getCustomElementScripts,
+  parseAttrValue,
+  registerElement,
+  removeCustomElementAttrs,
+  removeCustomElementScripts,
+} from "../utils/element";
+import { createScriptURL, scriptClosure } from "../utils/script";
+import { replaceKeywords } from "../utils/string";
 
 type ElementRuntimeEvents = {
   [RealmEventNames.ON]?: Map<
@@ -67,62 +59,28 @@ const __RL_EVENT_LIST = [
   RealmEventNames.STATES_UPDATE,
 ];
 
-const parseAttrValue = (type: ElementAttributeTypes, value: string) => {
-  if (type === ElementAttributeTypes.NUMBER) return +value;
-  if (type === ElementAttributeTypes.BOOLEAN) return Boolean(value);
-  if (type === ElementAttributeTypes.OBJECT) return JSON.parse(value);
-  return value;
-};
-
-const geCustomElementtAttributes = (element: RealmElement) =>
-  Object.fromEntries(
+const geCustomElementtAttributes = (element: RealmElement) => {
+  const registeredElement = __RL_ATTRS_DEFINITION_LIST[element.name];
+  const attrs = Object.fromEntries(
     Array.from(element.attributes).map((attr) => {
-      const type = __RL_ATTRS_DEFINITION_LIST[element.name].find(
+      const type = registeredElement.find(
         (item) => item.name === attr.name
       )?.type;
       return [attr.name, type ? parseAttrValue(type, attr.value) : attr.value];
     })
   );
 
-const getCustomElementAttrEntries = (element: RealmElement) =>
-  Array.from(element.$els(RealmTagNames.ELEMENT_ATTR));
+  return new Proxy(attrs, {
+    set: (target, key, value) => {
+      const attr = registeredElement.find((item) => item.name === key);
+      if (!attr) return false;
 
-const getCustomElementScriptEntries = (element: RealmElement) =>
-  Array.from(element.$els(RealmTagNames.SCRIPT));
-
-const getCustomElementAttrs = (element: RealmElement) =>
-  getCustomElementAttrEntries(element)?.reduce<ElementAttribute[]>(
-    (acc, item) => {
-      const name = element.$attr(RealmAttributeNames.NAME, item);
-      const type = element.$attr(
-        RealmAttributeNames.TYPE,
-        item
-      ) as ElementAttributeTypes;
-      const value = parseAttrValue(type, element.$html(item));
-
-      return [
-        ...acc,
-        {
-          name,
-          type,
-          value,
-        },
-      ];
+      element.setAttribute(key as string, value as string);
+      return Reflect.set(target, key, value);
     },
-    []
-  );
-
-const getCustomElementScripts = (element: RealmElement) =>
-  getCustomElementScriptEntries(element)?.reduce<Element[]>(
-    (acc, script) => [...acc, script],
-    []
-  );
-
-const removeCustomElementAttrs = (element: RealmElement) =>
-  getCustomElementAttrEntries(element)?.forEach((el) => el.remove());
-
-const removeCustomElementScripts = (element: RealmElement) =>
-  getCustomElementScripts(element)?.forEach((script) => script.remove());
+    get: (...args) => Reflect.get(...args),
+  });
+};
 
 const getRegisteredElement = (element: RealmElement) => {
   if (!__RL_ELEMENT_REGISTRY.has(element)) {
@@ -131,27 +89,6 @@ const getRegisteredElement = (element: RealmElement) => {
   }
   return __RL_ELEMENT_REGISTRY.get(element);
 };
-
-const scriptClosure = (
-  script: HTMLScriptElement | Node,
-  args: unknown[],
-  fnArgs: string
-) => `(([${args.join(",")}]) => {${script.textContent}})(${fnArgs})`.trim();
-
-const createScriptURL = (content: string) =>
-  URL.createObjectURL(new Blob([content], { type: MimeTypes.JAVASCRIPT }));
-
-const replaceKeywords = (
-  content: string,
-  correction?: Partial<{ [key in RealmEventAliases]: string }>
-) =>
-  content.replaceAll(
-    new RegExp(
-      `\\$(${[RealmEventAliases.TRIGGER].map((item) => `${item}`).join("|")})`,
-      "g"
-    ),
-    (_match, pattern) => correction[pattern]
-  );
 
 const replaceEventsKeyword = (content: string, elementId: string) =>
   replaceKeywords(content, {
@@ -223,8 +160,8 @@ const __RL_UTILS = {
       if (isEventStateUpdate) {
         const onStateUpdateEvent = (callback) => {
           runtimeEvents?.[eventName]?.set(scriptId, callback);
-          localState.subscribe((oldValue, newValue, key) => {
-            callback?.apply?.(element, [oldValue, newValue, key]);
+          localState.subscribe((newValue, oldValue, key) => {
+            callback?.apply?.(element, [newValue, oldValue, key]);
             if (!newValue) return;
 
             const htmlValue = `${newValue}`;
@@ -339,10 +276,8 @@ export const defineElement = registerElement(RealmTagNames.DEFINE_ELEMENT, {
             RealmAttributeNames.NAME,
             slotName
           );
-          element._attrs([
-            [name, value],
-            [RealmAttributeNames.SLOT, slotName],
-          ]);
+          element._attr(name, value);
+          element._attr(RealmAttributeNames.SLOT, slotName, slot);
           element._content(value, slot);
           element._append(slot);
           element._slotTo(shadowSlot, [slot]);
@@ -443,7 +378,6 @@ export const defineElement = registerElement(RealmTagNames.DEFINE_ELEMENT, {
       },
     });
 
-    // logger("define element init");
     customElement._attach();
     customElement._clear();
     customElementRegister();
