@@ -15,7 +15,7 @@ import {
   removeCustomElementScripts,
 } from "../utils/element";
 import { createScriptURL, scriptClosure } from "../utils/script";
-import { replaceKeywords } from "../utils/string";
+import { camel, dash, replaceKeywords } from "../utils/string";
 
 type ElementRuntimeEvents = {
   [RealmEventNames.ON]?: Map<
@@ -49,6 +49,16 @@ const __RL_ELEMENT_REGISTRY: Map<
   Map<RealmElementPropKey, unknown>
 > = new Map();
 
+const __RL_ELEMENT_ATTRS_BIND_ATTRS: Map<
+  Element,
+  Map<string, string>
+> = new Map();
+
+const __RL_ELEMENT_ATTRS_BIND_LOCAL_STATES: Map<
+  Element,
+  Map<string, string>
+> = new Map();
+
 const __RL_ELEMENT_MAP: Map<string, RealmElement> = new Map();
 
 const __RL_EVENT_LIST = [
@@ -67,16 +77,20 @@ const geCustomElementtAttributes = (element: RealmElement) => {
       const type = registeredElement.find(
         (item) => item.name === attr.name
       )?.type;
-      return [attr.name, type ? parseAttrValue(type, attr.value) : attr.value];
+      return [
+        camel(attr.name),
+        type ? parseAttrValue(type, attr.value) : attr.value,
+      ];
     })
   );
 
   return new Proxy(attrs, {
     set: (target, key, value) => {
-      const attr = registeredElement.find((item) => item.name === key);
+      const dashedKey = dash(key as string);
+      const attr = registeredElement.find((item) => item.name === dashedKey);
       if (!attr) return false;
 
-      element.setAttribute(key as string, value as string);
+      element.setAttribute(dashedKey, value as string);
       return Reflect.set(target, key, value);
     },
     get: (...args) => Reflect.get(...args),
@@ -113,12 +127,38 @@ const dispatchEvent = (
 ) => {
   const attrs = geCustomElementtAttributes(element);
   const callbackArgs = getDispatchEventScriptArgs([element, attrs]);
-  element._reqAnimFrame(() => {
+  element._reqAnimFrame(() =>
     __RL_RUNTIME_LIST.get(element.id)?.[eventName]?.forEach((callback) => {
       callback.apply(this, [...args, ...(callbackArgs as unknown[])]);
-    });
-  });
+    })
+  );
 };
+
+const getBindedElementAttributes = (element: Element, symbol: string) =>
+  Array.from(element.attributes)
+    .filter(
+      (attr) => attr.name.charAt(0) === ":" && attr.value.charAt(0) === symbol
+    )
+    .reduce(
+      (acc, attr) => [
+        ...acc,
+        [attr.value, attr.name.substring(symbol.length, attr.name.length)],
+      ],
+      []
+    );
+
+const updateElementAttributes = (
+  map: Map<Element, Map<string, string>>,
+  element: RealmElement,
+  attrName: string,
+  value: string
+) =>
+  map.forEach((attrs, bindElement) => {
+    const attrBind = attrs.get(attrName);
+    if (attrBind) {
+      element._reqAnimFrame(() => element._attr(attrBind, value, bindElement));
+    }
+  });
 
 const __RL_STRING_CONST = {
   runtime: "__RL_UTILS.runtime",
@@ -136,51 +176,54 @@ const __RL_UTILS = {
 
     return __RL_EVENT_LIST.reduce((acc, eventName) => {
       const isCustomEvent = eventName === RealmEventNames.ON;
+      const isEventInit = eventName === RealmEventNames.INIT;
       const isEventStateUpdate = eventName === RealmEventNames.STATES_UPDATE;
+      const exceptionEvents =
+        isCustomEvent || isEventInit || isEventStateUpdate;
       const currentEvent = runtimeEvents?.[eventName];
 
-      if (!(isCustomEvent || isEventStateUpdate)) {
+      if (!exceptionEvents) {
         return [
           ...acc,
-          (fn) => {
-            runtimeEvents?.[eventName]?.set(scriptId, fn);
-          },
+          (callback) => runtimeEvents?.[eventName]?.set(scriptId, callback),
         ];
       }
 
       if (isCustomEvent) {
-        const onCustomEvent =
-          () =>
+        return [
+          ...acc,
           (
-            customEventName: string,
-            callback: (args: ElementRuntimeEventArgs) => void
-          ) => {
-            const currentCustomEvent =
-              (currentEvent as ElementRuntimeEvents[RealmEventNames.ON])?.get(
-                scriptId
-              ) ?? new Map();
-            const triggerEvents =
-              currentCustomEvent?.get(customEventName) ?? new Set();
-            triggerEvents.add(callback);
-            currentCustomEvent.set(customEventName, triggerEvents);
-            runtimeEvents?.[eventName]?.set(scriptId, currentCustomEvent);
-          };
-
-        acc.push(onCustomEvent());
-        return acc;
+            () =>
+            (
+              customEventName: string,
+              callback: (args: ElementRuntimeEventArgs) => void
+            ) => {
+              const currentCustomEvent =
+                (currentEvent as ElementRuntimeEvents[RealmEventNames.ON])?.get(
+                  scriptId
+                ) ?? new Map();
+              const triggerEvents =
+                currentCustomEvent?.get(customEventName) ?? new Set();
+              triggerEvents.add(callback);
+              currentCustomEvent.set(customEventName, triggerEvents);
+              runtimeEvents?.[eventName]?.set(scriptId, currentCustomEvent);
+            }
+          )(),
+        ];
       }
 
-      if (isEventStateUpdate) {
+      if (isEventStateUpdate || isEventInit) {
         const callbackArgs = getDispatchEventScriptArgs([element, attrs]);
         const onStateUpdateEvent = (callback) => {
           currentEvent?.set(scriptId, callback);
           localState.subscribe((newValue, oldValue, stateName) => {
-            callback?.apply?.(null, [
-              newValue,
-              oldValue,
-              stateName,
-              ...(callbackArgs as unknown[]),
-            ]);
+            if (!isEventInit)
+              callback?.apply?.(null, [
+                newValue,
+                oldValue,
+                stateName,
+                ...(callbackArgs as unknown[]),
+              ]);
             if (!newValue) return;
 
             const htmlValue = `${newValue}`;
@@ -195,16 +238,25 @@ const __RL_UTILS = {
               element._attr(RealmAttributeNames.SLOT, slotStateName, slotState);
               element._html(htmlValue, slotState);
               element._append(slotState);
-              element._reqAnimFrame(() => {
-                const shadowSlotState = element.$shadowEl<HTMLSlotElement>(
-                  RealmTagNames.SLOT,
-                  RealmAttributeNames.NAME,
-                  slotStateName
-                );
-                element._slotTo(shadowSlotState, [slotState]);
-              });
+              element._reqAnimFrame(() =>
+                element._slotTo(
+                  element.$shadowEl<HTMLSlotElement>(
+                    RealmTagNames.SLOT,
+                    RealmAttributeNames.NAME,
+                    slotStateName
+                  ),
+                  [slotState]
+                )
+              );
               __RL_ELEMENT_STATES.set(slotStateKey, slotState);
             }
+
+            updateElementAttributes(
+              __RL_ELEMENT_ATTRS_BIND_LOCAL_STATES,
+              element,
+              slotStateName,
+              newValue as string
+            );
 
             element._html(
               htmlValue,
@@ -218,7 +270,7 @@ const __RL_UTILS = {
         };
 
         acc.push(onStateUpdateEvent);
-        acc.push(localState);
+        if (!isEventInit) acc.push(localState);
         return acc;
       }
     }, []);
@@ -272,15 +324,18 @@ export const defineElement = registerElement(RealmTagNames.DEFINE_ELEMENT, {
   // This function is triggered when `define-element` is registered
   onRegistered() {
     __RL_ELEMENT_REGISTRY.forEach((props, element) => {
-      const html = replaceEventsKeyword(
+      const registeredHtml = replaceEventsKeyword(
         props.get(RealmElementPropKey.HTML) as string,
         element.id
       );
-      element._html(html);
+
+      //#region Render the element
+      element._html(registeredHtml);
       element._attach();
       element._render();
+      //#endregion
 
-      // Append all children to the shadow root
+      //#region Append all children to the shadow root
       element._slotTo(
         element.$shadowEl<HTMLSlotElement>(
           RealmTagNames.SLOT,
@@ -288,25 +343,61 @@ export const defineElement = registerElement(RealmTagNames.DEFINE_ELEMENT, {
         ),
         element.$children()
       );
+      //#endregion
 
-      // Apply rendered element with default attribues
-      // Assign all slotted attributes
-      (props.get(RealmElementPropKey.ATTRS) as Array<[string, string]>).forEach(
-        ([name, value]) => {
-          const slotName = element.$slotAttrName(name);
-          const slot = element._createTag<HTMLSlotElement>(RealmTagNames.SLOT);
-          const shadowSlot = element.$shadowEl<HTMLSlotElement>(
-            RealmTagNames.SLOT,
-            RealmAttributeNames.NAME,
-            slotName
-          );
-          element._attr(name, value);
-          element._attr(RealmAttributeNames.SLOT, slotName, slot);
-          element._html(value, slot);
-          element._append(slot);
-          element._slotTo(shadowSlot, [slot]);
+      //#region Get bind atttributes
+      element.$shadowEls("*").forEach((element) => {
+        const fromAttrs = getBindedElementAttributes(element, "@");
+        if (fromAttrs.length) {
+          const attrBinds =
+            __RL_ELEMENT_ATTRS_BIND_ATTRS.get(element) ?? new Map();
+          fromAttrs.forEach(([name, value]) => attrBinds.set(name, value));
+          __RL_ELEMENT_ATTRS_BIND_ATTRS.set(element, attrBinds);
         }
-      );
+
+        const fromLocalStates = getBindedElementAttributes(element, "#");
+        if (fromLocalStates.length) {
+          const localStatesBinds =
+            __RL_ELEMENT_ATTRS_BIND_LOCAL_STATES.get(element) ?? new Map();
+          fromLocalStates.forEach(([name, value]) =>
+            localStatesBinds.set(name, value)
+          );
+          __RL_ELEMENT_ATTRS_BIND_LOCAL_STATES.set(element, localStatesBinds);
+        }
+      });
+      //#endregion
+
+      const registeredAttrs = props.get(RealmElementPropKey.ATTRS) as Array<
+        [string, string]
+      >;
+
+      // Render attributes
+      registeredAttrs.forEach(([name, value]) => {
+        const slotName = element.$slotAttrName(name);
+        const shadowSlot = element.$shadowEl<HTMLSlotElement>(
+          RealmTagNames.SLOT,
+          RealmAttributeNames.NAME,
+          slotName
+        );
+
+        //#region assign slot element
+        const slot = element._createTag<HTMLSlotElement>(RealmTagNames.SLOT);
+        element._attr(name, value);
+        element._attr(RealmAttributeNames.SLOT, slotName, slot);
+        element._html(value, slot);
+        element._append(slot);
+        element._slotTo(shadowSlot, [slot]);
+        //#endregion
+
+        //#region apply binded attributes
+        updateElementAttributes(
+          __RL_ELEMENT_ATTRS_BIND_ATTRS,
+          element,
+          slotName,
+          value
+        );
+        //#endregion
+      });
     });
   },
 
@@ -388,25 +479,35 @@ export const defineElement = registerElement(RealmTagNames.DEFINE_ELEMENT, {
       },
 
       onAttributeChanged(element, attrName, oldValue, newValue) {
+        const slotAttrName = element.$slotAttrName(attrName);
+
         const slot = element.$el<HTMLSlotElement>(
           RealmTagNames.SLOT,
           RealmAttributeNames.SLOT,
-          element.$slotAttrName(attrName)
+          slotAttrName
         );
         if (element) element._html(newValue, slot);
-        element._reqAnimFrame(() => {
+
+        updateElementAttributes(
+          __RL_ELEMENT_ATTRS_BIND_ATTRS,
+          element,
+          slotAttrName,
+          newValue
+        );
+
+        element._reqAnimFrame(() =>
           dispatchEvent(element, RealmEventNames.ATTR_UPDATE, [
             newValue,
             oldValue,
             attrName,
-          ]);
-        });
+          ])
+        );
       },
 
       onInit(element) {
-        element._reqAnimFrame(() => {
-          dispatchEvent(element, RealmEventNames.INIT);
-        });
+        element._reqAnimFrame(() =>
+          dispatchEvent(element, RealmEventNames.INIT)
+        );
       },
 
       onMounted(element) {

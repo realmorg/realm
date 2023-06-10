@@ -1,7 +1,6 @@
 import { RealmAttributeNames } from "../constants/attrs";
 import { RealmTagNames } from "../constants/tags";
 import { RealmElement } from "../libs/RealmElement.class";
-import { camel } from "./string";
 
 export interface CreateElementParams {
   onRegistered?: (elementName: string) => void;
@@ -114,7 +113,7 @@ export const getCustomElementScripts = (element: RealmElement) =>
 export const getCustomElementAttrs = (element: RealmElement) =>
   getCustomElementAttrEntries(element)?.reduce<ElementAttribute[]>(
     (acc, item) => {
-      const name = camel(element.$attr(RealmAttributeNames.NAME, item));
+      const name = element.$attr(RealmAttributeNames.NAME, item);
       const type = element.$attr(
         RealmAttributeNames.TYPE,
         item
