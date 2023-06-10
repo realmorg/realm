@@ -9,5 +9,4 @@ export enum RealmEventNames {
 
 export enum RealmEventAliases {
   TRIGGER = "trigger",
-  RAMA = "rama",
 }
