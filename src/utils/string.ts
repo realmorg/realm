@@ -15,23 +15,37 @@ export const capitalize = (str: string): string => {
   return first.toUpperCase() + rest.join("");
 };
 
+const splitChars = (str: string) =>
+  str
+    ?.replace(UPPERCASE_ALPHABET_REGEX, capitalize)
+    ?.split(SPECIAL_CHARS_REGEX);
+
 /**
  * Convert string to camel case
  * @param str - string
  * @returns {string}
  */
 export const camel = (str: string): string => {
-  const parts =
-    str
-      ?.replace(UPPERCASE_ALPHABET_REGEX, capitalize)
-      ?.split(SPECIAL_CHARS_REGEX)
-      .map((x) => x.toLowerCase()) ?? [];
+  const parts = splitChars(str).map((x) => x.toLowerCase()) ?? [];
   const length = parts.length;
   if (length === 0) return "";
   if (length === 1) return parts[0];
   return parts.reduce(
     (acc, part) => `${acc}${part.charAt(0).toUpperCase()}${part.slice(1)}`
   );
+};
+
+/**
+ * Convert string to dash
+ * @param str - string
+ * @returns {string}
+ */
+export const dash = (str: string): string => {
+  const parts = splitChars(str).map((x) => x.toLowerCase()) ?? [];
+  const length = parts.length;
+  if (length === 0) return "";
+  if (length === 1) return parts[0];
+  return parts.reduce((acc, part) => `${acc}-${part.toLowerCase()}`);
 };
 
 /**
