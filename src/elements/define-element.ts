@@ -16,6 +16,7 @@ import {
 } from "../utils/element";
 import { createScriptURL, scriptClosure } from "../utils/script";
 import { camel, dash, replaceKeywords } from "../utils/string";
+import { RealmUtils } from "../constants/static";
 
 type ElementRuntimeEvents = {
   [RealmEventNames.ON]?: Map<
@@ -147,7 +148,7 @@ const getBindedElementAttributes = (element: Element, symbol: string) =>
       []
     );
 
-const updateElementAttributes = (
+const updateElementBindings = (
   map: Map<Element, Map<string, string>>,
   element: RealmElement,
   attrName: string,
@@ -161,13 +162,13 @@ const updateElementAttributes = (
   });
 
 const __RL_STRING_CONST = {
-  runtime: "__RL_UTILS.runtime",
-  trigger: "__RL_UTILS.trigger",
+  runtime: `__RL_UTILS.${RealmUtils.RUNTIME}`,
+  trigger: `__RL_UTILS.${RealmUtils.TRIGGER}`,
 };
 
 const __RL_UTILS = {
   // Runtime closure
-  runtime: (elementId: string, scriptId: string) => {
+  [RealmUtils.RUNTIME]: (elementId: string, scriptId: string) => {
     const element = __RL_ELEMENT_MAP.get(elementId);
     const attrs = geCustomElementtAttributes(element);
 
@@ -251,7 +252,7 @@ const __RL_UTILS = {
               __RL_ELEMENT_STATES.set(slotStateKey, slotState);
             }
 
-            updateElementAttributes(
+            updateElementBindings(
               __RL_ELEMENT_ATTRS_BIND_LOCAL_STATES,
               element,
               slotStateName,
@@ -277,7 +278,11 @@ const __RL_UTILS = {
   },
 
   // Event trigger
-  trigger: ([elementId, element, event]: [string, HTMLElement, Event]) => {
+  [RealmUtils.TRIGGER]: ([elementId, element, event]: [
+    string,
+    HTMLElement,
+    Event
+  ]) => {
     const runtimeEvents = __RL_RUNTIME_LIST.get(elementId);
     const hostElement = __RL_ELEMENT_MAP.get(elementId);
     const eventTriggers = runtimeEvents?.[RealmEventNames.ON];
@@ -390,7 +395,7 @@ export const defineElement = registerElement(RealmTagNames.DEFINE_ELEMENT, {
         //#endregion
 
         //#region apply binded attributes
-        updateElementAttributes(
+        updateElementBindings(
           __RL_ELEMENT_ATTRS_BIND_ATTRS,
           element,
           slotName,
@@ -488,7 +493,7 @@ export const defineElement = registerElement(RealmTagNames.DEFINE_ELEMENT, {
         );
         if (element) element._html(newValue, slot);
 
-        updateElementAttributes(
+        updateElementBindings(
           __RL_ELEMENT_ATTRS_BIND_ATTRS,
           element,
           slotAttrName,
