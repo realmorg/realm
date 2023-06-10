@@ -171,7 +171,8 @@ export class RealmElement extends HTMLElement {
     parseInt(Math.random().toString().replace(".", "")).toString(0x10);
 
   // Get innerHTML
-  $html = (element?: Element) => (element?.innerHTML || this.#html).trim();
+  $html = (element?: Element) =>
+    (element?.innerHTML || this.#html).toString().trim();
 
   // Query selector for element or it's shadow root
   $qs = <T extends Element>(selector: string, shadow?: boolean) =>
