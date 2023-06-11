@@ -1,6 +1,7 @@
 import { RealmAttributeNames } from "../constants/attrs";
 import { RealmTagNames } from "../constants/tags";
 import { RealmElement } from "../libs/RealmElement.class";
+import { createArray } from "./object";
 
 export interface CreateElementParams {
   onRegistered?: (elementName: string) => void;
@@ -21,6 +22,7 @@ export enum ElementAttributeTypes {
   NUMBER = "number",
   BOOLEAN = "boolean",
   OBJECT = "object",
+  EVENT = "event",
 }
 
 export interface ElementAttribute {
@@ -84,7 +86,7 @@ export const parseAttrValue = (type: ElementAttributeTypes, value: string) => {
  * @returns {ElementAttribute[]}
  */
 export const getCustomElementAttrEntries = (element: RealmElement) =>
-  Array.from(element.$els(RealmTagNames.ELEMENT_ATTR));
+  createArray<Element>(element.$els(RealmTagNames.ELEMENT_ATTR));
 
 /**
  * Get custom element embedded scripts as an array
@@ -92,7 +94,7 @@ export const getCustomElementAttrEntries = (element: RealmElement) =>
  * @returns {ElementAttribute[]}
  */
 export const getCustomElementScriptEntries = (element: RealmElement) =>
-  Array.from(element.$els(RealmTagNames.SCRIPT));
+  createArray<HTMLScriptElement>(element.$els(RealmTagNames.SCRIPT));
 
 /**
  * Get custom element's scripts as an array

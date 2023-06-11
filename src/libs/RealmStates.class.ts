@@ -1,3 +1,5 @@
+import { createMap } from "../utils/object";
+
 export type StateValue = Map<string, unknown>;
 
 export type StateObserver = (
@@ -11,7 +13,7 @@ export class RealmStates {
   #observers: Set<StateObserver>;
 
   constructor() {
-    this.#states = new Map();
+    this.#states = createMap();
     this.#observers = new Set();
   }
 

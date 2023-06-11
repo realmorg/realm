@@ -17,6 +17,7 @@ import {
 import { createScriptURL, scriptClosure } from "../utils/script";
 import { camel, dash, replaceKeywords } from "../utils/string";
 import { RealmUtils } from "../constants/static";
+import { createArray, createMap } from "../utils/object";
 
 type ElementRuntimeEvents = {
   [RealmEventNames.ON]?: Map<
@@ -41,26 +42,23 @@ const __RL_ATTRS_DEFINITION_LIST: Record<string, ElementAttribute[]> = {};
 
 const __RL_SCRIPT_DEFINITION_LIST: Record<string, Node[]> = {};
 
-const __RL_RUNTIME_LIST: Map<string, ElementRuntimeEvents> = new Map();
+const __RL_RUNTIME_LIST = createMap<string, ElementRuntimeEvents>();
 
-const __RL_ELEMENT_STATES: Map<string, HTMLSlotElement> = new Map();
+const __RL_ELEMENT_STATES = createMap<string, HTMLSlotElement>();
 
-const __RL_ELEMENT_REGISTRY: Map<
+const __RL_ELEMENT_REGISTRY = createMap<
   RealmElement,
   Map<RealmElementPropKey, unknown>
-> = new Map();
+>();
 
-const __RL_ELEMENT_ATTRS_BIND_ATTRS: Map<
+const __RL_ELEMENT_ATTRS_BIND_ATTRS = createMap<Element, Map<string, string>>();
+
+const __RL_ELEMENT_ATTRS_BIND_LOCAL_STATES = createMap<
   Element,
   Map<string, string>
-> = new Map();
+>();
 
-const __RL_ELEMENT_ATTRS_BIND_LOCAL_STATES: Map<
-  Element,
-  Map<string, string>
-> = new Map();
-
-const __RL_ELEMENT_MAP: Map<string, RealmElement> = new Map();
+const __RL_ELEMENT_MAP = createMap<string, RealmElement>();
 
 const __RL_EVENT_LIST = [
   RealmEventNames.ON,
@@ -74,7 +72,7 @@ const __RL_EVENT_LIST = [
 const geCustomElementtAttributes = (element: RealmElement) => {
   const registeredElement = __RL_ATTRS_DEFINITION_LIST[element.name];
   const attrs = Object.fromEntries(
-    Array.from(element.attributes).map((attr) => {
+    createArray<Attr>(element.attributes).map((attr) => {
       const type = registeredElement.find(
         (item) => item.name === attr.name
       )?.type;
@@ -101,7 +99,7 @@ const geCustomElementtAttributes = (element: RealmElement) => {
 const getRegisteredElement = (element: RealmElement) => {
   if (!__RL_ELEMENT_REGISTRY.has(element)) {
     __RL_ELEMENT_MAP.set(element.id, element);
-    __RL_ELEMENT_REGISTRY.set(element, new Map());
+    __RL_ELEMENT_REGISTRY.set(element, createMap());
   }
   return __RL_ELEMENT_REGISTRY.get(element);
 };
@@ -123,7 +121,7 @@ const getDispatchEventScriptArgs = ([
 
 const dispatchEvent = (
   element: RealmElement,
-  eventName: RealmEventNames,
+  eventName: string,
   args: unknown[] = []
 ) => {
   const attrs = geCustomElementtAttributes(element);
@@ -136,7 +134,7 @@ const dispatchEvent = (
 };
 
 const getBindedElementAttributes = (element: Element, symbol: string) =>
-  Array.from(element.attributes)
+  createArray<Attr>(element.attributes)
     .filter(
       (attr) => attr.name.charAt(0) === ":" && attr.value.charAt(0) === symbol
     )
@@ -355,7 +353,7 @@ export const defineElement = registerElement(RealmTagNames.DEFINE_ELEMENT, {
         const fromAttrs = getBindedElementAttributes(element, "@");
         if (fromAttrs.length) {
           const attrBinds =
-            __RL_ELEMENT_ATTRS_BIND_ATTRS.get(element) ?? new Map();
+            __RL_ELEMENT_ATTRS_BIND_ATTRS.get(element) ?? createMap();
           fromAttrs.forEach(([name, value]) => attrBinds.set(name, value));
           __RL_ELEMENT_ATTRS_BIND_ATTRS.set(element, attrBinds);
         }
@@ -363,7 +361,7 @@ export const defineElement = registerElement(RealmTagNames.DEFINE_ELEMENT, {
         const fromLocalStates = getBindedElementAttributes(element, "#");
         if (fromLocalStates.length) {
           const localStatesBinds =
-            __RL_ELEMENT_ATTRS_BIND_LOCAL_STATES.get(element) ?? new Map();
+            __RL_ELEMENT_ATTRS_BIND_LOCAL_STATES.get(element) ?? createMap();
           fromLocalStates.forEach(([name, value]) =>
             localStatesBinds.set(name, value)
           );
@@ -434,7 +432,7 @@ export const defineElement = registerElement(RealmTagNames.DEFINE_ELEMENT, {
         __RL_RUNTIME_LIST.set(
           elementId,
           Object.fromEntries(
-            __RL_EVENT_LIST.map((eventName) => [eventName, new Map()])
+            __RL_EVENT_LIST.map((eventName) => [eventName, createMap()])
           )
         );
 
