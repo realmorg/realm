@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Test</title>
+    <script src="../../dist/index.js" defer></script>
+    <style>
+      web-app:not(:defined) {
+        opacity: 0;
+      }
+      web-app:defined {
+        transition: opacity 100ms ease;
+        opacity: 1;
+      }
+    </style>
+  </head>
+  <body>
+    <web-app>
+      <custom-element name="hello-world">
+        <element-attr name="name" type="string">Default Name</element-attr>
+        <element-attr name="age" type="number">0</element-attr>
+        <element-state name="count" type="number">0</element-state>
+        <element-state name="increment" type="number">1</element-state>
+
+        <element-flow>
+          <trigger-event click="#counter">
+            <set-state name="count" value="1" target="#count"></set-state>
+          </trigger-event>
+
+          <trigger-event click="#increment">
+            <set-state
+              name="increment"
+              value="1"
+              operation="add"
+              target="#increment"
+            ></set-state>
+          </trigger-event>
+
+          <trigger-event click="#counter-increment">
+            <set-state
+              name="count"
+              operation="add"
+              target="#count"
+              value="#increment"
+            ></set-state>
+          </trigger-event>
+
+          <trigger-event input="#name">
+            <set-attr
+              name="name"
+              value="{event => event.target.value}"
+            ></set-attr>
+          </trigger-event>
+
+          <trigger-event mounted>
+            <fetch-url url="https://api.github.com/users/">
+              <fetch-response as="json">
+                <set-state
+                  name="name"
+                  value="{response => response.title}"
+                  target="#name"
+                ></set-state>
+              </fetch-response>
+            </fetch-url>
+          </trigger-event>
+        </element-flow>
+
+        <div>My name is: <slot name="@name"></slot></div>
+        <div><input name="name" id="name" /></div>
+        <div>Counter is: <slot name="#count"></slot></div>
+        <div>
+          <button selector="#counter">Add counter + 1</button>
+          <button selector="#increment">Add increment</button>
+          <button selector="#counter-increment">Add counter + increment</button>
+        </div>
+      </custom-element>
+
+      <hello-world></hello-world>
+    </web-app>
+  </body>
+</html>

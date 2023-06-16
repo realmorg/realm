@@ -1,4 +1,5 @@
 import { RealmTagNames } from "../constants/tags";
+import { RealmStates } from "./RealmStates.class";
 
 export interface ReamlElementParams {
   name: string;
@@ -29,6 +30,8 @@ export class RealmElement extends HTMLElement {
   onMounted?: ReamlElementParams["onMounted"];
   onUnmounted?: ReamlElementParams["onUnmounted"];
   onAttributeChanged?: ReamlElementParams["onAttributeChanged"];
+
+  states: RealmStates = new RealmStates();
 
   constructor({
     name,
@@ -128,12 +131,12 @@ export class RealmElement extends HTMLElement {
 
   // Set multiple element attributes
   _attrs = (
-    attributes: Array<[name: string, value: string]>,
+    attributes: Array<[name: string, value: string | boolean]>,
     source?: Element
   ) => {
     const el = source || this;
     attributes.forEach(([name, value]) => {
-      el.setAttribute(name, value);
+      el.setAttribute(name, typeof value === "boolean" ? name : value);
     });
   };
 
@@ -152,7 +155,12 @@ export class RealmElement extends HTMLElement {
   ) => this._attrs(attributes, source);
 
   // Request animation frame
-  _reqAnimFrame = (fn: FrameRequestCallback) => requestAnimationFrame(fn);
+  _reqAnimFrame = (fn: FrameRequestCallback) => {
+    const reqAnimFrame = requestAnimationFrame(() => {
+      cancelAnimationFrame(reqAnimFrame);
+      fn.apply(this);
+    });
+  };
 
   // Assign slot
   _slotTo = (
@@ -161,6 +169,13 @@ export class RealmElement extends HTMLElement {
       | Array<Element | HTMLElement | HTMLSlotElement | Text>
       | NodeListOf<Element | HTMLElement | HTMLSlotElement | Text>
   ) => slot && !!nodes && slot.assign(...nodes);
+
+  _event = <T>(name: string, detail?: T) =>
+    this.dispatchEvent(
+      new CustomEvent<T>(name, {
+        detail,
+      })
+    );
 
   // _runtimeId = (id: string) => (this.runtimeId = id);
   //#endregion
@@ -199,6 +214,9 @@ export class RealmElement extends HTMLElement {
   $attr = (name: string, source?: Element) =>
     (source || this).getAttribute(name);
 
+  $data = (name: string, source?: Element) =>
+    (source || this).getAttribute(`data-${name}`);
+
   // Get query selector for current element
   $el = <T extends Element>(
     selector: string,
@@ -232,5 +250,10 @@ export class RealmElement extends HTMLElement {
 
   // Get state slot's name
   $slotStateName = (name: string) => `#${name}`;
+
+  $event = <T>(name: string, callback?: (args: T) => void) =>
+    this.addEventListener(name, (event: CustomEvent) => {
+      callback?.apply(this, [event.detail]);
+    });
   //#endregion
 }

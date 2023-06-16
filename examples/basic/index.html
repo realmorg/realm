@@ -8,59 +8,298 @@
       web-app:not(:defined) {
         opacity: 0;
       }
+      web-app:defined {
+        transition: opacity 100ms ease;
+        opacity: 1;
+      }
     </style>
   </head>
   <body>
     <web-app>
+      <define-element name="magic-button">
+        <element-attr name="label" type="string">
+          This is magic button
+        </element-attr>
+        <button>🦄 <slot name="@label"></slot></button>
+        <div>Copy label of state: <slot name="#label"></slot></div>
+      </define-element>
+
+      <define-element name="magic-container">
+        <element-attr name="button-label">My Button Label</element-attr>
+
+        <div>I am magic container, change my label</div>
+        <magic-button
+          :label="#button-label"
+          :onclick="onclick()"
+        ></magic-button>
+        <magic-button
+          :label="@button-label"
+          :onclick="onclick()"
+        ></magic-button>
+        <br />
+        <label>
+          Change label from state
+          <input oninput="$trigger('changeLabelState')" />
+        </label>
+        <br />
+        <label>
+          Change label from attr
+          <input oninput="$trigger('changeLabelAttr')" />
+        </label>
+
+        <style>
+          :host {
+            display: block;
+            border: 1px solid red;
+            padding: 10px;
+          }
+        </style>
+
+        <script type="module/realm">
+          onInit(() => {
+            localState.setItem('button-label', 'Hello from state')
+          });
+
+          on("changeLabelState", ({ event, attrs }) => {
+            localState.setItem('button-label', event.target.value)
+          });
+
+          on("changeLabelAttr", ({ event, attrs }) => {
+            attrs.buttonLabel = event.target.value
+          });
+        </script>
+      </define-element>
+
+      <magic-container button-label="Hello from props"></magic-container>
+
+      <define-element name="element-def">
+        <magic-button label="DEF Button"></magic-button>
+        <slot children></slot>
+      </define-element>
+
       <define-element name="element-abc">
+        <!-- Attributes definition -->
         <element-attr name="name" type="string">My Name</element-attr>
         <element-attr name="age" type="number">10</element-attr>
+        <element-attr name="is-timer" type="boolean">false</element-attr>
 
-        <script type="realm-module">
-          onMounted(async (self) => {
-            const response = await fetch("https://jsonplaceholder.typicode.com/todos/1");
-            console.log("hello this onMount", self.$attr('name'), await response.json());
+        <!-- Element renderer -->
+        <div>Helllo my name is: <slot name="@name"></slot></div>
+        <div>Change name <input oninput="$trigger('changeName')" /></div>
+        <div>My age is: <slot name="@age"></slot></div>
+        <div>Current increment: <slot name="#increment"></slot></div>
+        <div>My counter is: <slot name="#counter">2</slot></div>
+        <div>Hello: <slot name="#message">Loading...</slot></div>
+        <div>
+          <button onclick="$trigger('addCounter')">Add Counter</button>
+          <button onclick="$trigger('addIncrement')">Add Increment +1</button>
+          <button onclick="$trigger('incrementAge')">Increment age</button>
+          <button onclick="$trigger('addCounterProxy')">
+            Add Counter Proxy
+          </button>
+        </div>
+        <slot children></slot>
+
+        <magic-button label="From Element ABC"></magic-button>
+        <element-def></element-def>
+
+        <!-- Scripts -->
+        <script type="module/realm">
+          onInit(({ attrs }) => {
+            localState.setItem("counter", attrs.age);
+            localState.setItem("increment", 1);
+            console.log('init haha', { localState })
+            localState.setItem("message", 'hahahahaha');
           });
 
-          onStatesDidUpdate((oldValue, newValue) => {
-            console.log("onStateDidUpdate", oldValue, newValue);
+          onMounted(({ attrs }) => {
+            fetch("https://jsonplaceholder.typicode.com/todos/1").then((response) => response.json()).then((json) => {
+              console.log("hello this onMount", attrs.name, json.title);
+              localState.setItem('message', json.title)
+
+              //localState.setItem("counter", 2);
+              //console.log('testing');
+              //console.log({ localState })
+              //setInterval(() => {
+              //  localState.setItem("counter", counter => counter + 1)
+              //}, 10);
+            });
           });
 
-          onAttrDidUpdate((oldValue, newValue) => {
-            console.log("onAttrDidUpdate", oldValue, newValue);
+          onLocalStatesUpdate((newValue, oldValue, stateName, { attrs }) => {
+            console.log('get counter', { oldValue, newValue, stateName, attrs });
+            //console.log("onStateDidUpdate", oldValue, newValue);
+          })
+
+          onAttrsUpdate((newValue, oldValue, attrName, { attrs }) => {
+            console.log("onAttrDidUpdate", { newValue, oldValue, attrName, attrs });
           });
 
           onUnmounted(() => {
             console.log("onUnmount");
           });
+
+          on("addCounter", () => {
+            localState.setItem("counter", counter => counter + localState.getItem('increment'));
+          });
+
+          on("addCounter", ({ attrs }) => {
+            console.log('hi I am adding counter', localState, attrs.age)
+          });
+
+          on("addCounterProxy", ({ attrs }) => {
+            $trigger('addCounter')
+          });
+
+          on("changeName", ({ event, attrs }) => {
+            attrs.name = event.target.value;
+          });
+
+          on("addIncrement", ({ attrs }) => {
+            console.log('another one', attrs.age)
+            localState.setItem("increment", increment => increment + 1);
+          });
+
+          on("incrementAge", ({ attrs }) => {
+            attrs.age += 1;
+          });
         </script>
 
-        <div>Helllo my name is: <slot name="name"></slot></div>
-        <div>My age is: <slot name="age"></slot></div>
-        <div>My counter is: 0</div>
-        <button>Counter</button>
-        <slot></slot>
+        <script type="module/realm">
+          onInit(({ attrs }) => {
+            console.log('init');
+          });
+        </script>
       </define-element>
 
-      <define-element name="element-def">
-        <div>def</div>
-      </define-element>
-
-      <element-abc name="Ribhararnus Pracutian" age="33">
+      <element-abc id="first" name="Ribhararnus Pracutian" age="33">
         <strong>This is children</strong>
       </element-abc>
 
       <hr />
-      <element-abc></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
+      <element-abc id="second" istimer="true"></element-abc>
 
       <hr />
-      <element-def></element-def>
 
-      <br />
+      <element-def>
+        <div>Hello world</div>
+        <strong>Haha</strong>
+      </element-def>
+
+      <!-- <br />
 
       <show-element value="" eq="test">
         <strong>hello world</strong>
-      </show-element>
+      </show-element> -->
     </web-app>
   </body>
 </html>

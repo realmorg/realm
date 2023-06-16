@@ -55,7 +55,7 @@ export const registerElement =
 
     customElements
       .whenDefined(elementName)
-      .then(() => onRegistered?.(elementName));
+      .then(async () => onRegistered?.(elementName));
 
     customElements.define(
       elementName,

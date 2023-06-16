@@ -1,7 +1,11 @@
 import { RealmTagNames } from "../constants/tags";
 import { RealmAttributeNames } from "../constants/attrs";
 import { RealmElementPropKey } from "../constants/props";
-import { RealmEventAliases, RealmEventNames } from "../constants/events";
+import {
+  RealmEventAliases,
+  RealmEventTypes,
+  RealmRuntimeEventTypes,
+} from "../constants/events";
 import { RealmElement } from "../libs/RealmElement.class";
 import { RealmStates, StateObserver } from "../libs/RealmStates.class";
 import {
@@ -17,25 +21,33 @@ import {
 import { createScriptURL, scriptClosure } from "../utils/script";
 import { camel, dash, replaceKeywords } from "../utils/string";
 import { RealmUtils } from "../constants/static";
-import { createArray, createMap } from "../utils/object";
+import {
+  ObjectFromEntries,
+  createArray,
+  createMap,
+  createSet,
+} from "../utils/object";
 
 type ElementRuntimeEvents = {
-  [RealmEventNames.ON]?: Map<
+  [RealmRuntimeEventTypes.ON]?: Map<
     // Element's ID
     string,
     Map<string, Set<(args: ElementRuntimeEventArgs) => void>>
   >;
-  [RealmEventNames.INIT]?: Map<string, (args: ElementRuntimeEventArgs) => void>;
-  [RealmEventNames.MOUNTED]?: Map<
+  [RealmRuntimeEventTypes.INIT]?: Map<
     string,
     (args: ElementRuntimeEventArgs) => void
   >;
-  [RealmEventNames.UNMOUNTED]?: Map<string, () => void>;
-  [RealmEventNames.ATTR_UPDATE]?: Map<
+  [RealmRuntimeEventTypes.MOUNTED]?: Map<
+    string,
+    (args: ElementRuntimeEventArgs) => void
+  >;
+  [RealmRuntimeEventTypes.UNMOUNTED]?: Map<string, () => void>;
+  [RealmRuntimeEventTypes.ATTR_UPDATE]?: Map<
     string,
     (attrName: string, attrValue: string) => void
   >;
-  [RealmEventNames.STATES_UPDATE]?: Map<string, StateObserver>;
+  [RealmRuntimeEventTypes.STATES_UPDATE]?: Map<string, StateObserver>;
 };
 
 const __RL_ATTRS_DEFINITION_LIST: Record<string, ElementAttribute[]> = {};
@@ -43,6 +55,11 @@ const __RL_ATTRS_DEFINITION_LIST: Record<string, ElementAttribute[]> = {};
 const __RL_SCRIPT_DEFINITION_LIST: Record<string, Node[]> = {};
 
 const __RL_RUNTIME_LIST = createMap<string, ElementRuntimeEvents>();
+
+const __RL_SCRIPT_CONTENT_LIST = createMap<
+  string,
+  (args: { elementId: string }) => void
+>();
 
 const __RL_ELEMENT_STATES = createMap<string, HTMLSlotElement>();
 
@@ -60,18 +77,20 @@ const __RL_ELEMENT_ATTRS_BIND_LOCAL_STATES = createMap<
 
 const __RL_ELEMENT_MAP = createMap<string, RealmElement>();
 
+const __RL_SCRIPT_RUNTIME_MAP = createMap<string, Set<string>>();
+
 const __RL_EVENT_LIST = [
-  RealmEventNames.ON,
-  RealmEventNames.INIT,
-  RealmEventNames.MOUNTED,
-  RealmEventNames.UNMOUNTED,
-  RealmEventNames.ATTR_UPDATE,
-  RealmEventNames.STATES_UPDATE,
+  RealmRuntimeEventTypes.ON,
+  RealmRuntimeEventTypes.INIT,
+  RealmRuntimeEventTypes.MOUNTED,
+  RealmRuntimeEventTypes.UNMOUNTED,
+  RealmRuntimeEventTypes.ATTR_UPDATE,
+  RealmRuntimeEventTypes.STATES_UPDATE,
 ];
 
 const geCustomElementtAttributes = (element: RealmElement) => {
   const registeredElement = __RL_ATTRS_DEFINITION_LIST[element.name];
-  const attrs = Object.fromEntries(
+  const attrs = ObjectFromEntries(
     createArray<Attr>(element.attributes).map((attr) => {
       const type = registeredElement.find(
         (item) => item.name === attr.name
@@ -166,55 +185,51 @@ const __RL_STRING_CONST = {
 
 const __RL_UTILS = {
   // Runtime closure
-  [RealmUtils.RUNTIME]: (elementId: string, scriptId: string) => {
+  [RealmUtils.RUNTIME]: (elementId: string, runtimeId: string) => {
     const element = __RL_ELEMENT_MAP.get(elementId);
     const attrs = geCustomElementtAttributes(element);
 
     const runtimeEvents = __RL_RUNTIME_LIST.get(elementId);
-    const localState = new RealmStates();
+    const localState = element.states;
 
-    return __RL_EVENT_LIST.reduce((acc, eventName) => {
-      const isCustomEvent = eventName === RealmEventNames.ON;
-      const isEventInit = eventName === RealmEventNames.INIT;
-      const isEventStateUpdate = eventName === RealmEventNames.STATES_UPDATE;
+    const events = __RL_EVENT_LIST.reduce((acc, eventName) => {
+      const isCustomEvent = eventName === RealmRuntimeEventTypes.ON;
+      const isEventInit = eventName === RealmRuntimeEventTypes.INIT;
+      const isEventStateUpdate =
+        eventName === RealmRuntimeEventTypes.STATES_UPDATE;
       const exceptionEvents =
         isCustomEvent || isEventInit || isEventStateUpdate;
       const currentEvent = runtimeEvents?.[eventName];
 
       if (!exceptionEvents) {
-        return [
-          ...acc,
-          (callback) => runtimeEvents?.[eventName]?.set(scriptId, callback),
-        ];
+        acc[eventName] = (callback) =>
+          runtimeEvents?.[eventName]?.set(runtimeId, callback);
       }
 
       if (isCustomEvent) {
-        return [
-          ...acc,
+        acc[eventName] = (
+          () =>
           (
-            () =>
-            (
-              customEventName: string,
-              callback: (args: ElementRuntimeEventArgs) => void
-            ) => {
-              const currentCustomEvent =
-                (currentEvent as ElementRuntimeEvents[RealmEventNames.ON])?.get(
-                  scriptId
-                ) ?? new Map();
-              const triggerEvents =
-                currentCustomEvent?.get(customEventName) ?? new Set();
-              triggerEvents.add(callback);
-              currentCustomEvent.set(customEventName, triggerEvents);
-              runtimeEvents?.[eventName]?.set(scriptId, currentCustomEvent);
-            }
-          )(),
-        ];
+            customEventName: string,
+            callback: (args: ElementRuntimeEventArgs) => void
+          ) => {
+            const currentCustomEvent =
+              (
+                currentEvent as ElementRuntimeEvents[RealmRuntimeEventTypes.ON]
+              )?.get(runtimeId) ?? new Map();
+            const triggerEvents =
+              currentCustomEvent?.get(customEventName) ?? new Set();
+            triggerEvents.add(callback);
+            currentCustomEvent.set(customEventName, triggerEvents);
+            runtimeEvents?.[eventName]?.set(runtimeId, currentCustomEvent);
+          }
+        )();
       }
 
       if (isEventStateUpdate || isEventInit) {
         const callbackArgs = getDispatchEventScriptArgs([element, attrs]);
         const onStateUpdateEvent = (callback) => {
-          currentEvent?.set(scriptId, callback);
+          currentEvent?.set(runtimeId, callback);
           localState.subscribe((newValue, oldValue, stateName) => {
             if (!isEventInit)
               callback?.apply?.(null, [
@@ -227,7 +242,7 @@ const __RL_UTILS = {
 
             const htmlValue = `${newValue}`;
             const slotStateName = element.$slotStateName(stateName);
-            const slotStateKey = `${scriptId}-${slotStateName}`;
+            const slotStateKey = `${runtimeId}-${slotStateName}`;
             const isStateDefined = __RL_ELEMENT_STATES.has(slotStateKey);
 
             if (!isStateDefined) {
@@ -268,11 +283,29 @@ const __RL_UTILS = {
           });
         };
 
-        acc.push(onStateUpdateEvent);
-        if (!isEventInit) acc.push(localState);
-        return acc;
+        acc[eventName] = onStateUpdateEvent;
       }
-    }, []);
+
+      return acc;
+    }, {});
+
+    events["localState"] = localState;
+    events["$trigger"] = (...args) => {
+      console.log(args);
+      // const runtimeEvents = __RL_RUNTIME_LIST.get(elementId);
+      // const hostElement = __RL_ELEMENT_MAP.get(elementId);
+      // const eventTriggers = runtimeEvents?.[RealmRuntimeEventTypes.ON];
+      // const attrs = geCustomElementtAttributes(hostElement);
+      // const args = getDispatchEventScriptArgs([
+      //   hostElement,
+      //   attrs,
+      //   element,
+      //   false,
+      // ]);
+      // return ;
+    };
+
+    return events;
   },
 
   // Event trigger
@@ -283,7 +316,7 @@ const __RL_UTILS = {
   ]) => {
     const runtimeEvents = __RL_RUNTIME_LIST.get(elementId);
     const hostElement = __RL_ELEMENT_MAP.get(elementId);
-    const eventTriggers = runtimeEvents?.[RealmEventNames.ON];
+    const eventTriggers = runtimeEvents?.[RealmRuntimeEventTypes.ON];
     const attrs = geCustomElementtAttributes(hostElement);
     const args = getDispatchEventScriptArgs([
       hostElement,
@@ -291,6 +324,7 @@ const __RL_UTILS = {
       element,
       false,
     ]);
+
     return (customEventName: string) => {
       eventTriggers.forEach((eventTrigger) => {
         eventTrigger.get(customEventName)?.forEach((callback) => {
@@ -300,7 +334,11 @@ const __RL_UTILS = {
     };
   },
 };
+
 (window as any).__RL_UTILS = __RL_UTILS;
+(window as any).__RL_SCRIPT_CONTENT_LIST = __RL_SCRIPT_CONTENT_LIST;
+
+const documentHead = document.head;
 
 export const defineElement = registerElement(RealmTagNames.DEFINE_ELEMENT, {
   // Prepare the custome element before it is registered
@@ -322,6 +360,60 @@ export const defineElement = registerElement(RealmTagNames.DEFINE_ELEMENT, {
     const scripts = getCustomElementScripts(customElement);
     if (scripts) __RL_SCRIPT_DEFINITION_LIST[customcustomElementName] = scripts;
     removeCustomElementScripts(customElement);
+
+    const customElementName = customElement.$attr(RealmAttributeNames.NAME);
+    const runtimeScripts = __RL_SCRIPT_DEFINITION_LIST?.[
+      customElementName
+    ]?.reduce((acc, script) => {
+      if (!script.textContent) return;
+
+      const scriptId = customElement.$randId();
+      const runtimeScriptMap =
+        __RL_SCRIPT_RUNTIME_MAP.get(customElementName) ?? createSet();
+      runtimeScriptMap.add(scriptId);
+
+      __RL_SCRIPT_RUNTIME_MAP.set(customElementName, runtimeScriptMap);
+
+      acc += `__RL_SCRIPT_CONTENT_LIST.set('${scriptId}', ({ $trigger, localState, on, onInit, onMounted, onLocalStatesUpdate, onAttrsUpdate, onUnmounted, }) => {${script.textContent}});`;
+      return acc;
+    }, "");
+
+    if (runtimeScripts.length) {
+      const runtimeScriptElement = customElement._createTag<HTMLScriptElement>(
+        RealmTagNames.SCRIPT
+      );
+      const runtimeId = customElement.$randId();
+      customElement._content(runtimeScripts, runtimeScriptElement);
+      customElement._data(
+        RealmAttributeNames.DATA_RUNTIME_ID,
+        runtimeId,
+        runtimeScriptElement
+      );
+      customElement._attrs(
+        [
+          [RealmAttributeNames.ASYNC, true],
+          [RealmAttributeNames.TYPE, RealmAttributeNames.MODULE],
+        ],
+        runtimeScriptElement
+      );
+      documentHead.append(runtimeScriptElement);
+      new MutationObserver((mutations) => {
+        const isAdded = mutations.reduce((acc, mutation) => {
+          mutation.addedNodes.forEach((node) => {
+            acc.push(
+              customElement.$data(
+                RealmAttributeNames.DATA_RUNTIME_ID,
+                node as Element
+              )
+            );
+          });
+          return acc;
+        }, []).length;
+
+        if (!isAdded) return;
+        customElement._event(RealmEventTypes.SCRIPT_ADDED);
+      }).observe(documentHead, { childList: true });
+    }
   },
 
   // This function is triggered when `define-element` is registered
@@ -431,54 +523,88 @@ export const defineElement = registerElement(RealmTagNames.DEFINE_ELEMENT, {
         // Set scripts for runtime list to the current `custom-element`
         __RL_RUNTIME_LIST.set(
           elementId,
-          Object.fromEntries(
+          ObjectFromEntries(
             __RL_EVENT_LIST.map((eventName) => [eventName, createMap()])
           )
         );
 
-        currentElement.set(
-          RealmElementPropKey.SCRIPTS,
-          __RL_SCRIPT_DEFINITION_LIST?.[customElementName].reduce(
-            (acc, script) => {
-              const clonedScript = script.cloneNode(true);
+        const iterateRuntime = (scriptId: string) =>
+          element._reqAnimFrame(() => {
+            if (!__RL_SCRIPT_CONTENT_LIST.has(scriptId))
+              return iterateRuntime(scriptId);
 
-              const $script = customElement._createTag<HTMLScriptElement>(
-                RealmTagNames.SCRIPT
-              );
+            const runtimeId = element.$randId();
+            customElement._event(RealmEventTypes.RUNTIME_READY, {
+              element,
+              elementId,
+              runtimeId,
+              scriptId,
+            });
+          });
 
-              const scriptId = element.$randId();
+        const callRuntime = () =>
+          element._reqAnimFrame(() => {
+            if (__RL_SCRIPT_RUNTIME_MAP.has(customElementName))
+              return __RL_SCRIPT_RUNTIME_MAP
+                .get(customElementName)
+                .forEach(iterateRuntime);
+            callRuntime();
+          });
 
-              const scriptUrl = createScriptURL(
-                replaceEventsKeyword(
-                  scriptClosure(
-                    clonedScript,
-                    [...__RL_EVENT_LIST, "localState"],
-                    `${__RL_STRING_CONST.runtime}('${elementId}','${scriptId}')`
-                  ),
-                  elementId
-                )
-              );
+        callRuntime();
 
-              customElement._attrs(
-                [
-                  [RealmAttributeNames.SRC, scriptUrl],
-                  [RealmAttributeNames.TYPE, RealmAttributeNames.MODULE],
-                ],
-                $script
-              );
+        // currentElement.set(
+        //   RealmElementPropKey.SCRIPTS,
+        //   __RL_SCRIPT_DEFINITION_LIST?.[customElementName].reduce(
+        //     (acc, script) => {
+        //       const clonedScript = script.cloneNode(true);
 
-              customElement._data(
-                RealmAttributeNames.DATA_SCRIPT_ID,
-                scriptId,
-                $script
-              );
+        //       const $script = customElement._createTag<HTMLScriptElement>(
+        //         RealmTagNames.SCRIPT
+        //       );
 
-              element._append($script);
-              return [...acc, $script];
-            },
-            []
-          )
-        );
+        //       const scriptId = element.$randId();
+
+        //       const scriptContent = replaceEventsKeyword(
+        //         scriptClosure(
+        //           elementId,
+        //           scriptId,
+        //           [...__RL_EVENT_LIST, "localState"],
+        //           `${__RL_STRING_CONST.runtime}('${elementId}','${scriptId}')`
+        //         ),
+        //         elementId
+        //       );
+
+        //       const runtimeScript =
+        //         __RL_SCRIPT_CONTENT_LIST?.get(customElementName) ?? createMap();
+        //       runtimeScript.set(scriptId, clonedScript.textContent);
+        //       __RL_SCRIPT_CONTENT_LIST.set(customElementName, runtimeScript);
+
+        //       const scriptUrl = createScriptURL(scriptContent);
+
+        //       // customElement._html(scriptContent, $script);
+
+        //       customElement._attrs(
+        //         [
+        //           [RealmAttributeNames.ASYNC, true],
+        //           [RealmAttributeNames.SRC, scriptUrl],
+        //           [RealmAttributeNames.TYPE, RealmAttributeNames.MODULE],
+        //         ],
+        //         $script
+        //       );
+
+        //       customElement._data(
+        //         RealmAttributeNames.DATA_SCRIPT_ID,
+        //         scriptId,
+        //         $script
+        //       );
+
+        //       element._append($script);
+        //       return [...acc, $script];
+        //     },
+        //     []
+        //   )
+        // );
       },
 
       onAttributeChanged(element, attrName, oldValue, newValue) {
@@ -499,7 +625,7 @@ export const defineElement = registerElement(RealmTagNames.DEFINE_ELEMENT, {
         );
 
         element._reqAnimFrame(() =>
-          dispatchEvent(element, RealmEventNames.ATTR_UPDATE, [
+          dispatchEvent(element, RealmRuntimeEventTypes.ATTR_UPDATE, [
             newValue,
             oldValue,
             attrName,
@@ -508,23 +634,43 @@ export const defineElement = registerElement(RealmTagNames.DEFINE_ELEMENT, {
       },
 
       onInit(element) {
-        element._reqAnimFrame(() =>
-          dispatchEvent(element, RealmEventNames.INIT)
-        );
+        // customElement.addEventListener(
+        //   "readiness",
+        //   () => {
+        //     dispatchEvent(element, RealmRuntimeEventTypes.INIT);
+        //   },
+        //   false
+        // );
+        // customElement._reqAnimFrame(() =>
+        //   dispatchEvent(element, RealmRuntimeEventTypes.INIT)
+        // );
       },
 
       onMounted(element) {
-        dispatchEvent(element, RealmEventNames.MOUNTED);
+        dispatchEvent(element, RealmRuntimeEventTypes.MOUNTED);
       },
 
       onUnmounted(element) {
-        dispatchEvent(element, RealmEventNames.UNMOUNTED);
+        dispatchEvent(element, RealmRuntimeEventTypes.UNMOUNTED);
       },
     });
 
-    customElement._attach();
-    customElement._clear();
     customElementRegister();
+
+    customElement.$event(
+      RealmEventTypes.RUNTIME_READY,
+      ({ element, elementId, scriptId, runtimeId }) => {
+        dispatchEvent(element, RealmRuntimeEventTypes.INIT);
+        __RL_SCRIPT_CONTENT_LIST
+          .get(scriptId)
+          .call(element, __RL_UTILS[RealmUtils.RUNTIME](elementId, scriptId));
+      }
+    );
+
+    customElement.$event(RealmEventTypes.SCRIPT_ADDED, () => {
+      customElement._attach();
+      customElement._clear();
+    });
   },
 
   // This function is to dispatch the mounted event

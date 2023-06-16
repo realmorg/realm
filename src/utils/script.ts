@@ -7,10 +7,11 @@ import { MimeTypes } from "../constants/mime";
  * @param fnArgs - function arguments as string
  */
 export const scriptClosure = (
-  script: HTMLScriptElement | Node,
+  elementId: string,
+  scriptId: string,
   args: unknown[],
   fnArgs: string
-) => `(([${args.join(",")}]) => {${script.textContent}})(${fnArgs})`.trim();
+) => `(([${args.join(",")}]) => __RL_SCRIPT_CONTENT_LIST})(${fnArgs})`.trim();
 
 /**
  * Create blob script URL from script content

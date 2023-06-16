@@ -1,4 +1,9 @@
-export enum RealmEventNames {
+export enum RealmEventTypes {
+  RUNTIME_READY = "rr",
+  SCRIPT_ADDED = "sa",
+}
+
+export enum RealmRuntimeEventTypes {
   INIT = "onInit",
   MOUNTED = "onMounted",
   UNMOUNTED = "onUnmounted",

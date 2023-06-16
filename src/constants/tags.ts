@@ -5,4 +5,5 @@ export enum RealmTagNames {
   DEFINE_ELEMENT = "define-element",
   ELEMENT_ATTR = "element-attr",
   SCRIPT = "script",
+  HEAD = "head",
 }

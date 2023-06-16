@@ -20,6 +20,7 @@ export class RealmStates {
   setItem(name: string, value: (prevState: unknown) => unknown) {
     const oldValue = this.#states.get(name);
     const newValue = typeof value === "function" ? value(oldValue) : value;
+    console.log("attrchanged", oldValue, value);
     this.#states.set(name, newValue);
     this.#observers.forEach((fn) =>
       fn?.apply?.(this, [newValue, oldValue, name])

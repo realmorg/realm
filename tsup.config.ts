@@ -6,6 +6,8 @@ export default defineConfig({
     compress: {
       booleans_as_integers: true,
       unsafe: true,
+      arguments: true,
+      passes: 100,
     },
     mangle: {
       properties: {
