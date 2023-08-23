@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>REPEAT</title>
+    <script src="../dist/realm.development.js" defer></script>
+    <link rel="stylesheet" href="../dist/realm.css" />
+  </head>
+  <body>
+    <web-app>
+      <custom-element name="todo-list">
+        <element-attr name="name" type="string"></element-attr>
+        <element-state name="todos" type="array">[]</element-state>
+        <element-state name="task-label" type="string">Task</element-state>
+        <element-state name="is-disabled" type="boolean">true</element-state>
+        <element-state name="edit-index" type="number">-1</element-state>
+        <element-state name="edit-vallue" type="string"></element-state>
+
+        <element-flow>
+          <trigger-event input="task-label-input">
+            <set-state
+              name="task-label"
+              from="event"
+              value="$.target.value"
+            ></set-state>
+          </trigger-event>
+
+          <trigger-event click="add-todo">
+            <set-state
+              name="todos"
+              mutate="push"
+              from="localState"
+              value='[{ "label": "$.task-label" }]'
+            ></set-state>
+            <set-state name="task-label" value=""></set-state>
+          </trigger-event>
+
+          <trigger-event click="remove-task">
+            <set-state
+              name="todos"
+              mutate="remove"
+              from="event:attr"
+              index="$.removeindex"
+            ></set-state>
+          </trigger-event>
+
+          <trigger-event click="edit-task">
+            <set-state
+              name="edit-index"
+              from="event:attr"
+              value="$.editindex"
+            ></set-state>
+          </trigger-event>
+
+          <listen-event statechanged>
+            <script type="module/realm" use="localState, event">
+              const [stateName] = event;
+              if (stateName !== 'edit-index') return;
+
+              const editIndex = localState.get('edit-index');
+              const todos = localState.get('todos');
+              if (editIndex > -1) {
+                const label = todos?.[editIndex]?.label;
+                localState.set('edit-value', label);
+              }
+            </script>
+          </listen-event>
+
+          <trigger-event click="enable-input">
+            <set-state
+              toggle
+              name="is-disabled"
+              from="localState"
+              value="$.is-disabled"
+            ></set-state>
+          </trigger-event>
+
+          <trigger-event input="edit-value">
+            <set-state
+              name="edit-value"
+              from="event"
+              value="$.target.value"
+            ></set-state>
+          </trigger-event>
+
+          <trigger-event click="update-task">
+            <set-state
+              name="todos"
+              mutate="assign"
+              from="localState"
+              index="$.edit-index"
+              value='[{ "label": "$.edit-value" }]'
+            ></set-state>
+            <set-state name="edit-value" value=""></set-state>
+            <set-state name="edit-index" value="-1"></set-state>
+          </trigger-event>
+        </element-flow>
+
+        <template>
+          <style>
+            :host repeat-list {
+              margin-bottom: 20px;
+              display: block;
+            }
+
+            :host div[action-button] {
+              display: flex;
+              flex-direction: column;
+              width: 20vw;
+              gap: 5px;
+              margin-bottom: 10px;
+              border-bottom: 1px solid #ccc;
+            }
+
+            :host input[ref="task-label-input"] {
+              padding: 5px;
+              border: 1px solid #ccc;
+              border-radius: 4px;
+            }
+          </style>
+
+          <repeat-list of="#todos">
+            <div>
+              Task:
+              <is-hidden value="#edit-index" eq="!.index">
+                <slot name="$.label"></slot>
+              </is-hidden>
+              <is-visible value="#edit-index" eq="!.index">
+                <input _value="$.label" ref="edit-value" /> </is-visible
+              >, Index: <slot name="!.index"></slot>, Total length:
+              <slot name="!.length"></slot>
+              <br />
+
+              <is-hidden value="#edit-index" eq="!.index">
+                <button _editindex="!.index" ref="edit-task">Edit</button>
+                <button _removeindex="!.index" ref="remove-task">Remove</button>
+              </is-hidden>
+
+              <is-visible value="#edit-index" eq="!.index">
+                <button ref="update-task">Save changes</button>
+              </is-visible>
+            </div>
+            <slot name="@name"></slot>
+            <slot name="#task-label"></slot>
+          </repeat-list>
+
+          <hr />
+          Edit index <slot name="#edit-index"></slot>
+
+          <hr />
+
+          <div action-button>
+            <input
+              type="text"
+              ref="task-label-input"
+              _disabled="#is-disabled"
+              _value="#task-label"
+            />
+            <button ref="add-todo">Add Todo</button>
+            <button ref="enable-input">
+              <is-visible value="#is-disabled" eq="true">Enable</is-visible>
+              <is-visible value="#is-disabled" eq="false">Disable</is-visible>
+              Input
+            </button>
+          </div>
+          <slot name="#todos"></slot>
+          <br />
+          <slot name="#task-label"></slot>
+        </template>
+      </custom-element>
+
+      <custom-element name="todo-wrapper">
+        <element-state name="todo-name" type="string">John Doe</element-state>
+
+        <element-flow>
+          <trigger-event input="name-input">
+            <set-state
+              name="todo-name"
+              from="event"
+              value="$.target.value"
+            ></set-state>
+          </trigger-event>
+        </element-flow>
+
+        <template>
+          <todo-list _name="#todo-name"></todo-list>
+          <hr />
+          <slot name="#todo-name"></slot>
+          <input ref="name-input" />
+        </template>
+      </custom-element>
+
+      <todo-wrapper></todo-wrapper>
+    </web-app>
+  </body>
+</html>

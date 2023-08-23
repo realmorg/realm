@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>BASIC Attributes</title>
+    <script src="../dist/realm.development.js" defer></script>
+    <link rel="stylesheet" href="../dist/realm.css" />
+  </head>
+  <body>
+    <web-app>
+      <custom-element name="color-box">
+        <element-attr name="color" type="string">black</element-attr>
+        <template>
+          <style>
+            :host .colorbox {
+              --size: 20px;
+              width: var(--size);
+              height: var(--size);
+              display: inline-block;
+              background-color: var(--attr-color);
+            }
+          </style>
+          <slot name="@color"></slot>
+          <div class="colorbox"></div>
+        </template>
+      </custom-element>
+
+      <custom-element name="color-picker">
+        <element-state name="color" type="string">red</element-state>
+
+        <element-flow>
+          <trigger-event click="ColorChange">
+            <set-state
+              name="color"
+              value="$.colorbox"
+              from="event:attr"
+            ></set-state>
+          </trigger-event>
+        </element-flow>
+
+        <template>
+          <color-box _color="#color"></color-box>
+          <br />
+          Change color to:
+          <button colorbox="black" ref="ColorChange">black</button>
+          <button colorbox="yellow" ref="ColorChange">yellow</button>
+          <button colorbox="green" ref="ColorChange">green</button>
+          <hr />
+        </template>
+      </custom-element>
+
+      <h3>No javascript, No bundler, reactive + reusable custom element:</h3>
+      <color-picker></color-picker>
+      <color-picker></color-picker>
+      <color-picker></color-picker>
+    </web-app>
+  </body>
+</html>

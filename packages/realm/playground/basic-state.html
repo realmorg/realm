@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>BASIC States</title>
+    <script src="../dist/realm.development.js" defer></script>
+    <link rel="stylesheet" href="../dist/realm.css" />
+  </head>
+  <body>
+    <web-app>
+      <custom-element name="basic-counter">
+        <element-state name="count" type="number">0</element-state>
+
+        <element-flow>
+          <trigger-event click="CounterButton">
+            <set-state name="count" value="1" mutate="+"></set-state>
+          </trigger-event>
+        </element-flow>
+
+        <template>
+          <button ref="CounterButton">
+            Add count <slot name="#count"></slot>
+          </button>
+        </template>
+      </custom-element>
+
+      <custom-element name="basic-html">
+        <element-state name="count" type="number">0</element-state>
+        <element-state name="my-html" type="html">
+          <strong>Default Value</strong>
+        </element-state>
+        <element-flow>
+          <trigger-event click="HtmlSetter">
+            <set-state name="count" value="1" mutate="+"></set-state>
+            <set-state name="my-html" from="localState">
+              <strong>New HTML $.count</strong>
+            </set-state>
+          </trigger-event>
+        </element-flow>
+        <template>
+          <button ref="HtmlSetter">Set HTML: <slot name="#my-html"></slot></button>
+        </template>
+      </custom-element>
+
+      <h3>No javascript, No bundler, reactive + reusable custom element:</h3>
+      
+      <basic-counter></basic-counter>
+      <basic-counter></basic-counter>
+      <basic-html></basic-html>
+    </web-app>
+  </body>
+</html>

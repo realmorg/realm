@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>ATTR, STATE, GLOBAL STATE</title>
+    <script src="../dist/realm.development.js" defer></script>
+    <link rel="stylesheet" href="../dist/realm.css" />
+  </head>
+  <body>
+    <web-app>
+      <global-state type="string" name="button-label"
+        >Global Button Label</global-state
+      >
+
+      <custom-element name="magic-button">
+        <element-attr name="label" type="string">Default Label</element-attr>
+
+        <template>
+          <button>🦄: <slot name="@label"></slot></button>
+        </template>
+      </custom-element>
+
+      <custom-element name="my-element">
+        <element-attr name="button-label" type="string"
+          >Button Label from Default Attr</element-attr
+        >
+        <element-state name="button-label" type="string"
+          >Button label from Default State</element-state
+        >
+
+        <element-flow>
+          <trigger-event input="#attr-input">
+            <set-attr
+              name="button-label"
+              value="$.target.value"
+              from="event"
+            ></set-attr>
+          </trigger-event>
+
+          <trigger-event input="#state-input">
+            <set-state
+              name="button-label"
+              value="$.target.value"
+              from="event"
+            ></set-state>
+          </trigger-event>
+
+          <trigger-event input="#global-state-input">
+            <set-state
+              global
+              name="button-label"
+              value="$.target.value"
+              from="event"
+            ></set-state>
+          </trigger-event>
+
+          <trigger-event click="#magic-button-attr">
+            <set-attr name="button-label" value="I am changed"></set-attr>
+          </trigger-event>
+
+          <trigger-event click="#change-state">
+            <set-state name="button-label" value="I am changed"></set-state>
+          </trigger-event>
+        </element-flow>
+
+        <template>
+          <div>Hi my button can passing attrs from attrs and states</div>
+          <div>
+            Here is from attribute "<slot name="@button-label"></slot>"
+            <magic-button
+              ref="#magic-button-attr"
+              _label="@button-label"
+            ></magic-button>
+          </div>
+          <div>
+            Change attr value:
+            <input
+              name="button-label"
+              ref="#attr-input"
+              _value="@button-label"
+            />
+          </div>
+          <hr />
+          <div>
+            Here is from state "<slot name="#button-label"></slot>"
+            <magic-button
+              _label="#button-label"
+              ref="#magic-button"
+            ></magic-button>
+            <button ref="#change-state">Change state</button>
+          </div>
+          <div>
+            Change state value:
+            <input
+              name="button-label"
+              ref="#state-input"
+              _value="#button-label"
+            />
+          </div>
+
+          <hr />
+          <div>
+            Here is from global state "<slot global name="#button-label"></slot
+            >"
+            <magic-button _label:global="#button-label"></magic-button>
+          </div>
+          <hr />
+          <div>
+            Change global state value:
+            <input
+              _value:global="#button-label"
+              name="button-label"
+              ref="#global-state-input"
+            />
+          </div>
+        </template>
+      </custom-element>
+
+      <magic-button label="Hi everyone"></magic-button>
+      <br />
+      <br />
+      <br />
+      <div>
+        <code>my-element</code> by default
+        <hr />
+        <my-element></my-element>
+      </div>
+      <br />
+      <br />
+      <br />
+      <div>
+        <code>my-element</code> with custom button label
+        <hr />
+        <my-element button-label="Custom label"></my-element>
+      </div>
+    </web-app>
+  </body>
+</html>

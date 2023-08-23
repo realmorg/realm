@@ -1,0 +1,25 @@
+import { ALL } from "./chars";
+
+export const RealmTagNames = {
+  ALL: ALL,
+  TEMPLATE: "template",
+  EMBED: "embed",
+  SLOT: "slot",
+  WEB_APP: "web-app",
+  GLOBAL_STATE: "global-state",
+  DEFINE_ELEMENT: "define-element",
+  CUSTOM_ELEMENT: "custom-element",
+  ELEMENT_ATTR: "element-attr",
+  ELEMENT_STATE: "element-state",
+  ELEMENT_FLOW: "element-flow",
+  REPEAT_LIST: "repeat-list",
+  IS_VISIBLE: "is-visible",
+  IS_HIDDEN: "is-hidden",
+  IMPORT_ELEMENT: "import-element",
+  IMPORT_SCRIPT: "import-script",
+  IMPORT_STYLE: "import-style",
+  SCRIPT: "script",
+  LINK: "link",
+  STYLE: "style",
+  HEAD: "head",
+} as const;

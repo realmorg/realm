@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Global States</title>
+    <script src="../dist/realm.development.js" defer></script>
+    <link rel="stylesheet" href="../dist/realm.css" />
+  </head>
+  <body>
+    <web-app>
+      <global-state name="counter" type="number">0</global-state>
+      <global-state name="localstorage-counter" type="number" storage="localStorage" >0</global-state >
+      <global-state name="sessionstorage-counter" type="number" storage="sessionStorage" >0</global-state >
+
+      <custom-element name="counter-element-example">
+        <element-flow>
+          <trigger-event click="CounterButton">
+            <set-state global name="counter" value="1" mutate="+"></set-state>
+          </trigger-event>
+
+          <trigger-event click="LocalStorageCounterButton">
+            <set-state
+              global
+              name="localstorage-counter"
+              value="1"
+              mutate="+"
+            ></set-state>
+          </trigger-event>
+
+          <trigger-event click="SessionStorageCounterButton">
+            <set-state
+              global
+              name="sessionstorage-counter"
+              value="1"
+              mutate="+"
+            ></set-state>
+          </trigger-event>
+        </element-flow>
+        <template>
+          <button ref="CounterButton">
+            Add count <slot global name="#counter"></slot>
+          </button>
+
+          <button ref="LocalStorageCounterButton">
+            Add localStorage count <slot global name="#localstorage-counter"></slot>
+          </button>
+
+
+          <button ref="SessionStorageCounterButton">
+            Add localStorage count <slot global name="#sessionstorage-counter"></slot>
+          </button>
+        </template>
+      </custom-element>
+
+      <counter-element-example></counter-element-example>
+    </web-app>
+  </body>
+</html>

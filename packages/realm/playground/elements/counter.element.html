@@ -1,0 +1,24 @@
+<custom-element name="counter-element">
+  <element-attr name="count" type="number">0</element-attr>
+  <element-attr name="type" type="string">increment</element-attr>
+  <element-state name="count" type="number">0</element-state>
+  <element-flow>
+    <listen-event mounted>
+      <set-state name="count" value="$.count" from="attr"></set-state>
+    </listen-event>
+    <trigger-event click="increment">
+      <script type="module/realm" use="localState, attr">
+        if (attr.get('type') === 'increment') {
+          localState.set('count', localState.get('count') + 1);
+        } else {
+          localState.set('count', localState.get('count') - 1);
+        }
+      </script>
+    </trigger-event>
+  </element-flow>
+  <template>
+    <button ref="increment">
+      <slot name="@type"></slot> <slot name="#count"></slot>
+    </button>
+  </template>
+</custom-element>

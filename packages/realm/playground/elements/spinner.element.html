@@ -1,0 +1,96 @@
+<custom-element name="spinner-loader">
+  <element-attr name="color" type="string">red</element-attr>
+  <element-attr name="size" type="number">30</element-attr>
+  <template>
+    <style>
+      :host div {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      
+      :host .spinner {
+        animation: rotate 2s linear infinite;
+        z-index: 2;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin: -25px 0 0 -25px;
+        width: 50px;
+        height: 50px;
+      }
+      
+      :host .spinner .path {
+        stroke: hsl(210, 70, 75);
+        stroke-linecap: round;
+        animation: dash 1.5s ease-in-out infinite;
+      }
+      
+      /* @keyframes rotate {
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+      
+      @keyframes dash {
+        0% {
+          stroke-dasharray: 1, 150;
+          stroke-dashoffset: 0;
+        }
+        50% {
+          stroke-dasharray: 90, 150;
+          stroke-dashoffset: -35;
+        }
+        100% {
+          stroke-dasharray: 90, 150;
+          stroke-dashoffset: -124;
+        }
+      } */
+    </style>
+    
+    <div>
+      <svg _width="@size" _height="@size" viewBox="0 0 45 45" xmlns="http://www.w3.org/2000/svg" _stroke="@color">
+        <g fill="none" fill-rule="evenodd" transform="translate(1 1)" stroke-width="2">
+          <circle cx="22" cy="22" r="6" stroke-opacity="0">
+            <animate attributeName="r"
+            begin="1.5s" dur="3s"
+            values="6;22"
+            calcMode="linear"
+            repeatCount="indefinite" />
+            <animate attributeName="stroke-opacity"
+            begin="1.5s" dur="3s"
+            values="1;0" calcMode="linear"
+            repeatCount="indefinite" />
+            <animate attributeName="stroke-width"
+            begin="1.5s" dur="3s"
+            values="2;0" calcMode="linear"
+            repeatCount="indefinite" />
+          </circle>
+          <circle cx="22" cy="22" r="6" stroke-opacity="0">
+            <animate attributeName="r"
+            begin="3s" dur="3s"
+            values="6;22"
+            calcMode="linear"
+            repeatCount="indefinite" />
+            <animate attributeName="stroke-opacity"
+            begin="3s" dur="3s"
+            values="1;0" calcMode="linear"
+            repeatCount="indefinite" />
+            <animate attributeName="stroke-width"
+            begin="3s" dur="3s"
+            values="2;0" calcMode="linear"
+            repeatCount="indefinite" />
+          </circle>
+          <circle cx="22" cy="22" r="8">
+            <animate attributeName="r"
+            begin="0s" dur="1.5s"
+            values="6;1;2;3;4;5;6"
+            calcMode="linear"
+            repeatCount="indefinite" />
+          </circle>
+        </g>
+      </svg>
+      <slot children></slot>
+    </div>
+  </template>
+</custom-element>

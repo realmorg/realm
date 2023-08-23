@@ -1,25 +1,17 @@
 {
-  "name": "realm",
-  "version": "0.1.0",
-  "description": "Reactive Markup Language",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "private": true,
   "scripts": {
-    "build": "tsup src/index.ts --minify terser --dts",
-    "dev": "tsup src/index.ts --dts --watch",
-    "start:example-server": "node dist/server",
-    "dev:example-server": "tsup examples/server.ts --watch"
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "devDependencies": {
-    "@types/node": "^20.1.0",
-    "terser": "^5.17.6",
-    "tsup": "^6.7.0",
-    "typescript": "^5.0.4"
+    "@turbo/gen": "^1.10.7",
+    "eslint": "^7.32.0",
+    "prettier": "^2.8.8",
+    "turbo": "latest"
   },
-  "files": [
-    "dist"
-  ]
+  "packageManager": "pnpm@7.15.0",
+  "name": "turborepo"
 }

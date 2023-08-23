@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>REQUEST</title>
+    <script src="../dist/realm.development.js" defer></script>
+    <link rel="stylesheet" href="../dist/realm.css" />
+  </head>
+  <body>
+    <web-app>
+      <import-element from="./elements/spinner.element.html"></import-element>
+
+      <!-- startof <api-call-json /> -->
+      <custom-element name="api-call-json">
+        <element-state name="json-data" type="array">[]</element-state>
+        <element-state name="is-loading" type="boolean">false</element-state>
+        <element-state name="error-message" type="string"></element-state>
+
+        <element-flow>
+          <listen-event on="fetch-json">
+            <set-state name="is-loading" value="true"></set-state>
+            <set-timer once="1000">
+              <http-request url="http://localhost:3000/playground/api/json.json" as="json">
+                <response-ok>
+                  <set-state name="json-data" from="event" mutate="push"></set-state>
+                  <set-state name="is-loading" value="false"></set-state>
+                </response-ok>
+  
+                <response-fail>
+                  <set-state name="error-message" value="$.message" from="event"></set-state>
+                  <set-state name="is-loading" value="false"></set-state>
+                </response-fail>
+              </http-request>
+            </set-timer>
+          </listen-event>
+
+          <listen-event mounted>
+            <send-event name="fetch-json"></send-event>
+          </listen-event>
+
+          <trigger-event click="RequestJSON">
+            <send-event name="fetch-json"></send-event>
+          </trigger-event>
+        </element-flow>
+
+        <template>
+          <repeat-list of="#json-data">
+            <h2>Title <slot name="$.post_title"></slot></h2>
+            <p><slot name="$.post_content"></slot></p>
+          </repeat-list>
+
+          <button ref="RequestJSON">
+            <is-visible value="#is-loading" eq="true">
+              <spinner-loader size="30" color="green">Loading...</spinner-loader>
+            </is-visible>
+            <is-visible value="#is-loading" eq="false">
+              Request JSON API
+            </is-visible>
+          </button>
+          Raw data: <slot name="#json-data"></slot>
+          <br />
+          <slot name="#error-message"></slot>
+        </template>
+      </custom-element>
+      <!-- endof <api-call-json /> -->
+
+      <!-- startof <api-call-html /> -->
+      <custom-element name="api-call-html">
+        <element-state name="html-data" type="html"></element-state>
+        <element-state name="error-message" type="string"></element-state>
+
+        <element-flow>
+          <trigger-event click="RequestHTML">
+            <http-request url="http://localhost:3000/playground/api/html.html" as="html">
+              <response-ok>
+                <set-state name="html-data" from="event"></set-state>
+              </response-ok>
+
+              <response-fail>
+                <set-state name="error-message" value="$.message" from="event"></set-state>
+              </response-fail>
+            </http-request>
+          </trigger-event>
+        </element-flow>
+
+        <template>
+          <button ref="RequestHTML">
+            Request HTML API
+          </button>
+          <slot name="#html-data"></slot>
+        </template>
+      </custom-element>
+      <!-- endof <api-call-html /> -->
+
+      <!-- startof <api-call-with-body /> -->
+      <custom-element name="api-call-with-body">
+        <element-state name="data" type="object"></element-state>
+        <element-state name="is-loading" type="boolean">false</element-state>
+
+        <element-flow>
+          <trigger-event click="RequestAPI">
+            <set-state name="is-loading" value="true"></set-state>
+            <http-request method="POST" url="https://64e0f39a50713530432cd5a6.mockapi.io/api/v1/main">
+              <request-header name="Content-Type" value="application/json"></request-header>
+              <request-body>{"new object": "this is from post"}</request-body>
+              <response-ok>
+                <set-state name="is-loading" value="false"></set-state>
+                <set-state name="data" from="event"></set-state>
+              </response-ok>
+            </http-request>
+          </trigger-event>
+        </element-flow>
+
+        <template>
+          <button ref="RequestAPI">
+            <is-visible value="#is-loading" eq="true">
+              <spinner-loader size="30" color="hotpink">Loading...</spinner-loader>
+            </is-visible>
+            <is-visible value="#is-loading" eq="false">
+              Request JSON API
+            </is-visible>
+          </button>
+          <slot name="#data"></slot>
+        </template>
+      </custom-element>
+      <!-- endof <api-call-with-body /> -->
+
+      <!-- startof <api-call-with-body-from-state /> -->
+      <custom-element name="api-call-with-body-from-state">
+        <element-state name="data" type="object"></element-state>
+        <element-state name="is-loading" type="boolean">false</element-state>
+        <element-state name="request-body" type="array"></element-state>
+
+        <element-flow>
+          <trigger-event click="RequestAPI">
+            <set-state name="is-loading" value="true"></set-state>
+            <set-state name="request-body" value='[{"new object": "this is from post"}]' mutate="push"></set-state>
+
+            <http-request method="POST" url="https://64e0f39a50713530432cd5a6.mockapi.io/api/v1/main">
+              <request-header name="Content-Type" value="application/json"></request-header>
+              <request-body value="$.request-body" from="localState"></request-body>
+              <response-ok>
+                <set-state name="is-loading" value="false"></set-state>
+                <set-state name="data" from="event"></set-state>
+              </response-ok>
+            </http-request>
+          </trigger-event>
+        </element-flow>
+
+        <template>
+          <button ref="RequestAPI">
+            <is-visible value="#is-loading" eq="true">
+              <spinner-loader size="30" color="hotpink">Loading...</spinner-loader>
+            </is-visible>
+            <is-visible value="#is-loading" eq="false">
+              Request JSON API
+            </is-visible>
+          </button>
+          <slot name="#data"></slot>
+        </template>
+      </custom-element>
+      <!-- endof <api-call-with-body-from-state /> -->
+
+      <api-call-json></api-call-json>
+      <hr />
+      <api-call-html></api-call-html>
+      <hr />
+      <api-call-with-body></api-call-with-body>
+      <hr />
+      <api-call-with-body-from-state></api-call-with-body-from-state>
+    </web-app>
+  </body>
+</html>

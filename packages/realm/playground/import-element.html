@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>EMBED</title>
+    <script src="../dist/realm.development.js" defer></script>
+    <link rel="stylesheet" href="../dist/realm.css" />
+  </head>
+  <body>
+    <web-app>
+      <import-element from="./elements/counter.element.html" automount></import-element>
+      <import-element from="./elements/another.element.html" automount></import-element>
+
+      <import-element
+        from="./elements/another.element.html" 
+        automount
+        as="hello-mamamia"
+        color="blue">
+      </import-element>
+
+      <import-element from="./elements/layout.element.html" as="my-layout-element"></import-element>
+      <my-layout-element>
+        <strong>Hello world</strong>
+      </my-layout-element>
+    </web-app>
+  </body>
+</html>

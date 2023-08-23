@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>CSS</title>
+    <script src="../dist/realm.development.js" defer></script>
+    <link rel="stylesheet" href="../dist/realm.css" />
+  </head>
+  <body>
+    <web-app>
+      <custom-element name="my-element">
+        <element-attr name="age" type="number">0</element-attr>
+        <element-state name="count" type="number">0</element-state>
+        <element-state name="increment" type="number">1</element-state>
+        <element-state name="message" type="string"
+          >Default Message</element-state
+        >
+
+        <template>
+          <style>
+            :host {
+              display: block;
+              padding: 10px;
+              border-style: solid;
+              border-width: 1px;
+              border-color: red;
+            }
+
+            :host([\#count]) {
+              font-size: calc(
+                var(--state-count) * var(--state-increment) * 1px
+              );
+            }
+
+            :host([\#count][gte="10"]) {
+              border-color: blue;
+              padding: 5px;
+              display: flex;
+            }
+
+            :host([\@age][lte="5"]) h1 {
+              font-family: sans-serif;
+            }
+
+            :host([\#message][contains="hello"]) h1 {
+              background: green;
+              color: white;
+            }
+          </style>
+
+          <h1>Haha</h1>
+          <div>
+            Age is
+            <slot name="@age"></slot>
+          </div>
+          <button ref="age-button">Add age + 1</button>
+          <hr />
+          <div>Message is <slot name="#message"></slot></div>
+          <div>Change message <input ref="message-input" /></div>
+          <hr />
+          <div>
+            Counter is
+            <slot name="#count"></slot>, increment is
+            <slot name="#increment"></slot>
+          </div>
+          <button ref="counter-button">Add counter + 1</button>
+          <button ref="increment-button">Add increment + 1</button>
+        </template>
+
+        <element-flow>
+          <trigger-event input="message-input">
+            <set-state
+              name="message"
+              value="$.target.value"
+              from="event"
+            ></set-state>
+          </trigger-event>
+          <trigger-event click="age-button">
+            <set-attr name="age" value="1" mutate="+"></set-attr>
+          </trigger-event>
+          <trigger-event click="counter-button">
+            <set-state name="count" value="1" mutate="+"></set-state>
+          </trigger-event>
+          <trigger-event click="increment-button">
+            <set-state name="increment" value="1" mutate="+"></set-state>
+          </trigger-event>
+        </element-flow>
+      </custom-element>
+      <my-element></my-element>
+      <br />
+      <my-element></my-element>
+    </web-app>
+  </body>
+</html>

@@ -1,0 +1,32 @@
+{
+  "name": "realm",
+  "version": "0.1.0",
+  "description": "Reactive Lightweight Markup Language. HTML framework for building an MVP (Minimum Viable Product) website.",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "pnpm build:dev && pnpm build:prod",
+    "build:prod": "NODE_ENV=production tsup src/index.ts",
+    "build:dev": "tsup src/index.ts --onSuccess 'pnpm build:css'",
+    "build:css": "postcss src/index.css > dist/realm.css",
+    "dev": "pnpm build:dev --watch --dts"
+  },
+  "keywords": [],
+  "author": {
+    "name": "Ribhararnus Pracutian",
+    "email": "oknoorap@gmail.com"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.1.0",
+    "cssnano": "^6.0.1",
+    "postcss-cli": "^10.1.0",
+    "postcss-header": "^3.0.3",
+    "terser": "^5.17.6",
+    "tsconfig": "workspace:*",
+    "tsup": "^6.7.0",
+    "typescript": "^5.0.4"
+  },
+  "files": [
+    "dist"
+  ]
+}
