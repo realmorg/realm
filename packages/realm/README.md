@@ -3,7 +3,7 @@
     <picture>
       <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/realmorg/realm/HEAD/.github/dark-logo.png">
       <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/realmorg/realm/HEAD/.github/light-logo.png">
-      <img alt="REALM" src="https://raw.githubusercontent.com/realmorg/realm/HEAD/.github/light-logo.png" width="350" height="82" style="max-width: 100%;">
+      <img alt="REALM" src="https://raw.githubusercontent.com/realmorg/realm/HEAD/.github/light-logo.png" width="350" height="85" style="max-width: 100%;">
     </picture>
   </a>
 </p>
@@ -27,7 +27,10 @@ Visit https://realm.codes to view the full documentation.
 ## What is Realm?
 Realm is an HTML framework for building MVP. It is designed to be simple, lightweight, and easy to use. Realm is built on top of Native web components. As a business founder and developer, our main focus is to speed up the development and deliver it to customer faster than other.
 
-Realm is not a replacement for React, Vue, or Svelte. If your web application is complex we encourages you to use [React](https://react.dev), [Vue](https://vuejs.org/), or [Svelte](https://svelte.dev) instead. 
+Realm is not a replacement for [React](https://react.dev), [Vue](https://vuejs.org/), or [Svelte](https://svelte.dev). If your web application is complex we encourages you to use them instead. 
+
+## Contributing
+Please see [CONTRIBUTING.MD](https://github.com/realmorg/realm/blob/.github/CONTRIBUTING.md).
 
 ### LICENSE
 Copyright 2023 - [MIT License](https://github.com/realmorg/realm/blob/master/LICENSE).
