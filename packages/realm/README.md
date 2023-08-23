@@ -13,7 +13,7 @@
 </p>
 
 <p align="center">
-  <a aria-label="License" href="https://github.com/realmorg/realm/blob/master/LICENSE">
+  <a aria-label="License" href="https://github.com/realmorg/realm/blob/main/LICENSE">
     <img alt="Community on Github" src="https://img.shields.io/badge/LICENSE-blue.svg?style=for-the-badge&labelColor=blue&logoWidth=20">
   </a>
   <a aria-label="Community on Github" href="https://github.com/realmorg/realm/discussions">
@@ -30,7 +30,7 @@ Realm is an HTML framework for building MVP. It is designed to be simple, lightw
 Realm is not a replacement for [React](https://react.dev), [Vue](https://vuejs.org/), or [Svelte](https://svelte.dev). If your web application is complex we encourages you to use them instead. 
 
 ## Contributing
-Please see [CONTRIBUTING.MD](https://github.com/realmorg/realm/blob/.github/CONTRIBUTING.md).
+Please see [CONTRIBUTING.MD](https://github.com/realmorg/realm/blob/main/.github/CONTRIBUTING.md).
 
 ### LICENSE
-Copyright 2023 - [MIT License](https://github.com/realmorg/realm/blob/master/LICENSE).
+Copyright 2023 - [MIT License](https://github.com/realmorg/realm/blob/main/LICENSE).
