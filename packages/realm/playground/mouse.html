@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>MOUSE</title>
+    <script src="../dist/realm.development.js" defer></script>
+    <link rel="stylesheet" href="../dist/realm.css" />
+  </head>
+  <body>
+    <web-app>
+      <global-state name="x" type="number">0</global-state>
+      <global-state name="y" type="number">0</global-state>
+
+      <custom-element name="mouse-movement">
+        <element-attr name="x" type="number">0</element-attr>
+        <element-attr name="y" type="number">0</element-attr>
+
+        <template>
+          <style>
+            :host div {
+              width: 200px;
+              height: 200px;
+              border: 1px solid red;
+              background-color: lime;
+              color: hotpink;
+              cursor: none;
+              transition: background-color 250ms ease-in-out, color 100ms ease;
+            }
+
+            :host([\@x][gte="100"]) div {
+              background-color: hotpink;
+              color: lime;
+            }
+
+            :host([\@y][gte="100"]) div {
+              background-color: mediumslateblue;
+              color: white;
+            }
+
+            :host .following-cursor {
+              --dimension: 10px;
+              position: fixed;
+              width: var(--dimension);
+              height: var(--dimension);
+              background-color: red;
+              top: calc(var(--attr-y) * 1px - calc(var(--dimension) / 2));
+              left: calc(var(--attr-x) * 1px - calc(var(--dimension) / 2));
+              border-radius: 50%;
+              pointer-events: none;
+            }
+
+            :host([\@x][gte="210"]) .following-cursor {
+              left: calc(210px - calc(var(--dimension) / 2));
+            }
+          </style>
+
+          <div ref="mouse-area">
+            Please move your cursor here x: <slot name="@x"></slot>, y:
+            <slot name="@y"></slot>
+          </div>
+
+          <div class="following-cursor"></div>
+        </template>
+      </custom-element>
+
+      <custom-element name="track-mouse">
+        <element-state name="x" type="number">0</element-state>
+        <element-state name="y" type="number">0</element-state>
+        <element-flow>
+          <trigger-event mousemove="mouse-movement">
+            <set-state name="x" value="$.x" from="event"></set-state>
+            <set-state name="y" value="$.y" from="event"></set-state>
+          </trigger-event>
+        </element-flow>
+        <template>
+          x: <slot name="#x"></slot>, y: <slot name="#y"></slot>
+
+          <mouse-movement ref="mouse-movement" _x="#x" _y="#y"></mouse-movement>
+        </template>
+      </custom-element>
+
+      <track-mouse></track-mouse>
+    </web-app>
+  </body>
+</html>

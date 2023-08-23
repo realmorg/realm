@@ -1,0 +1,9 @@
+/**
+ * @license Realm
+ * @link https://realm.codes
+ * @link https://github.com/realmorg
+ * @copyright Copyright (c) Realmorg
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */

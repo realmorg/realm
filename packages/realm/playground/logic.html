@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>LOGIC</title>
+    <script src="../dist/realm.development.js" defer></script>
+    <link rel="stylesheet" href="../dist/realm.css" />
+  </head>
+  <body>
+    <web-app>
+      <global-state name="count" type="number">0</global-state>
+
+      <custom-element name="magic-button">
+        <element-attr name="label" type="string">Default Label</element-attr>
+        <template>
+          <button>🦄: <slot name="@label"></slot></button>
+        </template>
+      </custom-element>
+
+      <custom-element name="my-element">
+        <element-attr name="age" type="number">0</element-attr>
+        <element-state name="count" type="number">0</element-state>
+        <element-state name="button_label" type="string"
+          >Button State Label</element-state
+        >
+
+        <element-flow>
+          <trigger-event click="counter-button">
+            <set-state global name="count" value="1" mutate="+"></set-state>
+            <set-state name="count" value="1" mutate="+"></set-state>
+          </trigger-event>
+
+          <trigger-event input="change-label-input">
+            <set-state
+              name="button_label"
+              from="event"
+              value="$.target.value"
+            ></set-state>
+          </trigger-event>
+        </element-flow>
+
+        <template>
+          <is-visible value:global="#count" gte="10">
+            <magic-button _label="#button_label"></magic-button>
+          </is-visible>
+
+          <is-hidden value:global="#count" gte="11">
+            <div>
+              I am visibile until count (<slot global name="#count"></slot>) is
+              11
+            </div>
+            <hr />
+            <div>I am also invisible here</div>
+          </is-hidden>
+
+          <div>
+            Counter is
+            <slot name="#count"></slot>
+          </div>
+          <button ref="counter-button">Add counter + 1</button>
+          <div>Change button label <input ref="change-label-input" /></div>
+        </template>
+      </custom-element>
+
+      <my-element></my-element>
+      <br />
+      <br />
+      <br />
+
+      <custom-element name="my-logic">
+        <element-state name="is-true" type="boolean">false</element-state>
+        <element-state name="counter-1" type="number">0</element-state>
+        <element-state name="counter-2" type="number">0</element-state>
+
+        <element-flow>
+          <trigger-event click="toggle-button">
+            <set-state
+              toggle
+              name="is-true"
+              value="$.is-true"
+              from="localState"
+            ></set-state>
+          </trigger-event>
+
+          <trigger-event click="counter-button-1">
+            <set-state name="counter-1" value="1" mutate="+"></set-state>
+          </trigger-event>
+
+          <trigger-event click="counter-button-2">
+            <set-state name="counter-2" value="1" mutate="+"></set-state>
+          </trigger-event>
+        </element-flow>
+
+        <template>
+          <is-visible value="#counter-1" eq="#counter-2">
+            Hello world
+          </is-visible>
+
+          <button ref="toggle-button">
+            Is Visible?:
+            <slot name="#is-true"></slot>
+          </button>
+
+          <button ref="counter-button-1">
+            Add counter #1
+            <slot name="#counter-1"></slot>
+          </button>
+
+          <button ref="counter-button-2">
+            Add counter #2
+            <slot name="#counter-2"></slot>
+          </button>
+        </template>
+      </custom-element>
+
+      <my-logic></my-logic>
+    </web-app>
+  </body>
+</html>

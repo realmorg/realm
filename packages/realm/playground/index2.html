@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Test</title>
+    <script src="../dist/realm.development.js" defer></script>
+    <link rel="stylesheet" href="../dist/realm.css" />
+  </head>
+  <body>
+    <web-app>
+      <global-state name="count" type="number">0</global-state>
+      <global-state name="increment" type="number">0</global-state>
+      <global-state name="owner" type="string">No Owner</global-state>
+
+      <custom-element name="hello-world">
+        <element-attr name="name" type="string">Default Name</element-attr>
+        <element-attr name="age" type="number">0</element-attr>
+        <element-state name="count" type="number">0</element-state>
+        <element-state name="increment" type="number">1</element-state>
+        <element-state name="message" type="string">No Message</element-state>
+
+        <template>
+          <div>Message: <slot name="@message">Loading...</slot></div>
+          <div>
+            My name is: <slot name="@name"></slot>, My age is
+            <slot name="@age"></slot>
+          </div>
+          <div>Multiple render name <slot name="@name"></slot></div>
+          <div>Change my name: <input name="name" ref="input.name" /></div>
+          <div>Counter is: <slot name="#count"></slot></div>
+          <div>Another counter is: <slot name="#count"></slot></div>
+          <div>
+            Message is <slot name="#message">Loading...</slot><br />
+            Change state message: <input name="name" ref="input.message" />
+          </div>
+          <div>Current increment is: <slot name="#increment"></slot></div>
+          <div>
+            <button ref="button.add-age">Add age + 1</button>
+            <button ref="button.set-default">
+              Set counter = 10, increment = 10
+            </button>
+            <button ref="button.add-counter">Add counter + 1</button>
+            <button ref="button.add-increment">Add increment + 1</button>
+            <button ref="button.add-counter-and-increment">
+              Add counter + increment
+            </button>
+          </div>
+
+          <slot children></slot>
+
+          <hr />
+          <slot name="layout"></slot>
+
+          <hr />
+          <div>
+            Global counter is: <slot global name="#count"></slot>, again:
+            <slot global name="#count"></slot>
+          </div>
+          <div>
+            owner is
+            <slot global name="#owner"></slot>
+          </div>
+          <div>
+            <button ref="button.global.add-counter">
+              Add global counter + 1
+            </button>
+            <div>
+              Change owner: <input name="name" ref="input.global.owner" />
+            </div>
+          </div>
+          <hr />
+        </template>
+
+        <element-flow>
+          <listen-event mounted>
+            <script type="module/realm">
+              console.log('mounted man')
+            </script>
+          </listen-event>
+
+          <trigger-event click="button.global.add-counter">
+            <set-state global name="count" value="1" mutate="+"></set-state>
+          </trigger-event>
+
+          <trigger-event input="input.global.owner">
+            <set-state
+              global
+              name="owner"
+              value="$.target.value"
+              from="event"
+            ></set-state>
+          </trigger-event>
+
+          <trigger-event click="button.add-age">
+            <set-attr name="age" value="1" mutate="+"></set-attr>
+          </trigger-event>
+
+          <trigger-event click="button.set-default">
+            <set-state name="count" value="10"></set-state>
+            <set-state name="increment" value="10"></set-state>
+          </trigger-event>
+
+          <trigger-event click="button.add-counter">
+            <set-state name="count" value="1" mutate="+"></set-state>
+          </trigger-event>
+
+          <trigger-event click="button.add-increment">
+            <set-state name="increment" value="1" mutate="+"></set-state>
+          </trigger-event>
+
+          <trigger-event click="button.add-counter-and-increment">
+            <!-- <apply-flow > -->
+          </trigger-event>
+
+          <trigger-event input="input.name">
+            <set-attr
+              name="name"
+              from="event"
+              value="$.target.value"
+            ></set-attr>
+          </trigger-event>
+
+          <trigger-event input="input.message">
+            <set-state
+              name="message"
+              from="event"
+              value="$.target.value"
+            ></set-state>
+          </trigger-event>
+
+          <trigger-event mounted>
+            <fetch-url url="https://api.github.com/users/" as="json">
+              <set-state
+                name="name"
+                value="{response => response.title}"
+                target="#name"
+              ></set-state>
+            </fetch-url>
+          </trigger-event>
+        </element-flow>
+      </custom-element>
+
+      <custom-element name="hello-universe">
+        <template>
+          <style>
+            :host {
+              display: block;
+              border: 1px solid black;
+              padding: 10px;
+            }
+          </style>
+          <button ref="#counter">Add counter + 1</button>
+        </template>
+
+        <element-flow>
+          <trigger-event click="#counter">
+            <set-state name="count" value="1" target="#count"></set-state>
+          </trigger-event>
+        </element-flow>
+      </custom-element>
+
+      <hello-world></hello-world>
+      <hello-world name="Ribhararnus Pracutian" age="10">
+        <div>Hi I am from children</div>
+        <div>I also from children</div>
+        <div slot="layout">This is my layout</div>
+      </hello-world>
+      <hello-universe></hello-universe>
+      <hello-universe></hello-universe>
+      <hello-universe></hello-universe>
+      <hello-world></hello-world>
+      <hello-world></hello-world>
+      <hello-world></hello-world>
+      <hello-world></hello-world>
+      <hello-world></hello-world>
+      <hello-world></hello-world>
+      <hello-world></hello-world>
+      <hello-world></hello-world>
+
+      <custom-element name="magic-button">
+        <template>
+          <button>Hello world</button>
+          <slot global name="#owner"></slot>
+        </template>
+      </custom-element>
+
+      <custom-element name="children-test">
+        <template>
+          <div>
+            You can render children here
+            <slot children></slot>
+          </div>
+        </template>
+      </custom-element>
+
+      <children-test>
+        another children
+        <div>
+          <magic-button></magic-button>
+          <strong>This is children</strong>
+        </div>
+        <div>
+          <div>
+            This is nested children
+            <strong>Hello</strong>
+            <magic-button></magic-button>
+          </div>
+        </div>
+      </children-test>
+    </web-app>
+  </body>
+</html>

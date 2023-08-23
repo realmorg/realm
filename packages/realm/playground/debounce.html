@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Debounce</title>
+    <script src="../dist/realm.development.js" defer></script>
+    <link rel="stylesheet" href="../dist/realm.css" />
+  </head>
+  <body>
+    <web-app>
+      <custom-element name="debounce-demo">
+        <element-state name="counter" type="number">0</element-state>
+
+        <element-flow>
+          <trigger-event click="UpdateTest" debounce="5000">
+            <set-state name="counter" value="1" mutate="+"></set-state>
+          </trigger-event>
+        </element-flow>
+
+        <template>
+          <slot name="#counter"></slot>
+          <button ref="UpdateTest">Update Test</button>
+        </template>
+      </custom-element>
+
+      <debounce-demo></debounce-demo>
+    </web-app>
+  </body>
+</html>

@@ -1,0 +1,18 @@
+<custom-element name="another-element">
+  <element-attr name="color" type="string">red</element-attr>
+  <template>
+    <style>
+      :host {
+        --size: 100px;
+        width: var(--size);
+        height: var(--size);
+        background: var(--attr-color);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    </style>
+    <slot name="@color"></slot>
+    <div>Another Element</div>
+  </template>
+</custom-element>

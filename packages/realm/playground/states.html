@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>STATES</title>
+    <script src="../dist/realm.development.js" defer></script>
+    <link rel="stylesheet" href="../dist/realm.css" />
+  </head>
+  <body>
+    <web-app>
+      <global-state name="array" type="array"></global-state>
+      <global-state name="task" type="string">Task</global-state>
+
+      <custom-element name="array-pusher">
+        <element-state name="array" type="array">[0, 1]</element-state>
+
+        <element-flow>
+          <trigger-event click="local-array-push">
+            <set-state
+              name="array"
+              mutate="push"
+              from="globalState"
+              value='[{ "task": "$.task" }]'
+            ></set-state>
+          </trigger-event>
+
+          <trigger-event click="local-array-push2">
+            <set-state name="array" value="[1]" mutate="push"></set-state>
+          </trigger-event>
+
+          <trigger-event click="local-array-remove">
+            <set-state name="array" index="2" mutate="remove"></set-state>
+          </trigger-event>
+
+          <trigger-event click="local-array-pop">
+            <set-state name="array" mutate="pop"></set-state>
+          </trigger-event>
+
+          <trigger-event click="global-array-push">
+            <set-state
+              global
+              name="array"
+              value="[1]"
+              mutate="push"
+            ></set-state>
+          </trigger-event>
+          <trigger-event click="global-array-pop">
+            <set-state global name="array" mutate="pop"></set-state>
+          </trigger-event>
+        </element-flow>
+
+        <template>
+          Local states: <slot name="#array" debug="local"></slot>, global
+          states:
+          <slot global name="#array" debug="global"></slot>
+          <hr />
+          <button ref="local-array-push">Push Local Array</button>
+          <button ref="local-array-push2">Push Local Array</button>
+          <button ref="local-array-remove">Remove Array</button>
+          <button ref="local-array-pop">Pop Local Array</button>
+          <hr />
+          <button ref="global-array-push">Push Global Array</button>
+          <button ref="global-array-pop">Pop Global Array</button>
+        </template>
+      </custom-element>
+
+      <custom-element name="task-input">
+        <element-flow>
+          <trigger-event input="task-input">
+            <set-state
+              global
+              name="task"
+              value="$.target.value"
+              from="event"
+            ></set-state>
+          </trigger-event>
+        </element-flow>
+        <template>
+          Task is: <slot global name="#task" debug="task is"></slot>
+          <br />
+          Array is <slot global name="#array"></slot>
+          <br />
+          <input ref="task-input" _value:global="#task" />
+        </template>
+      </custom-element>
+
+      <array-pusher></array-pusher>
+      <hr />
+      <task-input></task-input>
+    </web-app>
+  </body>
+</html>

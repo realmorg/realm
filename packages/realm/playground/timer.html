@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>TIMER</title>
+    <script src="../dist/realm.development.js" defer></script>
+    <link rel="stylesheet" href="../dist/realm.css" />
+  </head>
+  <body>
+    <web-app>
+      <custom-element name="script-demo">
+        <element-attr name="age" type="number">0</element-attr>
+        <element-state name="counter" type="number">0</element-state>
+        <element-state name="btnDisabled" type="boolean">false</element-state>
+
+        <element-flow>
+          <trigger-event click="UpdateTest">
+            <set-timer every="50">
+              <set-state name="counter" value="1" mutate="+"></set-state>
+            </set-timer>
+            <set-state name="btnDisabled" value="true"></set-state>
+          </trigger-event>
+        </element-flow>
+
+        <template>
+          <slot name="#counter"></slot>
+          <slot name="@age"></slot>
+          <button _disabled="#btnDisabled" ref="UpdateTest">Update Test</button>
+        </template>
+      </custom-element>
+
+      <script-demo></script-demo>
+      <script-demo age="10"></script-demo>
+    </web-app>
+  </body>
+</html>

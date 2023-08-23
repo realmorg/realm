@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>CUSTOM FLOW</title>
+    <script src="../dist/realm.development.js" defer></script>
+    <link rel="stylesheet" href="../dist/realm.css" />
+  </head>
+  <body>
+    <web-app>
+      <custom-element name="sub-element">
+        <element-state name="array" type="array">[{ "a": true }]</element-state>
+        <element-state name="counter" type="number">0</element-state>
+        <element-flow>
+          <listen-event on="sub-event">
+            <script type="module/realm" use="event">
+              console.log('sub-event', event);
+            </script>
+          </listen-event>
+
+          <trigger-event click="SendSelf">
+            <send-event
+              name="sub-event"
+              type="array"
+              value="$.array"
+              from="localState"
+            ></send-event>
+          </trigger-event>
+
+          <trigger-event click="SendParent">
+            <send-event name="main-event" to:parent></send-event>
+          </trigger-event>
+
+          <trigger-event click="AddCount">
+            <set-state name="counter" value="1" mutate="+"></set-state>
+          </trigger-event>
+        </element-flow>
+        <template>
+          Sub element buttons:
+          <button ref="SendSelf">Send event to self</button>
+          <button ref="SendParent">Send event to parent</button>
+          <button ref="AddCount">
+            Add count <slot name="#counter"></slot>
+          </button>
+        </template>
+      </custom-element>
+
+      <custom-element name="main-element">
+        <element-flow>
+          <listen-event on="main-event">
+            <script type="module/realm" use="event">
+              console.log('Main event', event);
+            </script>
+          </listen-event>
+          <trigger-event click="SendSelf">
+            <send-event name="main-event"></send-event>
+          </trigger-event>
+          <trigger-event click="SendSub">
+            <send-event name="sub-event" to="sub"></send-event>
+          </trigger-event>
+        </element-flow>
+        <template>
+          Main element buttons:
+          <button ref="SendSelf">Send event to self</button>
+          <button ref="SendSub">Send event to sub element</button>
+          <hr />
+          <sub-element ref="sub"></sub-element>
+        </template>
+      </custom-element>
+
+      <main-element></main-element>
+    </web-app>
+  </body>
+</html>

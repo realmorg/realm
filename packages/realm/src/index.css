@@ -1,0 +1,13 @@
+web-app:not(:defined) {
+  opacity: 0;
+}
+
+web-app[loaded]:defined {
+  transition: opacity 150ms linear;
+  opacity: 1;
+}
+
+embed[element],
+embed[element\:mount] {
+  display: none;
+}

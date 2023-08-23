@@ -1,0 +1,17 @@
+[
+  {
+    "post_id": "1",
+    "post_title": "Post 1",
+    "post_content": "Post 1 content"
+  },
+  {
+    "post_id": "2",
+    "post_title": "Post 2",
+    "post_content": "Post 2 content"
+  },
+  {
+    "post_id": "3",
+    "post_title": "Post 3",
+    "post_content": "Post 3 content"
+  }
+]
