@@ -1,5 +1,11 @@
 # @realmorg/realm
 
+## 0.1.4
+
+### Patch Changes
+
+- 519ab25: Update bump
+
 ## 0.1.2
 
 ### Patch Changes
