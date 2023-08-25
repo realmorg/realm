@@ -1,6 +1,6 @@
 {
   "name": "@realmorg/realm",
-  "version": "0.1.4",
+  "version": "0.0.0",
   "description": "Reactive Lightweight Markup Language. HTML framework for building an MVP (Minimum Viable Product) website.",
   "main": "dist/index.js",
   "scripts": {
@@ -17,6 +17,7 @@
     "email": "oknoorap@gmail.com"
   },
   "repository": "https://github.com/realmorg/realm",
+  "homepage": "https://realm.codes",
   "license": "MIT",
   "devDependencies": {
     "@types/node": "^20.1.0",
