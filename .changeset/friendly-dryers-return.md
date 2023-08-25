@@ -2,4 +2,4 @@
 "@realmorg/realm": patch
 ---
 
-Cleanup publish workflow
+Update bump

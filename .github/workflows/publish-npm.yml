@@ -42,3 +42,9 @@ jobs:
           git config --global user.name "realmorg"
           npm config set //registry.npmjs.org/:_authToken ${NPM_AUTH_TOKEN}
           npm run publish-pkgs
+          git status
+          git add .
+          git reset -- pnpm-lock.yaml
+          git commit -m 'chore: version update'
+          git restore pnpm-lock.yaml
+          git push -u origin $(git branch --show-current) --follow-tags
