@@ -1,0 +1,48 @@
+name: Publish packages to NPM
+
+on:
+  push:
+    paths:
+      - "packages/**/*"
+    branches:
+      - main
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions: write-all
+    env:
+      NPM_AUTH_TOKEN: ${{secrets.NPM_AUTH_TOKEN}}
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2.0.1
+        with:
+          version: 8.6.12
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: "pnpm"
+          registry-url: https://registry.npmjs.org
+
+      - name: Install dependencies
+        run: pnpm install --no-frozen-lockfile
+
+      - name: Publish
+        run: |
+          git config --global user.email "oknoorap+realmorg@gmail.com"
+          git config --global user.name "realmorg"
+          npm config set //registry.npmjs.org/:_authToken ${NPM_AUTH_TOKEN}
+          npm run publish-pkgs
+          git add .
+          git reset -- pnpm-lock.yaml
+          git commit -m 'chore: version update' --no-verify
+          git restore pnpm-lock.yaml
+          git push -u origin $(git branch --show-current) --follow-tags --no-verify
