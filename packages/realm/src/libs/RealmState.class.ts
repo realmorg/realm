@@ -1,5 +1,5 @@
 import { MixedDataType } from "../constants/data";
-import { JSONSafeParse, JSONSafeStringify } from "../utils/json";
+import { JSONSafeStringify, JSONparse, JSONstringify } from "../utils/json";
 import {
   addSet,
   createMap,
@@ -60,7 +60,7 @@ export class RealmState {
   get<T>(name?: string, storage?: StateStorage) {
     if (storage !== StateStorage.MEMORY) {
       const value = window?.[storage]?.getItem(name);
-      if (value) return JSONSafeParse(value);
+      if (value !== undefined) return JSONparse(JSONstringify(value));
     }
     return getMap(this.#states, name) as T;
   }
