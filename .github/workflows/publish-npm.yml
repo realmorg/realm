@@ -1,14 +1,13 @@
 name: Publish packages to NPM
 
 on:
-  push:
-    paths:
-      - "packages/**/*"
-    branches:
-      - main
+  pull_request:
+    types:
+      - closed
 
 jobs:
   publish:
+    if: github.event.pull_request.merged
     runs-on: ubuntu-latest
     permissions: write-all
     env:
