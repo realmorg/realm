@@ -24,7 +24,8 @@
     "terser": "^5.17.6",
     "tsconfig": "workspace:*",
     "tsup": "^6.7.0",
-    "typescript": "^5.0.4"
+    "typescript": "^5.0.4",
+    "vitest": "^0.34.2"
   },
   "files": [
     "dist"
