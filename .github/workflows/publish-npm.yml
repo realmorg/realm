@@ -37,7 +37,7 @@ jobs:
 
       - name: Publish
         run: |
-          git config --global user.email "oknoorap+realmorg@gmail.com"
+          git config --global user.email "god@realm.codes"
           git config --global user.name "realmorg"
           npm config set //registry.npmjs.org/:_authToken ${NPM_AUTH_TOKEN}
           npm run publish-pkgs
