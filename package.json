@@ -4,6 +4,8 @@
     "build": "turbo run build",
     "dev": "turbo run dev",
     "lint": "turbo run lint",
+    "test": "turbo run test",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "change": "changeset",
     "publish-pkgs": "turbo run build lint test && changeset version && changeset publish"
   },
