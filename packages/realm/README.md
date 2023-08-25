@@ -30,7 +30,7 @@ Realm is an HTML framework for building MVP. It is designed to be simple, lightw
 If your web app is complex enough please use [React](https://react.dev), [Vue](https://vuejs.org/), or [Svelte](https://svelte.dev) instead.
 
 ## Contributing
-Please see [CONTRIBUTING.MD](https://github.com/realmorg/realm/blob/main/.github/CONTRIBUTING.md).
+Please see [CONTRIBUTING.md](https://github.com/realmorg/realm/blob/main/.github/CONTRIBUTING.md).
 
 ### LICENSE
 Copyright 2023 - [MIT License](https://github.com/realmorg/realm/blob/main/LICENSE).
