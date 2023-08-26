@@ -123,7 +123,6 @@ export const _renderStyle =
         rule,
         strReplace(selector, CSS_CUSTOM_SELECTOR_REGEX, HOST_SELECTOR)
       );
-      // CSSText(currentRule, EMPTY_STRING);
 
       // @note: add --style css var to rule
       _CSSvar(
