@@ -1,5 +1,11 @@
 # @realmorg/realm
 
+## 0.0.3
+
+### Patch Changes
+
+- 3fd22b9: Update global states flow
+
 ## 0.0.2
 
 ### Patch Changes
