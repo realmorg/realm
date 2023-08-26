@@ -321,13 +321,16 @@ const updateSlot = (
         [`${DATA_PREFIX}${dataType}`, slotAttrName],
       ];
 
-  const nodes = element.$qsAll<HTMLSlotElement>(
-    selector,
-    attrs,
-    isGlobalUpdate ? doc : undefined
-  );
+  const nodes = createArray<HTMLSlotElement>([
+    ...element.$qsAll<HTMLSlotElement>(selector, attrs),
+    ...element.$qsAll<HTMLSlotElement>(
+      selector,
+      attrs,
+      isGlobalUpdate ? doc : undefined
+    ),
+  ]);
 
-  forEachNode(nodes, (slot) => {
+  forEach(nodes, (slot) => {
     if (!slot) return;
     if (slotAttrType === ElementDataTypes.HTML) {
       element._html(slotValue, slot);
