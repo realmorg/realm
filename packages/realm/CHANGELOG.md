@@ -1,5 +1,11 @@
 # @realmorg/realm
 
+## 0.0.4
+
+### Patch Changes
+
+- 0e6f78c: Update fix css selector regex support alphanumeric and - (dash), . (dot), and \_ (underscore)
+
 ## 0.0.3
 
 ### Patch Changes
