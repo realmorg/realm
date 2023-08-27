@@ -52,11 +52,8 @@
             ></set-state>
           </trigger-event>
 
-          <listen-event statechanged>
+          <listen-event statechanged="edit-index">
             <script type="module/realm" use="localState, event">
-              const [stateName] = event;
-              if (stateName !== 'edit-index') return;
-
               const editIndex = localState.get('edit-index');
               const todos = localState.get('todos');
               if (editIndex > -1) {
