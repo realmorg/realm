@@ -56,13 +56,14 @@ export class RealmElement extends RealmBase {
     onBeforeInit?.(this);
     this._html(this.$html());
     onInit?.(this);
+    reqAnim(() => this.onMounted?.(this));
   }
 
   subscribe(callback: RealmElementAttrMutationCallback) {
     arrayPush(this.#attrObserver, callback);
   }
 
-  connectedCallback() {
+  async connectedCallback() {
     const [observeAttr] = subscribeAttrMutation(
       this,
       (attrName, attrValue, prevAttrValue) => {
@@ -72,9 +73,7 @@ export class RealmElement extends RealmBase {
         this.onAttributeChanged?.(this, attrName, attrValue, prevAttrValue);
       }
     );
-
     observeAttr();
-    reqAnim(() => this.onMounted?.(this));
   }
 
   disconnectedCallback() {
