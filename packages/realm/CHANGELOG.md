@@ -1,5 +1,11 @@
 # @realmorg/realm
 
+## 0.0.6
+
+### Patch Changes
+
+- d0ea778: Add non custom `listen-event` filter name
+
 ## 0.0.5
 
 ### Patch Changes
