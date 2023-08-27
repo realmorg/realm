@@ -60,11 +60,14 @@ export const scriptAction = defineAction({
       actionArgs,
       RealmAttributeNames.SCRIPT_ID
     );
-    reqAnim(() => {
-      getScriptFlow(elementName, scriptIdAttr)?.apply(
-        element,
-        getScriptArgs(element, event)
-      );
-    });
+
+    const waitForScriptLoaded = () =>
+      reqAnim(() => {
+        const scriptFlow = getScriptFlow(elementName, scriptIdAttr);
+        const isScriptLoaded = !!scriptFlow;
+        if (!isScriptLoaded) return waitForScriptLoaded();
+        scriptFlow?.apply(element, getScriptArgs(element, event));
+      });
+    waitForScriptLoaded();
   },
 });

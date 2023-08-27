@@ -121,7 +121,7 @@ export const defineElement =
           super({ name, ...params });
         }
 
-        connectedCallback() {
+        async connectedCallback() {
           super.connectedCallback();
           onConnected?.(this);
         }
