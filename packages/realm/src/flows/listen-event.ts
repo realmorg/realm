@@ -20,6 +20,7 @@ const dispatchEvent =
     eventName: string,
     actions: FlowAction[]
   ) => {
+    const hasEventName = !!eventName;
     const eventCaller = isRemoveEvent
       ? dispatcherElement._removeEvent
       : dispatcherElement._addCustomEvent;
@@ -27,7 +28,9 @@ const dispatchEvent =
     const finalEventName = isCustomEvent
       ? FlowRuntimeEventTypes.ON + COLON + eventName
       : eventType;
-    eventCaller(finalEventName, (event) =>
+
+    eventCaller(finalEventName, (event) => {
+      if (!isCustomEvent && hasEventName && eventName !== event[0]) return;
       reqAnim(() =>
         dispatcherElement._sendEvent(FlowEventNames.LISTEN_EVENT, [
           eventType,
@@ -35,8 +38,8 @@ const dispatchEvent =
           actions,
           event,
         ])
-      )
-    );
+      );
+    });
   };
 
 const applyEventListener = (
