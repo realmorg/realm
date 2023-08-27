@@ -1,5 +1,12 @@
 # @realmorg/realm
 
+## 0.0.5
+
+### Patch Changes
+
+- 43bd3ee: Update css, reverts to the most makes sense transition
+- 43bd3ee: Update fix mounted event when using script flow
+
 ## 0.0.4
 
 ### Patch Changes
