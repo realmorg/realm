@@ -1,0 +1,80 @@
+<custom-element name="theme-provider">
+  <element-flow>
+    <listen-event mounted>
+      <script type="module/realm" use="globalState">
+        const theme = globalState.get('realm-theme') ?? 'dark';
+        console.info('apply:', theme, 'theme');
+        document.documentElement.style.colorScheme = theme;
+      </script>
+    </listen-event>
+
+    <listen-event statechanged="realm-theme">
+      <script type="module/realm" use="event">
+        const [, themeValue] = event;
+        document.documentElement.style.colorScheme = themeValue;
+      </script>
+    </listen-event>
+  </element-flow>
+
+  <template>
+    <style>
+      :host {
+        --color-dark: rgb(23, 23, 23);
+        --color-light: #f0f0f0;
+        --color-dark-gray: hsl(300, 1%, 13%);
+        --color-light-gray: hsl(315, 22%, 89%);
+        --color-light-salmon-pink: hsl(0, 100%, 65%);
+        --color-pastel-magenta: hsl(324, 73%, 61%);
+        --base-spacing: 8px;
+        --_0\.5sp: calc(var(--base-spacing) * 0.5);
+        --_1sp: var(--base-spacing);
+        --_2sp: calc(var(--base-spacing) * 2);
+        --_3sp: calc(var(--base-spacing) * 3);
+        --_4sp: calc(var(--base-spacing) * 4);
+        --_5sp: calc(var(--base-spacing) * 5);
+        --_6sp: calc(var(--base-spacing) * 6);
+        --_7sp: calc(var(--base-spacing) * 7);
+        --_8sp: calc(var(--base-spacing) * 8);
+        --_9sp: calc(var(--base-spacing) * 9);
+        --_10sp: calc(var(--base-spacing) * 10);
+        --max-w-xl: 1152px;
+        --border-radius: 1000px;
+        --section-title-mb: 1rem;
+        --section-title-line-height: 1.25;
+        --section-title-font-weight: 500;
+        --awesome-box-shadow-1: 0px 10px 15px 5px rgba(27, 99, 240, 0.22);
+        --awesome-box-shadow-2: 0px 0px 15px 7px rgba(50, 193, 255, 0.2);
+        --awesome-box-shadow-3: 1px -9px 15px 5px rgba(207, 58, 210, 0.2);
+        --awesome-drop-shadow-1: -3px 3px 5px rgba(27, 99, 240, 0.6);
+        --awesome-drop-shadow-2: 0px 0px 5px rgba(50, 193, 255, 0.6);
+        --awesome-drop-shadow-3: 3px -3px 5px rgba(207, 58, 210, 0.6);
+        --awesome-text-shadow-1: 0px -5px 15px rgba(27, 99, 240, 0.65);
+        --awesome-text-shadow-2: -5px 5px 15px rgba(50, 193, 255, 0.6);
+        --awesome-text-shadow-3: 5px -5px 15px rgba(207, 58, 210, 0.6);
+        display: block;
+        min-height: 100vh;
+        overflow: auto;
+      }
+
+      :host([\#realm-theme][global][eq="light"]) {
+        --theme-bg-color: var(--color-light);
+        --theme-bg-color-2: var(--color-light-gray);
+        --theme-color: var(--color-dark);
+        --theme-border-color: var(--color-light-gray);
+        background-color: var(--theme-bg-color);
+        color: var(--theme-color);
+      }
+
+      :host([\#realm-theme][global][eq="dark"]) {
+        --theme-bg-color: var(--color-dark);
+        --theme-bg-color-2: var(--color-dark-gray);
+        --theme-color: var(--color-light);
+        --theme-border-color: var(--color-dark-gray);
+        background-color: var(--theme-bg-color);
+        color: var(--theme-color);
+      }
+    </style>
+
+    <slot children></slot>
+  </template>
+</custom-element>

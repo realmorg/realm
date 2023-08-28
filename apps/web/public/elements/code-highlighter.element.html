@@ -1,0 +1,87 @@
+<custom-element name="code-highlighter">
+  <import-style local from="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.14/codemirror.min.css"></import-style>
+  <import-style local from="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/monokai.min.css"></import-style>
+  <element-attr name="language" type="string"></element-attr>
+  
+  <element-flow>
+    <listen-event mounted>
+      <script type="module/realm" use="ref, attr, globalState">
+        const [codeElement] = ref('raw-code').assignedNodes();
+        const rawCode = codeElement.textContent;
+        const codemirrorOptions = {
+          lineNumbers: false,
+          readOnly: 'nocursor',
+          tabSize: 2,
+          value: rawCode,
+          mode: 'text/' + attr.get('language'),
+          theme: globalState.get('realm-theme') === 'dark' ? 'monokai' : 'default',
+        };
+        window.codeHighlighter = CodeMirror(ref('code'), codemirrorOptions);
+      </script>
+    </listen-event>
+
+    <listen-event statechanged="realm-theme">
+      <script type="module/realm" use="event">
+        const [, themeValue] = event;
+        window.codeHighlighter.setOption("theme", themeValue === 'dark' ? 'monokai' : 'default');
+      </script>
+    </listen-event>
+  </element-flow>
+
+  <template>
+    <style>
+      :host [ref="raw-code"] {
+        display: none;
+      }
+      :host [ref="code"] {
+        max-width: 90vw;
+        overflow: hidden;
+        display: flex;
+      }
+
+      :host .CodeMirror {
+        height: auto;
+        /* overflow: hidden; */
+        /* pointer-events: none; */
+        background: var(--theme-bg-color);
+        font-size: 1rem;
+        padding: var(--_3sp);
+      }
+
+      :host .CodeMirror-vscrollbar,
+      :host .CodeMirror-hscrollbar {
+        display: none!important;
+      }
+
+      :host .CodeMirror-sizer,
+      :host .CodeMirror-scroll {
+        margin: 0;
+        padding:0;
+        min-height: auto!important;
+        position: initial!important;
+      }
+
+      :host .CodeMirror-sizer {
+        margin: 0px!important;
+        padding: 0px!important;
+        width: 100%;
+        border: 0!important;
+        min-width: auto!important;
+      }
+
+      @media (min-width: 1024px) {
+        :host .CodeMirror {
+          overflow: hidden;
+          pointer-events: none;
+        }
+
+        :host .CodeMirror-sizer,
+        :host .CodeMirror-scroll {
+          overflow: auto!important;
+        }
+      }
+    </style>
+    <slot ref="raw-code" children></slot>
+    <div ref="code"></div>
+  </template>
+</custom-element>

@@ -1,0 +1,124 @@
+<custom-element name="realm-logo">
+  <element-attr name="size" type="number">150</element-attr>
+  <element-attr name="variant" type="string">normal</element-attr>
+
+  <template>
+    <style>
+      :host {
+        --attr-size-px: calc(var(--attr-size) * 1px);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        max-height: 280px;
+        gap: calc(var(--attr-size-px) * 0.5);
+        user-select: none;
+        transition: filter 300ms ease-in-out, opacity 150ms ease-in-out;
+      }
+
+      :host([\@variant][eq="gray"]) {
+        filter: grayscale(1);
+        opacity: 0.7;
+      }
+
+      :host .label {
+        font-weight: 900;
+        font-size: calc(var(--attr-size-px) * 1.15);
+        letter-spacing: calc(var(--attr-size-px) * 0.2);
+      }
+
+      :host .realm-logo {
+        position: relative;
+        min-width: var(--attr-size-px);
+        min-height: var(--attr-size-px);
+      }
+
+      :host .realm-energy-wrapper {
+        --radius: 400;
+        --scale: calc(var(--attr-size) / var(--radius));
+        --radius-px: calc(var(--radius)* 1px);
+        border-radius: var(--radius-px);
+        position: absolute;
+        left: 0;
+        top: 0;
+        pointer-events: none;
+      }
+
+      :host .realm-energy {
+        position: relative;
+        width: var(--radius-px);
+        height: var(--radius-px);
+        transform: scale(var(--scale));
+        transform-origin: top left;
+        transition: transform 550ms ease-in-out;
+      }
+
+      :host .gradient,
+      :host .shadow {
+        border-radius: var(--radius-px);
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+      }
+
+      :host .gradient-1 {
+        background: linear-gradient(127deg, #352E73 0%, #7F3675 100%);
+      }
+
+      :host .gradient-2 {
+        background: linear-gradient(108deg, #0147AA 0%, rgba(74, 47, 112, 0.46) 28.65%, #8F3D84 51.04%, #D24972 71.35%, #E5798E 85.94%, #EAB2BC 100%);
+      }
+
+      :host .gradient-3 {
+        background: linear-gradient(115deg, #0147AA 0%, rgba(42, 48, 124, 0.54) 28.13%, rgba(87, 48, 113, 0.00) 100%);
+      }
+
+      :host .inner-shadow {
+        background: rgba(217, 217, 217, 0.01);
+      }
+
+      :host .inner-shadow-right {
+        box-shadow: -32px -9px 48px -17px #E5D3D2 inset;
+      }
+      
+      :host .inner-shadow-left {
+        box-shadow: 10px 0px 44px 0px #41AED5 inset;
+      }
+
+      :host .outer-shadow {
+        animation: spin 3s linear;
+        animation-iteration-count: 100;
+        background: rgba(217, 217, 217, 0.01);
+      }
+
+      :host .outer-shadow-right {
+        box-shadow: 15px 0px 132px 5px #D14E76;
+      }
+
+      :host .outer-shadow-left {
+        box-shadow: -25px 0px 132px -2px #02268F;
+      }
+
+      @keyframes spin {
+        from {transform:rotate(0deg);}
+        to {transform:rotate(360deg);}
+      }
+    </style>
+    
+    <div class="realm-logo">
+      <div class="realm-energy-wrapper">
+        <div class="realm-energy">
+          <div class="gradient gradient-1"></div>
+          <div class="gradient gradient-2"></div>
+          <div class="gradient gradient-3"></div>
+          <div class="shadow inner-shadow inner-shadow-right"></div>
+          <div class="shadow inner-shadow inner-shadow-left"></div>
+          <div class="shadow outer-shadow outer-shadow-right"></div>
+          <div class="shadow outer-shadow outer-shadow-left"></div>
+        </div>
+      </div>
+    </div>
+    <div class="label">REALM</div>
+  </template>
+</custom-element>

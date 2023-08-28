@@ -1,0 +1,47 @@
+<custom-element name="realm-tagline">
+  <template>
+    <style>
+      :host {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        gap: 0;
+        text-align: center;
+        font-size: 1.5rem;
+        font-weight: 400;
+        line-height: 1.8;
+      }
+
+      :host .tagline {
+        --font-size: 1.05rem;;
+        font-weight: 400;
+        font-size: var(--font-size);
+        line-height: 1.85;
+        margin: 0;
+        opacity: 0.8;
+      }
+
+      :host .tagline:hover {
+        opacity: 1;
+      }
+
+
+      @media (min-width: 768px) {
+        :host .tagline {
+          --font-size: 1.15rem;
+        }
+      }
+
+      @media (min-width: 1280px) {
+        :host .tagline {
+          --font-size: 1.5rem;
+        }
+      }
+    </style>
+
+    <h2 class="tagline">Reactive-Lightweight Markup Language. HTML Framework for building 🔥MVP.</h2>
+    <h3 class="tagline">Less JavaScript. Native Web Components.</h3>
+    <h3 class="tagline">No-tooling, No-bundler, No-compiler.</h3>
+      <!-- <span>Native Custom Element. Focus on shipping!</span> -->
+  </template>
+</custom-element>

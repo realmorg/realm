@@ -1,0 +1,19 @@
+<custom-element name="button-icon">
+  <element-attr name="size" type="number">20</element-attr>
+  <template>
+    <style>
+      :host {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background-color: var(--theme-bg-color-2);
+        border-radius: var(--border-radius);
+        padding: var(--_1sp);
+        width: calc(var(--attr-size) * 1px);
+        height: calc(var(--attr-size) * 1px);
+        cursor: pointer;
+      }
+    </style>
+    <slot children></slot>
+  </template>
+</custom-element>

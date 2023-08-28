@@ -1,0 +1,29 @@
+<custom-element name="theme-switcher">
+  <element-flow>
+    <trigger-event click="ThemeLightButton">
+      <set-state global name="realm-theme" value="light"></set-state>
+    </trigger-event>
+    <trigger-event click="ThemeDarkButton">
+      <set-state global name="realm-theme" value="dark"></set-state>
+    </trigger-event>
+  </element-flow>
+
+  <template>
+    <import-element from="./icons/icon-dark-mode.element.html"></import-element>
+    <import-element from="./icons/icon-light-mode.element.html"></import-element>
+
+
+    <is-visible value:global="#realm-theme" eq="dark">
+      <button-icon ref="ThemeLightButton" aria-label="Change to light theme button" title="Change to light">
+        <icon-light-mode></icon-light-mode>
+      </button>
+    </is-visible>
+
+    <is-visible value:global="#realm-theme" eq="light">
+      <button-icon ref="ThemeDarkButton" aria-label="Change to light theme button" title="Change to dark">
+        <icon-dark-mode></icon-dark-mode>
+      </button>
+    </is-visible>
+    <slot children></slot>
+  </template>
+</custom-element>

@@ -1,0 +1,93 @@
+<custom-element name="cta-section">
+  <template>
+    <style>
+      :host {
+        display: flex;
+        flex-direction: column;
+        gap: var(--_3sp);
+      }
+
+      :host section {
+        --flex-direction: column;
+        --button-gap: var(--_1sp);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: var(--flex-direction);
+        gap: var(--button-gap);
+        padding: var(--_3sp) 0;
+      }
+
+      :host button-glow {
+        --width: 75%;
+        width: var(--width);
+      }
+
+      :host realm-logo.mobile {
+        display: flex;
+      }
+
+      :host realm-logo.tablet {
+        display: none;
+      }
+
+      :host realm-logo.desktop {
+        display: none;
+      }
+
+      @media (min-width: 768px) {
+        :host section {
+          --button-gap: var(--_2sp);
+          --flex-direction: row;
+        }
+
+        :host button-glow {
+          --width: auto;
+        }
+
+        :host realm-logo.mobile {
+          display: none;
+        }
+        
+        :host realm-logo.tablet {
+          display: flex;
+        }
+      }
+
+      @media (min-width: 1280px) {
+        :host section {
+          --button-gap: var(--_3sp);
+        }
+
+        :host realm-logo.mobile,
+        :host realm-logo.tablet {
+          display: none;
+        }
+        
+        :host realm-logo.desktop {
+          display: flex;
+        }
+      }
+    </style>
+
+    <import-element from="./elements/realm-tagline.element.html"></import-element>
+
+    <realm-logo class="mobile" aria-label="Realm Mobile Logo" size="50"></realm-logo>
+
+    <realm-logo class="tablet" aria-label="Realm Tablet Logo" size="100"></realm-logo>
+
+    <realm-logo class="desktop" aria-label="Realm Big Logo"></realm-logo>
+
+    <realm-tagline aria-label="Realm Tagline"></realm-tagline>
+
+    <section>
+      <button-glow ref="GettingStarted" link="./docs/learn">
+        Learn from Tutorial
+      </button-glow>
+  
+      <button-glow ref="Example" variant="secondary" link="./examples">
+        See examples
+      </button-glow>
+    </section>
+  </template>
+</custom-element>

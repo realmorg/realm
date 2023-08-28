@@ -1,0 +1,63 @@
+<custom-element name="container-layout">
+  <element-attr name="borderless" type="boolean">false</element-attr>
+  <element-attr name="variant" type="string">even</element-attr>
+  <element-attr name="height" type="string">50vh</element-attr>
+  <element-attr name="padding-size" type="string">md</element-attr>
+
+  <template>
+    <style>
+      :host section {
+        width: 100%;
+        min-height: var(--attr-height);
+        border-bottom: 1px solid var(--theme-border-color);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto;
+      }
+      
+      :host([\@borderless][eq="true"]) section {
+        border: 0;
+      }
+
+      :host([\@variant][eq="odd"]) section {
+        background-color: var(--theme-border-color);
+      }
+
+      :host .container {
+        --px: 5vw;
+        --py: 15vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        gap: var(--_4sp);
+        padding: var(--py) var(--px);
+        overflow: hidden;
+      }
+
+      :host([\@padding-size][eq="sm"]) .container {
+        --py: 5vh;
+      }
+
+      @media (min-width: 1024px) {
+        :host .container {
+          --px: 10vw;
+        }
+      }
+
+      @media (min-width: 1280px) {
+        :host .container {
+          min-width: var(--max-w-xl);
+        }
+      }
+    </style>
+    
+    <section>
+      <div class="container">
+        <slot children></slot>
+      </div>
+    </section>
+  </template>
+</custom-element>

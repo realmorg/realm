@@ -1,0 +1,24 @@
+<custom-element name="example-section-1">
+  <template>
+    <style>
+      :host {
+        width: 100%;
+      }
+
+      :host sb-viewer {
+        width: var(--sb-viewer-width);
+      }
+
+      :host p {
+        font-size: var(--content-size);
+      }
+    </style>
+    <example-section>
+      <slot slot="section-title">Create a Reusable & Reactive element<br />with HTML markup</slot>
+      
+      <p>Unlock the Power of Native Web Components:<br />Build custom, reusable, and interactive elements for your projects.</p>
+
+      <sb-viewer id="web-platform-9bjp1z"></sb-viewer>
+    </example-section>
+  </template>
+</custom-element>

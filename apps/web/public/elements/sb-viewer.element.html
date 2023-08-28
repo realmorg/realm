@@ -1,0 +1,82 @@
+<custom-element name="sb-viewer">
+  <element-attr name="id" type="string"></element-attr>
+  <element-attr name="hide-explorer" type="boolean">true</element-attr>
+  <element-state name="iframe-url" type="string">about:blank</element-state>
+  <element-state name="is-loaded" type="boolean">false</element-state>
+
+  <element-flow>
+    <listen-event mounted>
+      <script type="module/realm" use="ref, localState, attr">
+        let init = false;
+        const callback = (entries, observer) => {
+          entries.forEach((entry) => {
+            if (localState.get('is-loaded') || init) return;
+            if (entry.isIntersecting) {
+              init = true;
+              localState.set('iframe-url', `https://stackblitz.com/edit/${attr.get('id')}?embed=1&hideDevTools=1&hideExplorer=${attr.get('hide-explorer')}&hideNavigation=1&theme=${globalState.get('realm-theme')}&showSidebar=false`);
+              ref('viewer').onload = () => localState.set('is-loaded', true);
+            }
+          })
+        };
+        const observer = new IntersectionObserver(callback);
+        observer.observe(ref('viewer'));
+      </script>
+    </listen-event>
+
+    <listen-event statechanged="realm-theme">
+      <script type="module/realm" use="localState, globalState, attr">
+        if (!localState.get('is-loaded')) return;
+        const iframeUrl = `https://stackblitz.com/edit/${attr.get('id')}?embed=1&hideDevTools=1&hideExplorer=${attr.get('hide-explorer')}&hideNavigation=1&theme=${globalState.get('realm-theme')}&showSidebar=false`;
+        localState.set('iframe-url', iframeUrl);
+      </script>
+  </element-flow>
+
+  <template>
+    <style>
+      :host {
+        position: relative;
+        border: 1px solid var(--theme-border-color);
+        border-radius: var(--_1sp);
+        padding: var(--_1sp);
+        overflow: hidden;
+      }
+
+      :host iframe {
+        width: 100%;
+        min-height: 50vh;
+        border: 0;
+      }
+
+      :host [ref="loader"] {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        background: var(--theme-bg-color);
+        position: absolute;
+        
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+      }
+
+      :host anchor-link {
+        font-size: 12px;
+      }
+
+      :host([\#is-loaded][eq="true"]) [ref="loader"] {
+        display: none;
+      }
+    </style>
+
+    <div ref="loader">
+      <strong>Loading example...</strong>
+
+      <anchor-link _href="#iframe-url" target="_blank" text-overflow="true">
+        <slot name="#iframe-url"></slot>
+      </anchor-link>
+    </div>
+    <iframe ref="viewer" _src="#iframe-url" width="100%" height="100%"></iframe>
+  </template>
+</custom-element>

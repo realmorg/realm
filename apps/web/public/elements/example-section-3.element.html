@@ -1,0 +1,44 @@
+<custom-element name="example-section-3">
+  <template>
+    <style>
+      :host {
+        width: 100%;
+      }
+
+      :host sb-viewer {
+        width: var(--sb-viewer-width);
+        margin-bottom: var(--_1sp);
+      }
+
+      :host p {
+        font-size: var(--content-size);
+        margin: 0 0 var(--_0\.5sp);
+      }
+
+      :host p:last-of-type {
+        margin-bottom: var(--_2sp);
+      }
+    </style>
+    <example-section>
+      <slot slot="section-title">Build for side-hustler</slot>
+      
+      <p>We've come up with an easy way to handle HTTP requests, interactive styles, and more...</p>
+      
+      <p>We believe in keeping things simple yet powerful to help you kickstart your project.</p>
+      
+      <br />
+      <sb-viewer id="web-platform-1gy4f4"></sb-viewer>
+      <sb-viewer id="web-platform-ipmzgm" hide-explorer="false"></sb-viewer>
+      <br />
+      
+      <p>If your app is complex, we encourage you to use <anchor-link href="https://react.dev" target="_blank">React</anchor-link>, <anchor-link href="https://vuejs.org" target="_blank">Vue</anchor-link>, or <anchor-link href="https://svelte.dev" target="_blank">Svelte</anchor-link>. </p>
+      
+      <p>Don't make excuses to bring your ideas become reality and finish your side-projects now. Time is ticking.</p>
+      <br />
+      
+      <button-glow link="./examples" variant="secondary">
+        See more examples
+      </button-glow>
+    </example-section>
+  </template>
+</custom-element>

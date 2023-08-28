@@ -1,0 +1,108 @@
+<custom-element name="top-navigation">
+  <element-state name="logo-variant" type="string">gray</element-state>
+
+  <element-flow>
+    <listen-event mounted>
+      <script type="module/realm" use="localState">
+        const scrollOffset = 10;
+        const callback = (entries, observer) => {
+          entries.forEach((entry) => {
+            if (entry.boundingClientRect.top < 0) {
+              if (entry.isIntersecting) {
+                localState.set('logo-variant', 'gray')
+              } else {
+                localState.set('logo-variant', 'normal')
+              }
+            }
+          })
+        };
+        const observer = new IntersectionObserver(callback);
+        observer.observe(document.querySelector('#hero'));
+      </script>
+    </listen-event>
+  </element-flow>
+
+  <template>
+    <style>
+      :host nav {
+        padding: var(--_2sp) var(--_3sp);
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-sizing: border-box;
+        border-bottom: 1px solid var(--theme-border-color);
+        position: fixed;
+        top: 0;
+        left: 0;
+        background: var(--theme-bg-color);
+        z-index: 999;
+      }
+
+      :host .right-nav {
+        --display: none;
+        display: var(--display);
+        margin-left: auto;
+        align-items: center;
+        gap: var(--_3sp);
+      }
+
+      :host .mobile-menu {
+        --display: flex;
+        display: var(--display);
+        align-items: center;
+        justify-content: center;
+        margin-left: auto;
+      }
+
+      :host a {
+        font-weight: 500;
+        color: var(--theme-color);
+        text-decoration: none;
+        transition: color 300ms ease;
+      }
+
+      :host a:hover {
+        background: linear-gradient(to bottom, var(--color-pastel-magenta) 0%, var(--color-light-salmon-pink) 100%);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      @media (min-width: 768px) {
+        :host .right-nav {
+          --display: flex;
+        }
+
+        :host .mobile-menu {
+          --display: none;
+        }
+      }
+    </style>
+
+    <import-element from="./elements/theme-switcher.element.html"></import-element>
+    <import-element from="./icons/icon-github.element.html"></import-element>
+    <import-element from="./icons/icon-mobile-menu.element.html"></import-element>
+
+    <nav>
+      <div class="left-nav">
+        <anchor-link href="https://realm.codes" variant="white">
+          <realm-logo size="25" _variant="#logo-variant"></realm-logo>
+        </anchor-link>
+      </div>
+      <div class="mobile-menu">
+        <icon-mobile-menu></icon-mobile-menu>
+      </div>
+      <div class="right-nav">
+        <a href="./docs">Docs</a>
+        <a href="./examples">Examples</a>
+        <a href="./references">References</a>
+        <a href="https://blog.realm.codes" target="_blank">Blog</a>
+        <theme-switcher></theme-switcher>
+        <a href="https://github.com/realmorg/realm" target="_blank">
+          <icon-github></icon-github>
+        </a>
+      </div>
+    </nav>
+  </template>
+</custom-element>

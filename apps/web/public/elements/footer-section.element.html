@@ -1,0 +1,94 @@
+<custom-element name="footer-section">
+  <template>
+    <style>
+      :host footer {
+        --grid-template-columns: repeat(2, minmax(0, 1fr));
+        display: grid;
+        gap: var(--_4sp);
+        width: 100%;
+        line-height: 1.5;
+        font-size: 1rem;
+        grid-template-columns: var(--grid-template-columns);
+      }
+
+      :host .copyright {
+        --grid-column: 1 / -1;
+        --order: 3;
+        --align: center;
+        grid-column: var(--grid-column);
+        order: var(--order);
+        font-size: .8rem;
+        line-height: 1.75;
+        text-align: var(--align);
+      }
+
+      :host h3 {
+        margin: 0 0 var(--_2sp);
+        font-weight: 500;
+      }
+
+      :host .menus {
+        display: flex;
+        flex-direction: column;
+        gap: var(--_1sp);
+      }
+
+      @media (min-width: 768px) {
+        :host footer {
+          --grid-template-columns: repeat(4, minmax(0, 1fr));
+        }
+
+        :host .copyright {
+          --grid-column: span 2;
+          --order: 0;
+          --align: left;
+        }
+      }
+
+      @media (min-width: 1024px) {
+        :host footer {
+          --grid-template-columns: repeat(6, minmax(0, 1fr));
+        }
+
+        :host .copyright {
+          --grid-column: span 4;
+        }
+      }
+    </style>
+
+    <container-layout height="20vh" padding-size="sm">
+      <footer>
+        <section class="copyright">
+          Released under the <anchor-link href="https://github.com/realmorg/realm/blob/main/LICENSE" target="_blank">MIT License</anchor-link><br />
+          Copyright &copy; 2023 <anchor-link href="https://github.com/oknoorap" target="_blank" variant="white" underline="true">Ribhararnus Pracutian</anchor-link>
+        </section>
+
+        <section class="menus">
+          <h3>Docs</h3>
+          <anchor-link href="./docs">
+            Getting Started
+          </anchor-link>
+          <anchor-link href="./docs/learn">
+            Tutorial
+          </anchor-link>
+          <anchor-link href="./examples">
+            Examples
+          </anchor-link>
+          <anchor-link href="./references">
+            References
+          </anchor-link>
+        </section>
+        
+        <section class="menus">
+          <h3>More</h3>
+          <anchor-link href="https://blog.realm.codes" target="_blank">
+            Blog
+          </anchor-link>
+          <anchor-link href="https://github.com/realmorg/realm/discussions" target="_blank">
+            Github Discussions
+          </anchor-link>
+        </section>
+      </footer>
+    </container-layout>
+  </template>
+</custom-element>
