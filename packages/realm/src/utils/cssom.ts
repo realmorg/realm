@@ -50,6 +50,9 @@ const setStyleProperty = (
   propValue: string
 ) => style.setProperty(propName, propValue);
 
+const getStyleProperty = (style: CSSStyleDeclaration, propName: string) =>
+  style.getPropertyValue(propName);
+
 const forEachCSSRules = (
   sheets: CSSStyleSheet[],
   callback: (rule: CSSStyleRule) => void
@@ -75,7 +78,7 @@ export const _CSSvar = (
   const style = getStyle(rule);
   if (!style) return varName;
 
-  const getProperty = () => style.getPropertyValue(varName);
+  const getProperty = () => getStyleProperty(style, varName);
   if (value === undefined) return getProperty();
 
   const setProperty = () => setStyleProperty(style, varName, `${value}`);
@@ -188,9 +191,9 @@ export const _setCSSProperty =
   (selector: string, name: string, value: string | null) =>
     forEachCSSRules($adoptedStyleSheets(self), (rule: CSSStyleRule) => {
       if (selectorText(rule) !== selector) return;
-      // @ts-ignore rule.styleMap is detected as error when build
-      const styleMap = rule.styleMap;
-      if (styleMap.get(name) !== value) styleMap.set(name, value);
+      const style = rule.style;
+      if (getStyleProperty(style, name) !== value)
+        setStyleProperty(style, name, value);
     });
 
 const updateRuleProperty =
