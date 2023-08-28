@@ -1,5 +1,11 @@
 # @realmorg/realm
 
+## 0.0.7
+
+### Patch Changes
+
+- 594960f: Update refactor `styleMap` compat in firefox
+
 ## 0.0.6
 
 ### Patch Changes
