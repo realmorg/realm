@@ -483,15 +483,15 @@ export const getElementAttrBindings = (element: RealmElement) =>
         arrayReduce<Attr, Array<Set<BindingAttrValue>>>(
           element.$attrs(node),
           (acc, attr) => {
+            const hasBindAttr = strStartWith($attrName(attr), BIND_ATTR_PREFIX);
+            const hasAttr = element.$hasAttr($attrName(attr), node);
+            if (hasAttr && !hasBindAttr) return acc;
+
             const [attrName, global] = strSplit(
               $attrName(attr),
               ATTR_SEPARATOR
             );
             const isGlobal = global === RealmAttributeNames.GLOBAL;
-
-            const hasBindAttr = strStartWith(attrName, BIND_ATTR_PREFIX);
-            const hasAttr = element.$hasAttr(attrName, node);
-            if (hasAttr && !hasBindAttr) return acc;
 
             const attrValue = $attrValue(attr);
             const slicedAttrName = strSlice(attrName);
