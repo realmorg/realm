@@ -1,5 +1,12 @@
 # @realmorg/realm
 
+## 0.0.8
+
+### Patch Changes
+
+- 616dfbd: - Update fix error css selector regex on Safari
+  - Update fix early return in attr bind reducer
+
 ## 0.0.7
 
 ### Patch Changes
