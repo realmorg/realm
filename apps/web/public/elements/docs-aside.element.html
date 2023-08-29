@@ -1,0 +1,30 @@
+<custom-element name="docs-aside">
+  <template>
+    <style>
+      :host {
+        --top-nav-height: 70px;
+        position: fixed;
+        top: var(--top-nav-height);
+        left: 0;
+        bottom: 0;
+        width: 20vw;
+        background: var(--theme-bg-color);
+        border-right: 1px solid var(--theme-border-color);
+      }
+
+      :host aside {
+        display: flex;
+        flex-direction: column;
+        overflow: auto;
+        padding: var(--_7sp) var(--_5sp) var(--_5sp);
+        box-sizing: border-box;
+        height: 100%;
+        margin: 0;
+      }
+    </style>
+
+    <aside>
+      <slot children></slot>
+    </aside>
+  </template>
+</custom-element>

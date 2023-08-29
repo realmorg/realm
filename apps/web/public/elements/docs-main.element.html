@@ -1,0 +1,20 @@
+<custom-element name="docs-main">
+  <element-attr name="title" type="string"></element-attr>
+  <template>
+    <style>
+      :host {
+        display: block;
+        margin-left: 20vw;
+        margin-top: calc(55px + var(--_3sp));
+        padding: var(--_5sp);
+      }
+
+      :host h1 {
+        margin: 0 0 var(--_2sp);
+      }
+    </style>
+
+    <h1><slot name="@title"></slot></h1>
+    <slot children></slot>
+  </template>
+</custom-element>
