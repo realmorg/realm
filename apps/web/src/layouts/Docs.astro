@@ -1,0 +1,87 @@
+---
+import Head, { Props as HeadProps } from "./Head.astro";
+import RealmGlobalStateDefs from "./RealmGlobalStateDefs.astro";
+import RealmImportElement, {
+  importantElements,
+} from "./RealmImportElement.astro";
+import {
+  NAME as DocsMenusName,
+  MENUS as DocsMenus,
+} from "../constants/docs-menus";
+import {
+  NAME as ExampleMenusName,
+  MENUS as ExampleMenus,
+} from "../constants/example-menus";
+import {
+  NAME as ReferencesMenusName,
+  MENUS as RefsMenus,
+} from "../constants/refs-menus";
+
+type MenuItem = {
+  title: string;
+  path: string;
+};
+
+type Menu = {
+  title: string;
+  items: MenuItem[];
+};
+
+export interface Props {
+  frontmatter: HeadProps & {
+    author: string;
+    menus: string;
+  };
+}
+
+const {
+  frontmatter: { menus: menuConfig, ...headProps },
+} = Astro.props;
+
+const menusLookup: Record<string, Menu[]> = {
+  [DocsMenusName]: DocsMenus,
+  [ExampleMenusName]: ExampleMenus,
+  [ReferencesMenusName]: RefsMenus,
+};
+
+const menus = menusLookup[menuConfig];
+---
+
+<!DOCTYPE html>
+<html lang="en" style="color-scheme: dark;">
+  <Head {...headProps} />
+  <body>
+    <web-app>
+      <RealmGlobalStateDefs />
+      <RealmImportElement
+        elements={[
+          ...importantElements,
+          "docs-aside",
+          "docs-menu",
+          "docs-main",
+        ]}
+      />
+      <theme-provider>
+        <top-navigation aria-label="Top Navigation"></top-navigation>
+        <docs-aside>
+          {
+            menus.map((menu) => (
+              <docs-menu title={menu.title}>
+                {menu.items.map((item) => (
+                  <anchor-link
+                    href={item.path}
+                    active={Astro.url.pathname === item.path}>
+                    {item.title}
+                  </anchor-link>
+                ))}
+              </docs-menu>
+            ))
+          }
+        </docs-aside>
+        <docs-main title={headProps.title}>
+          <slot />
+        </docs-main>
+      </theme-provider>
+    </web-app>
+  </body>
+</html>
