@@ -1,5 +1,11 @@
 # @realmorg/realm
 
+## 0.0.9
+
+### Patch Changes
+
+- 2f4668b: Update correct css prop value for `is-visible` element
+
 ## 0.0.8
 
 ### Patch Changes
