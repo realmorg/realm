@@ -4,6 +4,9 @@
   <element-flow>
     <listen-event mounted>
       <script type="module/realm" use="localState">
+        const heroSection = document.querySelector('cta-section');
+        if (!heroSection) return localState.set('logo-variant', 'normal');
+
         const callback = (entries, observer) => {
           entries.forEach((entry) => {
             if (entry.boundingClientRect.top < 0) {
@@ -16,7 +19,7 @@
           })
         };
         const observer = new IntersectionObserver(callback);
-        observer.observe(document.querySelector('#hero'));
+        observer.observe(heroSection);
       </script>
     </listen-event>
   </element-flow>

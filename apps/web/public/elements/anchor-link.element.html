@@ -4,6 +4,7 @@
   <element-attr name="variant" type="string">default</element-attr>
   <element-attr name="underline" type="boolean">false</element-attr>
   <element-attr name="text-overflow" type="boolean">false</element-attr>
+  <element-attr name="active" type="boolean">false</element-attr>
 
   <template>
     <style>
@@ -22,6 +23,12 @@
       :host a:hover {
         color: var(--color-light-salmon-pink);
         border-color: var(--color-light-salmon-pink);
+      }
+
+      :host([\@active][eq="true"]) a,
+      :host([\@active][eq="true"]) a:hover {
+        color: var(--color-pastel-magenta);
+        border-color: var(--color-pastel-magenta);
       }
 
       :host([\@underline][eq="true"]) a,
