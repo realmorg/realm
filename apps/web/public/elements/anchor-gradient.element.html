@@ -1,0 +1,41 @@
+<custom-element name="anchor-gradient">
+  <element-attr name="href" type="string">#</element-attr>
+  <element-attr name="target" type="string">_self</element-attr>
+  <element-attr name="active-path" type="string"></element-attr>
+  <element-state name="is-active" type="boolean">false</element-state>
+
+  <element-flow>
+    <listen-event mounted>
+      <script type="module/realm" use="attr,localState">
+        const hasActivePath = !!attr.get('active-path');
+        if (hasActivePath && location.pathname.includes(attr.get('active-path'))) localState.set('is-active', true);
+      </script>
+    </listen-event>
+  </element-flow>
+
+  <template>
+    <style>
+      :host a {
+        font-weight: 500;
+        color: var(--theme-color);
+        text-decoration: none;
+        transition: color 300ms ease;
+        display: inline-flex;
+        align-items: center;
+        gap: var(--_1sp);
+      }
+
+      :host a:hover {
+        background: linear-gradient(to bottom, var(--color-pastel-magenta) 0%, var(--color-light-salmon-pink) 100%);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      :host([\#is-active][eq="true"]) a {
+        color: var(--color-pastel-magenta);
+      }
+    </style>
+    <a _href="@href" _target="@target"><slot children></slot></a>
+  </template>
+</custom-element>

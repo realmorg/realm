@@ -41,17 +41,17 @@
       }
     </style>
 
-    <import-element from="./elements/theme-switcher.element.html"></import-element>
-    <import-element from="./icons/icon-github.element.html"></import-element>
+    <import-element from="/elements/theme-switcher.element.html"></import-element>
+    <import-element from="/icons/icon-github.element.html"></import-element>
 
-    <a href="./docs">Docs</a>
-    <a href="./examples">Examples</a>
-    <a href="./references">References</a>
-    <a href="https://blog.realm.codes" target="_blank">Blog</a>
+    <anchor-gradient href="/docs/intro" active-path="/docs">Docs</anchor-gradient>
+    <anchor-gradient href="/examples" active-path="/examples">Examples</anchor-gradient>
+    <anchor-gradient href="/references" active-path="/references">References</anchor-gradient>
+    <anchor-gradient href="https://blog.realm.codes" target="_blank">Blog</anchor-gradient>
     <theme-switcher></theme-switcher>
-    <a href="https://github.com/realmorg/realm" target="_blank">
+    <anchor-gradient href="https://github.com/realmorg/realm" target="_blank">
       <icon-github></icon-github>
       <is-visible value="@is-mobile" eq="true">Github</is-visible>
-    </a>
+    </anchor-gradient>
   </template>
 </custom-element>
