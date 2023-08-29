@@ -1,0 +1,59 @@
+<custom-element name="top-navigation-right-menu">
+  <element-attr name="is-mobile" type="boolean">false</element-attr>
+
+  <template>
+    <style>
+      :host {
+        margin-left: auto;
+        align-items: center;
+        gap: var(--_3sp);
+      }
+
+      :host a {
+        font-weight: 500;
+        color: var(--theme-color);
+        text-decoration: none;
+        transition: color 300ms ease;
+        display: inline-flex;
+        align-items: center;
+        gap: var(--_1sp);
+      }
+
+      :host a:hover {
+        background: linear-gradient(to bottom, var(--color-pastel-magenta) 0%, var(--color-light-salmon-pink) 100%);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      :host theme-switcher {
+        --order: 1;
+        --margin: auto;
+        order: var(--order);
+        margin-top: var(--margin);
+      }
+
+      @media (min-width: 768px) {
+        :host theme-switcher {
+          --margin: 0;
+          --order: unset;
+        }
+      }
+    </style>
+
+    <import-element from="./elements/theme-switcher.element.html"></import-element>
+    <import-element from="./icons/icon-github.element.html"></import-element>
+
+    <a href="./docs">Docs</a>
+    <a href="./examples">Examples</a>
+    <a href="./references">References</a>
+    <a href="https://blog.realm.codes" target="_blank">Blog</a>
+    <theme-switcher></theme-switcher>
+    <a href="https://github.com/realmorg/realm" target="_blank">
+      <icon-github></icon-github>
+      <is-visible value="@is-mobile" eq="true">
+        Github
+      </is-visible>
+    </a>
+  </template>
+</custom-element>

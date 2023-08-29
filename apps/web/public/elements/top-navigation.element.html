@@ -1,30 +1,20 @@
 <custom-element name="top-navigation">
-  <element-state name="logo-variant" type="string">gray</element-state>
+  <element-state name="is-mobile-menu-open" type="boolean">false</element-state>
 
   <element-flow>
-    <listen-event mounted>
-      <script type="module/realm" use="localState">
-        const scrollOffset = 10;
-        const callback = (entries, observer) => {
-          entries.forEach((entry) => {
-            if (entry.boundingClientRect.top < 0) {
-              if (entry.isIntersecting) {
-                localState.set('logo-variant', 'gray')
-              } else {
-                localState.set('logo-variant', 'normal')
-              }
-            }
-          })
-        };
-        const observer = new IntersectionObserver(callback);
-        observer.observe(document.querySelector('#hero'));
-      </script>
-    </listen-event>
+    <trigger-event click="mobile-menu-toggle">
+      <set-state
+        toggle
+        name="is-mobile-menu-open"
+        value="$.is-mobile-menu-open"
+        from="localState"
+      ></set-state>
+    </trigger-event>
   </element-flow>
 
   <template>
     <style>
-      :host nav {
+      :host nav.desktop {
         padding: var(--_2sp) var(--_3sp);
         width: 100%;
         display: flex;
@@ -39,15 +29,40 @@
         z-index: 999;
       }
 
-      :host .right-nav {
-        --display: none;
+      :host nav.mobile {
+        --display: block;
         display: var(--display);
-        margin-left: auto;
-        align-items: center;
-        gap: var(--_3sp);
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        background: var(--theme-bg-color);
+        opacity: 0;
+        z-index: 998;
+        transition: opacity 300ms ease;
       }
 
-      :host .mobile-menu {
+      :host([\@is-mobile-menu-open][eq="true"]) nav.mobile {
+        opacity: 1;
+      }
+      
+      :host nav.desktop top-navigation-right-menu {
+        --display: none;
+        display: var(--display);
+      }
+
+      :host nav.mobile top-navigation-right-menu {
+        --padding-top: calc(55px + (var(--_5sp)));
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: var(--padding-top) var(--_5sp) var(--_5sp);
+        font-size: 1.5rem;
+        height: calc(100vh - (var(--padding-top) + var(--_5sp)));
+      }
+
+      :host .mobile-menu-toggle {
         --display: flex;
         display: var(--display);
         align-items: center;
@@ -55,54 +70,39 @@
         margin-left: auto;
       }
 
-      :host a {
-        font-weight: 500;
-        color: var(--theme-color);
-        text-decoration: none;
-        transition: color 300ms ease;
-      }
-
-      :host a:hover {
-        background: linear-gradient(to bottom, var(--color-pastel-magenta) 0%, var(--color-light-salmon-pink) 100%);
-        background-clip: text;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-      }
-
       @media (min-width: 768px) {
-        :host .right-nav {
+        :host nav.mobile {
+          --display: none;
+        }
+
+        :host nav.desktop top-navigation-right-menu {
           --display: flex;
         }
 
-        :host .mobile-menu {
+        :host .mobile-menu-toggle {
           --display: none;
         }
       }
     </style>
 
-    <import-element from="./elements/theme-switcher.element.html"></import-element>
-    <import-element from="./icons/icon-github.element.html"></import-element>
     <import-element from="./icons/icon-mobile-menu.element.html"></import-element>
+    <import-element from="./icons/icon-close.element.html"></import-element>
+    <import-element from="./elements/top-navigation-left-menu.element.html"></import-element>
+    <import-element from="./elements/top-navigation-right-menu.element.html"></import-element>
 
-    <nav>
-      <div class="left-nav">
-        <anchor-link href="https://realm.codes" variant="white">
-          <realm-logo size="25" _variant="#logo-variant"></realm-logo>
-        </anchor-link>
-      </div>
-      <div class="mobile-menu">
-        <icon-mobile-menu></icon-mobile-menu>
-      </div>
-      <div class="right-nav">
-        <a href="./docs">Docs</a>
-        <a href="./examples">Examples</a>
-        <a href="./references">References</a>
-        <a href="https://blog.realm.codes" target="_blank">Blog</a>
-        <theme-switcher></theme-switcher>
-        <a href="https://github.com/realmorg/realm" target="_blank">
-          <icon-github></icon-github>
-        </a>
-      </div>
+    <nav class="desktop">
+      <top-navigation-left-menu></top-navigation-left-menu>
+      <is-visible value="#is-mobile-menu-open" eq="true">
+        <icon-close ref="mobile-menu-toggle" class="mobile-menu-toggle"></icon-close>
+      </is-visible>
+      <is-visible value="#is-mobile-menu-open" eq="false">
+        <icon-mobile-menu ref="mobile-menu-toggle" class="mobile-menu-toggle"></icon-mobile-menu>
+      </is-visible>
+      <top-navigation-right-menu></top-navigation-right-menu>
+    </nav>
+
+    <nav class="mobile">
+      <top-navigation-right-menu is-mobile="true"></top-navigation-right-menu>
     </nav>
   </template>
 </custom-element>
