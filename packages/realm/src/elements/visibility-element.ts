@@ -106,7 +106,7 @@ const createVisibilityElement = (
   });
 };
 
-const VISIBLE_VALUE = "initial";
+const VISIBLE_VALUE = "contents";
 const HIDDEN_VALUE = "none";
 
 export const isVisibleElement = createVisibilityElement(
