@@ -29,6 +29,7 @@
         const iframeUrl = `https://stackblitz.com/edit/${attr.get('id')}?embed=1&hideDevTools=1&hideExplorer=${attr.get('hide-explorer')}&hideNavigation=1&theme=${globalState.get('realm-theme')}&showSidebar=false`;
         localState.set('iframe-url', iframeUrl);
       </script>
+    </listen-event>
   </element-flow>
 
   <template>
@@ -54,7 +55,7 @@
         flex-direction: column;
         background: var(--theme-bg-color);
         position: absolute;
-        
+
         width: 100%;
         height: 100%;
         top: 0;

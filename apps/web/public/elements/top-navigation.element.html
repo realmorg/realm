@@ -3,12 +3,7 @@
 
   <element-flow>
     <trigger-event click="mobile-menu-toggle">
-      <set-state
-        toggle
-        name="is-mobile-menu-open"
-        value="$.is-mobile-menu-open"
-        from="localState"
-      ></set-state>
+      <set-state toggle name="is-mobile-menu-open" value="$.is-mobile-menu-open" from="localState"></set-state>
     </trigger-event>
   </element-flow>
 
@@ -46,7 +41,7 @@
       :host([\@is-mobile-menu-open][eq="true"]) nav.mobile {
         opacity: 1;
       }
-      
+
       :host nav.desktop top-navigation-right-menu {
         --display: none;
         display: var(--display);

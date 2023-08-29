@@ -12,17 +12,16 @@
     <import-element from="./icons/icon-dark-mode.element.html"></import-element>
     <import-element from="./icons/icon-light-mode.element.html"></import-element>
 
-
     <is-visible value:global="#realm-theme" eq="dark">
       <button-icon ref="ThemeLightButton" aria-label="Change to light theme button" title="Change to light">
         <icon-light-mode></icon-light-mode>
-      </button>
+      </button-icon>
     </is-visible>
 
     <is-visible value:global="#realm-theme" eq="light">
       <button-icon ref="ThemeDarkButton" aria-label="Change to light theme button" title="Change to dark">
         <icon-dark-mode></icon-dark-mode>
-      </button>
+      </button-icon>
     </is-visible>
     <slot children></slot>
   </template>

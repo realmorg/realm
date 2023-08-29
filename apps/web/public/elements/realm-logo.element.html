@@ -35,7 +35,7 @@
       :host .realm-energy-wrapper {
         --radius: 400;
         --scale: calc(var(--attr-size) / var(--radius));
-        --radius-px: calc(var(--radius)* 1px);
+        --radius-px: calc(var(--radius) * 1px);
         border-radius: var(--radius-px);
         position: absolute;
         left: 0;
@@ -63,15 +63,15 @@
       }
 
       :host .gradient-1 {
-        background: linear-gradient(127deg, #352E73 0%, #7F3675 100%);
+        background: linear-gradient(127deg, #352e73 0%, #7f3675 100%);
       }
 
       :host .gradient-2 {
-        background: linear-gradient(108deg, #0147AA 0%, rgba(74, 47, 112, 0.46) 28.65%, #8F3D84 51.04%, #D24972 71.35%, #E5798E 85.94%, #EAB2BC 100%);
+        background: linear-gradient(108deg, #0147aa 0%, rgba(74, 47, 112, 0.46) 28.65%, #8f3d84 51.04%, #d24972 71.35%, #e5798e 85.94%, #eab2bc 100%);
       }
 
       :host .gradient-3 {
-        background: linear-gradient(115deg, #0147AA 0%, rgba(42, 48, 124, 0.54) 28.13%, rgba(87, 48, 113, 0.00) 100%);
+        background: linear-gradient(115deg, #0147aa 0%, rgba(42, 48, 124, 0.54) 28.13%, rgba(87, 48, 113, 0) 100%);
       }
 
       :host .inner-shadow {
@@ -79,11 +79,11 @@
       }
 
       :host .inner-shadow-right {
-        box-shadow: -32px -9px 48px -17px #E5D3D2 inset;
+        box-shadow: -32px -9px 48px -17px #e5d3d2 inset;
       }
-      
+
       :host .inner-shadow-left {
-        box-shadow: 10px 0px 44px 0px #41AED5 inset;
+        box-shadow: 10px 0px 44px 0px #41aed5 inset;
       }
 
       :host .outer-shadow {
@@ -93,19 +93,23 @@
       }
 
       :host .outer-shadow-right {
-        box-shadow: 15px 0px 132px 5px #D14E76;
+        box-shadow: 15px 0px 132px 5px #d14e76;
       }
 
       :host .outer-shadow-left {
-        box-shadow: -25px 0px 132px -2px #02268F;
+        box-shadow: -25px 0px 132px -2px #02268f;
       }
 
       @keyframes spin {
-        from {transform:rotate(0deg);}
-        to {transform:rotate(360deg);}
+        from {
+          transform: rotate(0deg);
+        }
+        to {
+          transform: rotate(360deg);
+        }
       }
     </style>
-    
+
     <div class="realm-logo">
       <div class="realm-energy-wrapper">
         <div class="realm-energy">

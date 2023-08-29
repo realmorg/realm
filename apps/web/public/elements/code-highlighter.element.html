@@ -2,7 +2,7 @@
   <import-style local from="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.14/codemirror.min.css"></import-style>
   <import-style local from="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/monokai.min.css"></import-style>
   <element-attr name="language" type="string"></element-attr>
-  
+
   <element-flow>
     <listen-event mounted>
       <script type="module/realm" use="ref, attr, globalState">
@@ -50,23 +50,23 @@
 
       :host .CodeMirror-vscrollbar,
       :host .CodeMirror-hscrollbar {
-        display: none!important;
+        display: none !important;
       }
 
       :host .CodeMirror-sizer,
       :host .CodeMirror-scroll {
         margin: 0;
-        padding:0;
-        min-height: auto!important;
-        position: initial!important;
+        padding: 0;
+        min-height: auto !important;
+        position: initial !important;
       }
 
       :host .CodeMirror-sizer {
-        margin: 0px!important;
-        padding: 0px!important;
+        margin: 0px !important;
+        padding: 0px !important;
         width: 100%;
-        border: 0!important;
-        min-width: auto!important;
+        border: 0 !important;
+        min-width: auto !important;
       }
 
       @media (min-width: 1024px) {
@@ -77,7 +77,7 @@
 
         :host .CodeMirror-sizer,
         :host .CodeMirror-scroll {
-          overflow: auto!important;
+          overflow: auto !important;
         }
       }
     </style>
