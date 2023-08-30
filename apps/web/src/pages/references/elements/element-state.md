@@ -1,9 +1,9 @@
 ---
 layout: ../../../layouts/Docs.astro
-menuGroup: docs
-menuTitle: Data Bindings
-menuOrder: 5
-title: Custom Element's Bindings
+menuGroup: references
+menuTitle: element-state
+menuOrder: 4
+title: "Element: element-state"
 author: Ribhararnus Pracutian
 description: WIP.
 ---

@@ -1,6 +1,8 @@
 ---
 layout: ../../../layouts/Docs.astro
-menus: docs-menus
+menuGroup: docs
+menuTitle: Conditional Rendering
+menuOrder: 10
 title: Conditional Rendering
 author: Ribhararnus Pracutian
 description: WIP.

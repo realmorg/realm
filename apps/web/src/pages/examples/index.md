@@ -1,7 +1,9 @@
 ---
 layout: ../../layouts/Docs.astro
-menus: example-menus
-title: Realm in Real World Applications
+menuGroup: examples
+menuTitle: Overview
+menuOrder: 1
+title: Example of Realm in Real World Apps
 author: Ribhararnus Pracutian
 description: WIP.
 ---

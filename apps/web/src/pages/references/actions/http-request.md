@@ -1,9 +1,9 @@
 ---
 layout: ../../../layouts/Docs.astro
-menuGroup: docs
-menuTitle: Data Bindings
+menuGroup: references
+menuTitle: http-request
 menuOrder: 5
-title: Custom Element's Bindings
+title: "Action: http-request"
 author: Ribhararnus Pracutian
 description: WIP.
 ---

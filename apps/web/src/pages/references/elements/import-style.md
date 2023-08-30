@@ -1,9 +1,9 @@
 ---
 layout: ../../../layouts/Docs.astro
-menuGroup: docs
-menuTitle: Data Bindings
-menuOrder: 5
-title: Custom Element's Bindings
+menuGroup: references
+menuTitle: import-style
+menuOrder: 9
+title: "Element: import-style"
 author: Ribhararnus Pracutian
 description: WIP.
 ---

@@ -1,9 +1,9 @@
 ---
-layout: ../../layouts/Docs.astro
+layout: ../../../layouts/Docs.astro
 menuGroup: references
-menuTitle: Summary
+menuTitle: set-attr
 menuOrder: 1
-title: API / References
+title: "Action: set-attr"
 author: Ribhararnus Pracutian
 description: WIP.
 ---

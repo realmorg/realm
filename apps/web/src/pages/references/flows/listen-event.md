@@ -1,9 +1,9 @@
 ---
-layout: ../../layouts/Docs.astro
+layout: ../../../layouts/Docs.astro
 menuGroup: references
-menuTitle: Summary
+menuTitle: listen-event
 menuOrder: 1
-title: API / References
+title: "Flow: listen-event"
 author: Ribhararnus Pracutian
 description: WIP.
 ---

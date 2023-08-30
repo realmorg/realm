@@ -1,7 +1,9 @@
 ---
 layout: ../../../layouts/Docs.astro
-menus: docs-menus
-title: Dynamic Styles Inside Element
+menuGroup: docs
+menuTitle: Dynamic Styles
+menuOrder: 8
+title: Dynamic Styling with Selector
 author: Ribhararnus Pracutian
 description: WIP.
 ---

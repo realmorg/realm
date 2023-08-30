@@ -1,6 +1,8 @@
 ---
 layout: ../../../layouts/Docs.astro
-menus: docs-menus
+menuGroup: docs
+menuTitle: Element States
+menuOrder: 3
 title: Working with Element States
 author: Ribhararnus Pracutian
 description: WIP.

@@ -1,6 +1,8 @@
 ---
 layout: ../../../layouts/Docs.astro
-menus: docs-menus
+menuGroup: docs
+menuTitle: Reusability
+menuOrder: 7
 title: Custom Element Reusability
 author: Ribhararnus Pracutian
 description: WIP.

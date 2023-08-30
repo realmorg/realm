@@ -1,9 +1,9 @@
 ---
 layout: ../../../layouts/Docs.astro
-menuGroup: docs
-menuTitle: Data Bindings
+menuGroup: references
+menuTitle: element-flow
 menuOrder: 5
-title: Custom Element's Bindings
+title: "Element: element-flow"
 author: Ribhararnus Pracutian
 description: WIP.
 ---

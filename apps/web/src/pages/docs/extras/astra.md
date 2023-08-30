@@ -1,6 +1,8 @@
 ---
 layout: ../../../layouts/Docs.astro
-menus: docs-menus
+menuGroup: docs
+menuTitle: ASTRA Stack
+menuOrder: 3
 title: ASTRA (Astro + Realm) Stack
 author: Ribhararnus Pracutian
 description: WIP.

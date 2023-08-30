@@ -1,7 +1,9 @@
 ---
 layout: ../../layouts/Docs.astro
-menus: example-menus
-title: "Example: Todo List App"
+menuGroup: docs
+menuTitle: Introduction
+menuOrder: 1
+title: Getting Started
 author: Ribhararnus Pracutian
 description: WIP.
 ---

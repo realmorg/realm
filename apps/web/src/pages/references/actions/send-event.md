@@ -1,9 +1,9 @@
 ---
 layout: ../../../layouts/Docs.astro
-menuGroup: docs
-menuTitle: Data Bindings
-menuOrder: 5
-title: Custom Element's Bindings
+menuGroup: references
+menuTitle: send-event
+menuOrder: 4
+title: "Action: send-event"
 author: Ribhararnus Pracutian
 description: WIP.
 ---

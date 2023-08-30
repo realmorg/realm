@@ -1,9 +1,9 @@
 ---
 layout: ../../../layouts/Docs.astro
-menuGroup: docs
-menuTitle: Data Bindings
-menuOrder: 5
-title: Custom Element's Bindings
+menuGroup: examples
+menuTitle: Todo List
+menuOrder: 1
+title: "Example: Simple Todo List App"
 author: Ribhararnus Pracutian
 description: WIP.
 ---

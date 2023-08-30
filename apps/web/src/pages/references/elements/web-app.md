@@ -1,9 +1,9 @@
 ---
-layout: ../../layouts/Docs.astro
+layout: ../../../layouts/Docs.astro
 menuGroup: references
-menuTitle: Summary
+menuTitle: web-app
 menuOrder: 1
-title: API / References
+title: "Element: web-app"
 author: Ribhararnus Pracutian
 description: WIP.
 ---

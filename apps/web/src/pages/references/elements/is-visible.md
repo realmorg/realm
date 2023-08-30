@@ -1,9 +1,9 @@
 ---
 layout: ../../../layouts/Docs.astro
-menuGroup: docs
-menuTitle: Data Bindings
-menuOrder: 5
-title: Custom Element's Bindings
+menuGroup: references
+menuTitle: is-visible
+menuOrder: 10
+title: "Element: is-visible"
 author: Ribhararnus Pracutian
 description: WIP.
 ---

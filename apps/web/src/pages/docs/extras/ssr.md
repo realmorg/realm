@@ -1,6 +1,8 @@
 ---
 layout: ../../../layouts/Docs.astro
-menus: docs-menus
+menuGroup: docs
+menuTitle: Server-side Rendering
+menuOrder: 1
 title: On Server-side Rendering
 author: Ribhararnus Pracutian
 description: WIP.

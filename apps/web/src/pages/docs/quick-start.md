@@ -1,6 +1,8 @@
 ---
 layout: ../../layouts/Docs.astro
-menus: docs-menus
+menuGroup: docs
+menuTitle: Quick Start
+menuOrder: 2
 title: Quick Start
 author: Ribhararnus Pracutian
 description: WIP.

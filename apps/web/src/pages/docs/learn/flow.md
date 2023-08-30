@@ -1,7 +1,9 @@
 ---
 layout: ../../../layouts/Docs.astro
-menus: docs-menus
-title: How Element's Flow Works in Realm?
+menuGroup: docs
+menuTitle: Element Flow
+menuOrder: 4
+title: Custom Element's Flow / Interaction
 author: Ribhararnus Pracutian
 description: WIP.
 ---

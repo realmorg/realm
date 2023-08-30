@@ -1,6 +1,8 @@
 ---
 layout: ../../../layouts/Docs.astro
-menus: docs-menus
+menuGroup: docs
+menuTitle: List Rendering
+menuOrder: 11
 title: List Rendering
 author: Ribhararnus Pracutian
 description: WIP.

@@ -1,9 +1,9 @@
 ---
 layout: ../../../layouts/Docs.astro
-menuGroup: docs
-menuTitle: Data Bindings
-menuOrder: 5
-title: Custom Element's Bindings
+menuGroup: references
+menuTitle: set-timer
+menuOrder: 3
+title: "Action: set-timer"
 author: Ribhararnus Pracutian
 description: WIP.
 ---

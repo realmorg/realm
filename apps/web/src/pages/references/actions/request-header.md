@@ -1,9 +1,9 @@
 ---
 layout: ../../../layouts/Docs.astro
-menuGroup: docs
-menuTitle: Data Bindings
-menuOrder: 5
-title: Custom Element's Bindings
+menuGroup: references
+menuTitle: request-header
+menuOrder: 5.1
+title: "Action: request-header"
 author: Ribhararnus Pracutian
 description: WIP.
 ---

@@ -1,9 +1,9 @@
 ---
 layout: ../../../layouts/Docs.astro
-menuGroup: docs
-menuTitle: Data Bindings
-menuOrder: 5
-title: Custom Element's Bindings
+menuGroup: references
+menuTitle: repeat-list
+menuOrder: 12
+title: "Element: repeat-list"
 author: Ribhararnus Pracutian
 description: WIP.
 ---

@@ -1,21 +1,10 @@
 ---
+import type { MarkdownInstance } from "astro";
 import Head, { Props as HeadProps } from "./Head.astro";
 import RealmGlobalStateDefs from "./RealmGlobalStateDefs.astro";
 import RealmImportElement, {
   importantElements,
 } from "./RealmImportElement.astro";
-import {
-  NAME as DocsMenusName,
-  MENUS as DocsMenus,
-} from "../constants/docs-menus";
-import {
-  NAME as ExampleMenusName,
-  MENUS as ExampleMenus,
-} from "../constants/example-menus";
-import {
-  NAME as ReferencesMenusName,
-  MENUS as RefsMenus,
-} from "../constants/refs-menus";
 
 type MenuItem = {
   title: string;
@@ -31,20 +20,92 @@ export interface Props {
   frontmatter: HeadProps & {
     author: string;
     menus: string;
+    menuGroup: string;
+    menuTitle: string;
+    menuOrder: number;
   };
 }
 
+const menuItemSort = (
+  a: MarkdownInstance<Record<string, string>>,
+  z: MarkdownInstance<Record<string, string>>
+) => +a.frontmatter.menuOrder - +z.frontmatter.menuOrder;
+
+const menuItemTransformer = (
+  markdown: MarkdownInstance<Record<string, string>>
+) => ({
+  title: markdown.frontmatter.menuTitle,
+  path: markdown?.url ?? "",
+});
+
+const loadMarkdown = async (
+  fn: Promise<MarkdownInstance<Record<string, string>>[]>
+) =>
+  await fn.then((files) => files.sort(menuItemSort).map(menuItemTransformer));
+
 const {
-  frontmatter: { menus: menuConfig, ...headProps },
+  frontmatter: { menuGroup, ...headProps },
 } = Astro.props;
 
 const menusLookup: Record<string, Menu[]> = {
-  [DocsMenusName]: DocsMenus,
-  [ExampleMenusName]: ExampleMenus,
-  [ReferencesMenusName]: RefsMenus,
+  docs: [
+    {
+      title: "Getting Started",
+      items: await loadMarkdown(Astro.glob("../pages/docs/*.md")),
+    },
+    {
+      title: "Learn",
+      items: await loadMarkdown(Astro.glob("../pages/docs/learn/*.md")),
+    },
+    {
+      title: "Extras",
+      items: await loadMarkdown(Astro.glob("../pages/docs/extras/*.md")),
+    },
+  ],
+  examples: [
+    {
+      title: "Examples",
+      items: await loadMarkdown(Astro.glob("../pages/examples/*.md")),
+    },
+    {
+      title: "Basic",
+      items: await loadMarkdown(Astro.glob("../pages/examples/basics/*.md")),
+    },
+    {
+      title: "Intermediate",
+      items: await loadMarkdown(
+        Astro.glob("../pages/examples/intermediate/*.md")
+      ),
+    },
+    {
+      title: "Advanced",
+      items: await loadMarkdown(Astro.glob("../pages/examples/advanced/*.md")),
+    },
+  ],
+
+  references: [
+    {
+      title: "References",
+      items: await loadMarkdown(Astro.glob("../pages/references/*.md")),
+    },
+    {
+      title: "Elements",
+      items: await loadMarkdown(
+        Astro.glob("../pages/references/elements/*.md")
+      ),
+    },
+    {
+      title: "Flows",
+      items: await loadMarkdown(Astro.glob("../pages/references/flows/*.md")),
+    },
+    {
+      title: "Actions",
+      items: await loadMarkdown(Astro.glob("../pages/references/actions/*.md")),
+    },
+  ],
 };
 
-const menus = menusLookup[menuConfig];
+const menus = menusLookup?.[menuGroup] ?? [];
 ---
 
 <!DOCTYPE html>

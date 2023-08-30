@@ -1,9 +1,9 @@
 ---
 layout: ../../../layouts/Docs.astro
-menuGroup: docs
-menuTitle: Data Bindings
-menuOrder: 5
-title: Custom Element's Bindings
+menuGroup: references
+menuTitle: is-hidden
+menuOrder: 11
+title: "Element: is-hidden"
 author: Ribhararnus Pracutian
 description: WIP.
 ---
