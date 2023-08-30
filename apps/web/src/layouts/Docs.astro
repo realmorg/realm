@@ -1,5 +1,6 @@
 ---
 import type { MarkdownInstance } from "astro";
+import type { Props as SEOProps } from "astro-seo";
 import Head, { Props as HeadProps } from "./Head.astro";
 import RealmGlobalStateDefs from "./RealmGlobalStateDefs.astro";
 import RealmImportElement, {
@@ -105,12 +106,22 @@ const menusLookup: Record<string, Menu[]> = {
   ],
 };
 
+const titleTemplteLookup: Record<string, string> = {
+  docs: "Docs: %s | Realm",
+  examples: "Examples: %s | Realm",
+  references: "References: %s | Realm",
+};
+
+const seoProps: SEOProps = {
+  titleTemplate: titleTemplteLookup?.[menuGroup],
+};
+
 const menus = menusLookup?.[menuGroup] ?? [];
 ---
 
 <!DOCTYPE html>
 <html lang="en" style="color-scheme: dark;">
-  <Head {...headProps} />
+  <Head {...{ ...headProps, seoProps }} />
   <body>
     <web-app>
       <RealmGlobalStateDefs />

@@ -1,15 +1,43 @@
 ---
+import { SEO, Props as SeoProps } from "astro-seo";
+
 export interface Props {
-  title: string;
+  title?: string;
   description?: string;
+  seoProps?: SeoProps
 }
 
-const { title, description = '' } = Astro.props;
+const { title = 'Realm', description = 'REALM stands for Reactive-Lightweight Markup Language. HTML Framework for Building MVP.', seoProps = {} } = Astro.props;
 ---
 <head>
   <meta charset="UTF-8" />
-  <meta name="description" content={description} />
   <meta name="viewport" content="width=device-width" />
+  <SEO
+    title={title}
+    titleTemplate="%s | Realm"
+    description={description}
+    openGraph={{
+      basic: {
+        title: title,
+        type: "website",
+        image: `${Astro.url.origin}/assets/media/banner.png`,
+      }
+    }}
+    twitter={{
+      creator: "@oknoorap"
+    }}
+    extend={{
+      meta: [
+        {
+          name: "twitter:image",
+          content: `${Astro.url.origin}/assets/media/banner.png`,
+        },
+        { name: "twitter:title", content: title },
+        { name: "twitter:description", content: description },
+      ],
+    }}
+    {...seoProps}
+  />
   <link rel="icon" type="image/svg+xml" href="/assets/realm-logo.svg" />
   <link
     rel="icon"
@@ -38,7 +66,6 @@ const { title, description = '' } = Astro.props;
   <meta name="msapplication-TileColor" content="#000000" />
   <meta name="msapplication-config" content="/favicons/browserconfig.xml" />
   <meta name="theme-color" content="#000000" />
-  <title>{title}</title>
   <link rel="preconnect" href="https://cdn.jsdelivr.net" />
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -359,6 +386,15 @@ const { title, description = '' } = Astro.props;
       margin: 0;
       font-family: "Inter", sans-serif;
       font-size: 1.15rem;
+    }
+
+    web-app:not(:defined) {
+      filter: grayscale(1) blur(10px);
+    }
+
+    web-app:defined {
+      transition: opacity .15s ease, filter .15s ease;
+      transition-delay: 250ms;
     }
 
     * {

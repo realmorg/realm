@@ -23,6 +23,8 @@ const { elements = [] } = Astro.props;
 
 {
   elements.map((elementName) => (
-    <import-element from={`/elements/${elementName}.element.html`} />
+    <import-element
+      from={`${Astro.url.origin}/elements/${elementName}.element.html`}
+    />
   ))
 }
