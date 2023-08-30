@@ -1,5 +1,5 @@
 <custom-element name="container-layout">
-  <element-attr name="borderless" type="boolean">false</element-attr>
+  <element-attr name="border" type="boolean">false</element-attr>
   <element-attr name="variant" type="string">even</element-attr>
   <element-attr name="height" type="string">50vh</element-attr>
   <element-attr name="padding-size" type="string">md</element-attr>
@@ -16,7 +16,7 @@
         margin: 0 auto;
       }
 
-      :host([\@borderless][eq="true"]) section {
+      :host([\@border][eq="false"]) section {
         border: 0;
       }
 
@@ -25,7 +25,7 @@
       }
 
       :host .container {
-        --px: 5vw;
+        --px: var(--_5sp);
         --py: 15vh;
         display: flex;
         flex-direction: column;
@@ -43,7 +43,7 @@
 
       @media (min-width: 1024px) {
         :host .container {
-          --px: 10vw;
+          --px: var(--_10sp);
         }
       }
 

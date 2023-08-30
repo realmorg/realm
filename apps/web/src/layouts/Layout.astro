@@ -40,7 +40,9 @@ const { ...headProps } = Astro.props;
       <theme-provider>
         <top-navigation aria-label="Top Navigation"></top-navigation>
         <slot />
-        <footer-section aria-label="Footer"></footer-section>
+        <container-layout height="20vh" padding-size="sm">
+          <footer-section aria-label="Footer"></footer-section>
+        </container-layout>
       </theme-provider>
     </web-app>
   </body>

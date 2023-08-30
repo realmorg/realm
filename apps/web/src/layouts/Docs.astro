@@ -106,14 +106,20 @@ const menusLookup: Record<string, Menu[]> = {
   ],
 };
 
-const titleTemplteLookup: Record<string, string> = {
+const asideMobileLabelLookup: Record<string, string> = {
+  docs: "Docs",
+  examples: "Examples",
+  references: "References",
+};
+
+const titleTemplateLookup: Record<string, string> = {
   docs: "Docs: %s | Realm",
   examples: "Examples: %s | Realm",
   references: "References: %s | Realm",
 };
 
 const seoProps: SEOProps = {
-  titleTemplate: titleTemplteLookup?.[menuGroup],
+  titleTemplate: titleTemplateLookup?.[menuGroup],
 };
 
 const menus = menusLookup?.[menuGroup] ?? [];
@@ -129,13 +135,15 @@ const menus = menusLookup?.[menuGroup] ?? [];
         elements={[
           ...importantElements,
           "docs-aside",
-          "docs-menu",
           "docs-main",
+          "docs-container",
+          "docs-menu",
         ]}
       />
       <theme-provider>
         <top-navigation aria-label="Top Navigation"></top-navigation>
-        <docs-aside>
+        <docs-aside
+          label={`${asideMobileLabelLookup?.[menuGroup]} Table of Contents`}>
           {
             menus.map((menu) => (
               <docs-menu title={menu.title}>
@@ -149,10 +157,31 @@ const menus = menusLookup?.[menuGroup] ?? [];
               </docs-menu>
             ))
           }
+
+          <div slot="mobile">
+            {
+              menus.map((menu) => (
+                <docs-menu title={menu.title}>
+                  {menu.items.map((item) => (
+                    <anchor-link
+                      href={item.path}
+                      active={Astro.url.pathname === item.path}>
+                      {item.title}
+                    </anchor-link>
+                  ))}
+                </docs-menu>
+              ))
+            }
+          </div>
         </docs-aside>
-        <docs-main title={headProps.title}>
-          <slot />
-        </docs-main>
+        <docs-container border="true">
+          <docs-main title={headProps.title}>
+            <slot />
+          </docs-main>
+        </docs-container>
+        <docs-container>
+          <footer-section></footer-section>
+        </docs-container>
       </theme-provider>
     </web-app>
   </body>

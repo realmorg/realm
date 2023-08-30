@@ -36,10 +36,12 @@
         opacity: 0;
         z-index: 998;
         transition: opacity 300ms ease;
+        pointer-events: none;
       }
 
       :host([\@is-mobile-menu-open][eq="true"]) nav.mobile {
         opacity: 1;
+        pointer-events: all;
       }
 
       :host nav.desktop top-navigation-right-menu {

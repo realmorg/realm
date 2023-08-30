@@ -4,13 +4,21 @@
     <style>
       :host {
         display: block;
-        margin-left: 20vw;
-        margin-top: calc(55px + var(--_3sp));
-        padding: var(--_5sp);
       }
 
       :host h1 {
+        font-size: 1.5rem;
         margin: 0 0 var(--_2sp);
+      }
+
+      @media (min-width: 768px) {
+        :host {
+          margin-top: calc(55px + var(--_3sp));
+        }
+
+        :host h1 {
+          font-size: 2rem;
+        }
       }
     </style>
 
