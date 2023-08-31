@@ -1,0 +1,49 @@
+<custom-element name="button-glow">
+  <element-attr name="link" type="string"></element-attr>
+  <element-attr name="variant" type="string">primary</element-attr>
+
+  <template>
+    <style>
+      :host a {
+        border-radius: var(--border-radius);
+        padding: var(--_2sp) var(--_4sp);
+        color: white;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        box-sizing: border-box;
+        width: 100%;
+        font-size: 1rem;
+      }
+
+      @media (min-width: 768px) {
+        :host a {
+          font-size: 1.15rem;
+        }
+      }
+
+      :host([\@variant][eq="primary"]) a {
+        background-image: radial-gradient(70% 75% at 25% 90%, var(--color-light-salmon-pink) 0%, var(--color-pastel-magenta) 100%);
+        transition: box-shadow 300ms ease;
+      }
+
+      :host([\@variant][eq="primary"]) a:hover {
+        background-image: radial-gradient(70% 75% at 25% 90%, var(--color-light-salmon-pink) 0%, var(--color-pastel-magenta) 100%);
+        box-shadow: var(--awesome-box-shadow-1), var(--awesome-box-shadow-2), var(--awesome-box-shadow-3);
+      }
+
+      :host([\@variant][eq="secondary"]) a {
+        color: var(--theme-color);
+        border: 1px solid var(--color-pastel-magenta);
+      }
+
+      :host([\@variant][eq="secondary"]) a:hover {
+        border: 1px solid var(--color-light-salmon-pink);
+      }
+    </style>
+    <a _href="@link">
+      <slot children></slot>
+    </a>
+  </template>
+</custom-element>

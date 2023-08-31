@@ -1,0 +1,30 @@
+---
+interface Props {
+  elements?: string[];
+}
+
+export const importantElements = [
+  "theme-provider",
+  "realm-logo",
+  "anchor-link",
+  "anchor-gradient",
+  "button-glow",
+  "button-icon",
+  "container-layout",
+  "top-navigation",
+  "code-highlighter",
+  "sb-viewer",
+  "example-section",
+  "footer-section",
+];
+
+const { elements = [] } = Astro.props;
+---
+
+{
+  elements.map((elementName) => (
+    <import-element
+      from={`${Astro.url.origin}/elements/${elementName}.element.html`}
+    />
+  ))
+}

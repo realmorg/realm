@@ -1,0 +1,28 @@
+<custom-element name="example-section-2">
+  <template>
+    <style>
+      :host {
+        width: 100%;
+      }
+
+      :host sb-viewer {
+        width: var(--sb-viewer-width);
+      }
+
+      :host p {
+        font-size: var(--content-size);
+      }
+    </style>
+    <example-section>
+      <slot slot="section-title">
+        Import elements
+        <br />
+        accross the web
+      </slot>
+
+      <p>Effortlessly import pre-existing elements for consistency and efficiency. (CORS Enabled)</p>
+
+      <sb-viewer id="web-platform-5ry5jn"></sb-viewer>
+    </example-section>
+  </template>
+</custom-element>

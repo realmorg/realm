@@ -1,0 +1,188 @@
+---
+import type { MarkdownInstance } from "astro";
+import type { Props as SEOProps } from "astro-seo";
+import Head, { Props as HeadProps } from "./Head.astro";
+import RealmGlobalStateDefs from "./RealmGlobalStateDefs.astro";
+import RealmImportElement, {
+  importantElements,
+} from "./RealmImportElement.astro";
+
+type MenuItem = {
+  title: string;
+  path: string;
+};
+
+type Menu = {
+  title: string;
+  items: MenuItem[];
+};
+
+export interface Props {
+  frontmatter: HeadProps & {
+    author: string;
+    menus: string;
+    menuGroup: string;
+    menuTitle: string;
+    menuOrder: number;
+  };
+}
+
+const menuItemSort = (
+  a: MarkdownInstance<Record<string, string>>,
+  z: MarkdownInstance<Record<string, string>>
+) => +a.frontmatter.menuOrder - +z.frontmatter.menuOrder;
+
+const menuItemTransformer = (
+  markdown: MarkdownInstance<Record<string, string>>
+) => ({
+  title: markdown.frontmatter.menuTitle,
+  path: markdown?.url ?? "",
+});
+
+const loadMarkdown = async (
+  fn: Promise<MarkdownInstance<Record<string, string>>[]>
+) =>
+  await fn.then((files) => files.sort(menuItemSort).map(menuItemTransformer));
+
+const {
+  frontmatter: { menuGroup, ...headProps },
+} = Astro.props;
+
+const menusLookup: Record<string, Menu[]> = {
+  docs: [
+    {
+      title: "Getting Started",
+      items: await loadMarkdown(Astro.glob("../pages/docs/*.md")),
+    },
+    {
+      title: "Learn",
+      items: await loadMarkdown(Astro.glob("../pages/docs/learn/*.md")),
+    },
+    {
+      title: "Extras",
+      items: await loadMarkdown(Astro.glob("../pages/docs/extras/*.md")),
+    },
+  ],
+  examples: [
+    {
+      title: "Examples",
+      items: await loadMarkdown(Astro.glob("../pages/examples/*.md")),
+    },
+    {
+      title: "Basic",
+      items: await loadMarkdown(Astro.glob("../pages/examples/basics/*.md")),
+    },
+    {
+      title: "Intermediate",
+      items: await loadMarkdown(
+        Astro.glob("../pages/examples/intermediate/*.md")
+      ),
+    },
+    {
+      title: "Advanced",
+      items: await loadMarkdown(Astro.glob("../pages/examples/advanced/*.md")),
+    },
+  ],
+
+  references: [
+    {
+      title: "References",
+      items: await loadMarkdown(Astro.glob("../pages/references/*.md")),
+    },
+    {
+      title: "Elements",
+      items: await loadMarkdown(
+        Astro.glob("../pages/references/elements/*.md")
+      ),
+    },
+    {
+      title: "Flows",
+      items: await loadMarkdown(Astro.glob("../pages/references/flows/*.md")),
+    },
+    {
+      title: "Actions",
+      items: await loadMarkdown(Astro.glob("../pages/references/actions/*.md")),
+    },
+  ],
+};
+
+const asideMobileLabelLookup: Record<string, string> = {
+  docs: "Docs",
+  examples: "Examples",
+  references: "References",
+};
+
+const titleTemplateLookup: Record<string, string> = {
+  docs: "Docs: %s | Realm",
+  examples: "Examples: %s | Realm",
+  references: "References: %s | Realm",
+};
+
+const seoProps: SEOProps = {
+  titleTemplate: titleTemplateLookup?.[menuGroup],
+};
+
+const menus = menusLookup?.[menuGroup] ?? [];
+---
+
+<!DOCTYPE html>
+<html lang="en" style="color-scheme: dark;">
+  <Head {...{ ...headProps, seoProps }} />
+  <body>
+    <web-app>
+      <RealmGlobalStateDefs />
+      <RealmImportElement
+        elements={[
+          ...importantElements,
+          "docs-aside",
+          "docs-main",
+          "docs-container",
+          "docs-menu",
+        ]}
+      />
+      <theme-provider>
+        <top-navigation aria-label="Top Navigation"></top-navigation>
+        <docs-aside
+          label={`${asideMobileLabelLookup?.[menuGroup]} Table of Contents`}>
+          {
+            menus.map((menu) => (
+              <docs-menu title={menu.title}>
+                {menu.items.map((item) => (
+                  <anchor-link
+                    href={item.path}
+                    active={Astro.url.pathname === item.path}>
+                    {item.title}
+                  </anchor-link>
+                ))}
+              </docs-menu>
+            ))
+          }
+
+          <div slot="mobile">
+            {
+              menus.map((menu) => (
+                <docs-menu title={menu.title}>
+                  {menu.items.map((item) => (
+                    <anchor-link
+                      href={item.path}
+                      active={Astro.url.pathname === item.path}>
+                      {item.title}
+                    </anchor-link>
+                  ))}
+                </docs-menu>
+              ))
+            }
+          </div>
+        </docs-aside>
+        <docs-container border="true">
+          <docs-main title={headProps.title}>
+            <slot />
+          </docs-main>
+        </docs-container>
+        <docs-container>
+          <footer-section></footer-section>
+        </docs-container>
+      </theme-provider>
+    </web-app>
+  </body>
+</html>

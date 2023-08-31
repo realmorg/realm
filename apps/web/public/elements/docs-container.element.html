@@ -1,0 +1,25 @@
+<custom-element name="docs-container">
+  <element-attr name="border" type="boolean">false</element-attr>
+  <template>
+    <style>
+      :host {
+        display: block;
+        padding: var(--_3sp);
+        border-bottom: 1px solid var(--theme-border-color);
+      }
+
+      :host([\@border][eq="false"]) {
+        border: 0;
+      }
+
+      @media (min-width: 768px) {
+        :host {
+          margin-left: 275px;
+          padding: var(--_5sp);
+        }
+      }
+    </style>
+
+    <slot children></slot>
+  </template>
+</custom-element>

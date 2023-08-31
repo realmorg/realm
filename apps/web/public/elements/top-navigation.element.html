@@ -1,0 +1,105 @@
+<custom-element name="top-navigation">
+  <element-state name="is-mobile-menu-open" type="boolean">false</element-state>
+
+  <element-flow>
+    <trigger-event click="mobile-menu-toggle">
+      <set-state toggle name="is-mobile-menu-open" value="$.is-mobile-menu-open" from="localState"></set-state>
+    </trigger-event>
+  </element-flow>
+
+  <template>
+    <style>
+      :host nav.desktop {
+        padding: var(--_2sp) var(--_3sp);
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-sizing: border-box;
+        border-bottom: 1px solid var(--theme-border-color);
+        position: fixed;
+        top: 0;
+        left: 0;
+        background: var(--theme-bg-color);
+        z-index: 999;
+      }
+
+      :host nav.mobile {
+        --display: block;
+        display: var(--display);
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        background: var(--theme-bg-color);
+        opacity: 0;
+        z-index: 998;
+        transition: opacity 300ms ease;
+        pointer-events: none;
+      }
+
+      :host([\@is-mobile-menu-open][eq="true"]) nav.mobile {
+        opacity: 1;
+        pointer-events: all;
+      }
+
+      :host nav.desktop top-navigation-right-menu {
+        --display: none;
+        display: var(--display);
+      }
+
+      :host nav.mobile top-navigation-right-menu {
+        --padding-top: calc(55px + (var(--_5sp)));
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: var(--padding-top) var(--_5sp) var(--_5sp);
+        font-size: 1.5rem;
+        height: calc(100vh - (var(--padding-top) + var(--_5sp)));
+      }
+
+      :host .mobile-menu-toggle {
+        --display: flex;
+        display: var(--display);
+        align-items: center;
+        justify-content: center;
+        margin-left: auto;
+      }
+
+      @media (min-width: 768px) {
+        :host nav.mobile {
+          --display: none;
+        }
+
+        :host nav.desktop top-navigation-right-menu {
+          --display: flex;
+        }
+
+        :host .mobile-menu-toggle {
+          --display: none;
+        }
+      }
+    </style>
+
+    <import-element from="/icons/icon-mobile-menu.element.html"></import-element>
+    <import-element from="/icons/icon-close.element.html"></import-element>
+    <import-element from="/elements/top-navigation-left-menu.element.html"></import-element>
+    <import-element from="/elements/top-navigation-right-menu.element.html"></import-element>
+
+    <nav class="desktop">
+      <top-navigation-left-menu></top-navigation-left-menu>
+      <is-visible value="#is-mobile-menu-open" eq="true">
+        <icon-close ref="mobile-menu-toggle" class="mobile-menu-toggle"></icon-close>
+      </is-visible>
+      <is-visible value="#is-mobile-menu-open" eq="false">
+        <icon-mobile-menu ref="mobile-menu-toggle" class="mobile-menu-toggle"></icon-mobile-menu>
+      </is-visible>
+      <top-navigation-right-menu></top-navigation-right-menu>
+    </nav>
+
+    <nav class="mobile">
+      <top-navigation-right-menu is-mobile="true"></top-navigation-right-menu>
+    </nav>
+  </template>
+</custom-element>

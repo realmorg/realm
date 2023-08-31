@@ -1,0 +1,54 @@
+<custom-element name="anchor-link">
+  <element-attr name="href" type="string">#</element-attr>
+  <element-attr name="target" type="string">_self</element-attr>
+  <element-attr name="variant" type="string">default</element-attr>
+  <element-attr name="underline" type="boolean">false</element-attr>
+  <element-attr name="text-overflow" type="boolean">false</element-attr>
+  <element-attr name="active" type="boolean">false</element-attr>
+
+  <template>
+    <style>
+      :host {
+        display: inline;
+      }
+
+      :host a {
+        text-decoration: none;
+        color: var(--color-pastel-magenta);
+        border-bottom-width: 1px;
+        border-bottom-style: solid;
+        border-color: transparent;
+      }
+
+      :host a:hover {
+        color: var(--color-light-salmon-pink);
+        border-color: var(--color-light-salmon-pink);
+      }
+
+      :host([\@active][eq="true"]) a,
+      :host([\@active][eq="true"]) a:hover {
+        color: var(--color-pastel-magenta);
+        border-color: var(--color-pastel-magenta);
+      }
+
+      :host([\@underline][eq="true"]) a,
+      :host([\@underline][eq="true"]) a:hover {
+        border-color: var(--theme-color);
+      }
+
+      :host([\@text-overflow][eq="true"]) a {
+        max-width: 300px;
+        display: inline-block;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+
+      :host([\@variant][eq="white"]) a,
+      :host([\@variant][eq="white"]) a:hover {
+        color: var(--theme-color);
+      }
+    </style>
+    <a _href="@href" _target="@target"><slot children></slot></a>
+  </template>
+</custom-element>

@@ -1,0 +1,49 @@
+---
+import Head, { Props as HeadProps } from './Head.astro'
+import RealmGlobalStateDefs from './RealmGlobalStateDefs.astro'
+import RealmImportElement, { importantElements } from './RealmImportElement.astro'
+
+export interface Props extends HeadProps {}
+const { ...headProps } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en" style="color-scheme: dark;">
+  <Head {...headProps}>
+    <script
+      defer
+      src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.14/codemirror.min.js"
+    ></script>
+    <script
+      defer
+      src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.14/mode/htmlmixed/htmlmixed.min.js"
+    ></script>
+    <script
+      defer
+      src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.14/mode/xml/xml.min.js"
+    ></script>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.14/codemirror.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.14/theme/monokai.min.css"
+    />
+  </Head>
+  <body>
+    <web-app>
+      <RealmGlobalStateDefs />
+      <RealmImportElement elements={importantElements} />
+      <theme-provider>
+        <top-navigation aria-label="Top Navigation"></top-navigation>
+        <slot />
+        <container-layout height="20vh" padding-size="sm">
+          <footer-section aria-label="Footer"></footer-section>
+        </container-layout>
+      </theme-provider>
+    </web-app>
+  </body>
+</html>

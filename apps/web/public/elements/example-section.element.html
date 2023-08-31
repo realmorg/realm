@@ -1,0 +1,46 @@
+<custom-element name="example-section">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+
+      :host section {
+        --sb-viewer-width: 100%;
+        --content-size: 1rem;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        place-items: center;
+        text-align: center;
+        line-height: 1.5;
+      }
+
+      :host h3 {
+        font-size: 2rem;
+        line-height: var(--section-title-line-height);
+        font-weight: var(--section-title-font-weight);
+        margin: 0 0 var(--section-title-mb);
+        text-align: center;
+      }
+
+      :host code-highlighter {
+        margin-top: var(--_4sp);
+      }
+
+      @media (min-width: 1024px) {
+        :host section {
+          --sb-viewer-width: 60vw;
+          --content-size: 1.15rem;
+        }
+      }
+    </style>
+
+    <section>
+      <h3>
+        <slot name="section-title"></slot>
+      </h3>
+      <slot children></slot>
+    </section>
+  </template>
+</custom-element>

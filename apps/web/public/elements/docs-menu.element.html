@@ -1,0 +1,33 @@
+<custom-element name="docs-menu">
+  <element-attr name="title" type="string"></element-attr>
+  <template>
+    <style>
+      :host {
+        display: flex;
+        flex-direction: column;
+        gap: var(--_1sp);
+        font-size: 1rem;
+      }
+
+      :host(:not(:last-of-type)) {
+        margin-bottom: var(--_5sp);
+      }
+
+      :host .title {
+        font-weight: 500;
+      }
+
+      :host .menus {
+        display: flex;
+        flex-direction: column;
+        gap: var(--_1sp);
+      }
+    </style>
+
+    <slot class="title" name="@title"></slot>
+
+    <div class="menus">
+      <slot children></slot>
+    </div>
+  </template>
+</custom-element>
