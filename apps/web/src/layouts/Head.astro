@@ -388,13 +388,13 @@ const { title = 'Realm', description = 'REALM stands for Reactive-Lightweight Ma
       font-size: 1.15rem;
     }
 
-    web-app:not(:defined) {
+    web-app:not([loaded]) {
       filter: grayscale(1) blur(10px);
     }
 
-    web-app:defined {
-      transition: opacity .15s ease, filter .15s ease;
-      transition-delay: 250ms;
+    web-app[loaded] {
+      transition: opacity .35s ease, filter .15s ease;
+      transition-delay: .45s;
     }
 
     * {
