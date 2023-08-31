@@ -8,6 +8,7 @@ import critters from "astro-critters";
 
 // https://astro.build/config
 export default defineConfig({
+  site: "https://realm.codes",
   integrations: [
     mdx(),
     partytown(),
