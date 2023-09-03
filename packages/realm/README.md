@@ -27,8 +27,6 @@ Visit https://realm.codes to view the full documentation.
 ## What is Realm?
 Realm is an HTML framework for building MVP. It is designed to be simple, lightweight, and easy to use. Realm is built on top of Native web components. No-tooling, No-bundler, less javascript. Just take care of your product and ship it fast.
 
-If your web app is complex enough please use [React](https://react.dev), [Vue](https://vuejs.org/), or [Svelte](https://svelte.dev) instead.
-
 ## Contributing
 Please see [CONTRIBUTING.md](https://github.com/realmorg/realm/blob/main/.github/CONTRIBUTING.md).
 
