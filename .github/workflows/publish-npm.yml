@@ -10,7 +10,6 @@ on:
 
 jobs:
   publish:
-    if: github.event.pull_request.merged
     runs-on: ubuntu-latest
     permissions: write-all
     env:
