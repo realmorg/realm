@@ -3,7 +3,8 @@ name: Publish packages to NPM
 on:
   pull_request:
     branches:
-      - "pkg/**"
+      - "pkg/fix/**"
+      - "pkg/feat/**"
 
     types:
       - closed
