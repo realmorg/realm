@@ -1,13 +1,12 @@
 name: Publish packages to NPM
 
 on:
-  pull_request:
-    branches:
-      - "pkg/fix/**"
-      - "pkg/feat/**"
+  push:
+    paths:
+      - "packages/realm/**/*"
 
-    types:
-      - closed
+    branches:
+      - main
 
 jobs:
   publish:
