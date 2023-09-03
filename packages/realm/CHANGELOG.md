@@ -1,5 +1,11 @@
 # @realmorg/realm
 
+## 0.0.11
+
+### Patch Changes
+
+- b4a532f: Reverts wait script flow implementation
+
 ## 0.0.10
 
 ### Patch Changes
