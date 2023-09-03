@@ -5,7 +5,7 @@ import { getGlobalState } from "../elements/global-state";
 import { RealmElement } from "../libs/RealmElement.class";
 import { defineAction, findAttr } from "../utils/action";
 import { getDefaultAttrValues } from "../utils/element";
-import { ScriptFlow, getScriptFlow } from "../utils/flow";
+import { getScriptFlow } from "../utils/flow";
 import { reqAnim } from "../utils/timer";
 
 const getScriptArgs = (element: RealmElement, $event: Event) => {
@@ -39,24 +39,6 @@ const getScriptArgs = (element: RealmElement, $event: Event) => {
   ];
 };
 
-const MAX_WAIT_ATTEMPTS = 10;
-
-const waitForScriptLoaded = (
-  elementName: string,
-  scriptIdAttr: string,
-  attempts = 0
-): Promise<ScriptFlow | undefined> =>
-  new Promise((resolve) =>
-    reqAnim(() => {
-      if (attempts > MAX_WAIT_ATTEMPTS) return resolve(undefined);
-      const scriptFlow = getScriptFlow(elementName, scriptIdAttr);
-      const isScriptLoaded = !!scriptFlow;
-      if (!isScriptLoaded)
-        return waitForScriptLoaded(elementName, scriptIdAttr, attempts + 1);
-      resolve(scriptFlow);
-    })
-  );
-
 /**
  * Trigger <script type="module/realm" /> action
  * @param element
@@ -68,7 +50,7 @@ export const scriptAction = defineAction({
 
   requiredAttrs: [RealmAttributeNames.SCRIPT_ID],
 
-  async onTrigger(
+  onTrigger(
     element: RealmElement,
     elementName: string,
     actionArgs: Array<string[]>,
@@ -80,13 +62,19 @@ export const scriptAction = defineAction({
     );
 
     const eventTarget = Object.freeze(event?.target);
-    const scriptFlow = await waitForScriptLoaded(elementName, scriptIdAttr);
-    scriptFlow?.apply(
-      element,
-      getScriptArgs(element, {
-        ...event,
-        target: eventTarget,
-      })
-    );
+    const waitForScriptLoaded = () =>
+      reqAnim(() => {
+        const scriptFlow = getScriptFlow(elementName, scriptIdAttr);
+        const isScriptLoaded = !!scriptFlow;
+        if (!isScriptLoaded) return waitForScriptLoaded();
+        scriptFlow?.apply(
+          element,
+          getScriptArgs(element, {
+            ...event,
+            target: eventTarget,
+          })
+        );
+      });
+    waitForScriptLoaded();
   },
 });
