@@ -1,5 +1,11 @@
 # @realmorg/realm
 
+## 0.0.10
+
+### Patch Changes
+
+- d05ad3a: Update fix event target persist
+
 ## 0.0.9
 
 ### Patch Changes
