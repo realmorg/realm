@@ -1,5 +1,11 @@
 # @realmorg/realm
 
+## 0.0.12
+
+### Patch Changes
+
+- 7baab6c: Update fix array type event
+
 ## 0.0.11
 
 ### Patch Changes
