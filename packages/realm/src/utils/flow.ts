@@ -37,9 +37,14 @@ type ScriptParams = {
   localState: RealmState;
   globalState: RealmState;
   event: Event;
+  attrs: Record<string, unknown>;
+  attr: {
+    get: (attrName: string) => unknown;
+    set: (attrName: string, attrValue: string) => void;
+  };
 };
 
-type ScriptFlow = (params: ScriptParams) => void;
+export type ScriptFlow = (params: ScriptParams) => void;
 
 type AddScriptFlowType = {
   __REALM_ADD_CUSTOM_FLOW: typeof addScriptFlow;

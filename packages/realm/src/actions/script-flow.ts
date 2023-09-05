@@ -61,12 +61,25 @@ export const scriptAction = defineAction({
       RealmAttributeNames.SCRIPT_ID
     );
 
+    const hasEventTarget = !!event?.target;
+    const eventTarget = Object.freeze(event?.target);
     const waitForScriptLoaded = () =>
       reqAnim(() => {
         const scriptFlow = getScriptFlow(elementName, scriptIdAttr);
         const isScriptLoaded = !!scriptFlow;
         if (!isScriptLoaded) return waitForScriptLoaded();
-        scriptFlow?.apply(element, getScriptArgs(element, event));
+        scriptFlow?.apply(
+          element,
+          getScriptArgs(
+            element,
+            !hasEventTarget
+              ? event
+              : {
+                  ...event,
+                  target: eventTarget,
+                }
+          )
+        );
       });
     waitForScriptLoaded();
   },

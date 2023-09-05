@@ -2,15 +2,16 @@ name: Publish packages to NPM
 
 on:
   pull_request:
+    paths:
+      - "packages/realm/**/*"
     branches:
-      - "pkg/**"
-
+      - main
     types:
       - closed
 
 jobs:
   publish:
-    if: github.event.pull_request.merged
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     permissions: write-all
     env:

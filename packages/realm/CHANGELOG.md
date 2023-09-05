@@ -1,5 +1,23 @@
 # @realmorg/realm
 
+## 0.0.12
+
+### Patch Changes
+
+- 7baab6c: Update fix array type event
+
+## 0.0.11
+
+### Patch Changes
+
+- b4a532f: Reverts wait script flow implementation
+
+## 0.0.10
+
+### Patch Changes
+
+- d05ad3a: Update fix event target persist
+
 ## 0.0.9
 
 ### Patch Changes
