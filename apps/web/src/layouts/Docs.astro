@@ -103,6 +103,10 @@ const menusLookup: Record<string, Menu[]> = {
       title: "Actions",
       items: await loadMarkdown(Astro.glob("../pages/references/actions/*.md")),
     },
+    {
+      title: "Misc",
+      items: await loadMarkdown(Astro.glob("../pages/references/misc/*.md")),
+    },
   ],
 };
 
