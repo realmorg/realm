@@ -70,6 +70,12 @@ const { title = 'Realm', description = 'REALM stands for Reactive-Lightweight Ma
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <!-- <script src="http://localhost:3001/dist/realm.development.js">
+  </script>
+  <link
+    rel="stylesheet"
+    href="http://localhost:3001/dist/realm.css"
+  /> -->
   <script src="https://cdn.jsdelivr.net/npm/@realmorg/realm/dist/realm.production.min.js">
   </script>
   <link
@@ -426,14 +432,19 @@ const { title = 'Realm', description = 'REALM stands for Reactive-Lightweight Ma
     }
 
     .astro-code:before {
+      --background: var(--theme-border-color);
       content: '';
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background: var(--theme-border-color);
+      background: var(--background);
       z-index: 0;
+    }
+
+    install-section .astro-code:before {
+      --background: var(--theme-bg-color);
     }
 
     code {
