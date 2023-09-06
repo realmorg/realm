@@ -142,6 +142,9 @@ const menus = menusLookup?.[menuGroup] ?? [];
           "docs-main",
           "docs-container",
           "docs-menu",
+          ...(menuGroup === "references"
+            ? ["ref-section", "ref-item-def"]
+            : []),
         ]}
       />
       <theme-provider>
