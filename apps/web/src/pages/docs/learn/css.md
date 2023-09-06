@@ -12,7 +12,6 @@ One of the enjoyable aspects of Realm is the ability to style your custom elemen
 
 Additionally, Realm allows you to utilize custom CSS selectors to implement logic within your stylesheets. This empowers you to apply specific styles based on the element's attributes, states, or global states. By leveraging custom CSS selectors, you can achieve more advanced and nuanced styling behaviors, making your custom elements even more versatile and adaptable.
 
-
 ```html
 <custom-element name="color-box">
   <element-attr name="color" type="string">hotpink</element-attr>
@@ -86,7 +85,7 @@ Realm allows you to access attributes, states, and global states as CSS variable
       }
     </style>
 
-    My favorite color is: 
+    My favorite color is:
     <select ref="ColorSelector">
       <option value="red">Red</option>
       <option value="blue">Blue</option>
@@ -132,7 +131,7 @@ Realm allows you to access attributes, states, and global states as CSS variable
 
 Realm allows you to use custom CSS selectors to implement logic within your stylesheets. This empowers you to apply specific styles based on the element's attributes, states, or global states.
 
-We are adding a new hacky features to CSS selector (powered by CSSOM). You can use `gt`, `lt`, `eq`, and more to compare the value of the attribute, state, or global state. See the complete list of logic operators in <anchor-link href="/references/misc/logic-operators">Logic Operators reference</anchor-link>.
+We are adding a new hacky features to CSS selector (powered by CSSOM). You can use `gt`, `lt`, `eq`, and more to compare the value of the attribute, state, or global state. See the complete list of comparison operators in <anchor-link href="/references/misc/comparison-operators">Comparison Operators reference</anchor-link>.
 
 The attribute selector is used to apply styles based on the element's attribute value. The attribute selector is denoted by the `\@` symbol for attributes, `\#` symbol for states.
 
@@ -180,7 +179,10 @@ The following example demonstrates how to use custom CSS selectors to apply diff
     <div class="colorbox attribute"></div>
     <div class="colorbox state"></div>
     <div>
-      <button ref="AddCounterBtn">Add Counter <slot name="#counter"></slot></button>
+      <button ref="AddCounterBtn">
+        Add Counter
+        <slot name="#counter"></slot>
+      </button>
     </div>
   </template>
 </custom-element>
@@ -258,7 +260,11 @@ To catch value for global state, you can use `global` keyword. For example:
       <set-state global name="counter" value="1" mutate="+"></set-state>
     </trigger-event>
     <trigger-event input="ColorInput">
-      <set-state global name="color" value="$.target.value" from="event"></set-state>
+      <set-state
+        global
+        name="color"
+        value="$.target.value"
+        from="event"></set-state>
     </trigger-event>
   </element-flow>
   <template>
@@ -285,9 +291,15 @@ To catch value for global state, you can use `global` keyword. For example:
       }
     </style>
     <div class="colorbox"></div>
-    <button ref="AddCounter">Add <slot global name="#counter"></slot></button>
+    <button ref="AddCounter">
+      Add
+      <slot global name="#counter"></slot>
+    </button>
     <div class="colorbox global-color"></div>
-    <div>Set global color to: <input ref="ColorInput" /></div>
+    <div>
+      Set global color to:
+      <input ref="ColorInput" />
+    </div>
   </template>
 </custom-element>
 

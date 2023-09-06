@@ -67,7 +67,6 @@ Realm provides two tags to handle conditional rendering: `is-visible` and `is-hi
 
 The `is-visible` tag will render its content if the condition is true. Otherwise, it will render nothing. On the other hand, the `is-hidden` tag will hide its content if the condition is true.
 
-## Logic operators
+## Comparison operators
 
-
-In the<anchor-link href="/docs/learn/css">Dynamic styles</anchor-link> section, you learned about CSS logic, and it turns out that the logic operators used for CSS logic and conditional rendering are quite similar. You can find a list of these logic operators in the <anchor-link href="/references/misc/logic-operators">Logic Operators reference</anchor-link>, which provides a comprehensive overview.
+In the<anchor-link href="/docs/learn/css">Dynamic styles</anchor-link> section, you learned about CSS logic, and it turns out that the comparison operators used for CSS logic and conditional rendering are quite similar. You can find a list of these comparison operators in the <anchor-link href="/references/misc/comparison-operators">Comparison Operators reference</anchor-link>, which provides a comprehensive overview.
