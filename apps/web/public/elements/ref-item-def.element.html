@@ -1,0 +1,20 @@
+<custom-element name="ref-item-def">
+  <element-attr name="name" type="string"></element-attr>
+  <template>
+    <style>
+      :host {
+        display: flex;
+        margin-bottom: var(--_1sp);
+      }
+
+      :host code {
+        color: var(--color-pastel-magenta);
+        display: inline-block;
+        min-width: 160px;
+        margin-right: var(--_3sp);
+      }
+    </style>
+    <code><slot name="@name"></slot></code>
+    <slot children></slot>
+  </template>
+</custom-element>
