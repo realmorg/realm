@@ -21,6 +21,7 @@ export interface Props {
   frontmatter: HeadProps & {
     author: string;
     menus: string;
+    imports: string[];
     menuGroup: string;
     menuTitle: string;
     menuOrder: number;
@@ -45,7 +46,7 @@ const loadMarkdown = async (
   await fn.then((files) => files.sort(menuItemSort).map(menuItemTransformer));
 
 const {
-  frontmatter: { menuGroup, ...headProps },
+  frontmatter: { menuGroup, imports = [], ...headProps },
 } = Astro.props;
 
 const menusLookup: Record<string, Menu[]> = {
@@ -142,6 +143,7 @@ const menus = menusLookup?.[menuGroup] ?? [];
           "docs-main",
           "docs-container",
           "docs-menu",
+          ...imports,
           ...(menuGroup === "references"
             ? ["ref-section", "ref-item-def"]
             : []),
