@@ -1,5 +1,11 @@
 # @realmorg/realm
 
+## 0.0.13
+
+### Patch Changes
+
+- e5cd928: Update fix missing `send-event` value
+
 ## 0.0.12
 
 ### Patch Changes
