@@ -19,3 +19,25 @@ It's worth noting that the average user, who may not possess a technical backgro
 Therefore, instead of fixating on the technology, prioritize the product itself. Concentrate on delivering a solution that meets the needs of your target users, provides a seamless user experience, and delivers value in a meaningful way. By focusing on the product and its impact, you can unleash your creativity and build something truly remarkable.
 
 Good luck on your product-building journey, and remember to prioritize the product over the technology stack!
+
+<custom-element name="confetti-element">
+  <import-script
+    from="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js">
+  </import-script>
+
+  <element-flow>
+    <listen-event mounted>
+      <set-timer once="1000">
+        <script type="module/realm">
+          confetti({
+            particleCount: 300,
+            spread: 100,
+            origin: { y: 0.6 }
+          });
+        </script>
+      </set-timer>
+    </listen-event>
+  </element-flow>
+</custom-element>
+
+<confetti-element></confetti-element>
