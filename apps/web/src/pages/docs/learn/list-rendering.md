@@ -29,7 +29,8 @@ With the `<repeat-list>` tag, you can effortlessly generate dynamic lists in you
         margin-bottom: 10px;
       }
     </style>
-    ✅ <slot name="@label"></slot>
+    ✅
+    <slot name="@label"></slot>
   </template>
 </custom-element>
 
@@ -47,8 +48,7 @@ With the `<repeat-list>` tag, you can effortlessly generate dynamic lists in you
         name="list"
         value='[{ "label": "$.input" }]'
         from="localState"
-        mutate="push">
-      </set-state>
+        mutate="push"></set-state>
       <set-state name="input" value=""></set-state>
     </trigger-event>
     <listen-event statechanged="input">
@@ -130,7 +130,7 @@ With the `<repeat-list>` tag, you can effortlessly generate dynamic lists in you
 
 The `<repeat-list>` tag uses the `of` attribute to specify the array that will be iterated over. However, it's important to note that at the moment, the of attribute only supports iterating over the local state.
 
-In other words, when using `<repeat-list>`, you can provide an array-type from the local state as the value for the of attribute. This array will be iterated over, and the specified template will be repeated for each item in the array.
+In other words, when using `<repeat-list>`, you can provide an array-type from the local state as the value for the `of` attribute. This array will be iterated over, and the specified template will be repeated for each item in the array.
 
 When it comes to rendering repeated items, we are using: the `$.` notation. This notation allows us to efficiently select an item from array.
 
@@ -144,12 +144,15 @@ The `<slot>` tag can be used inside the `<repeat-list>` tag. It will be rendered
 
 ```html
 <custom-element name="realm-belongs">
-  <element-state name="array" type="array">[{ "realm": "world" }, { "realm": "universe" }, { "realm": "multiverse" }]</element-state>
+  <element-state name="array" type="array">
+    [{ "realm": "world" }, { "realm": "universe" }, { "realm": "multiverse" }]
+  </element-state>
 
   <template>
     <repeat-list of="#array">
       <p>
-        Your Realm belongs to: the <slot name="$.realm"></slot>
+        Your Realm belongs to: the
+        <slot name="$.realm"></slot>
       </p>
     </repeat-list>
   </template>
@@ -189,8 +192,12 @@ The meta data is accessible via the `!.` notation.
   <template>
     <repeat-list of="#array">
       <p>
-        Index <slot name="!.index"></slot> of <slot name="!.length"></slot> species.
-        Species: <slot name="$.label"></slot>
+        Index
+        <slot name="!.index"></slot>
+        of
+        <slot name="!.length"></slot>
+        species. Species:
+        <slot name="$.label"></slot>
       </p>
     </repeat-list>
   </template>
