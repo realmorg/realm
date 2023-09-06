@@ -55,7 +55,8 @@ export const sendEventAction = defineAction({
     const hasValueFromAttr = hasValueAttr && hasFromAttr;
 
     const getValue = () =>
-      getSourceFrom(element, typeAttr, valueAttr, fromAttr, $event);
+      getSourceFrom(element, typeAttr, valueAttr, fromAttr, $event) ||
+      valueAttr;
 
     const eventDetailExtendedTypeLookup = {
       [ElementDataTypes.HTML]: () => actionAttr,
@@ -67,7 +68,7 @@ export const sendEventAction = defineAction({
     let eventDetail = $event;
     if (hasTypeAttr)
       eventDetail = !hasValueFromAttr
-        ? eventDetailExtendedTypeLookup[typeAttr]?.()
+        ? eventDetailExtendedTypeLookup[typeAttr]?.() ?? valueAttr
         : getValue();
 
     let targetElements: RealmElement[] = [element];
