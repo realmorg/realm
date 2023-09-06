@@ -1,0 +1,31 @@
+<custom-element name="custom-event-demo">
+  <element-state name="color" type="string"></element-state>
+  <element-flow>
+    <listen-event on="change-color">
+      <set-state name="color" from="event"></set-state>
+    </listen-event>
+    <trigger-event click="DynamicColorBtn">
+      <send-event name="change-color" type="string" value="$.color" from="event:attr"></send-event>
+    </trigger-event>
+    <trigger-event click="StaticColorBtn">
+      <send-event name="change-color" type="string" value="red"></send-event>
+    </trigger-event>
+  </element-flow>
+
+  <template>
+    <style>
+      :host {
+        display: block;
+        background-color: var(--state-color);
+        padding: 5px;
+      }
+    </style>
+    <div>
+      Selected Color:
+      <slot name="#color"></slot>
+    </div>
+    <button color="teal" ref="DynamicColorBtn">Teal</button>
+    <button color="hotpink" ref="DynamicColorBtn">Hotpink</button>
+    <button ref="StaticColorBtn">Static color</button>
+  </template>
+</custom-element>
