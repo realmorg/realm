@@ -29,8 +29,10 @@ With the `<repeat-list>` tag, you can effortlessly generate dynamic lists in you
         margin-bottom: 10px;
       }
     </style>
-    ✅
-    <slot name="@label"></slot>
+    <div>
+      <span>✅</span>
+      <slot name="@label"></slot>
+    </div>
   </template>
 </custom-element>
 
@@ -83,7 +85,10 @@ With the `<repeat-list>` tag, you can effortlessly generate dynamic lists in you
         margin-bottom: 10px;
       }
     </style>
-    ✅ <slot name="@label"></slot>
+    <div>
+      <span>✅</span>
+      <slot name="@label"></slot>
+    </div>
   </template>
 </custom-element>
 
