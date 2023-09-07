@@ -30,8 +30,14 @@ Take a look at the following example:
   </element-flow>
   <template>
     <button ref="ComplexLogicButton">Click me!</button>
-    <div>Local counter: <slot name="#counter"></slot></div>
-    <div>Global counter: <slot global name="#counter"></slot></div>
+    <div>
+      Local counter:
+      <slot name="#counter"></slot>
+    </div>
+    <div>
+      Global counter:
+      <slot global name="#counter"></slot>
+    </div>
   </template>
 </custom-element>
 
@@ -83,8 +89,10 @@ For example if you only need an event and a local state, you can define it like 
     </trigger-event>
   </element-flow>
   <template>
-    Hi my name is <slot name="#name"></slot>!
-    <br/>
+    Hi my name is
+    <slot name="#name"></slot>
+    !
+    <br />
     <input ref="NameInput" />
   </template>
 </custom-element>
@@ -114,8 +122,8 @@ For example if you only need an event and a local state, you can define it like 
 
 Great job! Inside the script, you have the freedom to perform various operations and implement custom logic to enhance your custom elements. With this knowledge, you have now covered 80% of Realm's core concepts.
 
-Now, let's move on to the next tutorial, where we will explore how to import elements from across the web. This tutorial will demonstrate how you can leverage the power of custom elements to import and use elements from different sources, expanding the capabilities and functionality of your Realm applications.
+Now, let's move on to the next tutorial, where we will explore how to import elements from across the web. And it will demonstrate how you can leverage the power of custom elements to import and use elements from different website or 3rd-parties, expanding the capabilities and functionality of your Realm apps.
 
-By importing elements from the web, you can tap into a vast ecosystem of pre-built elements saving you time and effort in developing everything from scratch. This tutorial will guide you through the process of importing and integrating external elements seamlessly into your Realm projects.
+By importing elements from the web, you can tap into a vast ecosystem of pre-built elements saving you time and effort in developing everything from scratch. This tutorial will guide you through the process of importing and integrating external elements seamlessly into your projects.
 
 Get ready to unlock a world of possibilities as we delve into the exciting realm of <anchor-link href="/docs/learn/reusability">importing elements across the web</anchor-link> in the next tutorial!

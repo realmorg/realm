@@ -28,11 +28,13 @@ Additionally, you have taken into consideration the SEO implications of using cu
 
 Through the utilization of custom elements in Realm and adhering to SEO best practices, you can create web applications that offer both efficient rendering and SEO-friendly characteristics. The combination of client-side rendering and mindful design choices regarding the placement of custom elements can contribute to a seamless user experience while ensuring good search engine visibility.
 
-As you knew Realm is utilizing the native DOM instead of a virtual DOM, bringing us back to the era of direct DOM manipulation.
+As you knew Realm is utilizing the native DOM instead of a virtual DOM, bringing us back to the era of direct DOM manipulation. So, it's kind of useless to use SSR in Realm.
 
-However, we have seen significant advancements in tooling and a more evolved mindset since then. With improved Web Standards, we now have better support for efficient DOM manipulation.
+But DOM manipulation is not as bad as it sounds. It's just a matter of how you use it. In the past, we used to do DOM manipulation in a very inefficient way. However, we have seen significant advancements in tooling and a more evolved mindset since then. With improved Web Standards, we now have better support for efficient DOM manipulation.
 
 Our mindset has also shifted towards a modular and component-based approach, focusing on reusability and declarative programming.
+
+As the father of Realm I'll says it loud: If it's a frontend, do it on the client-side.
 
 Remember our slogan: "Realm is designed for developers who prioritize fast product delivery."
 

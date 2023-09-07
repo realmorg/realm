@@ -8,7 +8,7 @@ author: Ribhararnus Pracutian
 description: Learn how to style your custom elements dynamically with custom selector.
 ---
 
-One of the enjoyable aspects of Realm is the ability to style your custom elements and access attributes, states, and global states as CSS variables. This feature adds a layer of flexibility and convenience to your styling process. By treating these dynamic values as CSS variables, you can easily incorporate them into your stylesheets and create dynamic, responsive designs.
+One of the most fun feature of Realm is the ability to style your custom elements and access attributes, states, and global states as CSS variables. This feature adds a layer of flexibility and convenience to your styling process. By treating these dynamic values as CSS variables, you can easily incorporate them into your stylesheets and create dynamic, responsive designs.
 
 Additionally, Realm allows you to utilize custom CSS selectors to implement logic within your stylesheets. This empowers you to apply specific styles based on the element's attributes, states, or global states. By leveraging custom CSS selectors, you can achieve more advanced and nuanced styling behaviors, making your custom elements even more versatile and adaptable.
 
@@ -248,7 +248,7 @@ The following example demonstrates how to use custom CSS selectors to apply diff
   <colorful-number number="11"></colorful-number>
 </realm-demo>
 
-To catch value for global state, you can use `global` keyword. For example:
+To get value from global state, you can use `[global]` keyword:
 
 ```html
 <global-state name="counter" type="number">0</global-state>

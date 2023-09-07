@@ -23,7 +23,9 @@ Here is an example of using the HTTP request tag in Realm:
   <element-flow>
     <trigger-event click="FetchButton">
       <set-state name="is-fetching" value="true"></set-state>
-      <http-request url="https://realm.codes/api-examples/api.html" method="GET">
+      <http-request
+        url="https://realm.codes/api-examples/api.html"
+        method="GET">
         <response-ok>
           <set-state name="content" from="event"></set-state>
           <set-state name="is-fetching" value="false"></set-state>
@@ -38,12 +40,16 @@ Here is an example of using the HTTP request tag in Realm:
 
   <template>
     <button ref="FetchButton">Fetch data</button>
-    <is-visible value="#is-fetching" eq="true">
-      Fetching...
-    </is-visible>
+    <is-visible value="#is-fetching" eq="true">Fetching...</is-visible>
     <is-hidden value="#is-fetching" eq="true">
-      <div>Response: <slot name="#content"></slot></div>
-      <div>Error: <slot name="#error"></slot></div>
+      <div>
+        Response:
+        <slot name="#content"></slot>
+      </div>
+      <div>
+        Error:
+        <slot name="#error"></slot>
+      </div>
     </is-hidden>
   </template>
 </custom-element>
@@ -90,7 +96,7 @@ Here is an example of using the HTTP request tag in Realm:
   <http-req-example></http-req-example>
 </realm-demo>
 
-Wait, we have element's state with type `html` here? Yes, I'm inspired by <anchor-link href="https://htmx.org" target="_blank">HTMX</anchor-link>, anyway...
+Wait, we have element's state with type `html` here? Yes, we're inspired by <anchor-link href="https://htmx.org" target="_blank">HTMX</anchor-link>, anyway...
 
 As you can see there's `<request-ok>` and `<request-fail>` tag inside `<http-request>` tag. These tags are called **response handler**. You can use it to handle the response from the server. The response handler is a child tag of `<http-request>` tag, and it's only available inside `<http-request>` tag.
 
@@ -104,7 +110,9 @@ To define HTTP headers, you can use `<request-header>` tag inside `<http-request
 <custom-element name="fetching-example">
   <!-- ... -->
   <http-request url="https://api.url">
-    <request-header name="Content-Type" value="application/json"></request-header>
+    <request-header
+      name="Content-Type"
+      value="application/json"></request-header>
     <request-header name="X-API" value="xxxxxxxxxxxxx"></request-header>
   </http-request>
   <!-- ... -->

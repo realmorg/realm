@@ -30,8 +30,16 @@ Back to our custom element, let's make our custom element's age state reactive a
   </element-flow>
 
   <template>
-    <strong>Hello world, my name is <slot name="@name"></slot>!</strong>
-    <em>and, I'll live until <slot name="#age"></slot> years old</em>
+    <strong>
+      Hello world, my name is
+      <slot name="@name"></slot>
+      !
+    </strong>
+    <em>
+      and, I'll live until
+      <slot name="#age"></slot>
+      years old
+    </em>
     <button ref="SetAgeButton">Maybe 102?</button>
   </template>
 </custom-element>
@@ -73,6 +81,7 @@ Back to our custom element, let's make our custom element's age state reactive a
 </realm-demo>
 
 ## Let's breakdown the code
+
 What's inside `<element-flow>` tag is called a flow. It's a set of instructions that will be executed when the flow is triggered. In this case, the flow will be triggered when the button is clicked.
 
 Currently there's only 2 flows: `<trigger-event>` and `<listen-even>`. We will learn more about it later on.
@@ -96,6 +105,7 @@ It's a set of instructions that will be executed when the some flow is triggered
 And the current action is `<set-state>` action. It's used to set the state value.
 
 ## State mutation
+
 Before we continue, let's learn about state mutation. State mutation is a process of changing the state value. It's a common practice in other frameworks.
 
 Okay let's try to increment the age state value by 1 every time the button is clicked. Add `mutate` attribute to the `<set-state>` tag. Mutate value can be `+` or `-`. `+` is used to increment the state value, and `-` is used to decrement the state value. It also support mutate for array operation like `push`, `pop`, `remove`, `assign`. You can read more about it in <anchor-link href="/references/actions/set-state">`set-state reference`</anchor-link> page.
@@ -112,8 +122,16 @@ Okay let's try to increment the age state value by 1 every time the button is cl
   </element-flow>
 
   <template>
-    <strong>Hello world, my name is <slot name="@name"></slot>!</strong>
-    <em>and, I'll live until <slot name="#age"></slot> years old</em>
+    <strong>
+      Hello world, my name is
+      <slot name="@name"></slot>
+      !
+    </strong>
+    <em>
+      and, I'll live until
+      <slot name="#age"></slot>
+      years old
+    </em>
     <button ref="SetAgeButton">Increment my age</button>
   </template>
 </custom-element>
@@ -157,8 +175,9 @@ Okay let's try to increment the age state value by 1 every time the button is cl
 We will learn more about <anchor-link href="/docs/learn/state-mutation">state mutation</anchor-link>, in the last learning section. It will provide you with further insights and knowledge on how to manipulate states effectively within your Custom Element.
 
 Understanding state mutation is essential for building dynamic interactivity. It involves updating or modifying the state values of your custom elements, enabling you to reflect changes in the user interface based on different cases.
+
 ## Congrats!
 
-Tada 🎉. You've learnt to create a custom element with reactivity. It's the basic knowledge to <s>rule the world</s> use the custom element's flow.
+Tada 🎉, congrats! You have acquired the fundamental knowledge of creating custom element and understanding how the reactivity works.
 
-Because we already fulfilled our promise, let's learn more about something else in the next tutorial, let's learn about <anchor-link href="/docs/learn/global-states">global states</anchor-link>.
+Because we already fulfilled our promises, let's learn more about something else in the next tutorial, let's learn about <anchor-link href="/docs/learn/global-states">global states</anchor-link>.

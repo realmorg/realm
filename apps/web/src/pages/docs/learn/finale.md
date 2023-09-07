@@ -10,7 +10,7 @@ description: Congratulations! You've reached the end of the tutorial. Now you're
 
 🥳 Congratulations! You've reached the end of the learning documentations.
 
-Now that you have acquired the necessary skills, you are well-prepared to embark on building your product. Before you begin, I would like to offer one last piece of advice and reminder: do not limit your creativity by sticking solely to a specific stack or technology.
+Now that you have acquired the necessary skills, you are well-prepared to embark on building your product. Before you begin, We would like to offer one last piece of advice and reminder: do not limit your creativity by sticking solely to a specific stack or technology.
 
 It's important to remember that stacks and technologies are tools designed to assist you in building your product. They should not be viewed as constraints that hinder your creative potential. Your primary focus should always be on the product itself.
 

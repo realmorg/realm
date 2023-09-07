@@ -8,7 +8,7 @@ author: Ribhararnus Pracutian
 description: Learn how to use the dot notation in Realm.
 ---
 
-In our previous learn materials you've seen the dot notation in <anchor-link href="/docs/learn/states">Element States</anchor-link> or <anchor-link href="/docs/learn/list-rendering">List Rendering</anchor-link>, you may be wondering what is it and how to use it. 
+In our previous learn materials you've seen the dot notation in <anchor-link href="/docs/learn/states">Element States</anchor-link> or <anchor-link href="/docs/learn/list-rendering">List Rendering</anchor-link>, you may be wondering what is it and how to use it.
 
 The dot notation is similar to the dot notation in JavaScript, it's used to access the properties of an object.
 
@@ -53,6 +53,7 @@ In the following example, it'll accessing the data from an `event` object.
 </realm-demo>
 
 ## Accessing the item of an Array
+
 In Realm, the dot notation can also be used to access repeatable items within the `<repeat-list>` tag. This special feature allows you to use the `$.` notation to access the individual items being iterated over.
 
 In the previous <anchor-link href="/docs/learn/list-rendering">List Rendering</anchor-link> tutorial, the dot notation provides a convenient way to access and manipulate properties of each repeated item within a `<repeat-list>` tag. You can use it to bind data to child element attributes, apply conditional logic, or perform other operations on each item.

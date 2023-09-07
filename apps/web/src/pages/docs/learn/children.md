@@ -24,20 +24,34 @@ Then how do we render children of custom element? We can use `<slot>` tag to ren
   <template>
     <slot name="title"></slot>
     <slot children></slot>
-    <div>by <slot name="author"></slot></div>
+    <div>
+      by
+      <slot name="author"></slot>
+    </div>
   </template>
 </custom-element>
 
 <blog-post>
   <h1 slot="title">Hello world!</h1>
-  <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.</p>
-  <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.</p>
-  <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.</p>
-  <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.</p>
-  <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.</p>
+  <p>
+    Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.
+  </p>
+  <p>
+    Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.
+  </p>
+  <p>
+    Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.
+  </p>
+  <p>
+    Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.
+  </p>
+  <p>
+    Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.
+  </p>
   <div slot="author">R. Pracutian</div>
 </blog-post>
 ```
+
 <custom-element name="blog-post">
   <template>
     <slot name="title"></slot>
@@ -58,22 +72,70 @@ Then how do we render children of custom element? We can use `<slot>` tag to ren
   </blog-post>
 </realm-demo>
 
+## The `<slot name>` tag
+
+The `<slot name>` tag is rendering children of custom element that have a `slot` attribute. All children of custom element will be rendered inside `<slot name>` tag.
+
+```html
+<custom-element name="article-layout">
+  <template>
+    <div>
+      <slot name="layout-a"></slot>
+    </div>
+    <div>
+      <slot name="layout-b"></slot>
+    </div>
+  </template>
+</custom-element>
+
+<article-layout>
+  <div slot="layout-a">
+    Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.
+  </div>
+  <div slot="layout-b">Sidebar thing!</div>
+</article-layout>
+```
+
+<custom-element name="article-layout">
+  <template>
+    <div>
+      <slot name="layout-a"></slot>
+    </div>
+    <div>
+      <slot name="layout-b"></slot>
+    </div>
+  </template>
+</custom-element>
+
+<realm-demo>
+  <article-layout>
+    <div slot="layout-a">
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.
+    </div>
+    <div slot="layout-b">
+      Sidebar thing!
+    </div>
+  </article-layout>
+</realm-demo>
+
 ## The `<slot children>` tag
 
-The `<slot children>` tag is a special element that renders all children of custom element. It's similar with `<slot>` tag, but it doesn't need a name. You can use it to render all children of custom element. All children of custom element will be rendered inside `<slot children>` tag, except the children that have a `slot` attribute.
+The `<slot children>` tag is a special element that renders all children of the current custom element. It's similar with `<slot>` tag, but it doesn't need a name. You can use it to render all children of custom element. All children of custom element will be rendered inside `<slot children>` tag, except the children that have a `slot` attribute.
 
 We can render nested children of custom element with `<slot children>` tag. For example:
 
 ```html
 <custom-element name="abc-element">
   <template>
-    I am, abc. <slot children></slot>
+    I am, abc.
+    <slot children></slot>
   </template>
 </custom-element>
 
 <custom-element name="xyz-element">
   <template>
-    Yo, I am xyz. <slot children></slot>
+    Yo, I am xyz.
+    <slot children></slot>
   </template>
 </custom-element>
 
@@ -91,6 +153,7 @@ We can render nested children of custom element with `<slot children>` tag. For 
   </abc-element>
 </alphabet-element>
 ```
+
 <custom-element name="abc-element">
   <template>
     I am, abc. <slot children></slot>
@@ -119,72 +182,24 @@ We can render nested children of custom element with `<slot children>` tag. For 
   </alphabet-element>
 </realm-demo>
 
-## The `<slot name>` tag
-
-The `<slot name>` tag is a slot that renders children of custom element that have a `slot` attribute. You can use it to render children of custom element that have a `slot` attribute. All children of custom element that have a `slot` attribute will be rendered inside `<slot name>` tag.
-
-```html
-<custom-element name="article-layout">
-  <template>
-    <div>
-      <slot name="layout-a"></slot>
-    </div>
-    <div>
-      <slot name="layout-b"></slot>
-    </div>
-  </template>
-</custom-element>
-
-<article-layout>
-  <div slot="layout-a">
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.
-  </div>
-  <div slot="layout-b">
-    Sidebar thing!
-  </div>
-</article-layout>
-```
-
-<custom-element name="article-layout">
-  <template>
-    <div>
-      <slot name="layout-a"></slot>
-    </div>
-    <div>
-      <slot name="layout-b"></slot>
-    </div>
-  </template>
-</custom-element>
-
-<realm-demo>
-  <article-layout>
-    <div slot="layout-a">
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.
-    </div>
-    <div slot="layout-b">
-      Sidebar thing!
-    </div>
-  </article-layout>
-</realm-demo>
-
 ## The truth about `<slot>` tag
-Under the hood, the `<slot>` tag inside the Shadow DOM can only be slotted to single node. In the provided example below, you will observed that the `<slot name>` tag renders only the last child of the custom element that has a slot attribute. This behavior aligns with the basic slot functionality.
+
+Under the hood, the `<slot>` tag within the Shadow DOM can only be slotted to a single node. In the provided example below, you will observe that the `<slot name>` tag renders only the last child of the custom element that has a slot attribute. This behavior aligns with the basic functionality of slots.
 
 ```html
 <custom-element name="slot-name-demo">
   <template>
-    Hi, <slot name="layout-a"></slot>.
-    Yo, <slot name="layout-a"></slot>.
+    Hi,
+    <slot name="layout-a"></slot>
+    . Yo,
+    <slot name="layout-a"></slot>
+    .
   </template>
 </custom-element>
 
 <slot-name-demo>
-  <div slot="layout-a">
-    This won't be rendered!
-  </div>
-  <div slot="layout-a">
-    This will be choosen one and will be rendered!
-  </div>
+  <div slot="layout-a">This won't be rendered!</div>
+  <div slot="layout-a">This will be choosen one and will be rendered!</div>
 </slot-name-demo>
 ```
 
@@ -206,23 +221,30 @@ Under the hood, the `<slot>` tag inside the Shadow DOM can only be slotted to si
   </slot-name-demo>
 </realm-demo>
 
-However, in Realm, the `<slot children>` tag behaves differently. It renders every child nodes of the custom element, but inside the Shadow DOM, only the first `<slot children>` that will renders it. The rest of `<slot children>` will be ignored.
+However, in Realm, the `<slot children>` tag behaves differently. It renders every child nodes of the custom element, but inside the Shadow DOM, only the first `<slot children>` that can render it. The rest of `<slot children>` will be ignored.
 
-```html
-
+````html
 ```html
 <custom-element name="slot-children-demo">
   <template>
-    <div>Children: <slot children></slot></div>
-    <div>Another children: <slot children></slot></div>
+    <div>
+      Children:
+      <slot children></slot>
+    </div>
+    <div>
+      Another children:
+      <slot children></slot>
+    </div>
   </template>
 </custom-element>
 
 <slot-children-demo>
-  <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.</p>
+  <p>
+    Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.
+  </p>
   <p>Sit amet consectetur adipisicing elit. Quisquam, quos.</p>
 </slot-children-demo>
-```
+````
 
 <custom-element name="slot-children-demo">
   <template>
@@ -246,6 +268,6 @@ All learning materials until this page is basically enough to ship your product.
 
 ## What's next?
 
-In our previous lesson, we covered the fundamentals of <anchor-link href="/docs/learn/flow">Element Flow</anchor-link>. However, let's now consider a scenario where you have custom business logic that is slightly more intricate. It's not overly complex, but it does require a little more sophistication. In such cases, relying solely on `<element-flow>` may prove to be challenging or insufficient to meet your requirements.
+In our previous tutorial, we covered the fundamentals of <anchor-link href="/docs/learn/flow">Element Flow</anchor-link>. However, let's now consider a scenario where you have custom business logic that is slightly more intricate. It's not overly complex, but it does require a little more sophistication. In such cases, relying solely on `<element-flow>` may prove to be challenging or insufficient to meet your requirements.
 
 Then <anchor-link href="/docs/learn/script">Custom Script Flow</anchor-link> is the answer. It's a powerful feature that allows you to write custom JavaScript code to handle your business logic.

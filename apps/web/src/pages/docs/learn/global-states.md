@@ -12,7 +12,7 @@ Sometimes you need to share data between elements. Realm provides a way to do th
 
 ## How to define a Global State?
 
-You can define a global state with `<global-state>` tag. It's similar with <anchor-link href="/docs/learn/states">Element's State</anchor-link> but this time it's global. It can be accessed from anywhere.
+You can define a global state with `<global-state>` tag. It's similar with <anchor-link href="/docs/learn/states">Element's State</anchor-link> but this time it's global. State that can be accessed from anywhere.
 
 ## Use case: Global Counter
 
@@ -33,7 +33,10 @@ Let's create a global counter that can be incremented and decremented, and displ
 
   <template>
     <button ref="DecrementButton">-</button>
-    <span>Counter: <slot global name="#counter"></slot></span>
+    <span>
+      Counter:
+      <slot global name="#counter"></slot>
+    </span>
     <button ref="IncrementButton">+</button>
   </template>
 </custom-element>
@@ -79,7 +82,7 @@ Let's create a global counter that can be incremented and decremented, and displ
   <counter-tool></counter-tool>
 </realm-demo>
 
-Pretty neat, right? You can increment and decrement the counter from different elements.
+Pretty neat, right? You can increment and decrement the counter value, and it's shared between different elements.
 
 ## Storage
 
@@ -88,7 +91,9 @@ One of the cool things about global states is that it can be stored in local sto
 Global states are stored in memory by default, but you can store it in local storage (`localStorage`) or session storage (`sessionStorage`) by adding `storage` attribute to `<global-state>` tag.
 
 ```html
-<global-state name="cached-counter" type="number" storage="localStorage">0</global-state>
+<global-state name="cached-counter" type="number" storage="localStorage">
+  0
+</global-state>
 
 <custom-element name="local-storage-counter">
   <element-flow>
@@ -101,7 +106,10 @@ Global states are stored in memory by default, but you can store it in local sto
   </element-flow>
   <template>
     <button ref="DecrementButton">-</button>
-    <span>Counter: <slot global name="#cached-counter"></slot></span>
+    <span>
+      Counter:
+      <slot global name="#cached-counter"></slot>
+    </span>
     <button ref="IncrementButton">+</button>
   </template>
 </custom-element>
@@ -131,6 +139,6 @@ Global states are stored in memory by default, but you can store it in local sto
   <local-storage-counter></local-storage-counter>
 </realm-demo>
 
-Please click the button, and refresh this page. You will see that the counter value is still the same. That's because the counter value is stored in local storage.
+Please click the button, and refresh this page. You will see that the counter value is remain the same. That's because the counter value is stored in local storage.
 
 Since you already have a grasp of the concept of global states, there's no need for me to explain it more. Let's move on to the next tutorial, <anchor-link href="/docs/learn/bindings">how to binds dynamic data to element's attributes</anchor-link>.

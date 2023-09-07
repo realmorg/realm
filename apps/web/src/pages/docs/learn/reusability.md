@@ -8,14 +8,16 @@ author: Ribhararnus Pracutian
 description: Learn how to reuse custom elements across the web.
 ---
 
-You've already learned the basics of Realm. In our previous tutorial, we created a custom element that could be reused within a page. But what if we want to reuse it on multiple pages? Well, here's where the `<import-element>` tag comes into play.
+You've already learned the basic knowledge of Realm. In the previous tutorial, we explored the creation of a custom element that could be reused within a single page. However, what if we want to reuse it across multiple pages? This is where the `<import-element>` tag comes into play.
 
-Imagine having numerous pages where we need to define the same custom element repeatedly. It's not very efficient, is it? Thankfully, Realm provides a solution. We can define the custom element once and then reuse it across all of our pages, saving time and effort. This approach simplifies code management and enhances productivity when working with multiple pages.
+Imagine having numerous pages where we need to define the same custom element repeatedly. It's not very efficient, isn't it? Thankfully, Realm provides a solution. We can define the custom element once and then reuse it across all of our pages, saving time and effort. This approach simplifies code management and enhances productivity when working with multiple pages.
 
-For example we will import `basic-counter` element from Realm's domain: <anchor-link href="https://realm.codes/elements/basic-counter.html">https://realm.codes/elements/basic-counter.html</anchor-link>
+The following example we'll import a `basic-counter` element from Realm's domain:  
+<anchor-link href="https://realm.codes/elements/basic-counter.html">https://realm.codes/elements/basic-counter.html</anchor-link>
 
 ```html
-<import-element from="https://realm.codes/elements/basic-counter.html"></import-element>
+<import-element
+  from="https://realm.codes/elements/basic-counter.html"></import-element>
 
 <basic-counter></basic-counter>
 <basic-counter></basic-counter>
@@ -24,9 +26,9 @@ For example we will import `basic-counter` element from Realm's domain: <anchor-
 
 <import-element from="https://realm.codes/elements/basic-counter.html"></import-element>
 <realm-demo>
-  <basic-counter></basic-counter>
-  <basic-counter></basic-counter>
-  <basic-counter></basic-counter>
+<basic-counter></basic-counter>
+<basic-counter></basic-counter>
+<basic-counter></basic-counter>
 </realm-demo>
 
 ## Development Mode
@@ -34,6 +36,14 @@ For example we will import `basic-counter` element from Realm's domain: <anchor-
 In our first tutorial, we explored how to use Realm without the need for setting up a localhost. However, when we want to use the `<import-element>` tag, you'll need to set up a localhost environment. This is because the usage of `<import-element>` can encounter issues related to the Cross-Origin Resource Sharing (CORS) policy.
 
 To dive deeper into CORS and understand its implications, you can refer to the following resource: <anchor-link href="https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS" target="_blank">MDN: Cross-Origin Resource Sharing (CORS)</anchor-link>. It provides valuable insights into how cross-origin requests are handled and the policies involved. By familiarizing yourself with CORS, you'll gain a better understanding of how to navigate and resolve any potential issues that might arise when using the `<import-element>` tag.
+
+If you've installed NodeJS in your machine, you can serve your current folder by using `npx serve` command.
+
+If you're using Python, you can serve your current folder by using `python -m http.server` command.
+
+Other programming languages may have their own way to serve a folder, you can use it too.
+
+Or you can use online tool such as <anchor-link href="https://codesandbox.io" target="_blank">CodeSandbox</anchor-link> or <anchor-link href="https://stackblitz.com/" target="_blank">StackBlitz</anchor-link>.
 
 ## Import Element Accross the Web
 
@@ -54,7 +64,8 @@ Take a look at the following example:
 </custom-element>
 
 <!-- https://domain-xyz.tld -->
-<import-element from="https://domain-xyz.abc/elements/custom-dialog.html"></import-element>
+<import-element
+  from="https://domain-xyz.abc/elements/custom-dialog.html"></import-element>
 
 <custom-element name="show-alert">
   <element-state name="is-open" type="boolean">false</element-state>
@@ -72,6 +83,11 @@ Take a look at the following example:
 <show-alert></show-alert>
 ```
 
+The `domain-abc.tld` is a 3rd-party developer that provides a custom dialog element, and the `domain-xyz.tld` is a developer want to use it. We don't need to copy-paste someone else's code, we can just import it.
+
+## Security Issue
+
+When you're importing an element from a third-party developer, you need to make sure that the element is safe to use. You can check the element's source code to ensure that it doesn't contain any malicious code. If you're not sure about the element's safety, you can always create your own element that has the same functionality.
 
 ## Import Element Alias
 
@@ -82,8 +98,7 @@ By utilizing the `as` attribute, you can easily give an element a new, more suit
 ```html
 <import-element
   from="https://realm.codes/elements/basic-counter.html"
-  as="good-counter">
-</import-element>
+  as="good-counter"></import-element>
 
 <good-counter></good-counter>
 <good-counter></good-counter>
@@ -99,4 +114,5 @@ By utilizing the `as` attribute, you can easily give an element a new, more suit
 </realm-demo>
 
 ## What's Next?
+
 Hurray, It's time for styling parts, let's go to the next tutorial: <anchor-link href="/docs/learn/css">Dynamic Styles</anchor-link>.

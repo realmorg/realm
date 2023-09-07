@@ -23,8 +23,16 @@ You can define an element's state with `<element-state>` tag. It's similar with 
   <element-attr name="name" type="string">anonymous</element-attr>
   <element-state name="age" type="number">100</element-state>
   <template>
-    <strong>Hello world, my name is <slot name="@name"></slot>!</strong>
-    <em>and, I'll live until <slot name="#age"></slot> years old</em>
+    <strong>
+      Hello world, my name is
+      <slot name="@name"></slot>
+      !
+    </strong>
+    <em>
+      and, I'll live until
+      <slot name="#age"></slot>
+      years old
+    </em>
   </template>
 </custom-element>
 
@@ -56,6 +64,6 @@ You can define an element's state with `<element-state>` tag. It's similar with 
   </div>
 </realm-demo>
 
-The distinction between attribute and state is the prefix. Attribute uses `@` prefix, and state uses `#` prefix.
+To render the state's value, use the `<slot>` tag with the attribute's name as the state's name prefixed with `#` symbol. The distinction between attribute and state is the prefix. Attribute uses `@` prefix, and state uses `#` prefix.
 
 Sorry for promising you about reactivity, but it didn't happen yet. Because our state is still static. Then let's make it reactive. We'll take it a step further and introduce reactivity using the <anchor-link href="/docs/learn/flow">Element's flow</anchor-link> feature.
