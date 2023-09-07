@@ -432,10 +432,16 @@ const { title = 'Realm', description = 'REALM stands for Reactive-Lightweight Ma
       position: absolute;
       top: 0;
       left: 0;
-      width: 100%;
+      width: 1000px;
       height: 100%;
       background: var(--background);
       z-index: 0;
+    }
+
+    @media screen and (min-width: 1024px) {
+      .astro-code:before {
+        width: 100%;
+      }
     }
 
     install-section .astro-code:before {
