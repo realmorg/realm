@@ -2,9 +2,14 @@
   <element-attr name="label" type="string"></element-attr>
   <element-flow>
     <listen-event mounted>
-      <script type="module/realm" use="$">
+      <script type="module/realm" use="$, ref">
         const activeLink = $.querySelector('[active="true"]');
-        activeLink?.scrollIntoView?.({ behavior: 'smooth' });
+        setTimeout(() => {
+          ref('aside').scrollTo({
+            top: activeLink.offsetTop - 100,
+            behavior: "smooth",
+          })
+        }, 500);
       </script>
     </listen-event>
   </element-flow>
@@ -80,7 +85,7 @@
       }
     </style>
 
-    <aside>
+    <aside ref="aside">
       <div class="mobile">
         <details>
           <summary>
