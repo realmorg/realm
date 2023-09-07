@@ -388,6 +388,23 @@ const { title = 'Realm', description = 'REALM stands for Reactive-Lightweight Ma
       font-size: 1.15rem;
     }
 
+    a {
+      text-decoration: none;
+      color: var(--color-pastel-magenta);
+      border-bottom-width: 1px;
+      border-bottom-style: solid;
+      border-color: transparent;
+    }
+
+    a:hover {
+      color: var(--color-light-salmon-pink);
+      border-color: var(--color-light-salmon-pink);
+    }
+
+    p {
+      line-height: 1.5
+    }
+
     web-app:not([loaded]) {
       filter: grayscale(1) blur(10px);
     }
@@ -395,6 +412,54 @@ const { title = 'Realm', description = 'REALM stands for Reactive-Lightweight Ma
     web-app[loaded] {
       transition: opacity .35s ease, filter .15s ease;
       transition-delay: .45s;
+    }
+
+    .astro-code {
+      position: relative;
+      background: none!important;
+      padding: var(--_3sp);
+      white-space: break-spaces;
+    }
+
+    .astro-code code {
+      z-index: 1;
+      position: relative;
+    }
+
+    .astro-code:before {
+      --background: var(--theme-border-color);
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 1000px;
+      height: 100%;
+      background: var(--background);
+      z-index: 0;
+    }
+
+    @media screen and (min-width: 1024px) {
+      .astro-code:before {
+        width: 100%;
+      }
+    }
+
+    install-section .astro-code:before {
+      --background: var(--theme-bg-color);
+    }
+
+    code {
+      color: var(--color-pastel-magenta)
+    }
+
+    blockquote {
+      border-left: 4px solid var(--color-pastel-magenta);
+      margin: 0;
+      padding: var(--_1sp) var(--_2sp);
+    }
+
+    blockquote p {
+      margin: 0;
     }
 
     * {

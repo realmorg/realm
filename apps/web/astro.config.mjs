@@ -8,6 +8,11 @@ import critters from "astro-critters";
 // https://astro.build/config
 export default defineConfig({
   site: "https://realm.codes",
+  markdown: {
+    shikiConfig: {
+      theme: "monokai",
+    },
+  },
   integrations: [
     mdx(),
     partytown(),

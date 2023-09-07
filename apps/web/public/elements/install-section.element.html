@@ -1,4 +1,3 @@
-<!-- prettier-ignore -->
 <custom-element name="install-section">
   <template>
     <style>
@@ -6,8 +5,11 @@
         width: 100%;
       }
 
-      :host code-highlighter {
+      :host .codes {
+        max-width: 90vw;
+        font-size: 1rem;
         margin-top: var(--_4sp);
+        text-align: left;
       }
 
       :host p {
@@ -18,10 +20,15 @@
     <example-section>
       <slot slot="section-title">Install and ship it!</slot>
 
-      <p>Simply install it using a CDN, without any additional tools or complications.<br />Build your side-projects faster ⚡️</p>
-      
-      <code-highlighter language="html">&lt;script src="https://cdn.jsdelivr.net/npm/@realmorg/realm/dist/realm.production.min.js"&gt;&lt;/script&gt;
-&lt;link href="https://cdn.jsdelivr.net/npm/@realmorg/realm/dist/realm.min.css" rel="stylesheet" /&gt;</code-highlighter>
+      <p>
+        Simply install it using a CDN, without any additional tools or complications.
+        <br />
+        Build your side-projects faster ⚡️
+      </p>
+
+      <div class="codes">
+        <slot name="codes"></slot>
+      </div>
     </example-section>
   </template>
 </custom-element>

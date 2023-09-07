@@ -21,6 +21,7 @@ export interface Props {
   frontmatter: HeadProps & {
     author: string;
     menus: string;
+    imports: string[];
     menuGroup: string;
     menuTitle: string;
     menuOrder: number;
@@ -45,7 +46,7 @@ const loadMarkdown = async (
   await fn.then((files) => files.sort(menuItemSort).map(menuItemTransformer));
 
 const {
-  frontmatter: { menuGroup, ...headProps },
+  frontmatter: { menuGroup, imports = [], ...headProps },
 } = Astro.props;
 
 const menusLookup: Record<string, Menu[]> = {
@@ -103,6 +104,10 @@ const menusLookup: Record<string, Menu[]> = {
       title: "Actions",
       items: await loadMarkdown(Astro.glob("../pages/references/actions/*.md")),
     },
+    {
+      title: "Misc",
+      items: await loadMarkdown(Astro.glob("../pages/references/misc/*.md")),
+    },
   ],
 };
 
@@ -115,7 +120,7 @@ const asideMobileLabelLookup: Record<string, string> = {
 const titleTemplateLookup: Record<string, string> = {
   docs: "Docs: %s | Realm",
   examples: "Examples: %s | Realm",
-  references: "References: %s | Realm",
+  references: "%s (References) | Realm",
 };
 
 const seoProps: SEOProps = {
@@ -138,6 +143,10 @@ const menus = menusLookup?.[menuGroup] ?? [];
           "docs-main",
           "docs-container",
           "docs-menu",
+          ...imports,
+          ...(menuGroup === "references"
+            ? ["ref-section", "ref-item-def"]
+            : []),
         ]}
       />
       <theme-provider>

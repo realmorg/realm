@@ -1,0 +1,29 @@
+<custom-element name="realm-demo">
+  <template>
+    <style>
+      :host {
+        display: block;
+        background: var(--theme-border-color);
+        padding: var(--_5sp) var(--_3sp) var(--_3sp);
+        position: relative;
+      }
+
+      :host span {
+        position: absolute;
+        top: 0;
+        left: 0;
+        padding: var(--_1sp);
+        background: var(--theme-bg-color);
+        opacity: 0.5;
+        color: var(--theme-color);
+        font-size: 0.65rem;
+        font-weight: 400;
+        letter-spacing: 0.1rem;
+        text-transform: uppercase;
+      }
+    </style>
+
+    <span>Result</span>
+    <slot children></slot>
+  </template>
+</custom-element>

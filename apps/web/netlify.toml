@@ -11,3 +11,6 @@
   [headers.values]
     Access-Control-Allow-Origin = "*"
     Access-Control-Allow-Headers = "*"
+
+[build]
+  ignore = "node netlify.ignore.js"

@@ -6,6 +6,34 @@
     <trigger-event click="ThemeDarkButton">
       <set-state global name="realm-theme" value="dark"></set-state>
     </trigger-event>
+    <listen-event on="change-code-color">
+      <script type="module/realm" use="globalState">
+        const themeValue = globalState.get('realm-theme');
+        const rgb2hex = c =>'#'+c.match(/\d+/g)?.map(x=>(+x)?.toString(16)?.padStart(2,0))?.join('');
+
+        // @NOTE Replace monokai with dynamic css variables
+        // Because astro ashiki css variables is meh!
+        const colorLookup = {
+          '#f8f8f2': 'var(--code-text)',
+          '#f92672': 'var(--code-fn)',
+          '#a6e22e': 'var(--code-name)',
+          '#e6db74': 'var(--code-value)',
+          '#66d9ef': 'var(--code-attr)',
+        };
+
+        document.querySelectorAll('span[style]').forEach(el => {
+          const color = rgb2hex(el.style.color);
+          el.style.color = colorLookup?.[color] ?? color;
+        });
+      </script>
+    </listen-event>
+
+    <listen-event mounted>
+      <send-event name="change-code-color"></send-event>
+    </listen-event>
+    <listen-event statechanged="realm-theme">
+      <send-event name="change-code-color"></send-event>
+    </listen-event>
   </element-flow>
 
   <template>
