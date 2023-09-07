@@ -157,11 +157,7 @@ const menus = menusLookup?.[menuGroup] ?? [];
             menus.map((menu) => (
               <docs-menu title={menu.title}>
                 {menu.items.map((item) => (
-                  <anchor-link
-                    href={item.path}
-                    active={Astro.url.pathname === item.path}>
-                    {item.title}
-                  </anchor-link>
+                  <anchor-link href={item.path}>{item.title}</anchor-link>
                 ))}
               </docs-menu>
             ))
@@ -172,11 +168,7 @@ const menus = menusLookup?.[menuGroup] ?? [];
               menus.map((menu) => (
                 <docs-menu title={menu.title}>
                   {menu.items.map((item) => (
-                    <anchor-link
-                      href={item.path}
-                      active={Astro.url.pathname === item.path}>
-                      {item.title}
-                    </anchor-link>
+                    <anchor-link href={item.path}>{item.title}</anchor-link>
                   ))}
                 </docs-menu>
               ))
