@@ -25,6 +25,33 @@ importers:
         specifier: latest
         version: 1.10.13
 
+  apps/blog:
+    dependencies:
+      '@astrojs/mdx':
+        specifier: ^0.19.7
+        version: 0.19.7(astro@2.10.14)
+      '@astrojs/partytown':
+        specifier: ^2.0.0
+        version: 2.0.0
+      '@astrojs/prefetch':
+        specifier: ^0.3.0
+        version: 0.3.0
+      '@astrojs/sitemap':
+        specifier: ^2.0.2
+        version: 2.0.2
+      astro:
+        specifier: ^2.10.14
+        version: 2.10.14(@types/node@20.5.0)
+      astro-critters:
+        specifier: ^2.0.11
+        version: 2.0.11
+      astro-libs:
+        specifier: workspace:*
+        version: link:../../packages/astro-libs
+      astro-seo:
+        specifier: ^0.8.0
+        version: 0.8.0
+
   apps/web:
     dependencies:
       '@astrojs/mdx':
@@ -45,6 +72,18 @@ importers:
       astro-critters:
         specifier: ^2.0.11
         version: 2.0.11
+      astro-libs:
+        specifier: workspace:*
+        version: link:../../packages/astro-libs
+      astro-seo:
+        specifier: ^0.8.0
+        version: 0.8.0
+
+  packages/astro-libs:
+    dependencies:
+      astro:
+        specifier: ^2.10.14
+        version: 2.10.14(@types/node@20.5.0)
       astro-seo:
         specifier: ^0.8.0
         version: 0.8.0
@@ -1715,7 +1754,7 @@ packages:
       esbuild: 0.17.19
       estree-walker: 3.0.0
       execa: 6.1.0
-      fast-glob: 3.3.0
+      fast-glob: 3.3.1
       github-slugger: 2.0.0
       gray-matter: 4.0.3
       html-escaper: 3.0.3
