@@ -1,0 +1,61 @@
+<custom-element name="top-navigation-right-menu">
+  <element-attr name="is-mobile" type="boolean">false</element-attr>
+
+  <template>
+    <style>
+      :host {
+        align-items: center;
+        gap: var(--_3sp);
+        --display: flex;
+        display: var(--display);
+      }
+
+      :host([\@is-mobile][eq="true"]) {
+        --padding-top: calc(55px + (var(--_5sp)));
+        flex-direction: column;
+        align-items: flex-start;
+        padding: var(--padding-top) 0 var(--_5sp);
+        font-size: 1.5rem;
+        height: calc(100vh - (var(--padding-top) + var(--_5sp)));
+      }
+
+      :host a {
+        font-weight: 500;
+        color: var(--theme-color);
+        text-decoration: none;
+        transition: color 300ms ease;
+        display: inline-flex;
+        align-items: center;
+        gap: var(--_1sp);
+      }
+
+      :host a:hover {
+        background: linear-gradient(to bottom, var(--color-pastel-magenta) 0%, var(--color-light-salmon-pink) 100%);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      :host theme-switcher {
+        --order: 1;
+        --margin: auto;
+        order: var(--order);
+        margin-top: var(--margin);
+      }
+
+      @media (min-width: 768px) {
+        :host theme-switcher {
+          --margin: 0;
+          --order: unset;
+        }
+      }
+    </style>
+
+    <anchor-gradient href="https://realm.codes">Back to Main Website</anchor-gradient>
+    <theme-switcher></theme-switcher>
+    <anchor-gradient href="https://github.com/realmorg/realm/tree/main/apps/blog" target="_blank">
+      <icon-github></icon-github>
+      <is-visible value="@is-mobile" eq="true">Github</is-visible>
+    </anchor-gradient>
+  </template>
+</custom-element>

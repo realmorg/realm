@@ -1,0 +1,39 @@
+<custom-element name="blog-layout">
+  <template>
+    <style>
+      :host {
+        display: block;
+        margin-top: 50px;
+        border-bottom: 1px solid var(--theme-border-color);
+      }
+
+      :host main {
+        max-width: 1024px;
+        margin: 0 auto;
+        padding: var(--_10sp) var(--_5sp);
+      }
+
+      @media screen and (min-width: 1024px) {
+        :host main {
+          padding-left: 0;
+          padding-left: 0;
+        }
+      }
+
+      ::slotted(post-layout) {
+        padding: var(--_5sp) 0;
+      }
+
+      ::slotted(post-layout:not(:first-of-type)) {
+        margin-top: var(--_4sp);
+      }
+      ::slotted(post-layout:not(:last-of-type)) {
+        margin-bottom: var(--_4sp);
+        border-bottom: 1px solid var(--theme-border-color);
+      }
+    </style>
+    <main>
+      <slot children></slot>
+    </main>
+  </template>
+</custom-element>

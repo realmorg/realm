@@ -1,0 +1,27 @@
+---
+import BlogLayout from "../layouts/Blog.astro";
+
+const allPosts = await Astro.glob("./posts/*.md");
+allPosts.slice(10).sort((a, z) => Date.parse(z.frontmatter.date) - Date.parse(a.frontmatter.date));
+---
+
+<BlogLayout>
+  {
+    allPosts.map((post) => (
+      <post-layout>
+        <h2 slot="title">
+          <anchor-gradient href={post.url}>{post.frontmatter.title}</anchor-gradient>
+        </h2>
+        <article slot="content">
+          <p>{post.frontmatter.description}</p>
+        </article>
+        <span slot="author">{post.frontmatter.author}</span>
+        <div slot="tags">
+          {post.frontmatter.tags.map((item: string) => (
+            <span>#{item}</span>
+          ))}
+        </div>
+      </post-layout>
+    ))
+  }
+</BlogLayout>

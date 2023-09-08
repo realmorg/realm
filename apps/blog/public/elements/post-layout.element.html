@@ -1,0 +1,55 @@
+<custom-element name="post-layout">
+  <template>
+    <style>
+      :host {
+        display: flex;
+        flex-direction: column;
+      }
+      :host ::slotted(h1) {
+        font-weight: 900;
+        font-size: 3rem;
+        margin: 0 0 var(--_1sp);
+      }
+      :host ::slotted(h2) {
+        font-weight: 900;
+        font-size: 2.5rem;
+        margin: 0 0 var(--_1sp);
+      }
+      .meta {
+        display: flex;
+        flex-direction: column;
+        gap: var(--_1sp);
+        font-size: 1rem;
+      }
+
+      .separator {
+        display: none;
+      }
+
+      @media screen and (min-width: 1024px) {
+        .meta {
+          flex-direction: row;
+        }
+        .separator {
+          display: inline;
+        }
+      }
+
+      .meta ::slotted(div) {
+        display: inline-flex;
+        flex-wrap: wrap;
+        gap: var(--_1sp);
+      }
+    </style>
+    <slot name="title"></slot>
+    <div class="meta">
+      <span class="meta-author">
+        By
+        <slot name="author"></slot>
+      </span>
+      <span class="separator">&dash;</span>
+      <slot name="tags"></slot>
+    </div>
+    <slot name="content"></slot>
+  </template>
+</custom-element>
