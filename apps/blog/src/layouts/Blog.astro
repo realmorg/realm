@@ -1,0 +1,19 @@
+---
+import Layout from "astro-libs/layouts/Layout.astro";
+import RealmImportElement from "astro-libs/layouts/RealmImportElement.astro";
+---
+
+<Layout origin="http://localhost:3000" title="The Realm Blog - Updates, ideas, release and all news about Realm Framework" seoProps={{ titleTemplate: "%s" }}>
+  <RealmImportElement elements={["top-navigation-blog", "blog-layout", "post-layout"]} />
+  <top-navigation-blog></top-navigation-blog>
+  <blog-layout>
+    <slot />
+  </blog-layout>
+</Layout>
+
+<style is:global>
+  article {
+    font-size: 1.25rem;
+    line-height: 1.5;
+  }
+</style>

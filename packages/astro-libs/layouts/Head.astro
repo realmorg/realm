@@ -4,10 +4,16 @@ import { SEO, Props as SeoProps } from "astro-seo";
 export interface Props {
   title?: string;
   description?: string;
-  seoProps?: SeoProps
+  seoProps?: SeoProps;
+  origin?: string;
 }
 
-const { title = 'Realm', description = 'REALM stands for Reactive-Lightweight Markup Language. HTML Framework for Building MVP.', seoProps = {} } = Astro.props;
+const {
+  title = 'Realm',
+  description = 'REALM stands for Reactive-Lightweight Markup Language. HTML Framework for Building MVP.',
+  seoProps = {},
+  origin = Astro.url.origin,
+} = Astro.props;
 ---
 <head>
   <meta charset="UTF-8" />
@@ -20,7 +26,7 @@ const { title = 'Realm', description = 'REALM stands for Reactive-Lightweight Ma
       basic: {
         title: title,
         type: "website",
-        image: `${Astro.url.origin}/assets/media/banner.png`,
+        image: `${origin}assets/media/banner.png`,
       }
     }}
     twitter={{
@@ -30,7 +36,7 @@ const { title = 'Realm', description = 'REALM stands for Reactive-Lightweight Ma
       meta: [
         {
           name: "twitter:image",
-          content: `${Astro.url.origin}/assets/media/banner.png`,
+          content: `${origin}assets/media/banner.png`,
         },
         { name: "twitter:title", content: title },
         { name: "twitter:description", content: description },
@@ -38,33 +44,33 @@ const { title = 'Realm', description = 'REALM stands for Reactive-Lightweight Ma
     }}
     {...seoProps}
   />
-  <link rel="icon" type="image/svg+xml" href="/assets/realm-logo.svg" />
+  <link rel="icon" type="image/svg+xml" href=`${origin}/assets/realm-logo.svg` />
   <link
     rel="icon"
     type="image/png"
     sizes="32x32"
-    href="/favicons/favicon-32x32.png"
+    href=`${origin}/favicons/favicon-32x32.png`
   />
   <link
     rel="icon"
     type="image/png"
     sizes="16x16"
-    href="/favicons/favicon-16x16.png"
+    href=`${origin}/favicons/favicon-16x16.png`
   />
   <link
     rel="apple-touch-icon"
     sizes="180x180"
-    href="/favicons/apple-touch-icon.png"
+    href=`${origin}/favicons/apple-touch-icon.png`
   />
-  <link rel="manifest" href="/favicons/site.webmanifest" />
+  <link rel="manifest" href=`${origin}/favicons/site.webmanifest` />
   <link
     rel="mask-icon"
-    href="/favicons/safari-pinned-tab.svg"
+    href=`${origin}/favicons/safari-pinned-tab.svg`
     color="#000000"
   />
-  <link rel="shortcut icon" href="/favicons/favicon.ico" />
+  <link rel="shortcut icon" href=`${origin}/favicons/favicon.ico` />
   <meta name="msapplication-TileColor" content="#000000" />
-  <meta name="msapplication-config" content="/favicons/browserconfig.xml" />
+  <meta name="msapplication-config" content=`${origin}/favicons/browserconfig.xml` />
   <meta name="theme-color" content="#000000" />
   <link rel="preconnect" href="https://cdn.jsdelivr.net" />
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />

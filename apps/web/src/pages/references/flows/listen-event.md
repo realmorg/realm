@@ -6,7 +6,7 @@ menuOrder: 2
 title: "Flow: listen-event"
 author: Ribhararnus Pracutian
 description: The `listen-event` flow reference.
-imports: ["custom-event-demo"]
+elements: ["custom-event-demo"]
 ---
 
 This element tag is used to listen the custom element's lifecycle or a custom event sent by <anchor-link href="/references/actions/send-event">`<send-event>`</anchor-link>, this element tag only allowed to be used inside a <anchor-link href="/references/elements/element-flow">`<element-flow>`</anchor-link> tag.

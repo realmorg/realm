@@ -1,0 +1,11 @@
+<custom-element name="top-navigation-web">
+  <template>
+    <import-element from="/elements/top-navigation-left-menu.element.html"></import-element>
+    <import-element from="/elements/top-navigation-right-menu.element.html"></import-element>
+    <top-navigation>
+      <top-navigation-left-menu slot="top-nav-left-menu"></top-navigation-left-menu>
+      <top-navigation-right-menu slot="top-nav-right-menu"></top-navigation-right-menu>
+      <top-navigation-right-menu slot="top-nav-right-menu-mobile" is-mobile="true"></top-navigation-right-menu>
+    </top-navigation>
+  </template>
+</custom-element>
