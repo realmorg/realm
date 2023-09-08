@@ -3,26 +3,24 @@ title: API / References
 description: WIP.
 ---
 
-import Layout from "../layouts/Layout.astro";
-import RealmImportElement from "../layouts/RealmImportElement.astro";
+import Layout from "astro-libs/layouts/Layout.astro";
+import RealmImportElement from "astro-libs/layouts/RealmImportElement.astro";
 
 <Layout
   title="Realm: Reactive-lightweight Markup Language"
-  seoProps={{ titleTemplate: "%s" }}>
-  <RealmImportElement
-    elements={[
-      "cta-section",
-      "install-section",
-      "example-section-1",
-      "example-section-2",
-      "example-section-3",
-    ]}
-  />
-
-<container-layout
-  aria-label="Hero container layout"
-  height="100vh">
-<cta-section aria-label="CTAs Section"></cta-section>
+  seoProps={{ titleTemplate: "%s" }}
+  elements={[
+    "top-navigation-web",
+    "cta-section",
+    "install-section",
+    "example-section",
+    "example-section-1",
+    "example-section-2",
+    "example-section-3",
+]}>
+<top-navigation-web aria-label="Top Navigation"></top-navigation-web>
+<container-layout aria-label="Hero container layout" height="100vh">
+  <cta-section aria-label="CTAs Section"></cta-section>
 </container-layout>
 
 <container-layout variant="odd">

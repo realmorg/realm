@@ -9,7 +9,7 @@
 
   <template>
     <style>
-      :host nav.desktop {
+      :host nav {
         padding: var(--_2sp) var(--_3sp);
         width: 100%;
         display: flex;
@@ -45,21 +45,6 @@
         pointer-events: all;
       }
 
-      :host nav.desktop top-navigation-right-menu {
-        --display: none;
-        display: var(--display);
-      }
-
-      :host nav.mobile top-navigation-right-menu {
-        --padding-top: calc(55px + (var(--_5sp)));
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        padding: var(--padding-top) var(--_5sp) var(--_5sp);
-        font-size: 1.5rem;
-        height: calc(100vh - (var(--padding-top) + var(--_5sp)));
-      }
-
       :host .mobile-menu-toggle {
         --display: flex;
         display: var(--display);
@@ -68,12 +53,18 @@
         margin-left: auto;
       }
 
+      :host slot[name="top-nav-right-menu"] {
+        --display: none;
+        display: var(--display);
+        margin-left: auto;
+      }
+
       @media (min-width: 768px) {
         :host nav.mobile {
           --display: none;
         }
 
-        :host nav.desktop top-navigation-right-menu {
+        :host slot[name="top-nav-right-menu"] {
           --display: flex;
         }
 
@@ -83,24 +74,19 @@
       }
     </style>
 
-    <import-element from="/icons/icon-mobile-menu.element.html"></import-element>
-    <import-element from="/icons/icon-close.element.html"></import-element>
-    <import-element from="/elements/top-navigation-left-menu.element.html"></import-element>
-    <import-element from="/elements/top-navigation-right-menu.element.html"></import-element>
-
-    <nav class="desktop">
-      <top-navigation-left-menu></top-navigation-left-menu>
+    <nav>
+      <slot name="top-nav-left-menu"></slot>
       <is-visible value="#is-mobile-menu-open" eq="true">
         <icon-close ref="mobile-menu-toggle" class="mobile-menu-toggle"></icon-close>
       </is-visible>
       <is-visible value="#is-mobile-menu-open" eq="false">
         <icon-mobile-menu ref="mobile-menu-toggle" class="mobile-menu-toggle"></icon-mobile-menu>
       </is-visible>
-      <top-navigation-right-menu></top-navigation-right-menu>
+      <slot name="top-nav-right-menu"></slot>
     </nav>
 
     <nav class="mobile">
-      <top-navigation-right-menu is-mobile="true"></top-navigation-right-menu>
+      <slot name="top-nav-right-menu-mobile"></slot>
     </nav>
   </template>
 </custom-element>

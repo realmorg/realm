@@ -1,11 +1,9 @@
 ---
 import type { MarkdownInstance } from "astro";
 import type { Props as SEOProps } from "astro-seo";
-import Head, { Props as HeadProps } from "./Head.astro";
-import RealmGlobalStateDefs from "./RealmGlobalStateDefs.astro";
-import RealmImportElement, {
-  importantElements,
-} from "./RealmImportElement.astro";
+import Head, { Props as HeadProps } from "astro-libs/layouts/Head.astro";
+import RealmGlobalStateDefs from "astro-libs/layouts/RealmGlobalStateDefs.astro";
+import RealmImportElement, { importantElements, iconElements } from "astro-libs/layouts/RealmImportElement.astro";
 
 type MenuItem = {
   title: string;
@@ -21,32 +19,24 @@ export interface Props {
   frontmatter: HeadProps & {
     author: string;
     menus: string;
-    imports: string[];
+    elements: string[];
     menuGroup: string;
     menuTitle: string;
     menuOrder: number;
   };
 }
 
-const menuItemSort = (
-  a: MarkdownInstance<Record<string, string>>,
-  z: MarkdownInstance<Record<string, string>>
-) => +a.frontmatter.menuOrder - +z.frontmatter.menuOrder;
+const menuItemSort = (a: MarkdownInstance<Record<string, string>>, z: MarkdownInstance<Record<string, string>>) => +a.frontmatter.menuOrder - +z.frontmatter.menuOrder;
 
-const menuItemTransformer = (
-  markdown: MarkdownInstance<Record<string, string>>
-) => ({
+const menuItemTransformer = (markdown: MarkdownInstance<Record<string, string>>) => ({
   title: markdown.frontmatter.menuTitle,
   path: markdown?.url ?? "",
 });
 
-const loadMarkdown = async (
-  fn: Promise<MarkdownInstance<Record<string, string>>[]>
-) =>
-  await fn.then((files) => files.sort(menuItemSort).map(menuItemTransformer));
+const loadMarkdown = async (fn: Promise<MarkdownInstance<Record<string, string>>[]>) => await fn.then((files) => files.sort(menuItemSort).map(menuItemTransformer));
 
 const {
-  frontmatter: { menuGroup, imports = [], ...headProps },
+  frontmatter: { menuGroup, elements = [], ...headProps },
 } = Astro.props;
 
 const menusLookup: Record<string, Menu[]> = {
@@ -75,9 +65,7 @@ const menusLookup: Record<string, Menu[]> = {
     },
     {
       title: "Intermediate",
-      items: await loadMarkdown(
-        Astro.glob("../pages/examples/intermediate/*.md")
-      ),
+      items: await loadMarkdown(Astro.glob("../pages/examples/intermediate/*.md")),
     },
     {
       title: "Advanced",
@@ -92,9 +80,7 @@ const menusLookup: Record<string, Menu[]> = {
     },
     {
       title: "Elements",
-      items: await loadMarkdown(
-        Astro.glob("../pages/references/elements/*.md")
-      ),
+      items: await loadMarkdown(Astro.glob("../pages/references/elements/*.md")),
     },
     {
       title: "Flows",
@@ -136,23 +122,11 @@ const menus = menusLookup?.[menuGroup] ?? [];
   <body>
     <web-app>
       <RealmGlobalStateDefs />
-      <RealmImportElement
-        elements={[
-          ...importantElements,
-          "docs-aside",
-          "docs-main",
-          "docs-container",
-          "docs-menu",
-          ...imports,
-          ...(menuGroup === "references"
-            ? ["ref-section", "ref-item-def"]
-            : []),
-        ]}
-      />
+      <RealmImportElement elements={[...importantElements, "top-navigation-web", "docs-aside", "docs-main", "docs-container", "docs-menu", ...elements, ...(menuGroup === "references" ? ["ref-section", "ref-item-def"] : [])]} />
+      <RealmImportElement path="icons" elements={[...iconElements]} />
       <theme-provider>
-        <top-navigation aria-label="Top Navigation"></top-navigation>
-        <docs-aside
-          label={`${asideMobileLabelLookup?.[menuGroup]} Table of Contents`}>
+        <top-navigation-web aria-label="Top Navigation"></top-navigation-web>
+        <docs-aside label={`${asideMobileLabelLookup?.[menuGroup]} Table of Contents`}>
           {
             menus.map((menu) => (
               <docs-menu title={menu.title}>

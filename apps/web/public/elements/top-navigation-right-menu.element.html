@@ -4,9 +4,19 @@
   <template>
     <style>
       :host {
-        margin-left: auto;
         align-items: center;
         gap: var(--_3sp);
+        --display: flex;
+        display: var(--display);
+      }
+
+      :host([\@is-mobile][eq="true"]) {
+        --padding-top: calc(55px + (var(--_5sp)));
+        flex-direction: column;
+        align-items: flex-start;
+        padding: var(--padding-top) 0 var(--_5sp);
+        font-size: 1.5rem;
+        height: calc(100vh - (var(--padding-top) + var(--_5sp)));
       }
 
       :host a {
@@ -40,9 +50,6 @@
         }
       }
     </style>
-
-    <import-element from="/elements/theme-switcher.element.html"></import-element>
-    <import-element from="/icons/icon-github.element.html"></import-element>
 
     <anchor-gradient href="/docs" active-path="/docs">Docs</anchor-gradient>
     <anchor-gradient href="/examples" active-path="/examples">Examples</anchor-gradient>

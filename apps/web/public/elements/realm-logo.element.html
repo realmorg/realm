@@ -1,6 +1,7 @@
 <custom-element name="realm-logo">
   <element-attr name="size" type="number">150</element-attr>
   <element-attr name="variant" type="string">normal</element-attr>
+  <element-attr name="label" type="string">REALM</element-attr>
 
   <template>
     <style>
@@ -123,6 +124,8 @@
         </div>
       </div>
     </div>
-    <div class="label">REALM</div>
+    <div class="label">
+      <slot name="@label"></slot>
+    </div>
   </template>
 </custom-element>
