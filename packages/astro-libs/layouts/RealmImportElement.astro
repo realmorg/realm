@@ -1,0 +1,15 @@
+---
+interface Props {
+  elements?: string[];
+  origin?: string;
+  path?: string;
+}
+
+export const importantElements = ["anchor-gradient", "anchor-link", "button-glow", "button-icon", "container-layout", "top-navigation", "footer-section", "theme-switcher", "realm-demo", "realm-logo", "sb-viewer", "theme-provider"];
+
+export const iconElements = ["icon-github", "icon-mobile-menu", "icon-dark-mode", "icon-light-mode", "icon-close"];
+
+const { origin = Astro.url.origin, path = "elements", elements = [] } = Astro.props;
+---
+
+{elements.map((elementName) => <import-element from={`${origin}/${path}/${elementName}.element.html`} />)}
