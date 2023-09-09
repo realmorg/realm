@@ -75,21 +75,20 @@ Please note that you only can use one of these attributes.
 
 ```html
 <custom-element name="statechanged-event-demo">
-  <element-state name="updated-content" type="number"></element-state>
-  <element-state name="count" type="number">0</element-state>
+  <element-state name="updated" type="number"></element-state>
   <element-state name="content" type="string"></element-state>
   <element-flow>
     <trigger-event input="Input">
       <set-state name="content" value="$.target.value" from="event"></set-state>
     </trigger-event>
     <listen-event statechanged="content">
-      <set-state name="updated-content" value="1" mutate="+"></set-state>
+      <set-state name="updated" value="1" mutate="+"></set-state>
     </listen-event>
   </element-flow>
   <template>
     <div>
       Content state changed
-      <slot name="#updated-content"></slot>
+      <slot name="#updated"></slot>
       x times.
     </div>
     <div><input ref="Input" /></div>
@@ -100,26 +99,22 @@ Please note that you only can use one of these attributes.
 ```
 
 <custom-element name="statechanged-event-demo">
-  <element-state name="updated-content" type="number"></element-state>
-  <element-state name="count" type="number">
-    0
-  </element-state>
+  <element-state name="updated" type="number"></element-state>
   <element-state name="content" type="string"></element-state>
   <element-flow>
     <trigger-event input="Input">
       <set-state name="content" value="$.target.value" from="event"></set-state>
     </trigger-event>
     <listen-event statechanged="content">
-      <set-state name="updated-content" value="1" mutate="+"></set-state>
+      <set-state name="updated" value="1" mutate="+"></set-state>
     </listen-event>
   </element-flow>
   <template>
     <div>
-      Content state changed <slot name="#updated-content"></slot>x times.
+      Content state changed
+      <slot name="#updated"></slot>x times.
     </div>
-    <div>
-      <input ref="Input" />
-    </div>
+    <div><input ref="Input" /></div>
   </template>
 </custom-element>
 
