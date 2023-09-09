@@ -1,5 +1,11 @@
 # @realmorg/realm
 
+## 0.0.16
+
+### Patch Changes
+
+- f6a6143: Update event loses after runtime tick
+
 ## 0.0.15
 
 ### Patch Changes
