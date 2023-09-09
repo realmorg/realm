@@ -8,22 +8,40 @@
   </head>
   <body>
     <web-app>
-      <custom-element name="debounce-demo">
-        <element-state name="counter" type="number">0</element-state>
-
+      <custom-element name="debounce-click">
+        <element-state name="clicked" type="number">0</element-state>
         <element-flow>
-          <trigger-event click="UpdateTest" debounce="5000">
-            <set-state name="counter" value="1" mutate="+"></set-state>
+          <trigger-event click="TheButton" debounce="3000">
+            <set-state name="clicked" value="1" mutate="+"></set-state>
           </trigger-event>
         </element-flow>
-
         <template>
-          <slot name="#counter"></slot>
-          <button ref="UpdateTest">Update Test</button>
+          <button ref="TheButton">
+            Clicked for
+            <slot name="#clicked"></slot>
+            x times.
+          </button>
         </template>
       </custom-element>
 
-      <debounce-demo></debounce-demo>
+      <custom-element name="debounce-input">
+        <element-state name="text" type="string"></element-state>
+        <element-flow>
+          <trigger-event input="TheInput" debounce="1000">
+            <set-state name="text" value="$.target.value" from="event"></set-state>
+          </trigger-event>
+        </element-flow>
+        <template>
+          <input ref="TheInput" />
+          <slot name="#text"></slot>
+        </template>
+      </custom-element>
+
+      <h2>Debounce Click 3 seconds</h2>
+      <debounce-click></debounce-click>
+
+      <h2>Debounce Input 1 seconds</h2>
+      <debounce-input></debounce-input>
     </web-app>
   </body>
 </html>

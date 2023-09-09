@@ -25,12 +25,17 @@ const sendTriggerEvent =
   (event: Event) => {
     const [, clearTimeout] = debounceTimer || [];
     clearTimeout?.();
+
+    const eventTarget = event?.target;
     const triggerEvent = () =>
       dispatcherElement._sendEvent(FlowEventNames.TRIGGER_EVENT, [
         EMPTY_STRING,
         eventName,
         actions,
-        event,
+        {
+          ...event,
+          target: eventTarget,
+        },
       ]);
 
     if (debounceTime > 0) {
