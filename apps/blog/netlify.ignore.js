@@ -1,1 +1,1 @@
-process.exitCode = process.env.SITE_DOMAIN === "blog.realm.codes" ? 1 : 0;
+process.exitCode = process.env.BRANCH.startsWith("blog") ? 1 : 0;
