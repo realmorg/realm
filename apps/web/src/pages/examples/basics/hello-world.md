@@ -5,7 +5,7 @@ menuTitle: Hello World
 menuOrder: 1
 title: "Example: Basic Custom Element"
 author: Ribhararnus Pracutian
-description: WIP.
+description: The simplest example of a custom element.
 ---
 
-WIP.
+<sb-viewer id="web-platform-qn7r7o" height="100vh"></sb-viewer>
