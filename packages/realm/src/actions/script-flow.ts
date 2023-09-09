@@ -61,19 +61,15 @@ export const scriptAction = defineAction({
       RealmAttributeNames.SCRIPT_ID
     );
 
-    const eventTarget = event?.target;
+    const eventValue = event?.target?.[RealmAttributeNames.VALUE];
     const waitForScriptLoaded = () =>
       reqAnim(() => {
         const scriptFlow = getScriptFlow(elementName, scriptIdAttr);
         const isScriptLoaded = !!scriptFlow;
         if (!isScriptLoaded) return waitForScriptLoaded();
-        scriptFlow?.apply(
-          element,
-          getScriptArgs(element, {
-            ...event,
-            target: eventTarget,
-          })
-        );
+        if (eventValue !== undefined && !!event?.target)
+          event.target[RealmAttributeNames.VALUE] = eventValue;
+        scriptFlow?.apply(element, getScriptArgs(element, event));
       });
     waitForScriptLoaded();
   },
