@@ -72,7 +72,8 @@ export const httpRequestAction = defineAction({
       FlowAction[]
     >(responseResponseFailAttr, RealmAttributeNames.ACTION);
 
-    if (!(hasResponseOkAttr || hasResponseFailAttr)) return;
+    const isValidHttpRequest = hasResponseOkAttr || hasResponseFailAttr;
+    if (!isValidHttpRequest) return;
 
     const [method = HttpMethod.GET] = findAttr<string>(
       actionArgs,
@@ -135,13 +136,13 @@ export const httpRequestAction = defineAction({
       );
 
     try {
-      if (!hasResponseOkActions) return;
       const response = await fetch(urlAttr, {
         body,
         method,
         headers,
       });
       if (!response.ok) throw newError(`[${response.status}] ${urlAttr}`);
+      if (!hasResponseOkActions) return;
 
       const getTextResponse = () => response.text();
       const valueLookup = {
@@ -149,16 +150,13 @@ export const httpRequestAction = defineAction({
         [ResponseType.HTML]: getTextResponse,
         [ResponseType.TEXT]: getTextResponse,
       };
-
       const responseValue = await valueLookup?.[asAttr]?.();
       doActionWrapper(responseOkActions, responseValue);
     } catch (err) {
-      if (hasResponseFailActions) {
-        doActionWrapper(responseFailActions, {
-          message:
-            "[ERROR] " + err?.message ?? `unknown error, URL: ${urlAttr}`,
-        });
-      }
+      if (!hasResponseFailActions) return;
+      doActionWrapper(responseFailActions, {
+        message: "[ERROR] " + err?.message ?? `unknown error, URL: ${urlAttr}`,
+      });
     }
   },
 });
