@@ -1,1 +1,1 @@
-process.exitCode = process.env.BRANCH.includes("web") ? 1 : 0;
+process.exitCode = process.env.SITE_DOMAIN === "realm.codes" ? 1 : 0;
