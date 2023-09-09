@@ -1,6 +1,7 @@
 <custom-element name="sb-viewer">
   <element-attr name="id" type="string"></element-attr>
   <element-attr name="hide-explorer" type="boolean">true</element-attr>
+  <element-attr name="height" type="string">50vh</element-attr>
   <element-state name="iframe-url" type="string">about:blank</element-state>
   <element-state name="is-loaded" type="boolean">false</element-state>
 
@@ -45,7 +46,7 @@
 
       :host iframe {
         width: 100%;
-        min-height: 50vh;
+        min-height: var(--attr-height);
         border: 0;
       }
 

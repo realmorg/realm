@@ -1,9 +1,9 @@
 ---
 layout: ../../../layouts/Docs.astro
 menuGroup: examples
-menuTitle: HTTP Request
-menuOrder: 1
-title: "Example: Basic HTTP Request"
+menuTitle: Todo List
+menuOrder: 3
+title: "Example App: Todo List"
 author: Ribhararnus Pracutian
 description: WIP.
 ---

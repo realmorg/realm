@@ -39,9 +39,7 @@ This element tag is reversed version of <anchor-link href="/references/elements/
   </template>
 </custom-element>
 
-<realm-demo>
-  <my-element></my-element>
-</realm-demo>
+<my-element></my-element>
 ```
 
 <custom-element name="my-element">
