@@ -186,6 +186,11 @@ export const findArray = <T>(
   fn: (value: T, index: number) => boolean
 ) => array.find(fn);
 
+export const findIndex = <T>(
+  array: T[],
+  fn: (value: T, index: number) => boolean
+) => array.findIndex(fn);
+
 export const filterArray = <T>(
   array: T[],
   fn: (value: T, index: number) => boolean
