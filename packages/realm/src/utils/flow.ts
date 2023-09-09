@@ -18,6 +18,7 @@ import {
   createArray,
   createMap,
   createSet,
+  findIndex,
   fromEntries,
   getMap,
   isArray,
@@ -149,11 +150,18 @@ export const getFlow = (name: string, elementName: string) =>
  * @param param0
  * @returns
  */
-export const mutatesValue = ([mutateType, attrType, attrValue, attrIndex]: [
+export const mutatesValue = ([
+  mutateType,
+  attrType,
+  attrValue,
+  attrIndex,
+  toggleArray,
+]: [
   mutateType: string,
   attrType: ElementDataTypes,
   attrValue: MixedDataType,
-  attrIndex: number
+  attrIndex: number,
+  toggleArray?: boolean
 ]) => {
   const isAllowedMutation = arrayIncludes(attrType, [
     ElementDataTypes.NUMBER,
@@ -183,11 +191,16 @@ export const mutatesValue = ([mutateType, attrType, attrValue, attrIndex]: [
               : attrValue;
         return array;
       },
-      [FlowMutateTypes.PUSH]: () => [
-        ...(prevValue as Array<unknown>),
-        ...arrayReduce(
+      [FlowMutateTypes.PUSH]: () =>
+        arrayReduce(
           attrValue as Array<unknown>,
           (acc, value) => {
+            const prevIndex = findIndex(acc, (val) => val === value);
+            if (toggleArray && prevIndex > -1) {
+              arraySplice(acc, prevIndex, 1);
+              return acc;
+            }
+
             const newId = `${SOURCE_PREFIX}${SOURCE_PREFIX}${$randId()}`;
             return [
               ...acc,
@@ -199,9 +212,8 @@ export const mutatesValue = ([mutateType, attrType, attrValue, attrIndex]: [
                 : value,
             ];
           },
-          []
+          [...(prevValue as Array<unknown>)]
         ),
-      ],
       [FlowMutateTypes.POP]: () => {
         const array = [...(prevValue as MixedDataType[])];
         arrayPop(array);
