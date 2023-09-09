@@ -1,1 +1,1 @@
-process.exitCode = process.env.BRANCH.includes("web") ? 0 : 1;
+process.exitCode = process.env.BRANCH.includes("web") ? 1 : 0;

@@ -1,1 +1,1 @@
-process.exitCode = process.env.BRANCH.includes("blog") ? 0 : 1;
+process.exitCode = process.env.BRANCH.includes("blog") ? 1 : 0;
