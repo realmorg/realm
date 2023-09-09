@@ -1,5 +1,11 @@
 # @realmorg/realm
 
+## 0.0.15
+
+### Patch Changes
+
+- b2d62c2: Update fix http response handling
+
 ## 0.0.14
 
 ### Patch Changes
