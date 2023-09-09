@@ -26,24 +26,27 @@ const sendTriggerEvent =
     const [, clearTimeout] = debounceTimer || [];
     clearTimeout?.();
 
-    const eventTarget = event?.target;
-    const triggerEvent = () =>
-      dispatcherElement._sendEvent(FlowEventNames.TRIGGER_EVENT, [
-        EMPTY_STRING,
-        eventName,
-        actions,
-        {
-          ...event,
-          target: eventTarget,
-        },
-      ]);
-
     if (debounceTime > 0) {
-      debounceTimer = timerOnce(triggerEvent, debounceTime);
+      const eventValue = event?.target?.[RealmAttributeNames.VALUE];
+      debounceTimer = timerOnce(() => {
+        if (eventValue !== undefined && !!event?.target)
+          event.target[RealmAttributeNames.VALUE] = eventValue;
+        dispatcherElement._sendEvent(FlowEventNames.TRIGGER_EVENT, [
+          EMPTY_STRING,
+          eventName,
+          actions,
+          event,
+        ]);
+      }, debounceTime);
       return;
     }
 
-    return triggerEvent();
+    return dispatcherElement._sendEvent(FlowEventNames.TRIGGER_EVENT, [
+      EMPTY_STRING,
+      eventName,
+      actions,
+      event,
+    ]);
   };
 
 const dispatchEvent =
