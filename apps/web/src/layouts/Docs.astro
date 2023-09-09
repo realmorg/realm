@@ -60,16 +60,32 @@ const menusLookup: Record<string, Menu[]> = {
       items: await loadMarkdown(Astro.glob("../pages/examples/*.md")),
     },
     {
+      title: "App / Practical",
+      items: await loadMarkdown(Astro.glob("../pages/examples/app/*.md")),
+    },
+    {
       title: "Basic",
       items: await loadMarkdown(Astro.glob("../pages/examples/basics/*.md")),
     },
     {
-      title: "Intermediate",
-      items: await loadMarkdown(Astro.glob("../pages/examples/intermediate/*.md")),
+      title: "States",
+      items: await loadMarkdown(Astro.glob("../pages/examples/states/*.md")),
     },
     {
-      title: "Advanced",
-      items: await loadMarkdown(Astro.glob("../pages/examples/advanced/*.md")),
+      title: "Styling",
+      items: await loadMarkdown(Astro.glob("../pages/examples/styling/*.md")),
+    },
+    {
+      title: "Events / Lifecycle",
+      items: await loadMarkdown(Astro.glob("../pages/examples/events/*.md")),
+    },
+    {
+      title: "HTTP",
+      items: await loadMarkdown(Astro.glob("../pages/examples/http/*.md")),
+    },
+    {
+      title: "Misc",
+      items: await loadMarkdown(Astro.glob("../pages/examples/misc/*.md")),
     },
   ],
 
@@ -105,9 +121,11 @@ const asideMobileLabelLookup: Record<string, string> = {
 
 const titleTemplateLookup: Record<string, string> = {
   docs: "Docs: %s | Realm",
-  examples: "Examples: %s | Realm",
+  examples: "%s | Realm",
   references: "%s (References) | Realm",
 };
+
+const docsWidth = menuGroup === "examples" ? "100%" : "80ch";
 
 const seoProps: SEOProps = {
   titleTemplate: titleTemplateLookup?.[menuGroup],
@@ -150,7 +168,7 @@ const menus = menusLookup?.[menuGroup] ?? [];
           </div>
         </docs-aside>
         <docs-container border="true">
-          <docs-main title={headProps.title}>
+          <docs-main width={docsWidth} title={headProps.title}>
             <slot />
           </docs-main>
         </docs-container>
