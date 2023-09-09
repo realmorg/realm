@@ -81,7 +81,11 @@ const {
   TOGGLE: AttrToggle,
 } = RealmAttributeNames;
 
-const { ARRAY: DataTypeArray, HTML: DataTypeHTML } = ElementDataTypes;
+const {
+  ARRAY: DataTypeArray,
+  HTML: DataTypeHTML,
+  BOOLEAN: DataTypeBool,
+} = ElementDataTypes;
 
 /**
  * Get value from dot notation raw, without parsing by type
@@ -138,7 +142,7 @@ export const getSourceFrom = (
 ) => {
   const getRawValue = () => getRawSourceFrom(element, value, sourceType, event);
   const eventLookup: Record<string, () => MixedDataType> = {
-    [FlowDataSource.EVENT]: getRawValue,
+    [FlowDataSource.EVENT]: () => parseValue(type, getRawValue()),
     [FlowDataSource.EVENT_ATTR]: getRawValue,
     [FlowDataSource.ATTR]: getRawValue,
     [FlowDataSource.GLOBAL_STATE]: () => parseValue(type, getRawValue()),
@@ -190,6 +194,7 @@ export const getMutatedValue = (
 
   const isDataTypeArray = attrType === DataTypeArray;
   const isDataTypeHTML = attrType === DataTypeHTML;
+  const isDataTypeBool = attrType === DataTypeBool;
   const isMutateTypeEqualsTo = mutateAttr === MutateTypeEqual;
   const isMutateTypeArrayRemove = mutateAttr === MutateTypeRemove;
   const isMutateTypeArrayPop = mutateAttr === MutateTypeArrayPop;
@@ -216,7 +221,7 @@ export const getMutatedValue = (
   const attrIndex = hasIndexAttr
     ? getSourceFrom(element, attrType, indexAttr, sourceType, event)
     : "-1";
-  const attrValue = getSourceFrom(
+  let attrValue = getSourceFrom(
     element,
     attrType,
     valueAttr,
@@ -224,13 +229,18 @@ export const getMutatedValue = (
     event
   );
 
-  const [_toggle, hasToggle] = findAttr(actionArgs, AttrToggle);
+  const [, hasToggleAttr] = findAttr(actionArgs, AttrToggle);
+  const isToggleBoolean = hasToggleAttr && isDataTypeBool;
+  if (isToggleBoolean) attrValue = !attrValue;
+
   const mutatedValue = mutatesValue([
     mutateAttr,
     attrType,
-    hasToggle ? !attrValue : attrValue,
+    attrValue,
     +attrIndex,
+    hasToggleAttr,
   ]);
+
   return mutatedValue;
 };
 

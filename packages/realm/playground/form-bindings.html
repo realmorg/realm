@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Form Binding</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <script src="../dist/realm.development.js" defer></script>
+    <link rel="stylesheet" href="../dist/realm.css" />
+  </head>
+  <body>
+    <web-app>
+      <custom-element name="form-bindings">
+        <element-state name="text" type="string">Edit me!</element-state>
+        <element-state name="checked" type="boolean">false</element-state>
+        <element-state name="checked-names" type="array">[]</element-state>
+        <element-state name="selected" type="string"></element-state>
+        <element-state name="multi-selected" type="array">[]</element-state>
+
+        <element-flow>
+          <trigger-event input="TextInput">
+            <set-state name="text" value="$.target.value" from="event"></set-state>
+          </trigger-event>
+          <trigger-event input="Checkbox">
+            <set-state name="checked" toggle value="$.checked" from="localState"></set-state>
+          </trigger-event>
+          <trigger-event change="MultiCheckbox">
+            <set-state name="checked-names" toggle from="event" value='["$.target.value"]' mutate="push"></set-state>
+          </trigger-event>
+          <trigger-event change="Select">
+            <set-state name="selected" value="$.target.value" from="event"></set-state>
+          </trigger-event>
+          <trigger-event change="MultiSelect">
+            <script type="module/realm" use="ref, localState">
+              localState.set('multi-selected', Array.from(ref('MultiSelect').selectedOptions).map((option) => option.value))
+            </script>
+          </trigger-event>
+        </element-flow>
+        <template>
+          <h2>Text Input</h2>
+          <input ref="TextInput" _value="#text" />
+          <slot name="#text"></slot>
+
+          <h2>Checkbox</h2>
+          <input ref="Checkbox" type="checkbox" _checked="#checked" />
+          Checked:
+          <slot name="#checked"></slot>
+
+          <h2>Multi Checkbox</h2>
+          <input ref="MultiCheckbox" type="checkbox" id="jack" value="Jack" />
+          <label for="jack">Jack</label>
+          <input ref="MultiCheckbox" type="checkbox" id="john" value="John" />
+          <label for="john">John</label>
+          <input ref="MultiCheckbox" type="checkbox" id="mike" value="Mike" />
+          <label for="mike">Mike</label>
+          <p>
+            Checked names:
+            <slot name="#checked-names"></slot>
+          </p>
+
+          <h2>Select</h2>
+          <select ref="Select">
+            <option disabled value="">Please select one</option>
+            <option>A</option>
+            <option>B</option>
+            <option>C</option>
+          </select>
+          Selected:
+          <slot name="#selected"></slot>
+
+          <h2>Multi Select</h2>
+          <select ref="MultiSelect" multiple style="width: 100px">
+            <option>A</option>
+            <option>B</option>
+            <option>C</option>
+          </select>
+          Selected:
+          <slot name="#multi-selected"></slot>
+        </template>
+      </custom-element>
+
+      <form-bindings></form-bindings>
+    </web-app>
+  </body>
+</html>
