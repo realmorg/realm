@@ -1,6 +1,6 @@
 {
   "name": "@realmorg/realm",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "description": "Reactive Lightweight Markup Language. HTML framework for building an MVP (Minimum Viable Product) website.",
   "main": "dist/index.js",
   "scripts": {
