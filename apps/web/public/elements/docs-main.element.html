@@ -1,10 +1,11 @@
 <custom-element name="docs-main">
   <element-attr name="title" type="string"></element-attr>
+  <element-attr name="width" type="string">80ch</element-attr>
   <template>
     <style>
       :host {
         display: block;
-        max-width: 80ch;
+        max-width: var(--attr-width);
         margin: 0 auto;
       }
 
