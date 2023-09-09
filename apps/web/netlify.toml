@@ -13,5 +13,5 @@
     Access-Control-Allow-Headers = "*"
 
 [build]
-  base = "apps/web"
-  ignore = "node apps/web/netlify.ignore.js"
+  base = "./"
+  ignore = "node ./netlify.ignore.js"

@@ -6,5 +6,5 @@
     Access-Control-Allow-Headers = "*"
 
 [build]
-  base = "apps/blog"
-  ignore = "node apps/blog/netlify.ignore.js"
+  base = "./"
+  ignore = "node ./netlify.ignore.js"
