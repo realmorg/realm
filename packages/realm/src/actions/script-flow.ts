@@ -62,7 +62,7 @@ export const scriptAction = defineAction({
     );
 
     const hasEventTarget = !!event?.target;
-    const eventTarget = Object.freeze(event?.target);
+    const eventTarget = event?.target;
     const waitForScriptLoaded = () =>
       reqAnim(() => {
         const scriptFlow = getScriptFlow(elementName, scriptIdAttr);
