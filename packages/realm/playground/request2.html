@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>REQUEST</title>
+    <script src="../dist/realm.development.js" defer></script>
+    <link rel="stylesheet" href="../dist/realm.css" />
+  </head>
+  <body>
+    <web-app>
+      <custom-element name="response-fail-example">
+        <element-state name="is-loading" type="boolean">false</element-state>
+        <element-state name="error" type="string"></element-state>
+
+        <element-flow>
+          <trigger-event click="LoadHTML">
+            <set-state name="is-loading" value="true"></set-state>
+            <http-request url="https://example.com" as="html">
+              <response-fail>
+                <set-state name="is-loading" value="false"></set-state>
+                <set-state name="error" value="$.message" from="event"></set-state>
+              </response-fail>
+            </http-request>
+          </trigger-event>
+        </element-flow>
+
+        <template>
+          Error?
+          <slot name="#error"></slot>
+          <hr />
+          <button ref="LoadHTML">
+            <is-visible value="#is-loading" eq="false">Fetch Request</is-visible>
+            <is-visible value="#is-loading" eq="true">Loading...</is-visible>
+          </button>
+        </template>
+      </custom-element>
+
+      <response-fail-example></response-fail-example>
+    </web-app>
+  </body>
+</html>
