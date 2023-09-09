@@ -1,5 +1,11 @@
 # @realmorg/realm
 
+## 0.0.17
+
+### Patch Changes
+
+- 406002c: Update fix `event.target.value` loss
+
 ## 0.0.16
 
 ### Patch Changes
