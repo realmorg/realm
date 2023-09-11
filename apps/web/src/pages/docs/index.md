@@ -9,15 +9,19 @@ description: What and Why is Realm? This page will give you a brief introduction
 ---
 
 ## What is Realm?
-Realm, short for Reactive-Lightweight Markup Language, is a cutting-edge HTML framework that leverages Web Components to create dynamic web apps for building MVP. The framework approach is heavily uses HTML, minimizing the reliance on JavaScript.
 
-Realm has been specifically designed to facilitate the rapid development of Minimum Viable Products (MVPs). To provide a clearer understanding of its capabilities, let's explore basic example:
+Realm, short for Reactive-Lightweight Markup Language, is a cutting-edge HTML framework that uses Web Components to create dynamic web apps, making it ideal for rapidly building Minimum Viable Products (MVPs). The framework relies heavily on HTML, reducing the need for extensive JavaScript.
+
+Let's explore a basic example to better understand Realm's capabilities:
 
 ```html
-<custom-element name="your-custom-element-name">
+<custom-element name="my-element">
   <element-attr name="realm" type="string">world</element-attr>
   <template>
-    <strong>Hello <slot name="@realm"></slot>!</strong>
+    I'm from the
+    <strong>
+      <slot name="@realm"></slot>
+    </strong>
   </template>
 </custom-element>
 
@@ -25,37 +29,41 @@ Realm has been specifically designed to facilitate the rapid development of Mini
   Now you can use or reuse element anywhere in the page,
   as many as you want.
 -->
-<your-custom-element-name></your-custom-element-name>,
-<your-custom-element-name realm="universe"></your-custom-element-name>,
-<your-custom-element-name realm="multiverse"></your-custom-element-name>
+<my-element></my-element>
+<my-element realm="universe"></my-element>
 ```
 
 The codes above will render:
 
-<custom-element name="your-custom-element-name">
+<custom-element name="my-element">
   <element-attr name="realm" type="string">world</element-attr>
   <template>
-    <strong>Hello <slot name="@realm"></slot>!</strong>
+    I'm from the
+    <strong>
+      <slot name="@realm"></slot>
+    </strong>
   </template>
 </custom-element>
 
 <realm-demo>
-  <your-custom-element-name></your-custom-element-name>,
-  <your-custom-element-name realm="universe"></your-custom-element-name>,
-  <your-custom-element-name realm="multiverse"></your-custom-element-name>
+  <my-element></my-element>,
+  <my-element realm="universe"></my-element>,
+  <my-element realm="multiverse"></my-element>
 </realm-demo>
 
-All you need is HTML, no tooling, no bundler, no compiler. You can view source or inspect element to see how it works.
+Realm empowers you with the simplicity of HTML, eliminating the need for additional tools, bundlers, or compilers. You can easily inspect the source code or elements to see how it works.
 
-In the <anchor-link href="/docs/learn">Learn</anchor-link> sections, we will dive into the functionality of Realm, including its reactivity, styling options, and other notable features.
+In the <anchor-link href="/docs/learn">Learn</anchor-link> sections, we will explore Realm's functionality, including its reactivity, reusability, styling options, and other notable features.
 
-## Why Realm?
-Realm is specifically designed with indie makers in mind. If your goal is to rapidly prototype your ideas, Realm is the perfect solution. However, it may not be the ideal choice for developing complex applications. 🤷🏻‍♂️
+## Why Choose Realm?
 
-While Realm excels in enabling fast prototyping, it is still capable of supporting production-ready applications. Take, for instance, this website as an example.
+Realm is tailor-made for indie makers seeking rapid prototyping capabilities. It's the perfect solution for quickly bringing your ideas to life. However, for complex applications, you might want to consider alternative options. 🤷🏻‍♂️
 
-To understand the motivations behind building this framework, I have written an article called "HTML Developer Manifesto." It delves into the reasons and principles that drove the creation of Realm.
+While Realm excels in enabling fast prototyping, it's also capable of supporting production-ready applications, as demonstrated by this website.
+
+To gain insight into the motivations behind building this framework, I've written an article called the "HTML Developer Manifesto," which delves into the principles that drove the creation of Realm.
 
 ## Need help?
-Please feel free to setup a new discussion with me at any time via 
+
+If you have any questions or need assistance, please don't hesitate to start a discussion on
 <anchor-link href="https://github.com/realmorg/realm/discussions" target="_blank">Github Discussions</anchor-link>.

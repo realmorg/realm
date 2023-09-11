@@ -10,11 +10,11 @@ description: Learn how to render list of arrays.
 
 > This feature is still in beta phase, it maybe not stable yet.
 
-In Realm, you can make use of the `<repeat-list>` tag to render list of arrays. This feature functions similarly to a for loop / map in JavaScript, allowing you to iterate over a collection or an array-like structure and generate dynamic content for each item.
+In Realm, you can use the `<repeat-list>` tag to display lists of items. Think of it like a simple loop in JavaScript, where you can go through a list of things and create content for each item.
 
-By utilizing the `<repeat-list>` tag, you can define a template for an individual item within the list. The tag automatically repeats the template for each item in the specified collection, rendering the corresponding content. This approach streamlines the process of rendering lists and eliminates the need for manual iteration and element creation.
+With the `<repeat-list>` tag, you define how a single item should look. Then, magically, it repeats that template for each item in your list, showing all your content without you having to write lots of code.
 
-With the `<repeat-list>` tag, you can effortlessly generate dynamic lists in your Realms applications. It simplifies the task of rendering collections of data, such as a list of products, comments, or any other type of repeating content. This powerful feature enables you to create flexible and interactive UIs with ease.
+This makes it super easy to create dynamic lists in your Realms apps. Whether it's products, comments, or anything that repeats, this handy feature helps you make interactive and flexible web pages without breaking a sweat.
 
 ```html
 <custom-element name="todo-item">
@@ -46,11 +46,7 @@ With the `<repeat-list>` tag, you can effortlessly generate dynamic lists in you
       <set-state name="input" value="$.target.value" from="event"></set-state>
     </trigger-event>
     <trigger-event click="AddToListBtn">
-      <set-state
-        name="list"
-        value='[{ "label": "$.input" }]'
-        from="localState"
-        mutate="push"></set-state>
+      <set-state name="list" value='[{ "label": "$.input" }]' from="localState" mutate="push"></set-state>
       <set-state name="input" value=""></set-state>
     </trigger-event>
     <listen-event statechanged="input">
@@ -133,25 +129,21 @@ With the `<repeat-list>` tag, you can effortlessly generate dynamic lists in you
 
 ## The `of` attribute
 
-The `<repeat-list>` tag uses the `of` attribute to specify the array that will be iterated over. However, it's important to note that at the moment, the of attribute only supports iterating over the local state.
+To make the `<repeat-list>` tag work, we use something called the of attribute. But here's the catch: for now, it can only loop through a special thing called "local state."
 
-In other words, when using `<repeat-list>`, you can provide an array-type from the local state as the value for the `of` attribute. This array will be iterated over, and the specified template will be repeated for each item in the array.
+In simpler terms, when you use `<repeat-list>`, you give it a list of items from your local state using the of attribute. It then goes through each item in that list and shows it using the template you've defined.
 
-When it comes to rendering repeated items, we are using: the `$.` notation. This notation allows us to efficiently select an item from array.
+Now, here's the cool part. To work with each item in the list, we use a shortcut called $.. It's like a magic trick that lets you easily pick out individual items while looping through them. Whether you want to change an item's attributes, display it as a part of your content, or do fancy stuff with it, the $. notation makes it super simple.
 
-It provides a concise and convenient way to reference individual elements during the iteration process. It's either you need to bind item to child element's attributes, render as children, or apply conditional logic to each repeated item, the `$.` notation enables you to do so seamlessly.
+In the next section, we'll dig deeper into how to use $. and do some advanced state tricks.
 
-In the upcoming section, we will dive deeper into the `$.` notation and advanced state mutation.
+## Using `<slot>` Inside `<repeat-list>`
 
-## `<slot>` inside list
-
-The `<slot>` tag can be used inside the `<repeat-list>` tag. It will be rendered as a child of the repeated item. This allows you to render dynamic content for each item in the list.
+Guess what? You can use the `<slot>` tag right inside the` <repeat-list>` tag. When you do this, it becomes a child of each repeated item. This nifty trick lets you create dynamic content for every item in your list.
 
 ```html
 <custom-element name="realm-belongs">
-  <element-state name="array" type="array">
-    [{ "realm": "world" }, { "realm": "universe" }, { "realm": "multiverse" }]
-  </element-state>
+  <element-state name="array" type="array">[{ "realm": "world" }, { "realm": "universe" }, { "realm": "multiverse" }]</element-state>
 
   <template>
     <repeat-list of="#array">
@@ -182,17 +174,15 @@ The `<slot>` tag can be used inside the `<repeat-list>` tag. It will be rendered
   <realm-belongs>
 </realm-demo>
 
-## The meta data
+## Understanding Array's meta in <repeat-list>
 
-There is an additional feature in the `<repeat-list>` tag, which is the meta data of the list. The meta data is an object that contains information about the current iteration. It's useful for applying conditional logic to repeated items.
+Within the `<repeat-list>` tag, there's an extra feature called "meta" This special data provides information about the current iteration of the list. It's particularly handy when you want to apply conditional logic to your repeated items.
 
-The meta data is accessible via the `!.` notation.
+To access the meta data, you can use the `!.` notation.
 
 ```html
 <custom-element name="meta-demo">
-  <element-state name="array" type="array">
-    [{ "label": "human" }, { "label": "microbes" }]
-  </element-state>
+  <element-state name="array" type="array">[{ "label": "human" }, { "label": "microbes" }]</element-state>
 
   <template>
     <repeat-list of="#array">

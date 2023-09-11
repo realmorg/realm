@@ -10,19 +10,21 @@ description: Fundamental mindset of Realm.
 
 > In the spiritual realm nothing is indifferent: what is not useful is harmful ~ Leo Tolstoy
 
-The mindset of a developer creating a product directly for customers differs from developers working within a company. This distinction forms the foundation and core mindset of Realm.
+## Realm's Developer Mindset
 
-As a business owner, your priority is to deliver your product quickly and ensure customer satisfaction. While code issues can be addressed in the future, a strained relationship with your users is challenging to mend.
+Realm's foundation and core mindset are built around the distinction between developers creating products for customers and those working within a company.
 
-This is precisely why Realm was created—to assist you in shipping your product faster and leaving a positive first impression on your customers.
+As a business owner, your top priorities are delivering your product quickly and ensuring customer satisfaction. Code issues can be addressed later, but a strained relationship with your users is harder to mend.
 
 > Reality of things is hidden in the realm of the unseen ~ Hamza Yusuf
 
-It's important to note that your customers are primarily concerned with the product itself, not the underlying code. Therefore, Realm may not be suitable for developers who heavily prioritize microsecond-level performance optimization in the frontend. Backend development is a different story, as even the slightest performance difference can have significant consequences. However, in the frontend, it's not as critical.
+Realm was created with this in mind—to help you ship your product faster and make a positive first impression on your customers.
 
-Perhaps you noticed some glitches or perceived lower code quality in the base codes of Realm. It's worth mentioning that Realm is designed to be lightweight, with a size of approximately 20kb (around 12kb when gzipped and minified). As the founder, I intentionally avoid making Realm more opinionated or complex just to reduce its size. Additionally, I have chosen not to create an API for it. My goal is to keep Realm simple and easily comprehensible.
+It's important to recognize that your customers primarily care about the product, not the underlying code. Consequently, Realm may not be the best choice for developers who heavily prioritize microsecond-level performance optimization on the frontend. Backend development is a different story, where even the smallest performance difference can have significant consequences. However, on the frontend, it's not as critical.
 
-After completing the initial iteration of Realm, I came to the realization that it may not be the perfect solution for every developer. However, it does serve as an excellent choice for indie makers who value swift product delivery. If you're a developer who prioritizes frontend performance, a robust API, and maintainable source code in the long run, I would recommend considering alternatives like React, Vue, or Svelte. These frameworks are well-established and cater to those specific requirements.
+You might have noticed some glitches or perceived lower code quality in Realm's base code. It's worth mentioning that Realm is designed to be lightweight, with a size of approximately 20kb (around 12kb when gzipped and minified). As the founder, I intentionally avoid making Realm more opinionated or complex just to reduce its size. Additionally, I have chosen not to create an API for it. My goal is to keep Realm simple and easily comprehensible.
+
+After completing the initial iteration of Realm, I realized that it may not be the perfect solution for every developer. However, it serves as an excellent choice for indie makers who value swift product delivery. If you're a developer who prioritizes frontend performance, a robust API, and maintainable source code in the long run, I recommend considering alternatives like React, Vue, or Svelte. These frameworks are well-established and cater to those specific requirements.
 
 Remember, Realm is an open-source project, allowing anyone to contribute and improve it. I won't say much more. It's time for you to ship your product faster.
 

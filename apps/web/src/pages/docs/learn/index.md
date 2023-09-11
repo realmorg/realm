@@ -8,19 +8,21 @@ author: Ribhararnus Pracutian
 description: Learn how to create your first custom element with Realm.
 ---
 
-Make sure you already read the <anchor-link href="/docs">Intro</anchor-link>, <anchor-link href="/docs/quick-start">Quick Start</anchor-link>, and <anchor-link href="/docs/mindset">Realm Mindset</anchor-link> before we start to learn Realm.
+Before we dive into learning Realm, please make sure you've already read the following sections: <anchor-link href="/docs">Introduction</anchor-link>, <anchor-link href="/docs/quick-start">Quick Start</anchor-link>, and <anchor-link href="/docs/mindset">Realm Mindset</anchor-link>.
 
-If you're ready, let's start to our first tutorial. In this tutorial, you will learn how to create your first custom element with Realm. But before we start, let's learn what is a custom element.
+If you're all set, let's start with our first tutorial. In this tutorial, you'll learn how to create your first custom element using Realm. But before we begin, let's understand what a custom element is.
 
 ## What is a Custom Element?
-It's a new HTML tag that you can create and use anywhere in your page. It's like a `<div>` or `<span>` tag, but with a custom name. For example, `<my-custom-element></my-custom-element>`. You can read more about it here: <anchor-link href="https://developer.mozilla.org/en-US/docs/Web/API/Web_components" target="_blank">MDN: Web Components</anchor-link>.
 
-But it's complicated to create a custom element. You need to create a class, extend it to `HTMLElement`, and register it to the browser. It's a lot of work. 😩
+A custom element is a new HTML tag that you can create and use anywhere on your web page. It's similar to a `<div>` or `<span>` tag, but with a custom name. For example, `<my-custom-element></my-custom-element>`. You can find more information about it here 👉 <anchor-link href="https://developer.mozilla.org/en-US/docs/Web/API/Web_components" target="_blank">MDN: Web Components</anchor-link>.
 
-Luckily, Realm makes it easy to create a custom element. You don't need to create a class, extend it to `HTMLElement`, and register it to the browser. You just need to create a new HTML file, write your custom element in HTML tag 🎉.
+Creating a custom element can be quite complex. You need to create a class, extend it to `HTMLElement`, and register it with the browser. It's a lot of work. 😩
+
+Fortunately, Realm simplifies the process of creating a custom element. You don't need to create a class, extend it to `HTMLElement`, or register it with the browser. You just need to create a new HTML file and define your custom element as an HTML tag 🎉.
 
 ## Your First Custom Element
-Let's create a new HTML file and name it `hello-world.html`. Then, write this code inside the `<body>` tag:
+
+Let's create a new HTML file and name it `hello-world.html`. Then, add the following code inside the `<body>` tag:
 
 ```html
 <web-app>
@@ -34,9 +36,9 @@ Let's create a new HTML file and name it `hello-world.html`. Then, write this co
 </web-app>
 ```
 
-Open the file in your browser. In address bar, you'll see `file:///path/to/hello-world.html` (replace `/path/to` with your file path). You don't need to setup a localhost to use Realm (read <anchor-link href="/docs/quick-start">Quick Start</anchor-link> page).
+Now, open the file in your browser. In the address bar, you'll see `file:///path/to/hello-world.html` (replace `/path/to with your file path`). You don't need to set up a localhost to use Realm (see <anchor-link href="/docs/quick-start">Quick Start</anchor-link> for more details).
 
-You'll see a blank page with a text `Hello world!`. That's your first custom element. 🎉
+You'll see a blank page with the text `Hello world!`. That's your first custom element. 🎉
 
 <custom-element name="hello-world">
   <template>
@@ -48,7 +50,7 @@ You'll see a blank page with a text `Hello world!`. That's your first custom ele
   <hello-world></hello-world>
 </realm-demo>
 
-You can render it anywhere in your page, as many as you want:
+You can render it anywhere on your page, as many times as you want:
 
 ```html
 <hello-world></hello-world>
@@ -66,10 +68,8 @@ You can render it anywhere in your page, as many as you want:
 </p>
 </realm-demo>
 
-Okay cool, but why is the element have a closed-tag? It's because a custom element is not part of <anchor-link href="https://developer.mozilla.org/en-US/docs/Glossary/Void_element" target="_blank">MDN: Void Element</anchor-link>.
+You might wonder why the element has a closing tag. It's because a custom element is not considered a <anchor-link href="https://developer.mozilla.org/en-US/docs/Glossary/Void_element" target="_blank">MDN: Void Element</anchor-link>.
 
-Congratulations! You just created your first custom element 🎉. Now you know how to create a custom element. Let's create a more complex custom element.
+Congratulations! You've successfully created your first custom element 🎉. Now, you know how to create a custom element. Let's move on to creating a more complex custom element: <anchor-link href="/docs/learn/attributes">Renders dynamic data from attributes</anchor-link>
 
-Let's make your element <anchor-link href="/docs/learn/attributes">renders dynamic data from attributes</anchor-link>.
-
-P.S: The `web-app` tag is optional, but you need to use it to avoid glitch in the page.
+Note: The `web-app` tag is optional, but it helps prevent glitches in the page.

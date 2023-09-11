@@ -10,11 +10,13 @@ description: Define and render dynamic data from attributes.
 
 ## What is an Element Attribute?
 
-It's a key-value pair that you can add to any element. For example, `<my-element name="Ribhararnus"></my-element>`. You can read more about it here: <anchor-link href="https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes" target="_blank">MDN: HTML Attributes</anchor-link>.
+An element attribute is a key-value pair that you can add to any HTML element. For example, `<my-element name="Ribhararnus"></my-element>`.
+
+You can learn more about it here 👉 <anchor-link href="https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes" target="_blank">MDN: HTML Attributes</anchor-link>.
 
 ## Render Dynamic Data from Attributes
 
-Let's adds a new attribute to your custom element, and render it.
+Let's add a new attribute to your custom element and render its value dynamically.
 
 ```html
 <custom-element name="hello-world">
@@ -56,12 +58,12 @@ Let's adds a new attribute to your custom element, and render it.
 
 ## How does it work?
 
-You're defining a new attribute with `<element-attr>` tag. The `name` attribute is defining the name of custom element's attribute, and the `type` is the data type, you need to define it because it's important (you can see supported types in <anchor-link href="/references/elements/element-attr">`element-attr reference`</anchor-link>).
+You define a new attribute using the `<element-attr>` tag. The name attribute specifies the name of the custom element's attribute, and the type indicates the data type. Defining the data type is important (you can find supported types in the <anchor-link href="/references/elements/element-attr">`element-attr`</anchor-link> reference).
 
-Then, you can render the attribute value with `<slot>` tag. The `name` attribute is the name of the attribute, and the `@` prefix is required. The `@` prefix is used to distinguish between attribute and state.
+You can render the attribute's value using the `<slot>` tag. The name attribute in `<slot>` corresponds to the attribute name, and the `@` prefix is required to distinguish it from state.
 
-You can also set default value or fallback value inside `<element-attr>` tag. If the attribute is not defined, it will use the default value.
+You can also set a default or fallback value inside the `<element-attr>` tag. If the attribute is not defined, it will use the default value.
 
-## Isn't your custom element little bit boring?
+## Isn't Your Custom Element a Bit Boring?
 
-Let's add some excitement by diving into the fascinating world of reactivity <anchor-link href="/docs/learn/states">using states</anchor-link>.
+Let's add some excitement by exploring the fascinating world of reactivity using <anchor-link href="/docs/learn/states">states</anchor-link>.

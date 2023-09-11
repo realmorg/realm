@@ -8,15 +8,17 @@ author: Ribhararnus Pracutian
 description: Define and use element states.
 ---
 
-We are promised you, to making our custom element more engaging and exciting.
+## Bringing Engagement with Element States
 
-States in custom elements allow us to create dynamic and interactive element. By defining and manipulating states, we can introduce responsiveness to user interactions, data changes, or any other events that impact the behavior or appearance of our custom element.
+We promise to make our custom elements more engaging and exciting.
 
-With states, we can track and update specific values within our custom element, triggering automatic re-rendering whenever a state changes. This reactivity enables us to create dynamic user interfaces that respond in real-time, providing a more engaging and interactive experience for our users.
+Element states in custom elements enable us to create dynamic and interactive elements. By defining and manipulating states, we can introduce responsiveness to user interactions, data changes, or any other events that impact the behavior or appearance of our custom element.
 
-## How to define an Element State?
+With states, we can track and update specific values within our custom element, triggering automatic re-rendering whenever a state changes. This reactivity empowers us to build dynamic user interfaces that respond in real-time, providing a more engaging and interactive experience for our users.
 
-You can define an element's state with `<element-state>` tag. It's similar with Element's attribute (you can see supported types in <anchor-link href="/references/elements/element-state">`element-state reference`</anchor-link>).
+## How to Define an Element State?
+
+You can define an element's state using the `<element-state>` tag. It's similar to defining an element's attribute (you can find supported types in the <anchor-link href="/references/elements/element-state">`element-state reference`</anchor-link>).
 
 ```html
 <custom-element name="hello-world">
@@ -64,6 +66,6 @@ You can define an element's state with `<element-state>` tag. It's similar with 
   </div>
 </realm-demo>
 
-To render the state's value, use the `<slot>` tag with the attribute's name as the state's name prefixed with `#` symbol. The distinction between attribute and state is the prefix. Attribute uses `@` prefix, and state uses `#` prefix.
+To render the state's value, use the `<slot>` tag with the state's name, prefixed with a `#` symbol. The distinction between attributes and states is the prefix: attributes use the `@` prefix, and states use the `#` prefix.
 
-Sorry for promising you about reactivity, but it didn't happen yet. Because our state is still static. Then let's make it reactive. We'll take it a step further and introduce reactivity using the <anchor-link href="/docs/learn/flow">Element's flow</anchor-link> feature.
+We apologize for promising reactivity earlier, but it hasn't happened yet because our state is still static. Let's take it a step further and introduce reactivity using the <anchor-link href="/docs/learn/flow">Element's flow</anchor-link> feature.

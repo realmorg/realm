@@ -72,11 +72,11 @@ Take a look at the following example:
 
 ## How to use script?
 
-Custom script flow is live under flow tag (`<trigger-event>` or `<listen-event>`) and the `type` is `module/realm`.
+To implement custom script flows, place them within a `<trigger-event>` or `<listen-event>` tag under the `<element-flow>` section, with the `type` attribute set to `module/realm`.
 
-If you want to use state, attributes, element's reference, event, you need to define `use` attribute. The `use` attribute is a comma-separated list of variables that you want to use inside the script. You can use `localState`, `globalState`, `attr`, `ref` (see all supported variables in <anchor-link href="/references/actions/script">`script` reference</anchor-link>).
+When working with script flows and needing access to various elements like states, attributes, element references, and events, you must define the `use` attribute. This attribute serves as a comma-separated list of variables that you intend to utilize within the script. Supported variables include `localState`, `globalState`, `attr`, and `ref`. You can find a comprehensive list of supported variables in the <anchor-link href="/references/actions/script">`script` reference</anchor-link>.
 
-For example if you only need an event and a local state, you can define it like this:
+For instance, if your script requires access to an event and a local state, you can specify them as follows:
 
 ```html
 <custom-element name="script-flow-demo">
@@ -84,12 +84,12 @@ For example if you only need an event and a local state, you can define it like 
   <element-flow>
     <trigger-event input="NameInput">
       <script type="module/realm" use="localState, event">
-        localState.set('name', (event.target.value ?? '').split``.reverse().join``);
+        localState.set('name', (event.target.value ?? '').split``.reverse().join(``));
       </script>
     </trigger-event>
   </element-flow>
   <template>
-    Hi my name is
+    Hi my reversed name is
     <slot name="#name"></slot>
     !
     <br />
@@ -120,10 +120,12 @@ For example if you only need an event and a local state, you can define it like 
   <script-flow-demo></script-flow-demo>
 </realm-demo>
 
-Great job! Inside the script, you have the freedom to perform various operations and implement custom logic to enhance your custom elements. With this knowledge, you have now covered 80% of Realm's core concepts.
+Fantastic work! Within custom scripts, you have the flexibility to carry out a wide array of operations and implement custom logic, greatly enhancing the capabilities of your custom elements. With this knowledge, you've already grasped 80% of Realm's fundamental concepts.
 
-Now, let's move on to the next tutorial, where we will explore how to import elements from across the web. And it will demonstrate how you can leverage the power of custom elements to import and use elements from different website or 3rd-parties, expanding the capabilities and functionality of your Realm apps.
+## What's next?
 
-By importing elements from the web, you can tap into a vast ecosystem of pre-built elements saving you time and effort in developing everything from scratch. This tutorial will guide you through the process of importing and integrating external elements seamlessly into your projects.
+Now, let's move on to the next tutorial, where we'll delve into the intriguing world of importing elements from the vast expanse of the web. This tutorial will demonstrate how you can harness the power of custom elements to import and utilize components from various websites and third-party sources. This capability will significantly expand the functionalities and possibilities of your Realm applications.
 
-Get ready to unlock a world of possibilities as we delve into the exciting realm of <anchor-link href="/docs/learn/reusability">importing elements across the web</anchor-link> in the next tutorial!
+By importing elements from the web, you'll gain access to a rich ecosystem of pre-built components, saving you valuable time and effort that would otherwise be spent on developing everything from the ground up. The upcoming tutorial will provide a step-by-step guide on importing and seamlessly integrating external elements into your projects.
+
+Prepare to unlock a world of opportunities as we embark on an exciting journey into the realm of <anchor-link href="/docs/learn/reusability">importing elements across the web</anchor-link> in our next tutorial!

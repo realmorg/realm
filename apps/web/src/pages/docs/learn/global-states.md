@@ -8,15 +8,17 @@ author: Ribhararnus Pracutian
 description: Share data between elements using global states.
 ---
 
-Sometimes you need to share data between elements. Realm provides a way to do this with global states. States management in Realm is straightforward and easy to use.
+## Sharing Data with Global States
 
-## How to define a Global State?
+In some cases, you need to share data between elements. Realm provides a straightforward and easy-to-use way to achieve this through global states management.
 
-You can define a global state with `<global-state>` tag. It's similar with <anchor-link href="/docs/learn/states">Element's State</anchor-link> but this time it's global. State that can be accessed from anywhere.
+## How to Define a Global State
 
-## Use case: Global Counter
+You can define a global state with the `<global-state>` tag. It's similar to <anchor-link href="/docs/learn/states">Element's State</anchor-link>, but this time, it's global. This means that the state can be accessed from anywhere in your web apps.
 
-Let's create a global counter that can be incremented and decremented, and display it in two different elements.
+## Use Case: Global Counter
+
+Let's create a global counter that can be incremented and decremented and display its value in two different elements.
 
 ```html
 <global-state name="counter" type="number">0</global-state>
@@ -86,14 +88,12 @@ Pretty neat, right? You can increment and decrement the counter value, and it's 
 
 ## Storage
 
-One of the cool things about global states is that it can be stored in local storage or session storage.
+One of the cool things about global states is that they can be stored in local storage or session storage.
 
-Global states are stored in memory by default, but you can store it in local storage (`localStorage`) or session storage (`sessionStorage`) by adding `storage` attribute to `<global-state>` tag.
+Global states are stored in memory by default, but you can store them in local storage (`localStorage`) or session storage (`sessionStorage`) by adding the storage attribute to the `<global-state>` tag.
 
 ```html
-<global-state name="cached-counter" type="number" storage="localStorage">
-  0
-</global-state>
+<global-state name="cached-counter" type="number" storage="localStorage">0</global-state>
 
 <custom-element name="local-storage-counter">
   <element-flow>
@@ -139,6 +139,6 @@ Global states are stored in memory by default, but you can store it in local sto
   <local-storage-counter></local-storage-counter>
 </realm-demo>
 
-Please click the button, and refresh this page. You will see that the counter value is remain the same. That's because the counter value is stored in local storage.
+Please click the button and refresh this page. You will see that the counter value remains the same. That's because the counter value is stored in local storage.
 
-Since you already have a grasp of the concept of global states, there's no need for me to explain it more. Let's move on to the next tutorial, <anchor-link href="/docs/learn/bindings">how to binds dynamic data to element's attributes</anchor-link>.
+Now that you have a grasp of the concept of global states, there's no need for me to explain it further. Let's move on to the next tutorial: <anchor-link href="/docs/learn/bindings">how to binds dynamic data to element's attributes</anchor-link>.

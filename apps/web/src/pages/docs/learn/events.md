@@ -8,21 +8,21 @@ author: Ribhararnus Pracutian
 description: Learn how to listen events and communicate between elements using events.
 ---
 
-In Realm, there are three fundamental events that play a crucial role:
+In the realm of Realm, there exist three fundamental events, each playing a pivotal role:
 
-1. Custom Element Mounting: This event occurs when a custom element is fully loaded and ready to be used. It signifies that the element has been successfully created and initialized, making it available for interaction and manipulation.
+1. **Custom Element Mounting:** This event unfurls its banner when a custom element stands fully formed, ready to engage. It signals the birth of an element, confirming its initiation into the world of interactions and manipulations.
 
-2. Attribute and State Changes: This event is triggered whenever there are modifications to the attributes or states of a custom element. When attributes or states are updated, this event allows you to capture and respond to the changes, enabling dynamic behavior and reactivity within your custom elements.
+2. **Attribute and State Changes:** This event takes the stage whenever attributes or states undergo transformations within a custom element. As attributes or states metamorphose, this event stands sentinel, prepared to capture and respond to these changes, ushering in dynamic behaviors and reactivity within your custom creations.
 
-3. Custom Events: These events come into play when a `<send-event>` action is triggered. You can define custom events and associate them with specific actions or behaviors. When the `<send-event>` action is invoked, the corresponding custom event is triggered, allowing you to execute specific logic or communicate with other elements.
+3. **Custom Events:** These events come alive when the curtains rise for a `<send-event>` action. Custom events are scripts written for specific actions or behaviors, akin to bespoke performances in a grand theater. When the `<send-event>` action takes its cue, the corresponding custom event takes the spotlight, enabling you to execute precise logic or engage in dialogues with other elements.
 
-Understanding these three basic events is crucial for developing interactive and responsive custom business logic in Realm. In this tutorial, we will learn how to listen to these events and communicate between elements using events.
+Understanding these three fundamental events forms the cornerstone of crafting interactive and responsive custom business logic within the Realm. In this tutorial, we shall unravel the art of listening to these events and establishing communication channels between elements, orchestrating a symphony of interactivity.
 
-## How to listen to events?
+## How to Listen to Events?
 
-In our previous tutorial on <anchor-link href="/docs/learn/flow">Element Flow</anchor-link>, we explored two essential flows that are closely related to events. We learned about `<trigger-event>`, that you are already familiar with, which allows us to initiate or trigger specific actions within an element. Now, we're diving into the topic of `<listen-event>`.
+In our previous tutorial on <anchor-link href="/docs/learn/flow">Element Flow</anchor-link>, we embarked on a journey exploring two vital flows intimately entwined with events. You've already encountered `<trigger-event>`, which serves as your trusty companion in initiating or sparking specific actions within an element. Now, our voyage delves deeper into the realm of `<listen-event>`.
 
-The `<listen-event>` element's flow is all about listening and responding to events that are triggered by `<send-event>` action. With `<listen-event>`, you can define specific events to listen for, and when those events occur, you can execute corresponding actions or behaviors within your element. It enables effective communication and coordination between different elements, allowing them to interact and respond to events triggered by one another.
+The flow of `<listen-event>` revolves around the fine art of attentive listening and swift responses to events triggered by the enchanting `<send-event>` action. With `<listen-event>`, you wield the power to specify the events you wish to heed, and as these events unfold, you conduct an orchestra of actions and behaviors within your element. This flow seamlessly enables communication and coordination between various elements, ushering in a world where elements interact and react to each other's cues.
 
 ```html
 <custom-element name="your-element">
@@ -82,7 +82,8 @@ This following example shows how to derive state from attribute. In this example
   </element-flow>
 
   <template>
-    Is loading value: <slot name="#is-loading"></slot>
+    Is loading value:
+    <slot name="#is-loading"></slot>
   </template>
 </custom-element>
 
@@ -108,13 +109,13 @@ This following example shows how to derive state from attribute. In this example
   <my-element is-open="true"></my-element>
 </realm-demo>
 
-## Send events
+## Sending Custom Events
 
-In certain cases, we may find ourselves in need of creating custom events in addition to the native events provided by the browser, such as `click`, `input`, `change`, and so on. Custom events allow us to define our own unique events that are specific to our application's requirements and functionalities.
+Sometimes, our needs go beyond the repertoire of native browser events like `click`, `input`, and `change`. In such cases, custom events become our secret weapon. These bespoke events are tailored to our application's unique demands, expanding the horizons of what our elements can perceive and respond to.
 
-By creating custom events, we can expand the range of interactions and behaviors that our elements can respond to. These events can be triggered programmatically or in response to certain conditions or user actions. Custom events provide a way to encapsulate and communicate specific actions or states within our custom elements.
+Custom events grant us the authority to define our own distinct events, perfectly aligned with our application's idiosyncrasies. They can be invoked programmatically or triggered in response to specific conditions or user actions. These events serve as containers, encapsulating particular actions or states within our custom elements.
 
-Whether it's simulating user interactions, or facilitating communication between elements, custom events offer a powerful mechanism to extend the event system and tailor it to our specific needs. Realms provides the capability to define and utilize these custom events, empowering us to create more dynamic and interactive web apps.
+Whether it's orchestrating simulated user interactions or establishing channels of communication between elements, custom events empower us to augment the event system, customizing it to our precise requirements. In Realm, you possess the ability to craft and deploy these custom events, bestowing your web applications with a touch of dynamism and interactivity.
 
 ```html
 <custom-element name="child-element">
@@ -184,11 +185,13 @@ Whether it's simulating user interactions, or facilitating communication between
   <main-element></main-element>
 </realm-demo>
 
-You'll be happy to know that in Realms, there's a cool way to send data from a child element to its parent element using the `to:parent` attribute. It's a nifty feature that allows for smooth communication and data transfer between the two.
+## Sending Data to the Parent
 
-When you use the `to:parent` attribute, you're essentially saying, "Hey, parent element, here's some data for you!" This comes in handy when you want to pass important information, like user input or selected options, from a child element to its parent. By doing so, you enable seamless data flow and coordination between the elements in your application.
+In the world of Realms, there's a clever method for transmitting data from a child element to its parent counterpart, and it's called the `to:parent` attribute. This feature adds a touch of finesse to communication and data exchange between the two elements.
 
-So, with the `to:parent` attribute, you can easily establish a communication channel to send data from child elements to their parent elements. It's a fantastic way to enhance the interactivity and functionality of your Realms application by keeping everyone in the loop!
+When you employ the `to:parent` attribute, you're essentially saying, "Dear parent element, I've got some data you might find interesting!" This capability proves invaluable when you need to convey vital information, such as user input or selected options, from a child element to its parent. By doing so, you establish a seamless conduit for data flow and coordination between elements within your application.
+
+With the `to:parent` attribute at your disposal, establishing a communication channel to transmit data from child elements to their parent counterparts becomes a breeze. It's a remarkable way to elevate the interactivity and functionality of your Realms application, ensuring that everyone stays in the know!
 
 ```html
 <custom-element name="child-element">
@@ -274,6 +277,6 @@ So, with the `to:parent` attribute, you can easily establish a communication cha
   <main-element-2></main-element-2>
 </realm-demo>
 
-## Congrats, don't even skip!
+## Congratulations, Don't Skip a Beat!
 
-You've made it to the end of this tutorial! We still have more fundamental concepts to cover, but you're already well on your way to becoming a Realm master. In the next tutorial, we'll learn about <anchor-link href="/docs/learn/conditional-rendering">Conditional Rendering</anchor-link> and <anchor-link href="/docs/learn/list-rendering">List Rendering</anchor-link>.
+You've reached the conclusion of this tutorial, and your journey into the Realm is well underway. While there are more fundamental concepts waiting to be explored, you're already making great strides toward becoming a true Realm master. In the next tutorial, we'll delve into the realms of <anchor-link href="/docs/learn/conditional-rendering">Conditional Rendering</anchor-link> and <anchor-link href="/docs/learn/list-rendering">List Rendering</anchor-link>.

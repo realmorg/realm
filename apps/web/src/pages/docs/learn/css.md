@@ -8,9 +8,9 @@ author: Ribhararnus Pracutian
 description: Learn how to style your custom elements dynamically with custom selector.
 ---
 
-One of the most fun feature of Realm is the ability to style your custom elements and access attributes, states, and global states as CSS variables. This feature adds a layer of flexibility and convenience to your styling process. By treating these dynamic values as CSS variables, you can easily incorporate them into your stylesheets and create dynamic, responsive designs.
+One of the most exciting features of Realm is its ability to style custom elements and access attributes, states, and global states as CSS variables. This feature brings a new level of flexibility and convenience to your styling process. By treating these dynamic values as CSS variables, you can seamlessly integrate them into your stylesheets, allowing you to create dynamic and responsive designs effortlessly.
 
-Additionally, Realm allows you to utilize custom CSS selectors to implement logic within your stylesheets. This empowers you to apply specific styles based on the element's attributes, states, or global states. By leveraging custom CSS selectors, you can achieve more advanced and nuanced styling behaviors, making your custom elements even more versatile and adaptable.
+Furthermore, Realm empowers you to use custom CSS selectors to introduce logic within your stylesheets. This capability enables you to apply specific styles based on the element's attributes, states, or global states. By harnessing custom CSS selectors, you can achieve advanced and nuanced styling behaviors, elevating the versatility and adaptability of your custom elements to a whole new level.
 
 ```html
 <custom-element name="color-box">
@@ -59,13 +59,13 @@ Additionally, Realm allows you to utilize custom CSS selectors to implement logi
 
 ## Why `style` tag should be placed inside `template` tag?
 
-When working with custom elements inside `<body>` tag (not using `<import-element>` tag), it's important to ensure that your HTML document remains valid and adheres to the HTML5 standard. Placing the `<style>` tag outside the `<template>` tag in your document would result in an invalid HTML5 structure.
+When working with custom elements inside the `<body>` tag (without using the `<import-element>` tag), it's essential to maintain a valid HTML document that adheres to the HTML5 standard. Placing the `<style>` tag outside the `<template>` tag within your document would result in an invalid HTML5 structure.
 
-According to the HTML5 specifications, the `<style>` tag is only allowed within the `<head>` or `<template>` tags. If you place the `<style>` tag outside the `<template>` tag, it will deviate from the standard and render your document invalid.
+According to HTML5 specifications, the `<style>` tag is only allowed within the `<head>` or `<template>` tags. If you position the `<style>` tag outside the `<template>` tag, it will deviate from the standard, rendering your document invalid.
 
 ## CSS Variables
 
-Realm allows you to access attributes, states, and global states as CSS variables. This feature is useful for creating dynamic, responsive designs. You can access these values by using the `--attr-`, `--state-`, and `--global-` prefixes.
+Realm provides the ability to access attributes, states, and global states as CSS variables. This feature is particularly valuable for creating dynamic and responsive designs. You can access these values by utilizing the `--attr-`, `--state-`, and `--global-` prefixes.
 
 ```html
 <custom-element name="my-favorite-color">
@@ -129,13 +129,13 @@ Realm allows you to access attributes, states, and global states as CSS variable
 
 ## CSS Logic
 
-Realm allows you to use custom CSS selectors to implement logic within your stylesheets. This empowers you to apply specific styles based on the element's attributes, states, or global states.
+Realm offers the capability to employ custom CSS selectors to introduce logic into your stylesheets. This empowers you to apply specific styles based on the element's attributes, states, or global states.
 
-We are adding a new hacky features to CSS selector (powered by CSSOM). You can use `gt`, `lt`, `eq`, and more to compare the value of the attribute, state, or global state. See the complete list of comparison operators in <anchor-link href="/references/misc/comparison-operators">Comparison Operators reference</anchor-link>.
+We've introduced a new and somewhat unconventional feature to CSS selectors (powered by CSSOM). You can now use `gt`, `lt`, `eq`, and more to compare attribute, state, or global state values. You can find the complete list of comparison operators in the <anchor-link href="/references/misc/comparison-operators">Comparison Operators reference</anchor-link>.
 
-The attribute selector is used to apply styles based on the element's attribute value. The attribute selector is denoted by the `\@` symbol for attributes, `\#` symbol for states.
+The attribute selector is used to apply styles based on the element's attribute value. It is denoted by the `\@` symbol for attributes and the `\#` symbol for states.
 
-The following example demonstrates how to use custom CSS selectors to apply different styles based on the element's attribute value.
+The following example illustrates how to employ custom CSS selectors to apply different styles based on the element's attribute value.
 
 ```html
 <custom-element name="colorful-number">
@@ -260,11 +260,7 @@ To get value from global state, you can use `[global]` keyword:
       <set-state global name="counter" value="1" mutate="+"></set-state>
     </trigger-event>
     <trigger-event input="ColorInput">
-      <set-state
-        global
-        name="color"
-        value="$.target.value"
-        from="event"></set-state>
+      <set-state global name="color" value="$.target.value" from="event"></set-state>
     </trigger-event>
   </element-flow>
   <template>
@@ -361,8 +357,8 @@ To get value from global state, you can use `[global]` keyword:
 
 ## Awesome, let's continue to the next one
 
-Congratulations on making it this far! That's awesome! Now, let's keep the momentum going and move on to the next topic. There's still more exciting information and learning ahead, in the upcoming section, we will learn about <anchor-link href="/docs/learn/events">Events and Communication between Elements</anchor-link>.
+Congratulations on reaching this point! That's fantastic progress! Now, let's maintain the momentum and proceed to the next topic. There's still plenty of exciting information and learning opportunities ahead. In the upcoming section, we will delve into <anchor-link href="/docs/learn/events">Events and Communication between Elements</anchor-link>.
 
-We will explore how various events are triggered and how elements communicate with each other. This includes events such as when an element is mounted, when attributes / states are updated, or sending event from child to parent element.
+We will explore how various events are triggered and how elements communicate with each other. This includes events such as element mounting, attribute/state updates, and event propagation from child to parent elements.
 
-By understanding these event mechanisms and communication patterns, you will gain valuable insights into the dynamic behavior and interactions between elements in Realm. This knowledge will empower you to build more interactive and responsive web applications.
+By comprehending these event mechanisms and communication patterns, you will gain valuable insights into the dynamic behaviors and interactions between elements in Realm. This knowledge will empower you to create more interactive and responsive web applications.
