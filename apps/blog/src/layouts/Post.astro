@@ -2,10 +2,10 @@
 import Layout from "astro-libs/layouts/Layout.astro";
 import RealmImportElement from "astro-libs/layouts/RealmImportElement.astro";
 
-const { frontmatter, compiledContent } = Astro.props;
+const { frontmatter } = Astro.props;
 ---
 
-<Layout origin="http://localhost:3000" title={frontmatter.title} seoProps={{ titleTemplate: "%s - The Realm Blog" }}>
+<Layout origin="https://realm.codes" title={frontmatter.title} description={frontmatter.description} seoProps={{ titleTemplate: "%s - The Realm Blog" }}>
   <RealmImportElement elements={["top-navigation-blog", "blog-layout", "post-layout"]} />
   <top-navigation-blog></top-navigation-blog>
   <blog-layout>
