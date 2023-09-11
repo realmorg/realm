@@ -6,6 +6,13 @@
     Access-Control-Allow-Headers = "*"
 
 [[headers]]
+  for = "/icons/*.html"
+
+  [headers.values]
+    Access-Control-Allow-Origin = "*"
+    Access-Control-Allow-Headers = "*"
+
+[[headers]]
   for = "/api-examples/*.html"
 
   [headers.values]
