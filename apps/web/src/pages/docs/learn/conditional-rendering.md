@@ -8,13 +8,13 @@ author: Ribhararnus Pracutian
 description: Learn how to conditionally render elements in Realm.
 ---
 
-In Realm, HTML takes the spotlight over JavaScript, and when it comes to the user interface (UI), we have a nifty feature called conditional rendering. Since we don't rely on a Virtual DOM, we have a different approach to handling DOM manipulation.
+In Realm, HTML takes the spotlight over JavaScript, especially in the realm of user interface (UI) development. One of the key features we have at our disposal for UI manipulation is conditional rendering. Unlike some other frameworks that rely on a Virtual DOM, Realm takes a different approach when it comes to handling DOM manipulation.
 
-Instead of removing, adding, or updating DOM elements, we can simply use the hidden attribute to hide or show elements as needed. It's a straightforward and intuitive way to control the visibility of elements based on certain conditions or user interactions.
+Rather than performing complex operations to add, remove, or update DOM elements, we have a straightforward and intuitive tool at our disposal: the `display: none` property. This basic property allows us to hide or show elements with ease based on specific conditions or user interactions.
 
-By leveraging the hidden attribute, we can easily toggle the display of elements without the need for complex DOM manipulations. This approach simplifies the code and enhances performance, making it easier to manage the UI and create dynamic user experiences.
+By harnessing the power of it, we can effortlessly toggle the visibility of elements, eliminating the need for intricate DOM manipulations. This approach not only simplifies our code but also enhances performance, making UI management a breeze and enabling the creation of dynamic and responsive user experiences.
 
-So, in Realm, conditional rendering using the hidden attribute is a simple yet powerful technique that allows you to control the visibility of elements in your UI without the overhead of Virtual DOM operations.
+In Realm, conditional rendering using the `display: none` property is a simple yet powerful technique that empowers you to control element visibility in your UI without the overhead of Virtual DOM operations.
 
 ```html
 <custom-element name="magic-element">
@@ -27,9 +27,7 @@ So, in Realm, conditional rendering using the hidden attribute is a simple yet p
   </element-flow>
 
   <template>
-    <is-visible value="#state" eq="abracadabra">
-      Kaboom, magic 🦄 is real!
-    </is-visible>
+    <is-visible value="#state" eq="abracadabra">Kaboom, magic 🦄 is real!</is-visible>
 
     Please type &quot;abracadabra&quot; to see the magic 🦄
     <input ref="MagicInput" />
@@ -61,12 +59,12 @@ So, in Realm, conditional rendering using the hidden attribute is a simple yet p
   <magic-element></magic-element>
 </realm-demo>
 
-## Available tags: `is-visible` and `is-hidden`
+## Conditional Rendering Tags: `is-visible` and `is-hidden`
 
-Realm provides two tags to handle conditional rendering: `is-visible` and `is-hidden`. Both tags accept the same attributes, but they have different behaviors.
+Realm offers two tags for handling conditional rendering: `is-visible` and `is-hidden`. Both tags accept the same attributes, but they exhibit different behaviors.
 
-The `is-visible` tag will render its content if the condition is true. Otherwise, it will render nothing. On the other hand, the `is-hidden` tag will hide its content if the condition is true.
+The `is-visible` tag will render its content if the specified condition evaluates to true. If the condition is false, it will render nothing. On the other hand, the `is-hidden` tag will hide its content when the condition is true.
 
-## Comparison operators
+## Comparison Operators
 
-In the<anchor-link href="/docs/learn/css">Dynamic styles</anchor-link> section, you learned about CSS logic, and it turns out that the comparison operators used for CSS logic and conditional rendering are quite similar. You can find a list of these comparison operators in the <anchor-link href="/references/misc/comparison-operators">Comparison Operators reference</anchor-link>, which provides a comprehensive overview.
+In the previous section on <anchor-link href="/docs/learn/css">Dynamic styles</anchor-link>, you explored CSS logic, and interestingly, the comparison operators used for CSS logic closely resemble those used for conditional rendering. You can find a comprehensive list of these comparison operators in the <anchor-link href="/references/misc/comparison-operators">Comparison Operators reference</anchor-link>, providing a detailed overview.

@@ -8,11 +8,19 @@ author: Ribhararnus Pracutian
 description: Learn how to bind data from an element's attributes, states, and global states to the custom elements.
 ---
 
-The data binding feature allows you to bind data from the element's attributes, states, and global states to the custom elements. It's similar feature like popular frameworks has (Vue, React, and Svelte).
+## Data Binding in Realm
 
-## How to bind data?
+Data binding is a powerful feature in Realm that enables you to connect data from element attributes, states, and global states to custom elements. It's a feature you might already be familiar with if you've used popular frameworks like Vue, React, or Svelte.
 
-You can bind data from attributes, state and global state by using `_` prefix follows with the name of element's attribute. And the value of the attribute is using prefix that we learn in the previous tutorial. If it's an attribute, use `@` prefix, if it's a state, use `#` prefix.
+## How to Bind Data
+
+In Realm, you can easily bind data from attributes, states, and global states by using a simple prefix notation. Here's how it works:
+
+- To bind data from an attribute, use the `@` prefix, e.g., `_attribute="@attr-name"`.
+- To bind data from a state, use the `#` prefix, e.g., `_attribute="#state-name"`.
+- To bind data from a global state, use the `:global` prefix followed by the attribute or state name, e.g., `attribute:global="#state-name"`.
+
+Let's take a look at some examples:
 
 ```html
 <custom-element name="person-identity">
@@ -84,9 +92,9 @@ You can bind data from attributes, state and global state by using `_` prefix fo
   <div><define-person></define-person></div>
 </realm-demo>
 
-## Passes element's attributes to child element
+## Binding Element Attributes to Child Elements
 
-In other frameworks it's called props drilling. In realm you can do the same thing.
+Similar to other frameworks, you can pass data to child elements in Realm. This is often referred to as "props drilling" in other frameworks.
 
 ```html
 <custom-element name="favorite-color">
@@ -134,9 +142,9 @@ In other frameworks it's called props drilling. In realm you can do the same thi
   <ui-designer name="Morty" color="hotpink"></ui-designer>
 </realm-demo>
 
-## Bind data from global state
+## Binding Data from Global State
 
-The process is similar to binding data from an element's state, but with global states, you need to use the `:global` prefix after the attribute's name binding. It's worth noting that you can render data from the global state without explicitly binding it. However, in some cases, your element may be atomic, meaning it remains pure and unrelated to business logic.
+Binding data from a global state follows a similar pattern as binding from an element's state. However, you need to use the `:global` prefix along with the attribute or state name when binding from a global state:
 
 ```html
 <global-state name="counter" type="number">0</global-state>
@@ -186,6 +194,6 @@ The process is similar to binding data from an element's state, but with global 
   <micro-app></micro-app>
 </realm-demo>
 
-That's how the data binding feature works in Realm.
+That's how data binding works in Realm, allowing you to create dynamic and interactive web components effortlessly.
 
-Do you feel strange? something is missing in our tutorial, how do we render a children in our custom element? Don't worry, we'll learn about it in the next tutorial about <anchor-link href="/docs/learn/children">Children Rendering</anchor-link>.
+Feeling curious about rendering children in custom elements? Don't worry; we'll cover that in the next tutorial on <anchor-link href="/docs/learn/children">Children Rendering</anchor-link>.

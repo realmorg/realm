@@ -8,13 +8,15 @@ author: Ribhararnus Pracutian
 description: Define and use element flow.
 ---
 
+## The Evolution of DOM Manipulation
+
 In the era of jQuery, manipulating the DOM was a common practice. However, with modern frameworks like React, Vue, and Svelte, DOM manipulation is generally discouraged due to its performance limitations.
 
 The reason behind this is its inherent slowness, as the browser needs to parse the HTML, convert it to the DOM, and then render it on the screen. This process involves a significant amount of computation.
 
 Unlike React, Vue, or Svelte, Realm takes a different approach. It doesn't rely on a Virtual DOM but instead embraces the native DOM. Realm utilizes slots to render content.
 
-Let's remember <anchor-link href="/docs/mindset">our mindset</anchor-link>: Realm is designed for developers who prioritize fast product delivery. Hence, we don't need to overly concern ourselves with microsecond-level frontend performance. Instead, our primary focus is on delivering an exceptional product.
+Let's recall <anchor-link href="/docs/mindset">our mindset</anchor-link>: Realm is designed for developers who prioritize fast product delivery. Hence, we don't need to overly concern ourselves with microsecond-level frontend performance. Instead, our primary focus is on delivering an exceptional product.
 
 Back to our custom element, let's make our custom element's age state reactive as we determine the user's age.
 
@@ -80,35 +82,35 @@ Back to our custom element, let's make our custom element's age state reactive a
   </div>
 </realm-demo>
 
-## Let's breakdown the code
+## Breaking Down the Code
 
-What's inside `<element-flow>` tag is called a flow. It's a set of instructions that will be executed when the flow is triggered. In this case, the flow will be triggered when the button is clicked.
+What's inside the `<element-flow>` tag is called a flow. It's a set of instructions that will be executed when the flow is triggered. In this case, the flow will be triggered when the button is clicked.
 
-Currently there's only 2 flows: `<trigger-event>` and `<listen-even>`. We will learn more about it later on.
+Currently, there are only two flows: `<trigger-event>` and `<listen-event>`. We will learn more about them later on.
 
-## Introducing `ref` attribute
+## Introducing the `ref` Attribute
 
 You may have noticed the `ref` attribute in the button tag. It's used to reference the button element. You can use it to reference any element in your custom element.
 
 The `<trigger-event>` tag uses the `ref` attribute to reference the button element. It's used to listen to the button's click event.
 
-The decision why we use `ref` attribute instead of `id` attribute, because `id` attribute is unique in the page, and we don't want to limit the number of custom elements in the page. And why it's not `class` or `data-*` attribute? Because it's not semantic. Let's `class` attribute for styling, and `data-*` attribute for data. And `ref` attribute is used to reference an element.
+We use the `ref` attribute instead of the `id` attribute because the `id` attribute is unique on the page, and we don't want to limit the number of custom elements on the page. Also, we avoid using the `class` or `data-*` attribute for semantic reasons. The `class` attribute is for styling, and the `data-*` attribute is for data. The `ref` attribute is specifically used for referencing elements.
 
-You can put space in the `ref` attribute, e.g `My Button`. But it's recommended to use camelCase / dash string. For example: `SetAgeButton` or `set-age-button`. Please remember that you can also reference multiple elements with `ref`.
+You can put spaces in the `ref` attribute value, e.g., `My Button`. However, it's recommended to use `camelCase` or `dash-separated` strings, like `SetAgeButton` or `set-age-button`. Please remember that you can also reference multiple elements with the ref attribute.
 
 ## Actions tag
 
-Inside `<trigger-event>` tag, there's `<set-state>` tag. It's called an action. You can see all available actions tag in <anchor-link href="/references">`reference`</anchor-link>.
+Inside the `<trigger-event>` tag, there's a `<set-state>` tag. It's called an action. You can see all available action tags in the <anchor-link href="/references">`reference`</anchor-link>.
 
-It's a set of instructions that will be executed when the some flow is triggered. In this case, the action will be triggered when the button is clicked.
+An action is a set of instructions that will be executed when a flow is triggered. In this case, the action will be triggered when the button is clicked.
 
-And the current action is `<set-state>` action. It's used to set the state value.
+The current action is the `<set-state>` action, which is used to set the state value.
 
 ## State mutation
 
-Before we continue, let's learn about state mutation. State mutation is a process of changing the state value. It's a common practice in other frameworks.
+Before we continue, let's learn about state mutation. State mutation is the process of changing the state value. It's a common practice in other frameworks.
 
-Okay let's try to increment the age state value by 1 every time the button is clicked. Add `mutate` attribute to the `<set-state>` tag. Mutate value can be `+` or `-`. `+` is used to increment the state value, and `-` is used to decrement the state value. It also support mutate for array operation like `push`, `pop`, `remove`, `assign`. You can read more about it in <anchor-link href="/references/actions/set-state">`set-state reference`</anchor-link> page.
+Okay, let's try to increment the age state value by 1 every time the button is clicked. Add the mutate attribute to the `<set-state>` tag. The mutate value can be arithmetic operations, `+` is used to increment the state value, and `-` is used to decrement the state value, and so on. It also supports mutations for array operations like push, pop, remove, and assign. You can read more about it in the <anchor-link href="/references/actions/set-state">`set-state reference`</anchor-link> page.
 
 ```html
 <custom-element name="hello-world">
@@ -172,12 +174,12 @@ Okay let's try to increment the age state value by 1 every time the button is cl
   </div>
 </realm-demo>
 
-We will learn more about <anchor-link href="/docs/learn/state-mutation">state mutation</anchor-link>, in the last learning section. It will provide you with further insights and knowledge on how to manipulate states effectively within your Custom Element.
+We will learn more about <anchor-link href="/docs/learn/state-mutation">state mutation</anchor-link> in the last learning section. It will provide you with further insights and knowledge on how to manipulate states effectively within your custom element.
 
 Understanding state mutation is essential for building dynamic interactivity. It involves updating or modifying the state values of your custom elements, enabling you to reflect changes in the user interface based on different cases.
 
-## Congrats!
+## Congratulations!
 
-Tada 🎉, congrats! You have acquired the fundamental knowledge of creating custom element and understanding how the reactivity works.
+Tada 🎉, congrats! You have acquired the fundamental knowledge of creating custom elements and understanding how reactivity works.
 
-Because we already fulfilled our promises, let's learn more about something else in the next tutorial, let's learn about <anchor-link href="/docs/learn/global-states">global states</anchor-link>.
+Because we have already fulfilled our promises, let's learn more about something else in the next tutorial: <anchor-link href="/docs/learn/global-states">global states</anchor-link>.
