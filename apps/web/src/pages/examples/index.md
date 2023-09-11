@@ -6,36 +6,10 @@ menuOrder: 1
 title: Collection examples of Realm
 author: Ribhararnus Pracutian
 description: Collection examples of Realm
+elements: ["column-layout"]
 ---
 
 This is a collection of Realm examples that you can use to learn Realm. The examples are divided into several categories:
-
-<custom-element name="column-layout">
-  <template>
-    <style>
-      :host {
-        display: flex;
-        gap: 2vh;
-        flex-direction: column;
-      }
-      ::slotted(div) {
-        width: 100%;
-      }
-      @media screen and (min-width: 1024px) {
-        :host {
-          flex-direction: row;
-          gap: 10vw;
-        }
-        ::slotted(div) {
-          flex: 1;
-          width: 50%;
-        }
-      }
-    </style>
-    <slot name="left"></slot>
-    <slot name="right"></slot>
-  </template>
-</custom-element>
 
 <column-layout>
   <div slot="left">
