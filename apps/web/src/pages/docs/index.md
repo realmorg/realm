@@ -61,7 +61,7 @@ Realm is tailor-made for indie makers seeking rapid prototyping capabilities. It
 
 While Realm excels in enabling fast prototyping, it's also capable of supporting production-ready applications, as demonstrated by this website.
 
-To gain insight into the motivations behind building this framework, I've written an article called the "<anchor-link href="https://dev.to/oknoorap/i-built-webcomponents-based-framework-i-am-html-developer-2jjb" target="_blank">HTML Developer Manifesto</anchor-link>," which delves into the principles that drove the creation of Realm.
+To gain insight into the motivations behind building this framework, I've written an article about "<anchor-link href="https://dev.to/oknoorap/i-built-webcomponents-based-framework-i-am-html-developer-2jjb" target="_blank">HTML Developer Manifesto</anchor-link>," which delves into the minds that drove the creation of Realm.
 
 ## Need help?
 
