@@ -71,6 +71,10 @@
       :host([\#is-loaded][eq="true"]) [ref="loader"] {
         display: none;
       }
+
+      :host p {
+        font-size: 0.75rem;
+      }
     </style>
 
     <div ref="loader">
@@ -81,5 +85,6 @@
       </anchor-link>
     </div>
     <iframe ref="viewer" _src="#iframe-url" width="100%" height="100%"></iframe>
+    <p>* If you can't see the preview on Safari, please use Firefox or Chrome instead.</p>
   </template>
 </custom-element>
