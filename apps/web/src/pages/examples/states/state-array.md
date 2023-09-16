@@ -8,4 +8,4 @@ author: Ribhararnus Pracutian
 description: This example shows how to use state type `array`.
 ---
 
-<sb-viewer id="web-platform-3grw4q" height="100vh"></sb-viewer>
+<csb-viewer id="example-array-state-ryyhnf" height="100vh"></csb-viewer>

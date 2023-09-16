@@ -8,4 +8,4 @@ author: Ribhararnus Pracutian
 description: This example shows how to handle HTTP success response.
 ---
 
-<sb-viewer id="web-platform-cuh867" height="100vh"></sb-viewer>
+<csb-viewer id="example-http-success-response-handling-t4yvtx" height="100vh"></csb-viewer>

@@ -8,4 +8,4 @@ author: Ribhararnus Pracutian
 description: This example shows how to use conditional styling.
 ---
 
-<sb-viewer id="web-platform-upgx41" height="100vh"></sb-viewer>
+<csb-viewer id="example-conditional-styling-hl99xd" height="100vh"></csb-viewer>

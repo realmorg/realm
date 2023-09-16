@@ -8,4 +8,4 @@ author: Ribhararnus Pracutian
 description: This example shows how to use basic HTTP request.
 ---
 
-<sb-viewer id="web-platform-1gy4f4" height="100vh"></sb-viewer>
+<csb-viewer id="http-request-example-xl63sf" height="100vh"></csb-viewer>

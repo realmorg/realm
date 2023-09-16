@@ -8,4 +8,4 @@ author: Ribhararnus Pracutian
 description: This example shows how to create a custom event.
 ---
 
-<sb-viewer id="web-platform-yz7kvv" height="100vh"></sb-viewer>
+<csb-viewer id="example-custom-event-rp7h7f" height="100vh"></csb-viewer>

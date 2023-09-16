@@ -8,4 +8,4 @@ author: Ribhararnus Pracutian
 description: This example shows how to use dynamic CSS variables within Custom Element.
 ---
 
-<sb-viewer id="web-platform-qnzzgq" height="100vh"></sb-viewer>
+<csb-viewer id="example-dynamic-css-variables-qxfh8p" height="100vh"></csb-viewer>

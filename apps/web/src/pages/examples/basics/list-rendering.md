@@ -8,4 +8,4 @@ author: Ribhararnus Pracutian
 description: This example shows how to render a list of items.
 ---
 
-<sb-viewer id="web-platform-d8mkd5" height="100vh"></sb-viewer>
+<csb-viewer id="example-list-rendering-7rwch2" height="100vh"></csb-viewer>

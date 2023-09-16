@@ -8,4 +8,4 @@ author: Ribhararnus Pracutian
 description: This example shows how to use global state.
 ---
 
-<sb-viewer id="web-platform-kanipi" height="100vh"></sb-viewer>
+<csb-viewer id="example-basic-global-state-ryqgt3" height="100vh"></csb-viewer>

@@ -8,4 +8,4 @@ author: Ribhararnus Pracutian
 description: This example shows how to use state type `number`.
 ---
 
-<sb-viewer id="web-platform-6zjh2a" height="100vh"></sb-viewer>
+<csb-viewer id="example-number-state-z7c334" height="100vh"></csb-viewer>

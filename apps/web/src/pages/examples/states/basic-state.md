@@ -8,4 +8,4 @@ author: Ribhararnus Pracutian
 description: This example shows how to use basic state.
 ---
 
-<sb-viewer id="web-platform-kvhqu2" height="100vh"></sb-viewer>
+<csb-viewer id="example-basic-state-sy9yst" height="100vh"></csb-viewer>
