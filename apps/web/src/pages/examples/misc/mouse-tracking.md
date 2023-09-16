@@ -8,4 +8,4 @@ author: Ribhararnus Pracutian
 description: This example shows how to track mouse position.
 ---
 
-<sb-viewer id="web-platform-cqwsgi" height="100vh"></sb-viewer>
+<csb-viewer id="example-mouse-tracking-3sw3t5" height="100vh"></csb-viewer>

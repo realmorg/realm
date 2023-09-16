@@ -8,4 +8,4 @@ author: Ribhararnus Pracutian
 description: This example shows how to use mounted event.
 ---
 
-<sb-viewer id="web-platform-ettasv" height="100vh"></sb-viewer>
+<csb-viewer id="example-mounted-event-qrt76y" height="100vh"></csb-viewer>

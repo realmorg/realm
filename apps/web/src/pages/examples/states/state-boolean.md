@@ -8,4 +8,4 @@ author: Ribhararnus Pracutian
 description: This example shows how to use state type `boolean`.
 ---
 
-<sb-viewer id="web-platform-91rps9" height="100vh"></sb-viewer>
+<csb-viewer id="example-boolean-state-x298h2" height="100vh"></csb-viewer>

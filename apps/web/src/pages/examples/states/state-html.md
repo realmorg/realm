@@ -8,4 +8,4 @@ author: Ribhararnus Pracutian
 description: This example shows how to use state type `html`.
 ---
 
-<sb-viewer id="web-platform-dfp5wd" height="100vh"></sb-viewer>
+<csb-viewer id="example-html-state-l282tv" height="100vh"></csb-viewer>

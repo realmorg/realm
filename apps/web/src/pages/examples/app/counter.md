@@ -8,4 +8,4 @@ author: Ribhararnus Pracutian
 description: This example shows how to create a basic counter app.
 ---
 
-<sb-viewer id="web-platform-uezwyj" height="100vh"></sb-viewer>
+<csb-viewer id="example-app-counter-gcd6vg" height="100vh"></csb-viewer>

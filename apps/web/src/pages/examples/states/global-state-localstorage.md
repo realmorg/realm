@@ -10,4 +10,4 @@ description: This example shows how to use `localStorage` as global state.
 
 If you refresh the page, the state will be preserved.
 
-<sb-viewer id="web-platform-ureqk2" height="100vh"></sb-viewer>
+<csb-viewer id="example-global-state-localstorage-ljpwzq" height="100vh"></csb-viewer>

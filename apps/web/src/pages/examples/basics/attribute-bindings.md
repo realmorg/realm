@@ -8,4 +8,4 @@ author: Ribhararnus Pracutian
 description: This example shows how to use attribute bindings.
 ---
 
-<sb-viewer id="web-platform-zvvaux" height="100vh"></sb-viewer>
+<csb-viewer id="example-attribute-bindings-yf5qfz" height="100vh"></csb-viewer>

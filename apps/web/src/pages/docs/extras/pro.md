@@ -11,6 +11,7 @@ description: Combine PHP, Realm, and Open Props to build your next web apps.
 PHP doesn't suck anymore. It's the video title posted by <anchor-link href="https://www.youtube.com/@aarondfrancis" target="_blank">Aaron Francis</anchor-link>. You can <anchor-link href="https://www.youtube.com/watch?v=ZRV3pBuPxEQ" target="_blank">watch it here</anchor-link>. The new feature is really mindblowing. It's like a JavaScript but in PHP. It's really cool.
 
 ## Why PHP?
+
 It is indeed true that PHP is widely used and considered the most popular language for web development, powering approximately 80% of the web. Many websites and applications are built using PHP frameworks such as Laravel and content management systems like WordPress.
 
 One of the advantages of PHP is its ease of setup and deployment. PHP websites can be developed and hosted on inexpensive shared hosting services, eliminating the need for complex DevOps knowledge or Infrastructure as Code practices. Deploying a PHP website often involves simply uploading the files to the server, making it a straightforward and accessible process.
@@ -35,4 +36,4 @@ However, with Open Props, you have the ability to embed CSS variables directly i
 
 By using <anchor-link href="https://open-props.style/" target="_blank">OpenProps</anchor-link>, PHP developers can enjoy a simpler and more streamlined development experience, focusing on the core aspects of their websites without worrying about the consistency and complexities of the JavaScript tooling ecosystem.
 
-<sb-viewer id="web-platform-ml7miv"></sb-viewer>
+<csb-viewer id="openprops-example-8v64n3"></csb-viewer>

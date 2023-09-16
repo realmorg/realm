@@ -8,4 +8,4 @@ author: Ribhararnus Pracutian
 description: The simplest example of a custom element.
 ---
 
-<sb-viewer id="web-platform-qn7r7o" height="100vh"></sb-viewer>
+<csb-viewer id="example-hello-world-q6p9sp" height="100vh"></csb-viewer>

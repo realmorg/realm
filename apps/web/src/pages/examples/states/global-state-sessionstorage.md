@@ -8,4 +8,4 @@ author: Ribhararnus Pracutian
 description: This example shows how to use `sessionStorage` as a global state.
 ---
 
-<sb-viewer id="web-platform-vkltby" height="100vh"></sb-viewer>
+<csb-viewer id="example-global-state-sessionstorage-hfp7mx" height="100vh"></csb-viewer>

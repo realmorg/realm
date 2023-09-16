@@ -8,4 +8,4 @@ author: Ribhararnus Pracutian
 description: This example shows how to use attributes change event.
 ---
 
-<sb-viewer id="web-platform-rsex9v" height="100vh"></sb-viewer>
+<csb-viewer id="example-attribute-changed-event-xxnppj" height="100vh"></csb-viewer>

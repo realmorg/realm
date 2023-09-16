@@ -8,4 +8,4 @@ author: Ribhararnus Pracutian
 description: This example shows how to use form bindings.
 ---
 
-<sb-viewer id="web-platform-a8b1vu" height="100vh"></sb-viewer>
+<csb-viewer id="example-form-bindings-2wmrzp" height="100vh"></csb-viewer>

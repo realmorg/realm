@@ -8,4 +8,4 @@ author: Ribhararnus Pracutian
 description: This example shows how to handle HTTP fails response.
 ---
 
-<sb-viewer id="web-platform-s4ks9n" height="100vh"></sb-viewer>
+<csb-viewer id="example-http-fails-response-handling-562pjv" height="100vh"></csb-viewer>

@@ -8,4 +8,4 @@ author: Ribhararnus Pracutian
 description: This example shows how to use trigger debounce.
 ---
 
-<sb-viewer id="web-platform-uarzgf" height="100vh"></sb-viewer>
+<csb-viewer id="example-trigger-debounce-8fpwyj" height="100vh"></csb-viewer>
