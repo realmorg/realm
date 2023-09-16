@@ -1,0 +1,89 @@
+<custom-element name="csb-viewer">
+  <element-attr name="id" type="string"></element-attr>
+  <element-attr name="height" type="string">50vh</element-attr>
+  <element-state name="iframe-url" type="string">about:blank</element-state>
+  <element-state name="is-loaded" type="boolean">false</element-state>
+
+  <element-flow>
+    <listen-event mounted>
+      <script type="module/realm" use="ref, localState, attr">
+        let init = false;
+        const callback = (entries, observer) => {
+          entries.forEach((entry) => {
+            if (localState.get('is-loaded') || init) return;
+            if (entry.isIntersecting) {
+              init = true;
+              localState.set('iframe-url', `https://codesandbox.io/embed/${attr.get('id')}?fontsize=14&theme=${globalState.get('realm-theme')}`);
+              ref('viewer').onload = () => localState.set('is-loaded', true);
+            }
+          })
+        };
+        const observer = new IntersectionObserver(callback);
+        observer.observe(ref('viewer'));
+      </script>
+    </listen-event>
+
+    <listen-event statechanged="realm-theme">
+      <script type="module/realm" use="localState, globalState, attr">
+        if (!localState.get('is-loaded')) return;
+        const iframeUrl = `https://codesandbox.io/embed/${attr.get('id')}?fontsize=14&theme=${globalState.get('realm-theme')}`;
+        localState.set('iframe-url', iframeUrl);
+      </script>
+    </listen-event>
+  </element-flow>
+
+  <template>
+    <style>
+      :host {
+        display: block;
+        position: relative;
+        border: 1px solid var(--theme-border-color);
+        border-radius: var(--_1sp);
+        padding: var(--_1sp);
+        overflow: hidden;
+      }
+
+      :host iframe {
+        width: 100%;
+        min-height: var(--attr-height);
+        border: 0;
+      }
+
+      :host [ref="loader"] {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        background: var(--theme-bg-color);
+        position: absolute;
+
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+      }
+
+      :host anchor-link {
+        font-size: 12px;
+      }
+
+      :host([\#is-loaded][eq="true"]) [ref="loader"] {
+        display: none;
+      }
+
+      :host p {
+        font-size: 0.75rem;
+      }
+    </style>
+
+    <div ref="loader">
+      <strong>Loading example...</strong>
+
+      <anchor-link _href="#iframe-url" target="_blank" text-overflow="true">
+        <slot name="#iframe-url"></slot>
+      </anchor-link>
+    </div>
+
+    <iframe ref="viewer" _src="#iframe-url" style="width: 100%; border: 0; border-radius: 4px; overflow: hidden" allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking" sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts"></iframe>
+  </template>
+</custom-element>
