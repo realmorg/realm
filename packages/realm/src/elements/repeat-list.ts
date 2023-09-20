@@ -4,6 +4,7 @@ import { MixedDataType } from "../constants/data";
 import { RealmTagNames } from "../constants/tags";
 import { RealmElement } from "../libs/RealmElement.class";
 import { RealmState } from "../libs/RealmState.class";
+import { getAttrType } from "../utils/action";
 import {
   ElementAttributeEntries,
   bindElement,
@@ -54,23 +55,24 @@ export const repeatListElement = defineElement({
       element._clear();
       element._clear(elementShadow);
 
-      forEach(entries, (item, index) => {
+      forEach(entries, (value, index) => {
         element._append(
           element.$clone<DocumentFragment>(fragment),
           elementShadow
         );
 
         const elementAttrBindings = getElementAttrBindings(element);
-        forEach(toDotNotation(item), (name) =>
+        forEach(toDotNotation(value), (mutateName) => {
           bindElement(
             element,
             RealmMutableAttr.SRC,
             elementAttrBindings,
-            name,
-            item,
+            mutateName,
+            value,
+            undefined,
             false
-          )
-        );
+          );
+        });
 
         const meta = { index, length: entries.length };
         forEach(toDotNotation(meta, META_PREFIX), (name) =>
@@ -80,6 +82,7 @@ export const repeatListElement = defineElement({
             elementAttrBindings,
             name,
             meta,
+            undefined,
             false
           )
         );
@@ -98,12 +101,14 @@ export const repeatListElement = defineElement({
               [RealmMutableAttr.STATE]: () =>
                 hostElementStates.get<MixedDataType>(mutateName),
             };
+            const valueType = getAttrType(mutateName, registry);
             bindElement(
               element,
               dataType,
               elementAttrBindings,
               mutateName,
               valueLookup[dataType](),
+              valueType,
               false
             );
           })
@@ -130,6 +135,7 @@ export const repeatListElement = defineElement({
                 getElementAttrBindings(element),
                 mutatorName,
                 value,
+                undefined,
                 isGlobalState,
                 true
               );

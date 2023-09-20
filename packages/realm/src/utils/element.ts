@@ -409,10 +409,11 @@ export const bindElement = (
   dataBinding: ElementBinding,
   name: string,
   value: MixedDataType | DataSource,
+  valueType?: ElementDataTypes,
   isGlobalUpdate?: boolean,
   isUpdate?: boolean
 ) => {
-  bindCSS(element, name, value, dataType, isGlobalUpdate);
+  bindCSS(element, name, value, valueType, dataType, isGlobalUpdate);
   forEach(dataBinding, ([node, ...bindings]) =>
     bindAttr(
       element,
