@@ -11,6 +11,7 @@ import { RealmState } from "../libs/RealmState.class";
 import {
   createActionTrigger,
   getAttrRegistry,
+  getAttrType,
   getStateRegistry,
 } from "../utils/action";
 import { $el, $els, doc } from "../utils/dom";
@@ -31,22 +32,28 @@ import {
   createSet,
   entriesOf,
   forEach,
+  forEachMap,
   forEachNode,
   getMap,
   getValueFrom,
+  removeMap,
   setMap,
 } from "../utils/object";
-import { getGlobalStateRegistry, getGlobalState } from "./global-state";
+import {
+  getGlobalStateRegistry,
+  getGlobalState,
+  getGlobalStateType,
+} from "./global-state";
 
-const HTML_REGISTRY = createMap<string, HTMLTemplateElement>();
+export const HTML_REGISTRY = createMap<string, HTMLTemplateElement>();
 
-const STYLE_REGISTRY = createMap<string, HTMLStyleElement>();
+export const STYLE_REGISTRY = createMap<string, HTMLStyleElement>();
 
-const ELEMENT_FLOW_REGISTRY = createMap<string, Set<RealmElement>>();
+export const ELEMENT_FLOW_REGISTRY = createMap<string, Set<RealmElement>>();
 
-const SCRIPT_REGISTRY = createMap<string, Set<RealmElement>>();
+export const SCRIPT_REGISTRY = createMap<string, Set<RealmElement>>();
 
-const LINK_STYLE_REGISTRY = createMap<string, Set<RealmElement>>();
+export const LINK_STYLE_REGISTRY = createMap<string, Set<RealmElement>>();
 
 /**
  * Register custom element
@@ -176,6 +183,7 @@ export const registerElement = (elementName: string) =>
               bindingElements,
               mutateName,
               valueLookup[dataType](),
+              valueType,
               isGlobalState
             );
           })
@@ -191,6 +199,14 @@ export const registerElement = (elementName: string) =>
         ([mutator, mutateType, globalState]) =>
           mutator.subscribe((mutatorName, value: string, oldValue) => {
             const eventDetail = [mutatorName, value, oldValue];
+            const valueType = globalState
+              ? getGlobalStateType(mutatorName)
+              : getAttrType(
+                  mutatorName,
+                  mutateType === RealmMutableAttr.STATE
+                    ? statesRegistry
+                    : attributesRegistry
+                );
             if (mutateType === RealmMutableAttr.STATE)
               arrayPush(eventDetail, globalState);
             element._sendEvent(
@@ -203,6 +219,7 @@ export const registerElement = (elementName: string) =>
               bindingElements,
               mutatorName,
               value,
+              valueType,
               globalState,
               true
             );

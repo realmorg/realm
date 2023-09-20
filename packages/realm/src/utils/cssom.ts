@@ -17,6 +17,7 @@ import { CSS_CUSTOM_SELECTOR_REGEX } from "../constants/regx";
 import { HOST_SELECTOR, RealmCSSVarConst } from "../constants/styles";
 import { RealmElement } from "../libs/RealmElement.class";
 import { $html, $shadow, RealmBaseInterface, _remove } from "./dom";
+import { ElementDataTypes } from "./element";
 import { isTruthy } from "./logic";
 import {
   arrayJoin,
@@ -210,9 +211,19 @@ export const bindCSS = (
   element: RealmElement,
   name: string,
   value: MixedDataType,
+  valueType: ElementDataTypes,
   dataType: string,
   isGlobalUpdate: boolean = false
 ): void => {
+  if (
+    ![
+      ElementDataTypes.STRING,
+      ElementDataTypes.BOOLEAN,
+      ElementDataTypes.NUMBER,
+    ].includes(valueType)
+  )
+    return;
+
   const sheet = $adoptedStyleSheets(element);
   const strValue = `${value}`;
 
