@@ -11,7 +11,7 @@ import {
   getAttrType,
   getMutatedValue,
 } from "../utils/action";
-import { parseValue } from "../utils/element";
+import { ElementDataTypes, parseValue } from "../utils/element";
 
 /**
  * Trigger <set-state /> action
@@ -60,8 +60,11 @@ export const setAttrAction = defineAction({
   ) {
     const [nameAttr] = findAttr<string>(actionArgs, RealmAttributeNames.NAME);
     const attrType = getAttrType(nameAttr, element.attrsRegistry);
+    const attrValue = element.$attr<string>(nameAttr);
+    const parsedValue =
+      attrType === ElementDataTypes.BOOLEAN ? Boolean(attrValue) : attrValue;
     const mutatedValue = getMutatedValue(element, actionArgs, attrType, event);
-    const prevValue = parseValue(attrType, element.$attr(nameAttr));
+    const prevValue = parseValue(attrType, parsedValue);
     const value = mutatedValue(prevValue);
     element._attr(nameAttr, `${value}`);
   },
