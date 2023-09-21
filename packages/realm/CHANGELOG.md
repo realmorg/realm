@@ -1,5 +1,11 @@
 # @realmorg/realm
 
+## 0.0.19
+
+### Patch Changes
+
+- 818371c: Updated fix `set-attr` boolean parsed issue
+
 ## 0.0.18
 
 ### Patch Changes
