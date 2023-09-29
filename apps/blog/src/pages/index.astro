@@ -2,12 +2,12 @@
 import BlogLayout from "../layouts/Blog.astro";
 
 const allPosts = await Astro.glob("./posts/*.md");
-allPosts.slice(10).sort((a, z) => Date.parse(z.frontmatter.date) - Date.parse(a.frontmatter.date));
+const sortedPosts = allPosts.sort((a, z) => Date.parse(z.frontmatter.date) - Date.parse(a.frontmatter.date)).slice(0, 10);
 ---
 
 <BlogLayout>
   {
-    allPosts.map((post) => (
+    sortedPosts.map((post) => (
       <post-layout>
         <h2 slot="title">
           <anchor-gradient href={post.url}>{post.frontmatter.title}</anchor-gradient>
