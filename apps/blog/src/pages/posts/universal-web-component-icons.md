@@ -24,13 +24,18 @@ You can use unicons in your project by installing Realm. And then you can copy t
 <html>
   <head>
     ...
-    <script src="https://cdn.jsdelivr.net/npm/@realmorg/realm/dist/realm.production.min.js" type="module"></script>
-    <link href="https://cdn.jsdelivr.net/npm/@realmorg/realm/dist/realm.min.css" rel="stylesheet" />
+    <script
+      src="https://cdn.jsdelivr.net/npm/@realmorg/realm/dist/realm.production.min.js"
+      type="module"></script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/@realmorg/realm/dist/realm.min.css"
+      rel="stylesheet" />
     ...
   </head>
 
   <body>
-    <import-element from="https://unicons.realm.codes/ICON-NAME.html"></import-element>
+    <import-element
+      from="https://unicons.realm.codes/ICON-NAME.html"></import-element>
 
     <!-- You can use icon custom element's tag in your web page or framework -->
     <icon-name-element></icon-name-element>
@@ -43,7 +48,8 @@ You can use unicons in your project by installing Realm. And then you can copy t
 Basic usage of Unicons, you can copy the icon you want to use from [https://unicons.realm.codes](https://unicons.realm.codes/).
 
 ```html
-<import-element from="https://unicons.realm.codes/fc-landscape.html"></import-element>
+<import-element
+  from="https://unicons.realm.codes/fc-landscape.html"></import-element>
 <icon-fc-landscape></icon-fc-landscape>
 ```
 
@@ -60,7 +66,7 @@ Import icon inside a custom element.
 <custom-element name="save-button">
   <template>
     <style>
-      button {
+      :host button {
         display: inline-flex;
         place-items: center;
         padding: 8px 12px;
@@ -72,7 +78,8 @@ Import icon inside a custom element.
         gap: 4px;
       }
     </style>
-    <import-element from="https://unicons.realm.codes/fc-flash-on.html"></import-element>
+    <import-element
+      from="https://unicons.realm.codes/fc-flash-on.html"></import-element>
     <button>
       <icon-fc-flash-on size="20px"></icon-fc-flash-on>
       <span>
@@ -88,7 +95,7 @@ Import icon inside a custom element.
 <custom-element name="save-button">
   <template>
     <style>
-      button {
+      :host button {
         display: inline-flex;
         place-items: center;
         padding: 8px 12px;
