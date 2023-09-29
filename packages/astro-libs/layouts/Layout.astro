@@ -4,7 +4,7 @@ import RealmGlobalStateDefs from './RealmGlobalStateDefs.astro'
 import RealmImportElement, { importantElements, iconElements } from './RealmImportElement.astro'
 
 export interface Props extends HeadProps {
-  elements: string[]
+  elements?: string[]
 }
 const {
   origin = Astro.url.origin,
