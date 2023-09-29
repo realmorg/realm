@@ -122,9 +122,7 @@ Import icon inside a custom element.
     </button>
   </template>
 </custom-element>
-<realm-demo>
-  <save-button onclick="alert('Save mutation to API')">Save changes</save-button>
-</realm-demo>
+<save-button onclick="alert('Save mutation to API')">Save changes</save-button>
 
 ## Final words
 
