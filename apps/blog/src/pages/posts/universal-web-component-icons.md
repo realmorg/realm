@@ -66,7 +66,10 @@ Import icon inside a custom element.
 <custom-element name="save-button">
   <template>
     <style>
-      :host button {
+      :host {
+        display: inline-block;
+      }
+      button {
         display: inline-flex;
         place-items: center;
         padding: 8px 12px;
@@ -78,9 +81,9 @@ Import icon inside a custom element.
         gap: 4px;
       }
     </style>
-    <import-element
-      from="https://unicons.realm.codes/fc-flash-on.html"></import-element>
     <button>
+      <import-element
+        from="https://unicons.realm.codes/fc-flash-on.html"></import-element>
       <icon-fc-flash-on size="20px"></icon-fc-flash-on>
       <span>
         <slot children></slot>
@@ -95,7 +98,10 @@ Import icon inside a custom element.
 <custom-element name="save-button">
   <template>
     <style>
-      :host button {
+      :host {
+        display: inline-block;
+      }
+      button {
         display: inline-flex;
         place-items: center;
         padding: 8px 12px;
@@ -107,8 +113,8 @@ Import icon inside a custom element.
         gap: 4px;
       }
     </style>
-    <import-element from="https://unicons.realm.codes/fc-flash-on.html"></import-element>
     <button>
+      <import-element from="https://unicons.realm.codes/fc-flash-on.html"></import-element>
       <icon-fc-flash-on size="20px"></icon-fc-flash-on>
       <span>
         <slot children></slot>
@@ -116,7 +122,6 @@ Import icon inside a custom element.
     </button>
   </template>
 </custom-element>
-
 <realm-demo>
   <save-button onclick="alert('Save mutation to API')">Save changes</save-button>
 </realm-demo>
