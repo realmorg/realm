@@ -6,7 +6,7 @@ const { frontmatter } = Astro.props;
 ---
 
 <Layout origin="https://realm.codes" title={frontmatter.title} description={frontmatter.description} seoProps={{ titleTemplate: "%s - The Realm Blog" }}>
-  <RealmImportElement elements={["top-navigation-blog", "blog-layout", "post-layout"]} />
+  <RealmImportElement elements={[...(frontmatter?.elements ?? []), "top-navigation-blog", "blog-layout", "post-layout"]} />
   <top-navigation-blog></top-navigation-blog>
   <blog-layout>
     <post-layout>

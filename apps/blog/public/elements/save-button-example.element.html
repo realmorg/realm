@@ -1,0 +1,27 @@
+<custom-element name="save-button">
+  <template>
+    <style>
+      :host {
+        display: inline-block;
+      }
+      button {
+        display: inline-flex;
+        place-items: center;
+        padding: 8px 12px;
+        background: teal;
+        font-weight: 900;
+        border: 0;
+        border-radius: 4px;
+        cursor: pointer;
+        gap: 4px;
+      }
+    </style>
+    <button>
+      <import-element from="https://unicons.realm.codes/fc-flash-on.html"></import-element>
+      <icon-fc-flash-on size="20px"></icon-fc-flash-on>
+      <span>
+        <slot children></slot>
+      </span>
+    </button>
+  </template>
+</custom-element>
