@@ -4,6 +4,7 @@ title: Introducing Unicons by Realm
 author: Ribhararnus Pracutian
 description: Universal Web Component Icons (Unicons) is a collection of icons ported from React Icons to be used as web components. It's designed to be used accross the web, so you can use icons from any website not limited to framework or library.
 tags: [release, announcement]
+elements: ["save-button-example"]
 date: 2023-29-09
 ---
 
@@ -95,34 +96,9 @@ Import icon inside a custom element.
 <save-button onclick="alert('Save mutation to API')">Save changes</save-button>
 ```
 
-<custom-element name="save-button">
-  <template>
-    <style>
-      :host {
-        display: inline-block;
-      }
-      button {
-        display: inline-flex;
-        place-items: center;
-        padding: 8px 12px;
-        background: teal;
-        font-weight: 900;
-        border: 0;
-        border-radius: 4px;
-        cursor: pointer;
-        gap: 4px;
-      }
-    </style>
-    <button>
-      <import-element from="https://unicons.realm.codes/fc-flash-on.html"></import-element>
-      <icon-fc-flash-on size="20px"></icon-fc-flash-on>
-      <span>
-        <slot children></slot>
-      </span>
-    </button>
-  </template>
-</custom-element>
-<save-button onclick="alert('Save mutation to API')">Save changes</save-button>
+<realm-demo>
+  <save-button onclick="alert('Save mutation to API')">Save changes</save-button>
+</realm-demo>
 
 ## Final words
 
