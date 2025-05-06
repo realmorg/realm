@@ -28,5 +28,36 @@
     <anchor-link href="/" variant="white">
       <realm-logo size="25" _variant="#logo-variant"></realm-logo>
     </anchor-link>
+    <a class="dead" href="https://blog.realm.codes/posts/project-is-under-maintenance-mode/">Project is Dead</a>
+    <style>
+      :host {
+        display: flex;
+        align-items: center;
+        gap: var(--_2sp);
+      }
+
+      :host a {
+        color: var(--theme-color);
+        text-decoration: none;
+        font-weight: 500;
+      }
+
+      :host a:hover {
+        color: var(--color-pastel-magenta);
+      }
+      :host a[active] {
+        color: var(--color-light-salmon-pink);
+      }
+      :host a.dead {
+        color: white;
+        background: linear-gradient(to bottom, var(--color-pastel-magenta) 0%, var(--color-light-salmon-pink) 100%);
+        background-color: var(--color-light-salmon-pink);
+        font-size: 0.8rem;
+        font-weight: 400;
+        text-decoration: underline !important;
+        font-size: 20px;
+        padding: var(--_1sp) var(--_3sp);
+      }
+    </style>
   </template>
 </custom-element>
