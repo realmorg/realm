@@ -21,17 +21,19 @@
       }
 
       :host a {
+        color: var(--color-pastel-magenta) !important;
         text-decoration: none;
-        color: var(--color-pastel-magenta);
-        border-bottom-width: 1px;
+        border-bottom-width: 1px !important;
         border-bottom-style: solid;
-        border-color: transparent;
+        border-color: transparent !important;
         -webkit-tap-highlight-color: transparent;
+        line-height: 1;
+        margin-bottom: -4px;
       }
 
       :host a:hover {
-        color: var(--color-light-salmon-pink);
-        border-color: var(--color-light-salmon-pink);
+        color: var(--color-light-salmon-pink) !important;
+        border-color: var(--color-light-salmon-pink) !important;
       }
 
       :host([\@active][eq="true"]) a,
