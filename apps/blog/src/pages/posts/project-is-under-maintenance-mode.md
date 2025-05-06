@@ -3,8 +3,7 @@ layout: ../../layouts/Post.astro
 title: Project is under maintenance mode
 author: Ribhararnus Pracutian
 description: Realm Framework has entered maintenance mode. This decision is due to instability in the Shadow DOM and Web Component API, ecosystem shifts, and diminished active usage.
-tags: [release, announcement]
-elements: ["save-button-example"]
+tags: [announcement]
 date: 2025-06-05
 ---
 
