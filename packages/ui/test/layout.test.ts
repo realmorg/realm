@@ -186,8 +186,9 @@ describe("layout and display", () => {
     await tick();
     expect(layout.collapsed).toBe(true);
     expect(localStorage.getItem("sidebar-test")).toBe("true");
-    await new Promise((resolve) => setTimeout(resolve, 250));
-    expect(sidebar.getBoundingClientRect().width).toBe(48);
+    await vi.waitFor(() => expect(sidebar.getBoundingClientRect().width).toBe(48), {
+      timeout: 2000,
+    });
     const item = host.querySelector("ui-sidebar-menu-button") as Element;
     expect(getComputedStyle(host.querySelector("ui-sidebar-menu-badge") as Element).display).toBe(
       "none",
