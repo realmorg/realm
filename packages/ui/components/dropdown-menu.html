@@ -1,0 +1,372 @@
+<custom-element name="ui-dropdown-menu">
+  <script>
+    let wasOpen = false;
+
+    function press() {
+      wasOpen = host.querySelector(":scope > ui-dropdown-menu-content").matches(":popover-open");
+    }
+
+    function toggle(trigger) {
+      const content = host.querySelector(":scope > ui-dropdown-menu-content");
+      const open = wasOpen || content.matches(":popover-open");
+      wasOpen = false;
+      if (open) content.hidePopover();
+      else {
+        trigger.firstElementChild?.focus();
+        content.showPopover({ source: trigger });
+      }
+    }
+  </script>
+
+  <style>
+    :host {
+      display: contents;
+    }
+  </style>
+
+  <slot></slot>
+</custom-element>
+
+<custom-element name="ui-dropdown-menu-trigger">
+  <style>
+    :host {
+      display: inline-block;
+      vertical-align: middle;
+    }
+  </style>
+
+  <span part="trigger" onpointerdown="press()" onclick="toggle(host)"><slot></slot></span>
+</custom-element>
+
+<custom-element name="ui-dropdown-menu-content" role="menu">
+  <script>
+    defineProps({
+      placement: prop.enum(["bottom-start", "bottom-end", "top-start", "top-end"]).default("bottom-start"),
+    });
+
+    const ITEMS = ":is(ui-menu-item, ui-menu-checkbox-item, ui-menu-radio-item):not([disabled])";
+
+    function opened(event) {
+      if (event.newState === "open") host.querySelector(ITEMS)?.focus();
+    }
+
+    function leave(event) {
+      if (document.hasFocus() && !host.contains(event.relatedTarget)) host.hidePopover();
+    }
+
+    attrs.popover ??= "auto";
+
+    listen("toggle", opened);
+    listen("focusout", leave);
+    listen("select", () => host.hidePopover());
+  </script>
+
+  <style>
+    :host {
+      box-sizing: border-box;
+      min-width: calc(var(--spacing) * 32);
+      margin: calc(var(--spacing) * 1) 0 0;
+      padding: calc(var(--spacing) * 1);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      background: var(--popover);
+      color: var(--popover-foreground);
+      box-shadow: var(--shadow-md);
+      inset: auto;
+      position-area: bottom span-right;
+      position-try-fallbacks: flip-block, flip-inline;
+    }
+    :host(:state(attr-placement-is-bottom-end)) {
+      position-area: bottom span-left;
+    }
+    :host(:state(attr-placement-is-top-start)) {
+      position-area: top span-right;
+      margin: 0 0 calc(var(--spacing) * 1);
+    }
+    :host(:state(attr-placement-is-top-end)) {
+      position-area: top span-left;
+      margin: 0 0 calc(var(--spacing) * 1);
+    }
+  </style>
+
+  <div part="menu" focusgroup="menu block wrap"><slot></slot></div>
+</custom-element>
+
+<custom-element name="ui-menu-item" role="menuitem">
+  <script>
+    const props = defineProps({
+      value: prop.string(),
+      disabled: prop.boolean(),
+      variant: prop.enum(["default", "destructive"]).default("default"),
+    });
+
+    const ACTIVATE = new Set(["Enter", " "]);
+
+    function choose() {
+      if (!props.disabled) dispatch("select", { value: props.value });
+    }
+
+    function activate(event) {
+      if (!ACTIVATE.has(event.key)) return;
+      event.preventDefault();
+      choose();
+    }
+
+    attrs.tabindex ??= -1;
+
+    listen("click", choose);
+    listen("keydown", activate);
+
+    observe(() => {
+      internals.ariaDisabled = String(props.disabled);
+    });
+  </script>
+
+  <style>
+    :host {
+      display: flex;
+      align-items: center;
+      gap: calc(var(--spacing) * 2);
+      padding: calc(var(--spacing) * 1.5) calc(var(--spacing) * 2);
+      border-radius: var(--radius-sm);
+      font-size: var(--text-sm);
+      cursor: default;
+      outline: none;
+      user-select: none;
+    }
+    :host(:hover),
+    :host(:focus-visible) {
+      background: var(--accent);
+      color: var(--accent-foreground);
+    }
+    :host(:state(attr-variant-is-destructive)) {
+      color: var(--destructive);
+    }
+    :host(:state(attr-disabled)) {
+      pointer-events: none;
+      opacity: 0.5;
+    }
+    ::slotted(svg) {
+      width: calc(var(--spacing) * 4);
+      height: calc(var(--spacing) * 4);
+      color: var(--muted-foreground);
+    }
+  </style>
+
+  <slot></slot>
+</custom-element>
+
+<custom-element name="ui-menu-checkbox-item" role="menuitemcheckbox">
+  <script>
+    const props = defineProps({
+      value: prop.string(),
+      checked: prop.boolean().reflect(),
+      disabled: prop.boolean(),
+    });
+
+    const ACTIVATE = new Set(["Enter", " "]);
+
+    function choose() {
+      if (props.disabled) return;
+      props.checked = !props.checked;
+      dispatch("select", { value: props.value, checked: props.checked });
+    }
+
+    function activate(event) {
+      if (!ACTIVATE.has(event.key)) return;
+      event.preventDefault();
+      choose();
+    }
+
+    attrs.tabindex ??= -1;
+
+    listen("click", choose);
+    listen("keydown", activate);
+
+    observe(() => {
+      internals.ariaDisabled = String(props.disabled);
+      internals.ariaChecked = String(props.checked);
+    });
+  </script>
+
+  <style>
+    :host {
+      display: flex;
+      align-items: center;
+      gap: calc(var(--spacing) * 2);
+      padding: calc(var(--spacing) * 1.5) calc(var(--spacing) * 2) calc(var(--spacing) * 1.5) calc(var(--spacing) * 8);
+      position: relative;
+      border-radius: var(--radius-sm);
+      font-size: var(--text-sm);
+      cursor: default;
+      outline: none;
+      user-select: none;
+    }
+    :host(:hover),
+    :host(:focus-visible) {
+      background: var(--accent);
+      color: var(--accent-foreground);
+    }
+    :host(:state(attr-disabled)) {
+      pointer-events: none;
+      opacity: 0.5;
+    }
+    svg {
+      position: absolute;
+      left: calc(var(--spacing) * 2);
+      width: calc(var(--spacing) * 4);
+      height: calc(var(--spacing) * 4);
+      visibility: hidden;
+    }
+    :host(:state(attr-checked)) svg {
+      visibility: visible;
+    }
+  </style>
+
+  <svg aria-hidden="true" part="indicator" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5" /></svg>
+  <slot></slot>
+</custom-element>
+
+<custom-element name="ui-menu-radio-group" role="group">
+  <script>
+    const props = defineProps({ value: prop.string().reflect() });
+
+    const items = useChildren("ui-menu-radio-item", ["value"]);
+
+    function picked(event) {
+      if (event.target.localName === "ui-menu-radio-item") props.value = event.detail.value;
+    }
+
+    listen("select", picked);
+
+    observe(() => {
+      for (const item of items) item.toggleAttribute("checked", item.getAttribute("value") === props.value);
+    });
+  </script>
+
+  <style>
+    :host {
+      display: block;
+    }
+  </style>
+
+  <slot></slot>
+</custom-element>
+
+<custom-element name="ui-menu-radio-item" role="menuitemradio">
+  <script>
+    const props = defineProps({
+      value: prop.string(),
+      checked: prop.boolean(),
+      disabled: prop.boolean(),
+    });
+
+    const ACTIVATE = new Set(["Enter", " "]);
+
+    function choose() {
+      if (!props.disabled) dispatch("select", { value: props.value });
+    }
+
+    function activate(event) {
+      if (!ACTIVATE.has(event.key)) return;
+      event.preventDefault();
+      choose();
+    }
+
+    attrs.tabindex ??= -1;
+
+    listen("click", choose);
+    listen("keydown", activate);
+
+    observe(() => {
+      internals.ariaDisabled = String(props.disabled);
+      internals.ariaChecked = String(props.checked);
+    });
+  </script>
+
+  <style>
+    :host {
+      display: flex;
+      align-items: center;
+      gap: calc(var(--spacing) * 2);
+      padding: calc(var(--spacing) * 1.5) calc(var(--spacing) * 2) calc(var(--spacing) * 1.5) calc(var(--spacing) * 8);
+      position: relative;
+      border-radius: var(--radius-sm);
+      font-size: var(--text-sm);
+      cursor: default;
+      outline: none;
+      user-select: none;
+    }
+    :host(:hover),
+    :host(:focus-visible) {
+      background: var(--accent);
+      color: var(--accent-foreground);
+    }
+    :host(:state(attr-disabled)) {
+      pointer-events: none;
+      opacity: 0.5;
+    }
+    span {
+      position: absolute;
+      left: calc(var(--spacing) * 3.5);
+      width: calc(var(--spacing) * 2);
+      height: calc(var(--spacing) * 2);
+      border-radius: var(--radius-full);
+      background: currentColor;
+      visibility: hidden;
+    }
+    :host(:state(attr-checked)) span {
+      visibility: visible;
+    }
+  </style>
+
+  <span aria-hidden="true" part="indicator"></span>
+  <slot></slot>
+</custom-element>
+
+<custom-element name="ui-menu-label">
+  <style>
+    :host {
+      display: block;
+      padding: calc(var(--spacing) * 1.5) calc(var(--spacing) * 2);
+      font-size: var(--text-sm);
+      font-weight: var(--font-weight-medium);
+    }
+  </style>
+
+  <slot></slot>
+</custom-element>
+
+<custom-element name="ui-menu-group" role="group">
+  <style>
+    :host {
+      display: block;
+    }
+  </style>
+
+  <slot></slot>
+</custom-element>
+
+<custom-element name="ui-menu-separator" role="separator">
+  <style>
+    :host {
+      display: block;
+      height: 1px;
+      margin: calc(var(--spacing) * 1) calc(var(--spacing) * -1);
+      background: var(--border);
+    }
+  </style>
+</custom-element>
+
+<custom-element name="ui-menu-shortcut">
+  <style>
+    :host {
+      margin-inline-start: auto;
+      font-size: var(--text-xs);
+      letter-spacing: 0.1em;
+      color: var(--muted-foreground);
+    }
+  </style>
+
+  <slot></slot>
+</custom-element>

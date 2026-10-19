@@ -1,0 +1,60 @@
+<custom-element name="ui-message-scroller">
+  <script>
+    const props = defineProps({ threshold: prop.number().min(0).default(48) });
+
+    const scroll = useState({ pinned: true });
+
+    function viewport() {
+      return refs.viewport;
+    }
+
+    function track(element) {
+      scroll.pinned = element.scrollHeight - element.scrollTop - element.clientHeight <= props.threshold;
+    }
+
+    function bottom() {
+      viewport().scrollTo({ top: viewport().scrollHeight, behavior: "smooth" });
+    }
+
+    onConnected(() => {
+      const observer = new MutationObserver(() => {
+        if (scroll.pinned) viewport().scrollTop = viewport().scrollHeight;
+      });
+      observer.observe(host, { childList: true, subtree: true, characterData: true });
+      viewport().scrollTop = viewport().scrollHeight;
+      return () => observer.disconnect();
+    });
+  </script>
+
+  <style>
+    :host {
+      position: relative;
+      display: block;
+      width: 100%;
+      min-height: 0;
+    }
+    :host(:state(attr-height)) {
+      height: calc(var(--spacing) * var(--attr-height));
+    }
+    .viewport {
+      height: 100%;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      scrollbar-width: thin;
+    }
+    .jump {
+      position: absolute;
+      left: 50%;
+      bottom: calc(var(--spacing) * 3);
+      translate: -50% 0;
+    }
+    :host(:state(state-scroll-pinned)) .jump {
+      display: none;
+    }
+  </style>
+
+  <div class="viewport" ref="viewport" part="viewport" role="log" aria-live="polite" onscroll="track(this)">
+    <slot></slot>
+  </div>
+  <ui-button class="jump" size="sm" variant="secondary" onclick="bottom()">Jump to latest</ui-button>
+</custom-element>

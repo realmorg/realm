@@ -1,0 +1,63 @@
+<custom-element name="ui-toggle-group" role="group" form-associated>
+  <script>
+    const props = defineProps({
+      type: prop.enum(["single", "multiple"]).default("single"),
+      value: prop.string().default(""),
+      orientation: prop.enum(["horizontal", "vertical"]).default("horizontal"),
+    });
+
+    const toggles = useChildren("ui-toggle");
+    const group = useState({
+      get focusgroup() {
+        return `toolbar ${props.orientation === "vertical" ? "block" : "inline"} wrap`;
+      },
+      get selected() {
+        return new Set(props.value.split(",").filter(Boolean));
+      },
+    });
+
+    function changed(event) {
+      const toggle = event.target;
+      if (toggle.localName !== "ui-toggle") return;
+      event.stopPropagation();
+      const value = toggle.value;
+      const selected = props.type === "single" ? new Set(toggle.pressed ? [value] : []) : new Set(group.selected);
+      if (props.type === "multiple") selected[toggle.pressed ? "add" : "delete"](value);
+      props.value = [...selected].join(",");
+      dispatch("change");
+    }
+
+    listen("change", changed);
+
+    observe(() => {
+      for (const toggle of toggles) toggle.pressed = group.selected.has(toggle.value);
+    });
+  </script>
+
+  <style>
+    :host {
+      display: inline-flex;
+      align-items: center;
+      width: fit-content;
+      border-radius: var(--radius-md);
+    }
+    :host(:state(attr-orientation-is-vertical)) {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    :host(:not(:state(attr-orientation-is-vertical))) ::slotted(:not(:first-child)) {
+      --ui-radius-start: 0;
+    }
+    :host(:not(:state(attr-orientation-is-vertical))) ::slotted(:not(:last-child)) {
+      --ui-radius-end: 0;
+    }
+    :host(:state(attr-orientation-is-vertical)) ::slotted(:not(:first-child)) {
+      --ui-radius-block-start: 0;
+    }
+    :host(:state(attr-orientation-is-vertical)) ::slotted(:not(:last-child)) {
+      --ui-radius-block-end: 0;
+    }
+  </style>
+
+  <div part="group" _focusgroup="#group.focusgroup" style="display: contents"><slot></slot></div>
+</custom-element>

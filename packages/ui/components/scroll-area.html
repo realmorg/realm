@@ -1,0 +1,50 @@
+<custom-element name="ui-scroll-area">
+  <script>
+    defineProps({
+      orientation: prop.enum(["vertical", "horizontal", "both"]).default("vertical"),
+      variant: prop.enum(["default", "outline"]).default("default"),
+    });
+  </script>
+
+  <style>
+    :host {
+      display: block;
+      position: relative;
+      box-sizing: border-box;
+      overflow: hidden;
+      border-radius: inherit;
+    }
+    :host(:state(attr-width)) {
+      width: calc(var(--spacing) * var(--attr-width));
+    }
+    :host(:state(attr-height)) {
+      height: calc(var(--spacing) * var(--attr-height));
+    }
+    :host(:state(attr-variant-is-outline)) {
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+    }
+    .viewport {
+      width: 100%;
+      height: 100%;
+      overflow-y: auto;
+      overflow-x: hidden;
+      scrollbar-width: thin;
+      scrollbar-color: var(--border) transparent;
+      border-radius: inherit;
+      outline: none;
+    }
+    :host(:state(attr-orientation-is-horizontal)) .viewport {
+      overflow-x: auto;
+      overflow-y: hidden;
+    }
+    :host(:state(attr-orientation-is-both)) .viewport {
+      overflow: auto;
+    }
+    .viewport:focus-visible {
+      box-shadow: var(--focus-ring);
+    }
+  </style>
+
+  <div class="viewport" part="viewport" tabindex="0"><slot></slot></div>
+</custom-element>

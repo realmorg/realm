@@ -1,0 +1,168 @@
+<custom-element name="ui-calendar" form-associated>
+  <script>
+    const props = defineProps({
+      value: prop.string().default(""),
+      month: prop.string(),
+      min: prop.string(),
+      max: prop.string(),
+      locale: prop.string(),
+    });
+
+    const iso = (date) => date.toISOString().slice(0, 10);
+    const parse = (text) => new Date(`${text}T00:00:00Z`);
+    const now = new Date();
+    const today = iso(new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate())));
+    const KEYS = { ArrowLeft: -1, ArrowRight: 1, ArrowUp: -7, ArrowDown: 7 };
+
+    const view = useState({
+      shown: (props.month || props.value || today).slice(0, 7),
+      focused: props.value || today,
+      get title() {
+        return new Intl.DateTimeFormat(props.locale, { month: "long", year: "numeric", timeZone: "UTC" }).format(parse(`${this.shown}-01`));
+      },
+      get weekdays() {
+        const sunday = Date.UTC(2023, 0, 1);
+        return Array.from({ length: 7 }, (_, day) =>
+          new Intl.DateTimeFormat(props.locale, { weekday: "short", timeZone: "UTC" }).format(new Date(sunday + day * 864e5)),
+        );
+      },
+      get weeks() {
+        const first = parse(`${this.shown}-01`);
+        const start = new Date(first.getTime() - first.getUTCDay() * 864e5);
+        const days = Array.from({ length: 42 }, (_, n) => {
+          const date = iso(new Date(start.getTime() + n * 864e5));
+          return {
+            date,
+            day: Number(date.slice(8)),
+            outside: !date.startsWith(this.shown),
+            selected: date === props.value,
+            today: date === today,
+            disabled: (props.min && date < props.min) || (props.max && date > props.max) || false,
+            tabindex: date === this.focused ? 0 : -1,
+          };
+        });
+        return Array.from({ length: 6 }, (_, week) => ({ week, days: days.slice(week * 7, week * 7 + 7) }));
+      },
+    });
+
+    function shift(months) {
+      const date = parse(`${view.shown}-01`);
+      date.setUTCMonth(date.getUTCMonth() + months);
+      view.shown = iso(date).slice(0, 7);
+    }
+
+    function previous() {
+      shift(-1);
+    }
+
+    function next() {
+      shift(1);
+    }
+
+    function pick(day) {
+      props.value = day.date;
+      view.focused = day.date;
+      view.shown = day.date.slice(0, 7);
+      dispatch("change");
+    }
+
+    async function keys(day, event) {
+      const step = KEYS[event.key];
+      if (!step) return;
+      event.preventDefault();
+      view.focused = iso(new Date(parse(day.date).getTime() + step * 864e5));
+      view.shown = view.focused.slice(0, 7);
+      await tick();
+      refs.grid.querySelector(`[data-date="${view.focused}"]`)?.focus();
+    }
+  </script>
+
+  <style>
+    :host {
+      display: inline-block;
+      padding: calc(var(--spacing) * 3);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      font-size: var(--text-sm);
+    }
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: calc(var(--spacing) * 3);
+    }
+    .title {
+      font-weight: var(--font-weight-medium);
+    }
+    table {
+      border-collapse: collapse;
+    }
+    th {
+      width: calc(var(--spacing) * 9);
+      padding-bottom: calc(var(--spacing) * 1);
+      font-size: var(--text-xs);
+      font-weight: var(--font-weight-normal);
+      color: var(--muted-foreground);
+    }
+    td {
+      padding: 0;
+    }
+    button {
+      all: unset;
+      box-sizing: border-box;
+      display: grid;
+      place-content: center;
+      width: calc(var(--spacing) * 9);
+      height: calc(var(--spacing) * 9);
+      border-radius: var(--radius-md);
+      cursor: pointer;
+    }
+    button:hover {
+      background: var(--accent);
+    }
+    button:focus-visible {
+      box-shadow: var(--focus-ring);
+    }
+    button[data-outside] {
+      color: var(--muted-foreground);
+    }
+    button[data-today] {
+      background: var(--accent);
+    }
+    button[aria-selected="true"] {
+      background: var(--primary);
+      color: var(--primary-foreground);
+    }
+    button:disabled {
+      pointer-events: none;
+      opacity: 0.4;
+    }
+  </style>
+
+  <header part="header">
+    <ui-button variant="outline" size="icon-sm" aria-label="Previous month" onclick="previous()">‹</ui-button>
+    <span class="title" aria-live="polite"><slot name="#view.title"></slot></span>
+    <ui-button variant="outline" size="icon-sm" aria-label="Next month" onclick="next()">›</ui-button>
+  </header>
+  <table role="grid" ref="grid" part="grid">
+    <thead>
+      <tr><th repeat="#view.weekdays" as="weekday" scope="col"><slot name="#weekday"></slot></th></tr>
+    </thead>
+    <tbody>
+      <tr repeat="#view.weeks" as="row" key="week">
+        <td repeat="#row.days" as="day" key="date">
+          <button type="button"
+            part="day"
+            _data-date="#day.date"
+            _data-outside="#day.outside"
+            _data-today="#day.today"
+            _aria-selected="#day.selected"
+            _disabled="#day.disabled"
+            _tabindex="#day.tabindex"
+            onclick="pick(day)"
+            onkeydown="keys(day, event)"><slot name="#day.day"></slot></button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</custom-element>

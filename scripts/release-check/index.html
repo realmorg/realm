@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="script-src 'self'">
+  <title>Consumer</title>
+  <script type="module" src="./main.js"></script>
+</head>
+<body>
+  <import-element from="/ui.html"></import-element>
+  <custom-element name="hello-card">
+    <script type="realm">
+      const counter = useState({ count: 0 });
+      function add() {
+        counter.count++;
+      }
+    </script>
+    <ui-card>
+      <ui-card-header><ui-card-title>Counter</ui-card-title></ui-card-header>
+      <ui-card-content><ui-button onclick="add()">Clicked <slot name="#counter.count">0</slot></ui-button></ui-card-content>
+    </ui-card>
+  </custom-element>
+  <main><hello-card></hello-card></main>
+</body>
+</html>

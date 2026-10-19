@@ -1,0 +1,68 @@
+<custom-element name="ui-textarea" form-associated delegates-focus>
+  <script>
+    defineProps({
+      value: prop.string().default(""),
+      placeholder: prop.string(),
+      rows: prop.number().int().min(1).default(3),
+      minlength: prop.number(),
+      maxlength: prop.number(),
+      disabled: prop.boolean(),
+      readonly: prop.boolean(),
+      required: prop.boolean(),
+      invalid: prop.boolean(),
+      label: prop.string().attribute("aria-label"),
+    });
+  </script>
+
+  <style>
+    :host {
+      display: block;
+    }
+    textarea {
+      box-sizing: border-box;
+      display: block;
+      width: 100%;
+      min-height: calc(var(--spacing) * 16);
+      padding: calc(var(--spacing) * 2) calc(var(--spacing) * 3);
+      border: 1px solid var(--input);
+      border-radius: var(--radius-md);
+      background: transparent;
+      color: inherit;
+      font: inherit;
+      font-size: var(--text-sm);
+      box-shadow: var(--shadow-xs);
+      outline: none;
+      field-sizing: content;
+      resize: vertical;
+    }
+    textarea::placeholder {
+      color: var(--muted-foreground);
+    }
+    textarea:focus-visible {
+      border-color: var(--ring);
+      box-shadow: var(--focus-ring);
+    }
+    textarea:disabled {
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+    textarea[aria-invalid="true"] {
+      border-color: var(--destructive);
+    }
+  </style>
+
+  <textarea
+    ref="control"
+    _aria-label="@label"
+    part="textarea"
+    _value="@value"
+    _placeholder="@placeholder"
+    _rows="@rows"
+    _minlength="@minlength"
+    _maxlength="@maxlength"
+    _disabled="@disabled"
+    _readonly="@readonly"
+    _required="@required"
+    _aria-invalid="@invalid"
+></textarea>
+</custom-element>

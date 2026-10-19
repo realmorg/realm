@@ -1,0 +1,91 @@
+<custom-element name="ui-select" form-associated delegates-focus>
+  <script>
+    const props = defineProps({
+      value: prop.string().default(""),
+      placeholder: prop.string(),
+      size: prop.enum(["default", "sm"]).default("default"),
+      disabled: prop.boolean(),
+      required: prop.boolean(),
+      label: prop.string().attribute("aria-label"),
+    });
+
+    const options = useChildren("option", ["value", "label", "disabled", "selected"]);
+    const menu = useState({
+      get empty() {
+        return !props.value;
+      },
+      get options() {
+        return options.map((option, index) => ({
+          id: `${index}:${option.value}`,
+          value: option.value,
+          label: option.label,
+          disabled: option.disabled,
+          selected: option.value === props.value,
+        }));
+      },
+    });
+
+    observe(() => {
+      if (props.placeholder || !options.length || menu.options.some((option) => option.selected)) return;
+      props.value = (options.find((option) => option.hasAttribute("selected")) ?? options[0]).value;
+    });
+  </script>
+
+  <style>
+    :host {
+      display: block;
+      min-width: calc(var(--spacing) * 32);
+    }
+    :host(:state(attr-width)) {
+      width: calc(var(--spacing) * var(--attr-width));
+    }
+    select {
+      box-sizing: border-box;
+      width: 100%;
+      height: calc(var(--spacing) * 9);
+      padding: 0 calc(var(--spacing) * 8) 0 calc(var(--spacing) * 3);
+      border: 1px solid var(--input);
+      border-radius: var(--radius-md);
+      background: transparent
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%23888' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E")
+        no-repeat right calc(var(--spacing) * 2) center;
+      color: inherit;
+      font: inherit;
+      font-size: var(--text-sm);
+      box-shadow: var(--shadow-xs);
+      appearance: none;
+      outline: none;
+      cursor: pointer;
+    }
+    :host(:state(attr-size-is-sm)) select {
+      height: calc(var(--spacing) * 8);
+    }
+    select:focus-visible {
+      border-color: var(--ring);
+      box-shadow: var(--focus-ring);
+    }
+    select:disabled {
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+    option {
+      background: var(--popover);
+      color: var(--popover-foreground);
+    }
+    .source {
+      display: none;
+    }
+  </style>
+
+  <select
+    ref="control"
+    _aria-label="@label"
+    part="control"
+    _disabled="@disabled"
+    _required="@required"
+>
+    <option value="" disabled _hidden="!@placeholder" _label="@placeholder" _selected="#menu.empty"></option>
+    <option repeat="#menu.options" as="option" key="id" _value="#option.value" _label="#option.label" _selected="#option.selected" _disabled="#option.disabled"></option>
+  </select>
+  <div class="source"><slot></slot></div>
+</custom-element>

@@ -1,0 +1,121 @@
+<custom-element name="ui-accordion">
+  <script>
+    const props = defineProps({
+      type: prop.enum(["single", "multiple"]).default("single"),
+    });
+
+    listen("toggle", (event) => {
+      const item = event.target;
+      if (props.type !== "single" || item.localName !== "ui-accordion-item" || !item.open) return;
+      for (const other of host.querySelectorAll("ui-accordion-item")) {
+        if (other !== item && other.open) other.open = false;
+      }
+    });
+  </script>
+
+  <style>
+    :host {
+      display: block;
+    }
+  </style>
+
+  <slot></slot>
+</custom-element>
+
+<custom-element name="ui-accordion-item">
+  <script>
+    const props = defineProps({
+      open: prop.boolean().reflect(),
+      disabled: prop.boolean(),
+    });
+
+    function toggled(details) {
+      if (details.open === props.open) return;
+      props.open = details.open;
+      dispatch("toggle");
+    }
+
+    function guard() {
+      return !props.disabled;
+    }
+  </script>
+
+  <style>
+    :host {
+      display: block;
+      border-bottom: 1px solid var(--border);
+    }
+    :host(:last-of-type) {
+      border-bottom: 0;
+    }
+    summary {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: calc(var(--spacing) * 4);
+      padding: calc(var(--spacing) * 4) 0;
+      border-radius: var(--radius-md);
+      font-size: var(--text-sm);
+      font-weight: var(--font-weight-medium);
+      list-style: none;
+      cursor: pointer;
+      outline: none;
+    }
+    summary::-webkit-details-marker {
+      display: none;
+    }
+    summary:hover {
+      text-decoration: underline;
+    }
+    summary:focus-visible {
+      box-shadow: var(--focus-ring);
+    }
+    :host(:state(attr-disabled)) summary {
+      pointer-events: none;
+      opacity: 0.5;
+    }
+    svg {
+      flex-shrink: 0;
+      width: calc(var(--spacing) * 4);
+      height: calc(var(--spacing) * 4);
+      color: var(--muted-foreground);
+      transition: rotate 0.2s;
+    }
+    details[open] svg {
+      rotate: 180deg;
+    }
+  </style>
+
+  <details _open="@open" ontoggle="toggled(this)">
+    <summary part="summary" onclick="return guard()">
+      <slot name="trigger"></slot>
+      <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6" /></svg>
+    </summary>
+    <slot></slot>
+  </details>
+</custom-element>
+
+<custom-element name="ui-accordion-trigger" slot="trigger">
+  <style>
+    :host {
+      display: flex;
+      flex: 1;
+      align-items: center;
+      gap: calc(var(--spacing) * 2);
+    }
+  </style>
+
+  <slot></slot>
+</custom-element>
+
+<custom-element name="ui-accordion-content">
+  <style>
+    :host {
+      display: block;
+      padding-bottom: calc(var(--spacing) * 4);
+      font-size: var(--text-sm);
+    }
+  </style>
+
+  <slot></slot>
+</custom-element>

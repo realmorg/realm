@@ -1,0 +1,89 @@
+<custom-element name="ui-switch" form-associated delegates-focus>
+  <script>
+    defineProps({
+      checked: prop.boolean(),
+      value: prop.string(),
+      size: prop.enum(["default", "sm"]).default("default"),
+      disabled: prop.boolean(),
+      label: prop.string().attribute("aria-label"),
+    });
+  </script>
+
+  <style>
+    :host(:state(attr-checked)) label {
+      color: var(--foreground);
+    }
+    :host {
+      display: inline-flex;
+      align-items: center;
+      gap: calc(var(--spacing) * 2);
+      vertical-align: middle;
+    }
+    input {
+      appearance: none;
+      box-sizing: border-box;
+      position: relative;
+      width: calc(var(--spacing) * 8);
+      height: calc(var(--spacing) * 4.6);
+      margin: 0;
+      border: 1px solid transparent;
+      border-radius: var(--radius-full);
+      background: var(--input);
+      box-shadow: var(--shadow-xs);
+      cursor: pointer;
+      outline: none;
+      transition: background-color var(--default-transition-duration), box-shadow var(--default-transition-duration);
+    }
+    input::before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 0;
+      width: calc(var(--spacing) * 4);
+      height: calc(var(--spacing) * 4);
+      border-radius: var(--radius-full);
+      background: var(--background);
+      translate: 0 -50%;
+      transition: translate var(--default-transition-duration);
+    }
+    input:checked {
+      background: var(--primary);
+    }
+    input:checked::before {
+      translate: calc(100% - 2px) -50%;
+    }
+    :host(:state(attr-size-is-sm)) input {
+      width: calc(var(--spacing) * 6);
+      height: calc(var(--spacing) * 3.5);
+    }
+    :host(:state(attr-size-is-sm)) input::before {
+      width: calc(var(--spacing) * 3);
+      height: calc(var(--spacing) * 3);
+    }
+    input:focus-visible {
+      border-color: var(--ring);
+      box-shadow: var(--focus-ring);
+    }
+    input:disabled {
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+    label {
+      font-size: var(--text-sm);
+      font-weight: var(--font-weight-medium);
+    }
+  </style>
+
+  <input
+    id="control"
+    ref="control"
+    part="control"
+    type="checkbox"
+    _aria-label="@label"
+    role="switch"
+    _checked="@checked"
+    _aria-checked="@checked"
+    _disabled="@disabled"
+>
+  <label for="control" part="label"><slot></slot></label>
+</custom-element>

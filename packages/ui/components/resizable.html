@@ -1,0 +1,156 @@
+<custom-element name="ui-resizable">
+  <script>
+    defineProps({
+      direction: prop.enum(["horizontal", "vertical"]).default("horizontal"),
+      variant: prop.enum(["default", "outline"]).default("default"),
+    });
+  </script>
+
+  <style>
+    :host {
+      display: flex;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+    :host(:state(attr-height)) {
+      height: calc(var(--spacing) * var(--attr-height));
+    }
+    :host(:state(attr-variant-is-outline)) {
+      box-sizing: border-box;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+    }
+    :host(:state(attr-direction-is-vertical)) {
+      flex-direction: column;
+    }
+  </style>
+
+  <slot></slot>
+</custom-element>
+
+<custom-element name="ui-resizable-panel">
+  <script>
+    defineProps({ size: prop.number().min(0).max(100).default(50), min: prop.number().min(0).default(10) });
+  </script>
+
+  <style>
+    :host {
+      display: block;
+      flex: var(--attr-size) 1 0;
+      min-width: 0;
+      min-height: 0;
+      overflow: auto;
+    }
+  </style>
+
+  <slot></slot>
+</custom-element>
+
+<custom-element name="ui-resizable-handle" role="separator">
+  <script>
+    const props = defineProps({ handle: prop.boolean() });
+
+    const drag = useState({ active: false });
+    const KEYS = { ArrowLeft: -5, ArrowUp: -5, ArrowRight: 5, ArrowDown: 5 };
+
+    function vertical() {
+      return host.parentElement?.getAttribute("direction") === "vertical";
+    }
+
+    function resize(delta) {
+      const before = host.previousElementSibling;
+      const after = host.nextElementSibling;
+      if (!before || !after) return;
+      const total = before.size + after.size;
+      const size = Math.min(Math.max(before.size + delta, before.min), total - after.min);
+      before.size = size;
+      after.size = total - size;
+      internals.ariaValueNow = String(Math.round(size));
+    }
+
+    function start(event) {
+      drag.active = true;
+      if (event.isTrusted) host.setPointerCapture(event.pointerId);
+    }
+
+    function move(event) {
+      if (!drag.active) return;
+      const parent = host.parentElement.getBoundingClientRect();
+      const length = vertical() ? parent.height : parent.width;
+      const pixels = vertical() ? event.movementY : event.movementX;
+      const before = host.previousElementSibling;
+      const after = host.nextElementSibling;
+      resize(((before.size + after.size) * pixels) / length);
+    }
+
+    function stop() {
+      drag.active = false;
+    }
+
+    function keys(event) {
+      const step = KEYS[event.key];
+      if (!step) return;
+      event.preventDefault();
+      resize(step);
+    }
+
+    attrs.tabindex ??= 0;
+    listen("pointerdown", start);
+    listen("pointermove", move);
+    listen("pointerup", stop);
+    listen("keydown", keys);
+
+    onConnected(() => {
+      if (vertical()) internals.states.add("vertical");
+      internals.ariaOrientation = vertical() ? "horizontal" : "vertical";
+      internals.ariaValueMin = "0";
+      internals.ariaValueMax = "100";
+    });
+  </script>
+
+  <style>
+    :host {
+      position: relative;
+      display: flex;
+      flex-shrink: 0;
+      align-items: center;
+      justify-content: center;
+      width: 1px;
+      background: var(--border);
+      cursor: col-resize;
+      outline: none;
+      touch-action: none;
+    }
+    :host(:state(vertical)) {
+      width: auto;
+      height: 1px;
+      cursor: row-resize;
+    }
+    :host(:state(vertical))::after {
+      inset: calc(var(--spacing) * -1) 0;
+    }
+    :host::after {
+      content: "";
+      position: absolute;
+      inset: 0 calc(var(--spacing) * -1);
+    }
+    :host(:focus-visible) {
+      box-shadow: 0 0 0 1px var(--ring);
+    }
+    .grip {
+      display: none;
+      z-index: 1;
+      width: calc(var(--spacing) * 3);
+      height: calc(var(--spacing) * 4);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xs);
+      background: var(--border);
+    }
+    :host(:state(attr-handle)) .grip {
+      display: block;
+    }
+  </style>
+
+  <div class="grip" part="grip"></div>
+</custom-element>

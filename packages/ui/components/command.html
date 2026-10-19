@@ -1,0 +1,189 @@
+<custom-element name="ui-command">
+  <script>
+    const props = defineProps({
+      placeholder: prop.string().default("Type a command or search..."),
+    });
+
+    const options = useChildren("option, optgroup", ["value", "label", "data-shortcut"]);
+    const command = useState({
+      query: "",
+      active: 0,
+      get items() {
+        return options.flatMap((child) => {
+          const grouped = child.localName === "optgroup";
+          return [...(grouped ? child.children : [child])].map((option) => ({
+            value: option.value,
+            label: option.label,
+            group: grouped ? child.label : "",
+            shortcut: option.dataset.shortcut ?? "",
+          }));
+        });
+      },
+      get visible() {
+        const query = this.query.trim().toLowerCase();
+        return this.items.filter((item) => !query || item.label.toLowerCase().includes(query) || item.value.toLowerCase().includes(query));
+      },
+      get groups() {
+        const groups = [];
+        this.visible.forEach((item, index) => {
+          let group = groups.find((entry) => entry.name === item.group);
+          if (!group) {
+            group = { name: item.group, items: [] };
+            groups.push(group);
+          }
+          group.items.push({ ...item, id: `option-${index}`, active: index === this.active });
+        });
+        return groups;
+      },
+      get none() {
+        return this.visible.length === 0;
+      },
+      get activeId() {
+        return this.visible[this.active] ? `option-${this.active}` : null;
+      },
+    });
+
+    const KEYS = {
+      ArrowDown: (count) => (command.active = (command.active + 1) % count),
+      ArrowUp: (count) => (command.active = (command.active - 1 + count) % count),
+      Enter: () => choose(command.visible[command.active]),
+    };
+
+    function search(value) {
+      command.query = value;
+      command.active = 0;
+    }
+
+    function choose(item) {
+      dispatch("select", { value: item.value, label: item.label });
+    }
+
+    function hover(item) {
+      command.active = command.visible.findIndex((entry) => entry.value === item.value);
+    }
+
+    function keys(event) {
+      const action = KEYS[event.key];
+      const count = command.visible.length;
+      if (!action) return;
+      event.preventDefault();
+      if (count) action(count);
+    }
+  </script>
+
+  <style>
+    :host {
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      background: var(--popover);
+      color: var(--popover-foreground);
+    }
+    .search {
+      display: flex;
+      align-items: center;
+      gap: calc(var(--spacing) * 2);
+      height: calc(var(--spacing) * 11);
+      padding: 0 calc(var(--spacing) * 3);
+      border-bottom: 1px solid var(--border);
+    }
+    .search svg {
+      width: calc(var(--spacing) * 4);
+      height: calc(var(--spacing) * 4);
+      opacity: 0.5;
+    }
+    input {
+      flex: 1;
+      border: 0;
+      background: transparent;
+      color: inherit;
+      font: inherit;
+      font-size: var(--text-sm);
+      outline: none;
+    }
+    input::placeholder {
+      color: var(--muted-foreground);
+    }
+    [role="listbox"] {
+      max-height: calc(var(--spacing) * 75);
+      overflow-y: auto;
+      padding: calc(var(--spacing) * 1);
+    }
+    .heading {
+      padding: calc(var(--spacing) * 1.5) calc(var(--spacing) * 2);
+      font-size: var(--text-xs);
+      font-weight: var(--font-weight-medium);
+      color: var(--muted-foreground);
+    }
+    [role="option"] {
+      display: flex;
+      align-items: center;
+      gap: calc(var(--spacing) * 2);
+      padding: calc(var(--spacing) * 1.5) calc(var(--spacing) * 2);
+      border-radius: var(--radius-sm);
+      font-size: var(--text-sm);
+      cursor: default;
+    }
+    [role="option"][aria-selected="true"] {
+      background: var(--accent);
+      color: var(--accent-foreground);
+    }
+    .group + .group {
+      margin-top: calc(var(--spacing) * 1);
+      padding-top: calc(var(--spacing) * 1);
+      border-top: 1px solid var(--border);
+    }
+    .shortcut {
+      margin-left: auto;
+      font-size: var(--text-xs);
+      letter-spacing: 0.1em;
+      color: var(--muted-foreground);
+    }
+    .empty {
+      margin: 0;
+      padding: calc(var(--spacing) * 6) 0;
+      text-align: center;
+      font-size: var(--text-sm);
+    }
+    .source {
+      display: none;
+    }
+  </style>
+
+  <div class="search" part="search">
+    <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8" /><path d="m21 21-4.3-4.3" /></svg>
+    <input
+      ref="input"
+      part="input"
+      role="combobox"
+      aria-expanded="true"
+      aria-autocomplete="list"
+      aria-controls="list"
+      _aria-activedescendant="#command.activeId"
+      _placeholder="@placeholder"
+      _value="#command.query"
+      oninput="search(this.value)"
+      onkeydown="keys(event)">
+  </div>
+  <div id="list" role="listbox" part="list">
+    <repeat-list of="#command.groups" as="group" key="name">
+      <div role="group" class="group">
+        <div class="heading" _hidden="!#group.name"><slot name="#group.name"></slot></div>
+        <repeat-list of="#group.items" as="item" key="value">
+          <div role="option" part="item" _id="#item.id" _aria-selected="#item.active" onclick="choose(item)" onpointermove="hover(item)">
+            <slot name="#item.label"></slot>
+            <span class="shortcut" part="shortcut" _hidden="!#item.shortcut"><slot name="#item.shortcut"></slot></span>
+          </div>
+        </repeat-list>
+      </div>
+    </repeat-list>
+    <p class="empty" part="empty" _hidden="!#command.none"><slot name="empty">No results found.</slot></p>
+  </div>
+  <div class="source"><slot></slot></div>
+</custom-element>
+
+<custom-element name="ui-command-empty" slot="empty">
+  <slot></slot>
+</custom-element>

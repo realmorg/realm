@@ -1,0 +1,26 @@
+schema: spec-driven
+
+context: |
+  REALM is an HTML-first web components runtime. Components are defined only with a
+  <custom-element> tag containing a <script>, <style> and markup. There is no compiler.
+  Behave like native HTML first; extend REALM's own vocabulary (value slots, _ bindings,
+  is-visible, is-hidden, repeat-list, import-element) only where the platform has no answer.
+  Other frameworks are references only. Never adopt their template syntax ({} interpolation,
+  on:/bind:/:attr directives, {#each} blocks) or helper names that copy their semantics.
+
+rules:
+  proposal:
+    - State the native HTML feature the change builds on, or why none exists.
+    - State what is out of scope.
+  design:
+    - Required whenever new syntax, attributes or helpers are introduced. Record the alternatives considered.
+  specs:
+    - Every scenario name must equal the title of a test. scripts/check-scenarios.mjs enforces this.
+  tasks:
+    - Include the tests to write before the implementation.
+
+operations:
+  apply:
+    guidance:
+      - Keep packages/realm at 100% statement, branch, function and line coverage.
+      - Run the suite in Chromium, Firefox and WebKit before archiving.

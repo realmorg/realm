@@ -1,0 +1,310 @@
+<custom-element name="weather-app">
+  <script type="module">
+    import { currentConditions, dailyForecast, placeLabel } from "./weather.js";
+
+    const FAILURES = {
+      error: "The weather service is unavailable right now.",
+      timeout: "The weather service took too long to answer.",
+    };
+
+    const search = useState({
+      query: "",
+      response: null,
+      busy: false,
+      failed: false,
+      get results() {
+        return (this.response?.results ?? []).map((result) => ({ ...result, label: placeLabel(result) }));
+      },
+      get empty() {
+        return this.query.trim().length > 1 && Boolean(this.response) && !this.busy && this.results.length === 0;
+      },
+    });
+    const place = useState({ label: "", latitude: null, longitude: null });
+    const weather = useState({
+      data: null,
+      busy: false,
+      error: "",
+      get current() {
+        return currentConditions(this.data);
+      },
+      get days() {
+        return dailyForecast(this.data);
+      },
+      get chart() {
+        return this.days.map((day) => ({ day: day.day, High: day.high, Low: day.low }));
+      },
+    });
+
+    function typed(field) {
+      search.query = field.value;
+      search.failed = false;
+    }
+
+    function searchFailed() {
+      search.response = null;
+      search.failed = true;
+    }
+
+    function choose(result) {
+      place.label = result.label;
+      place.latitude = result.latitude;
+      place.longitude = result.longitude;
+      search.response = null;
+    }
+
+    function loading() {
+      weather.error = "";
+    }
+
+    function failed(event) {
+      weather.error = event.detail.data?.reason ?? FAILURES[event.type];
+    }
+  </script>
+
+  <style>
+    :host {
+      display: grid;
+      gap: calc(var(--spacing) * 6);
+      width: min(calc(var(--spacing) * 200), 100%);
+    }
+    header {
+      display: grid;
+      gap: calc(var(--spacing) * 2);
+    }
+    h1 {
+      margin: 0;
+      font-size: var(--text-2xl);
+      letter-spacing: -0.02em;
+    }
+    header p {
+      margin: 0;
+      color: var(--muted-foreground);
+      font-size: var(--text-sm);
+    }
+    .search {
+      position: relative;
+    }
+    .search ui-spinner {
+      position: absolute;
+      top: calc(var(--spacing) * 2.5);
+      right: calc(var(--spacing) * 3);
+      color: var(--muted-foreground);
+    }
+    .results {
+      display: grid;
+      margin: calc(var(--spacing) * 2) 0 0;
+      padding: calc(var(--spacing) * 1);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      background: var(--popover);
+      box-shadow: var(--shadow-md);
+      list-style: none;
+    }
+    .results ui-button {
+      width: 100%;
+    }
+    .results ui-button::part(button) {
+      justify-content: flex-start;
+    }
+    .hint {
+      margin: calc(var(--spacing) * 2) 0 0;
+      color: var(--muted-foreground);
+      font-size: var(--text-sm);
+    }
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: calc(var(--spacing) * 3);
+    }
+    .toolbar h2 {
+      margin: 0;
+      font-size: var(--text-lg);
+    }
+    .units {
+      display: grid;
+      gap: calc(var(--spacing) * 4);
+    }
+    .forecast {
+      display: grid;
+      gap: calc(var(--spacing) * 4);
+      transition: opacity var(--default-transition-duration);
+    }
+    :host(:state(loading)) .forecast {
+      opacity: 0.6;
+    }
+    .now {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: calc(var(--spacing) * 6);
+    }
+    .icon {
+      font-size: var(--text-4xl);
+      line-height: 1;
+    }
+    .temperature {
+      margin: 0;
+      font-size: var(--text-4xl);
+      font-weight: var(--font-weight-semibold);
+      letter-spacing: -0.02em;
+    }
+    dl {
+      display: grid;
+      grid-template-columns: auto auto;
+      gap: calc(var(--spacing) * 1) calc(var(--spacing) * 4);
+      margin: 0;
+      font-size: var(--text-sm);
+    }
+    dt {
+      color: var(--muted-foreground);
+    }
+    dd {
+      margin: 0;
+      font-weight: var(--font-weight-medium);
+    }
+    .days {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(calc(var(--spacing) * 22), 1fr));
+      gap: calc(var(--spacing) * 2);
+      margin: calc(var(--spacing) * 4) 0 0;
+      padding: 0;
+      list-style: none;
+    }
+    .days li {
+      display: grid;
+      justify-items: center;
+      gap: calc(var(--spacing) * 1);
+      padding: calc(var(--spacing) * 3) calc(var(--spacing) * 2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      font-size: var(--text-sm);
+      text-align: center;
+    }
+    .days .icon {
+      font-size: var(--text-2xl);
+    }
+    .days small {
+      color: var(--muted-foreground);
+    }
+    .busy {
+      display: flex;
+      align-items: center;
+      gap: calc(var(--spacing) * 2);
+      color: var(--muted-foreground);
+      font-size: var(--text-sm);
+    }
+  </style>
+
+  <header>
+    <h1>Weather</h1>
+    <p>Current conditions and a 7-day forecast from Open-Meteo.</p>
+  </header>
+
+  <search class="search">
+    <form
+      fetch="https://geocoding-api.open-meteo.com/v1/search?count=5&amp;language=en&amp;format=json"
+      trigger="input"
+      debounce="300ms"
+      timeout="10s"
+      into="#search.response"
+      busy="#search.busy"
+      onerror="searchFailed()"
+      ontimeout="searchFailed()">
+      <ui-input name="name" type="search" aria-label="City" placeholder="Search for a city…" autocomplete="off" oninput="typed(this)"></ui-input>
+      <is-visible when="#search.busy"><ui-spinner label="Searching"></ui-spinner></is-visible>
+    </form>
+    <is-visible when="#search.results.length">
+      <ul class="results" aria-label="Matching places">
+        <li repeat="#search.results" as="result" key="id">
+          <ui-button variant="ghost" onclick="choose(result)"><slot name="#result.label"></slot></ui-button>
+        </li>
+      </ul>
+    </is-visible>
+    <p class="hint" role="status" _hidden="!#search.empty">No places match that name.</p>
+    <p class="hint" role="alert" _hidden="!#search.failed">Place search is unavailable. Try again in a moment.</p>
+  </search>
+
+  <form
+    class="units"
+    fetch="https://api.open-meteo.com/v1/forecast?current=temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m&amp;daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&amp;timezone=auto"
+    trigger="change submit #place"
+    timeout="15s"
+    params="latitude:#place.latitude, longitude:#place.longitude"
+    into="#weather.data"
+    busy="#weather.busy"
+    onloadstart="loading()"
+    onerror="failed(event)"
+    ontimeout="failed(event)">
+    <div class="toolbar">
+      <h2><slot name="#place.label">No place selected</slot></h2>
+      <ui-radio-group name="temperature_unit" value="celsius" orientation="horizontal" aria-label="Temperature unit" _disabled="!#place.label">
+        <option value="celsius" label="°C"></option>
+        <option value="fahrenheit" label="°F"></option>
+      </ui-radio-group>
+    </div>
+    <is-visible when="#weather.error">
+      <ui-alert variant="destructive">
+        <ui-alert-title>Couldn't load the forecast</ui-alert-title>
+        <ui-alert-description>
+          <p><slot name="#weather.error"></slot></p>
+          <ui-button type="submit" size="sm" variant="outline">Try again</ui-button>
+        </ui-alert-description>
+      </ui-alert>
+    </is-visible>
+  </form>
+
+  <is-visible when="#weather.busy">
+    <p class="busy" role="status"><ui-spinner label="Loading forecast"></ui-spinner> Loading forecast…</p>
+  </is-visible>
+
+  <is-hidden when="#place.label">
+    <ui-empty>
+      <ui-empty-header>
+        <ui-empty-media variant="icon"><span aria-hidden="true">🌍</span></ui-empty-media>
+        <ui-empty-title>Pick a place</ui-empty-title>
+        <ui-empty-description>Search for a city above to see its weather.</ui-empty-description>
+      </ui-empty-header>
+    </ui-empty>
+  </is-hidden>
+
+  <is-visible when="#weather.current">
+    <section class="forecast" aria-label="Forecast" _aria-busy="#weather.busy">
+      <ui-card>
+        <ui-card-header>
+          <ui-card-title>Right now</ui-card-title>
+          <ui-card-description><slot name="#weather.current.label"></slot></ui-card-description>
+        </ui-card-header>
+        <ui-card-content class="now">
+          <span class="icon" aria-hidden="true"><slot name="#weather.current.icon"></slot></span>
+          <p class="temperature"><slot name="#weather.current.temperature"></slot></p>
+          <dl>
+            <dt>Feels like</dt><dd><slot name="#weather.current.feelsLike"></slot></dd>
+            <dt>Humidity</dt><dd><slot name="#weather.current.humidity"></slot></dd>
+            <dt>Wind</dt><dd><slot name="#weather.current.wind"></slot></dd>
+          </dl>
+        </ui-card-content>
+      </ui-card>
+
+      <ui-card>
+        <ui-card-header>
+          <ui-card-title>Next 7 days</ui-card-title>
+          <ui-card-description>Daily high and low temperatures</ui-card-description>
+        </ui-card-header>
+        <ui-card-content>
+          <ui-chart type="line" x="day" y="High,Low" _data="#weather.chart" label="Daily high and low temperatures for the next 7 days"></ui-chart>
+          <ol class="days" aria-label="Daily forecast">
+            <li repeat="#weather.days" as="day" key="date">
+              <strong><slot name="#day.day"></slot></strong>
+              <span class="icon" aria-hidden="true"><slot name="#day.icon"></slot></span>
+              <span><slot name="#day.label"></slot></span>
+              <span><slot name="#day.highText"></slot> / <slot name="#day.lowText"></slot></span>
+              <small>Rain <slot name="#day.rain"></slot></small>
+            </li>
+          </ol>
+        </ui-card-content>
+      </ui-card>
+    </section>
+  </is-visible>
+</custom-element>

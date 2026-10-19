@@ -1,0 +1,116 @@
+<custom-element name="ui-menubar" role="menubar">
+  <style>
+    :host {
+      display: flex;
+      align-items: center;
+      gap: calc(var(--spacing) * 1);
+      width: fit-content;
+      height: calc(var(--spacing) * 9);
+      padding: calc(var(--spacing) * 1);
+      box-sizing: border-box;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      background: var(--background);
+      box-shadow: var(--shadow-xs);
+    }
+    div {
+      display: contents;
+    }
+  </style>
+
+  <div part="bar" focusgroup="menubar inline wrap"><slot></slot></div>
+</custom-element>
+
+<custom-element name="ui-menubar-menu">
+  <script>
+    let wasOpen = false;
+
+    function press() {
+      wasOpen = host.querySelector(":scope > ui-menubar-content").matches(":popover-open");
+    }
+
+    function toggle(trigger) {
+      const content = host.querySelector(":scope > ui-menubar-content");
+      const open = wasOpen || content.matches(":popover-open");
+      wasOpen = false;
+      if (open) content.hidePopover();
+      else {
+        trigger.focus();
+        content.showPopover({ source: trigger });
+      }
+    }
+  </script>
+
+  <style>
+    :host {
+      display: contents;
+    }
+  </style>
+
+  <slot></slot>
+</custom-element>
+
+<custom-element name="ui-menubar-trigger">
+  <style>
+    :host {
+      display: inline-flex;
+    }
+    button {
+      all: unset;
+      display: inline-flex;
+      align-items: center;
+      padding: calc(var(--spacing) * 1) calc(var(--spacing) * 2);
+      border-radius: var(--radius-sm);
+      font-size: var(--text-sm);
+      font-weight: var(--font-weight-medium);
+      cursor: default;
+      user-select: none;
+    }
+    button:hover,
+    button:focus-visible {
+      background: var(--accent);
+      color: var(--accent-foreground);
+    }
+  </style>
+
+  <button type="button" part="trigger" role="menuitem" aria-haspopup="menu" onpointerdown="press()" onclick="toggle(this)"><slot></slot></button>
+</custom-element>
+
+<custom-element name="ui-menubar-content" role="menu">
+  <script>
+    const ITEMS = ":is(ui-menu-item, ui-menu-checkbox-item, ui-menu-radio-item):not([disabled])";
+
+    function opened(event) {
+      if (event.newState === "open") host.querySelector(ITEMS)?.focus();
+    }
+
+    function leave(event) {
+      if (document.hasFocus() && !host.contains(event.relatedTarget)) host.hidePopover();
+    }
+
+    attrs.popover ??= "auto";
+
+    listen("toggle", opened);
+    listen("focusout", leave);
+    listen("select", () => host.hidePopover());
+  </script>
+
+  <style>
+    :host {
+      box-sizing: border-box;
+      min-width: calc(var(--spacing) * 48);
+      margin: calc(var(--spacing) * 2) 0 0 calc(var(--spacing) * -1);
+      padding: calc(var(--spacing) * 1);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      background: var(--popover);
+      color: var(--popover-foreground);
+      box-shadow: var(--shadow-md);
+      inset: auto;
+      position-area: bottom span-right;
+      position-try-fallbacks: flip-block, flip-inline;
+    }
+  </style>
+
+  <div part="menu" focusgroup="menu block wrap"><slot></slot></div>
+</custom-element>

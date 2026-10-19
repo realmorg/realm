@@ -1,0 +1,114 @@
+<custom-element name="ui-radio-group" form-associated>
+  <script>
+    const props = defineProps({
+      value: prop.string(),
+      orientation: prop.enum(["vertical", "horizontal"]).default("vertical"),
+      disabled: prop.boolean(),
+      required: prop.boolean(),
+    });
+
+    const options = useChildren("option", ["value", "label", "disabled"]);
+    const group = useState({
+      get options() {
+        return options.map((option, index) => ({
+          id: `${index}:${option.value}`,
+          value: option.value,
+          label: option.label,
+          disabled: props.disabled || option.disabled,
+          checked: option.value === props.value,
+        }));
+      },
+    });
+
+    function choose(option) {
+      props.value = option.value;
+      dispatch("change");
+    }
+
+    onConnected(() => {
+      internals.role = "radiogroup";
+    });
+
+    observe(() => {
+      const missing = props.required && !props.value;
+      const anchor = refs.list?.querySelector("input:not(:disabled)") ?? undefined;
+      internals.setValidity(missing ? { valueMissing: true } : {}, missing ? "Please select an option." : "", anchor);
+    });
+  </script>
+
+  <style>
+    :host {
+      display: grid;
+      gap: calc(var(--spacing) * 3);
+    }
+    :host(:state(attr-orientation-is-horizontal)) {
+      grid-auto-flow: column;
+      justify-content: start;
+    }
+    label {
+      display: inline-flex;
+      align-items: center;
+      gap: calc(var(--spacing) * 2);
+      font-size: var(--text-sm);
+      font-weight: var(--font-weight-medium);
+      cursor: pointer;
+    }
+    input {
+      appearance: none;
+      display: grid;
+      place-content: center;
+      width: calc(var(--spacing) * 4);
+      height: calc(var(--spacing) * 4);
+      margin: 0;
+      border: 1px solid var(--input);
+      border-radius: var(--radius-full);
+      box-shadow: var(--shadow-xs);
+      cursor: pointer;
+      outline: none;
+    }
+    input::before {
+      content: "";
+      width: calc(var(--spacing) * 2);
+      height: calc(var(--spacing) * 2);
+      border-radius: var(--radius-full);
+      background: var(--primary);
+      transform: scale(0);
+      transition: transform 0.1s;
+    }
+    input:checked::before {
+      transform: scale(1);
+    }
+    input:focus-visible {
+      border-color: var(--ring);
+      box-shadow: var(--focus-ring);
+    }
+    input:disabled,
+    input:disabled + span {
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+    .list {
+      display: contents;
+    }
+    .options {
+      display: none;
+    }
+  </style>
+
+  <div class="list" ref="list">
+    <repeat-list of="#group.options" as="option" key="id">
+      <label part="item">
+        <input
+          type="radio"
+          name="group"
+          part="control"
+          _value="#option.value"
+          _checked="#option.checked"
+          _disabled="#option.disabled"
+          onchange="choose(option)">
+        <span><slot name="#option.label"></slot></span>
+      </label>
+    </repeat-list>
+  </div>
+  <div class="options"><slot></slot></div>
+</custom-element>

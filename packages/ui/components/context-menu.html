@@ -1,0 +1,67 @@
+<custom-element name="ui-context-menu">
+  <script>
+    function open(event) {
+      event.preventDefault();
+      const content = host.querySelector(":scope > ui-context-menu-content");
+      content.style.left = `${event.clientX}px`;
+      content.style.top = `${event.clientY}px`;
+      content.showPopover();
+    }
+  </script>
+
+  <style>
+    :host {
+      display: contents;
+    }
+  </style>
+
+  <slot></slot>
+</custom-element>
+
+<custom-element name="ui-context-menu-trigger">
+  <style>
+    :host {
+      display: block;
+    }
+  </style>
+
+  <div part="trigger" oncontextmenu="open(event)"><slot></slot></div>
+</custom-element>
+
+<custom-element name="ui-context-menu-content" role="menu">
+  <script>
+    const ITEMS = ":is(ui-menu-item, ui-menu-checkbox-item, ui-menu-radio-item):not([disabled])";
+
+    function opened(event) {
+      if (event.newState === "open") host.querySelector(ITEMS)?.focus();
+    }
+
+    function leave(event) {
+      if (document.hasFocus() && !host.contains(event.relatedTarget)) host.hidePopover();
+    }
+
+    attrs.popover ??= "auto";
+
+    listen("toggle", opened);
+    listen("focusout", leave);
+    listen("select", () => host.hidePopover());
+  </script>
+
+  <style>
+    :host {
+      position: fixed;
+      box-sizing: border-box;
+      min-width: calc(var(--spacing) * 32);
+      margin: 0;
+      padding: calc(var(--spacing) * 1);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      background: var(--popover);
+      color: var(--popover-foreground);
+      box-shadow: var(--shadow-md);
+      inset: auto;
+    }
+  </style>
+
+  <div part="menu" focusgroup="menu block wrap"><slot></slot></div>
+</custom-element>

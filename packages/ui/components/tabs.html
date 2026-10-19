@@ -1,0 +1,164 @@
+<custom-element name="ui-tabs">
+  <script>
+    const props = defineProps({
+      value: prop.string(),
+      orientation: prop.enum(["horizontal", "vertical"]).default("horizontal"),
+    });
+
+    const parts = useChildren("ui-tabs-list, ui-tabs-content", ["value", "disabled"]);
+    const tabs = useState({
+      get orientation() {
+        return props.orientation;
+      },
+      get focusgroup() {
+        return `tablist ${props.orientation === "vertical" ? "block" : "inline"} wrap`;
+      },
+      get triggers() {
+        return parts.flatMap((part) => [...part.querySelectorAll("ui-tabs-trigger")]);
+      },
+      get current() {
+        const enabled = this.triggers.filter((trigger) => !trigger.hasAttribute("disabled")).map((trigger) => trigger.getAttribute("value"));
+        return enabled.includes(props.value) ? props.value : (enabled[0] ?? null);
+      },
+    });
+
+    function select(value) {
+      if (value === tabs.current) return;
+      props.value = value;
+      dispatch("change");
+    }
+
+    observe(() => {
+      for (const content of parts.filter((part) => part.localName === "ui-tabs-content")) {
+        const value = content.getAttribute("value");
+        content.hidden = value !== tabs.current;
+        content.ariaLabelledByElements = tabs.triggers.filter((trigger) => trigger.getAttribute("value") === value);
+      }
+    });
+  </script>
+
+  <style>
+    :host {
+      display: flex;
+      flex-direction: column;
+      gap: calc(var(--spacing) * 2);
+    }
+    :host(:state(attr-orientation-is-vertical)) {
+      flex-direction: row;
+      --ui-tabs-list-direction: column;
+      --ui-tabs-list-height: fit-content;
+    }
+  </style>
+
+  <slot></slot>
+</custom-element>
+
+<custom-element name="ui-tabs-list">
+  <style>
+    :host {
+      display: block;
+      width: fit-content;
+    }
+    [role="tablist"] {
+      display: inline-flex;
+      flex-direction: var(--ui-tabs-list-direction, row);
+      height: var(--ui-tabs-list-height, calc(var(--spacing) * 9));
+      align-items: center;
+      justify-content: center;
+      padding: 3px;
+      box-sizing: border-box;
+      border-radius: var(--radius-lg);
+      background: var(--muted);
+      color: var(--muted-foreground);
+    }
+  </style>
+
+  <div role="tablist" part="list" _aria-orientation="#tabs.orientation" _focusgroup="#tabs.focusgroup"><slot></slot></div>
+</custom-element>
+
+<custom-element name="ui-tabs-trigger">
+  <script>
+    const props = defineProps({ value: prop.string(), disabled: prop.boolean() });
+    const tabs = lookup("tabs");
+    const tab = useState({
+      get selected() {
+        return props.value === tabs.current;
+      },
+      get tabindex() {
+        return this.selected ? 0 : -1;
+      },
+    });
+  </script>
+
+  <style>
+    :host {
+      display: flex;
+      flex: 1;
+      align-self: stretch;
+    }
+    button {
+      all: unset;
+      box-sizing: border-box;
+      display: inline-flex;
+      flex: 1;
+      height: calc(100% - 1px);
+      align-items: center;
+      justify-content: center;
+      gap: calc(var(--spacing) * 1.5);
+      padding: calc(var(--spacing) * 1) calc(var(--spacing) * 2);
+      border: 1px solid transparent;
+      border-radius: var(--radius-md);
+      font-size: var(--text-sm);
+      font-weight: var(--font-weight-medium);
+      white-space: nowrap;
+      color: color-mix(in oklab, var(--foreground) 60%, transparent);
+      cursor: pointer;
+      transition: color var(--default-transition-duration), box-shadow var(--default-transition-duration);
+    }
+    button:hover {
+      color: var(--foreground);
+    }
+    button[aria-selected="true"] {
+      background: var(--background);
+      color: var(--foreground);
+      box-shadow: var(--shadow-xs);
+    }
+    button:focus-visible {
+      border-color: var(--ring);
+      box-shadow: var(--focus-ring);
+    }
+    button:disabled {
+      pointer-events: none;
+      opacity: 0.5;
+    }
+    ::slotted(svg) {
+      width: calc(var(--spacing) * 4);
+      height: calc(var(--spacing) * 4);
+      flex-shrink: 0;
+    }
+  </style>
+
+  <button type="button"
+    role="tab"
+    part="trigger"
+    _aria-selected="#tab.selected"
+    _tabindex="#tab.tabindex"
+    _disabled="@disabled"
+    onclick="select(props.value)"
+    onfocus="select(props.value)"><slot></slot></button>
+</custom-element>
+
+<custom-element name="ui-tabs-content" role="tabpanel">
+  <style>
+    :host {
+      display: block;
+      flex: 1;
+      outline: none;
+    }
+    :host([hidden]) {
+      display: none;
+    }
+  </style>
+
+  <slot></slot>
+</custom-element>

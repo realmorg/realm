@@ -1,0 +1,93 @@
+<custom-element name="ui-checkbox" form-associated delegates-focus>
+  <script>
+    const props = defineProps({
+      checked: prop.boolean(),
+      value: prop.string(),
+      indeterminate: prop.boolean(),
+      disabled: prop.boolean(),
+      required: prop.boolean(),
+      label: prop.string().attribute("aria-label"),
+    });
+
+    function settled() {
+      props.indeterminate = false;
+    }
+  </script>
+
+  <style>
+    :host(:state(attr-checked)) label {
+      color: var(--foreground);
+    }
+    :host {
+      display: inline-flex;
+      align-items: center;
+      gap: calc(var(--spacing) * 2);
+      vertical-align: middle;
+    }
+    input {
+      appearance: none;
+      box-sizing: border-box;
+      display: grid;
+      place-content: center;
+      width: calc(var(--spacing) * 4);
+      height: calc(var(--spacing) * 4);
+      margin: 0;
+      border: 1px solid var(--input);
+      border-radius: var(--radius-xs);
+      background: transparent;
+      box-shadow: var(--shadow-xs);
+      cursor: pointer;
+      outline: none;
+      transition: box-shadow var(--default-transition-duration);
+    }
+    input::before {
+      content: "";
+      width: calc(var(--spacing) * 2.5);
+      height: calc(var(--spacing) * 2.5);
+      background: currentColor;
+      clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+      transform: scale(0);
+      transition: transform 0.1s;
+    }
+    input:checked,
+    input:indeterminate {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: var(--primary-foreground);
+    }
+    input:checked::before {
+      transform: scale(1);
+    }
+    input:indeterminate::before {
+      clip-path: inset(40% 0);
+      transform: scale(1);
+    }
+    input:focus-visible {
+      border-color: var(--ring);
+      box-shadow: var(--focus-ring);
+    }
+    input:disabled {
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+    label {
+      font-size: var(--text-sm);
+      font-weight: var(--font-weight-medium);
+      line-height: 1;
+    }
+  </style>
+
+  <input
+    id="control"
+    ref="control"
+    part="control"
+    type="checkbox"
+    _aria-label="@label"
+    _checked="@checked"
+    _indeterminate="@indeterminate"
+    _disabled="@disabled"
+    _required="@required"
+    onchange="settled()"
+>
+  <label for="control" part="label"><slot></slot></label>
+</custom-element>

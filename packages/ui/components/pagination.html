@@ -1,0 +1,142 @@
+<custom-element name="ui-pagination">
+  <script>
+    const props = defineProps({
+      page: prop.number().int().min(1).default(1),
+      total: prop.number().int().min(1).default(1),
+      siblings: prop.number().int().min(0).default(1),
+      href: prop.string(),
+      label: prop.string().default("Pagination"),
+    });
+
+    const pages = useState({
+      get items() {
+        const { page, total, siblings } = props;
+        const keep = new Set([1, total]);
+        for (let n = page - siblings; n <= page + siblings; n++) if (n >= 1 && n <= total) keep.add(n);
+        const sorted = [...keep].sort((a, b) => a - b);
+        return sorted.flatMap((n, index) => {
+          const item = { key: `p${n}`, number: n, kind: this.kind, current: n === page ? "page" : null, url: link(n) };
+          return index > 0 && n - sorted[index - 1] > 1 ? [{ key: `gap${n}`, kind: "gap" }, item] : [item];
+        });
+      },
+      get kind() {
+        return props.href ? "link" : "button";
+      },
+      get first() {
+        return props.page <= 1;
+      },
+      get last() {
+        return props.page >= props.total;
+      },
+      get previousUrl() {
+        return this.first ? null : link(props.page - 1);
+      },
+      get nextUrl() {
+        return this.last ? null : link(props.page + 1);
+      },
+    });
+
+    function link(n) {
+      return props.href ? props.href.replace("{page}", String(n)) : null;
+    }
+
+    function previous(event) {
+      go(props.page - 1, event);
+    }
+
+    function next(event) {
+      go(props.page + 1, event);
+    }
+
+    function go(page, event) {
+      if (page < 1 || page > props.total || page === props.page) return;
+      if (!dispatch("change", { page })) return event?.preventDefault();
+      if (!props.href) props.page = page;
+    }
+  </script>
+
+  <style>
+    :host {
+      display: flex;
+      justify-content: center;
+    }
+    ul {
+      display: flex;
+      align-items: center;
+      gap: calc(var(--spacing) * 1);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+    a,
+    button {
+      all: unset;
+      box-sizing: border-box;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: calc(var(--spacing) * 1);
+      min-width: calc(var(--spacing) * 9);
+      height: calc(var(--spacing) * 9);
+      padding: 0 calc(var(--spacing) * 2.5);
+      border: 1px solid transparent;
+      border-radius: var(--radius-md);
+      color: inherit;
+      font-size: var(--text-sm);
+      font-weight: var(--font-weight-medium);
+      text-decoration: none;
+      cursor: pointer;
+    }
+    :is(a, button):hover {
+      background: var(--accent);
+    }
+    :is(a, button):focus-visible {
+      border-color: var(--ring);
+      box-shadow: var(--focus-ring);
+    }
+    [aria-current="page"] {
+      border-color: var(--border);
+      box-shadow: var(--shadow-xs);
+    }
+    a:not([href]),
+    button:disabled {
+      pointer-events: none;
+      opacity: 0.5;
+    }
+    .gap {
+      display: inline-flex;
+      width: calc(var(--spacing) * 9);
+      justify-content: center;
+    }
+  </style>
+
+  <nav _aria-label="@label">
+    <ul part="list">
+      <li>
+        <is-visible when="#pages.kind" eq="link">
+          <a part="previous" _href="#pages.previousUrl" _aria-disabled="#pages.first" onclick="previous(event)">‹ Previous</a>
+        </is-visible>
+        <is-visible when="#pages.kind" eq="button">
+          <button type="button" part="previous" _disabled="#pages.first" onclick="previous(event)">‹ Previous</button>
+        </is-visible>
+      </li>
+      <li repeat="#pages.items" as="item" key="key">
+        <is-visible when="#item.kind" eq="link">
+          <a part="page" _href="#item.url" _aria-current="#item.current" onclick="go(item.number, event)"><slot name="#item.number"></slot></a>
+        </is-visible>
+        <is-visible when="#item.kind" eq="button">
+          <button type="button" part="page" _aria-current="#item.current" onclick="go(item.number, event)"><slot name="#item.number"></slot></button>
+        </is-visible>
+        <is-visible when="#item.kind" eq="gap"><span class="gap" aria-hidden="true">…</span></is-visible>
+      </li>
+      <li>
+        <is-visible when="#pages.kind" eq="link">
+          <a part="next" _href="#pages.nextUrl" _aria-disabled="#pages.last" onclick="next(event)">Next ›</a>
+        </is-visible>
+        <is-visible when="#pages.kind" eq="button">
+          <button type="button" part="next" _disabled="#pages.last" onclick="next(event)">Next ›</button>
+        </is-visible>
+      </li>
+    </ul>
+  </nav>
+</custom-element>

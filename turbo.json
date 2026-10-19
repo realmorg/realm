@@ -1,12 +1,21 @@
 {
-  "$schema": "https://turbo.build/schema.json",
-  "globalDependencies": ["**/.env.*local"],
+  "$schema": "https://turborepo.com/schema.json",
   "tasks": {
     "build": {
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**"],
+      "env": ["SITE_URL", "SITE_BASE"]
+    },
+    "test": {
       "dependsOn": ["^build"]
     },
-    "test": {},
-    "lint": {},
+    "coverage": {
+      "dependsOn": ["^build"],
+      "outputs": ["coverage/**"]
+    },
+    "typecheck": {
+      "dependsOn": ["^build"]
+    },
     "dev": {
       "cache": false,
       "persistent": true

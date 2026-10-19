@@ -1,0 +1,204 @@
+<custom-element name="ui-navigation-menu">
+  <script>
+    defineProps({ label: prop.string().default("Main") });
+  </script>
+
+  <style>
+    :host {
+      display: block;
+    }
+  </style>
+
+  <nav _aria-label="@label"><slot></slot></nav>
+</custom-element>
+
+<custom-element name="ui-navigation-menu-list">
+  <style>
+    :host {
+      display: block;
+    }
+    ul {
+      display: flex;
+      align-items: center;
+      gap: calc(var(--spacing) * 1);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+  </style>
+
+  <ul part="list" focusgroup="toolbar inline"><slot></slot></ul>
+</custom-element>
+
+<custom-element name="ui-navigation-menu-item" role="listitem">
+  <script>
+    const menu = useState({ open: false });
+
+    let restoreFocus = false;
+    let timer;
+
+    function schedule(open) {
+      clearTimeout(timer);
+      timer = setTimeout(() => refs.panel.togglePopover(open), open ? 150 : 200);
+    }
+
+    function toggle() {
+      refs.panel.togglePopover();
+    }
+
+    function closing(event) {
+      restoreFocus = event.newState === "closed" && host.contains(host.getRootNode().activeElement);
+    }
+
+    function toggled(event) {
+      menu.open = event.newState === "open";
+      if (!menu.open && restoreFocus) host.querySelector("ui-navigation-menu-trigger")?.focus();
+    }
+  </script>
+
+  <style>
+    :host {
+      position: relative;
+      display: block;
+    }
+    .anchor {
+      display: flex;
+      anchor-name: --navigation-trigger;
+    }
+    .panel {
+      box-sizing: border-box;
+      min-width: calc(var(--spacing) * 64);
+      margin: calc(var(--spacing) * 1.5) 0 0;
+      padding: calc(var(--spacing) * 2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      background: var(--popover);
+      color: var(--popover-foreground);
+      box-shadow: var(--shadow-md);
+      inset: auto;
+      position-anchor: --navigation-trigger;
+      position-area: bottom span-right;
+    }
+  </style>
+
+  <div class="anchor"><slot></slot></div>
+  <div ref="panel" class="panel" part="panel" popover="auto" onbeforetoggle="closing(event)" ontoggle="toggled(event)" onpointerenter="schedule(true)" onpointerleave="schedule(false)"><slot name="content"></slot></div>
+</custom-element>
+
+<custom-element name="ui-navigation-menu-trigger" delegates-focus>
+  <style>
+    :host {
+      display: inline-flex;
+    }
+    button {
+      all: unset;
+      display: inline-flex;
+      align-items: center;
+      gap: calc(var(--spacing) * 1);
+      height: calc(var(--spacing) * 9);
+      padding: 0 calc(var(--spacing) * 4);
+      border-radius: var(--radius-md);
+      font-size: var(--text-sm);
+      font-weight: var(--font-weight-medium);
+      cursor: pointer;
+    }
+    button:hover,
+    button:focus-visible,
+    button[aria-expanded="true"] {
+      background: var(--accent);
+      color: var(--accent-foreground);
+    }
+    button:focus-visible {
+      box-shadow: var(--focus-ring);
+    }
+    svg {
+      width: calc(var(--spacing) * 3);
+      height: calc(var(--spacing) * 3);
+      transition: rotate var(--default-transition-duration);
+    }
+    [aria-expanded="true"] svg {
+      rotate: 180deg;
+    }
+  </style>
+
+  <button type="button" part="trigger" _aria-expanded="#menu.open" onclick="toggle()" onpointerenter="schedule(true)" onpointerleave="schedule(false)">
+    <slot></slot>
+    <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6" /></svg>
+  </button>
+</custom-element>
+
+<custom-element name="ui-navigation-menu-content" slot="content">
+  <style>
+    :host {
+      display: grid;
+      gap: calc(var(--spacing) * 1);
+      --ui-navigation-link-display: flex;
+      --ui-navigation-link-direction: column;
+      --ui-navigation-link-align: stretch;
+      --ui-navigation-link-height: auto;
+      --ui-navigation-link-padding: calc(var(--spacing) * 2);
+      --ui-navigation-link-weight: var(--font-weight-normal);
+    }
+    :host(:state(attr-width)) {
+      width: calc(var(--spacing) * var(--attr-width));
+    }
+    :host(:state(attr-columns)) {
+      grid-template-columns: repeat(var(--attr-columns), minmax(0, 1fr));
+    }
+  </style>
+
+  <slot></slot>
+</custom-element>
+
+<custom-element name="ui-navigation-menu-link" delegates-focus>
+  <script>
+    const props = defineProps({ href: prop.string(), current: prop.boolean() });
+    const link = useState({
+      get current() {
+        return props.current ? "page" : null;
+      },
+    });
+  </script>
+
+  <style>
+    :host {
+      display: var(--ui-navigation-link-display, inline-flex);
+    }
+    a {
+      display: flex;
+      flex: 1;
+      flex-direction: var(--ui-navigation-link-direction, row);
+      align-items: var(--ui-navigation-link-align, center);
+      gap: calc(var(--spacing) * 1);
+      height: var(--ui-navigation-link-height, calc(var(--spacing) * 9));
+      padding: var(--ui-navigation-link-padding, 0 calc(var(--spacing) * 4));
+      border-radius: var(--radius-md);
+      color: inherit;
+      font-size: var(--text-sm);
+      font-weight: var(--ui-navigation-link-weight, var(--font-weight-medium));
+      text-decoration: none;
+      outline: none;
+    }
+    a:hover,
+    a:focus-visible,
+    a[aria-current="page"] {
+      background: var(--accent);
+      color: var(--accent-foreground);
+    }
+    a:focus-visible {
+      box-shadow: var(--focus-ring);
+    }
+    ::slotted(*) {
+      margin: 0;
+    }
+    ::slotted(:first-child:not(:last-child)) {
+      font-weight: var(--font-weight-medium);
+    }
+    ::slotted(:last-child:not(:first-child)) {
+      color: var(--muted-foreground);
+      line-height: 1.4;
+    }
+  </style>
+
+  <a part="link" _href="@href" _aria-current="#link.current"><slot></slot></a>
+</custom-element>

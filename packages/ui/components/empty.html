@@ -1,0 +1,106 @@
+<custom-element name="ui-empty">
+  <style>
+    :host {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: calc(var(--spacing) * 6);
+      min-width: 0;
+      padding: calc(var(--spacing) * 12) calc(var(--spacing) * 6);
+      border: 1px dashed var(--border);
+      border-radius: var(--radius-lg);
+      text-align: center;
+      text-wrap: balance;
+    }
+  </style>
+
+  <slot></slot>
+</custom-element>
+
+<custom-element name="ui-empty-header">
+  <style>
+    :host {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: calc(var(--spacing) * 2);
+      max-width: calc(var(--spacing) * 96);
+    }
+  </style>
+
+  <slot></slot>
+</custom-element>
+
+<custom-element name="ui-empty-media">
+  <style>
+    :host {
+      display: flex;
+      flex-shrink: 0;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: calc(var(--spacing) * 2);
+    }
+    :host(:state(attr-variant-is-icon)) {
+      width: calc(var(--spacing) * 10);
+      height: calc(var(--spacing) * 10);
+      border-radius: var(--radius-lg);
+      background: var(--muted);
+      color: var(--foreground);
+    }
+    ::slotted(svg) {
+      width: calc(var(--spacing) * 6);
+      height: calc(var(--spacing) * 6);
+    }
+  </style>
+
+  <slot></slot>
+</custom-element>
+
+<custom-element name="ui-empty-title">
+  <script>
+    defineProps({ level: prop.number().int().min(1).max(6).default(3) });
+  </script>
+
+  <style>
+    :host {
+      display: block;
+    }
+    [part="title"] {
+      margin: 0;
+      font-size: var(--text-lg);
+      font-weight: var(--font-weight-medium);
+      letter-spacing: -0.01em;
+    }
+  </style>
+
+  <div part="title" role="heading" _aria-level="@level"><slot></slot></div>
+</custom-element>
+
+<custom-element name="ui-empty-description">
+  <style>
+    :host {
+      display: block;
+      font-size: var(--text-sm);
+      color: var(--muted-foreground);
+    }
+  </style>
+
+  <slot></slot>
+</custom-element>
+
+<custom-element name="ui-empty-content">
+  <style>
+    :host {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: calc(var(--spacing) * 4);
+      width: 100%;
+      max-width: calc(var(--spacing) * 96);
+      font-size: var(--text-sm);
+    }
+  </style>
+
+  <slot></slot>
+</custom-element>

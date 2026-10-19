@@ -1,0 +1,180 @@
+<custom-element name="login-form">
+  <script>
+    const props = defineProps({ heading: prop.string().default("Login to your account") });
+    const login = useState({ busy: false });
+
+    async function submit(event) {
+      event.preventDefault();
+      const form = event.target;
+      if (!form.reportValidity()) return;
+      login.busy = true;
+      await new Promise((resolve) => setTimeout(resolve, 600));
+      login.busy = false;
+      const email = new FormData(form).get("email");
+      dispatch("login", { email });
+      document.dispatchEvent(new CustomEvent("toast", { detail: { title: "Signed in", description: `Welcome back, ${email}.` } }));
+    }
+  </script>
+
+  <style>
+    :host {
+      display: block;
+      width: 100%;
+      max-width: calc(var(--spacing) * 96);
+    }
+    form {
+      display: grid;
+      gap: calc(var(--spacing) * 6);
+    }
+    .row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    a {
+      font-size: var(--text-sm);
+      color: inherit;
+      text-underline-offset: 4px;
+    }
+    .actions {
+      display: grid;
+      gap: calc(var(--spacing) * 3);
+    }
+    .actions ui-button {
+      width: 100%;
+    }
+    .footer {
+      margin: 0;
+      text-align: center;
+      font-size: var(--text-sm);
+    }
+  </style>
+
+  <ui-card>
+    <ui-card-header>
+      <ui-card-title level="1"><slot name="@heading"></slot></ui-card-title>
+      <ui-card-description>Enter your email below to login to your account</ui-card-description>
+    </ui-card-header>
+    <ui-card-content>
+      <form onsubmit="submit(event)" novalidate>
+        <ui-field>
+          <ui-label for="email">Email</ui-label>
+          <ui-input id="email" name="email" type="email" placeholder="m@example.com" required></ui-input>
+        </ui-field>
+        <ui-field>
+          <div class="row">
+            <ui-label for="password">Password</ui-label>
+            <a href="#forgot">Forgot your password?</a>
+          </div>
+          <ui-input id="password" name="password" type="password" required></ui-input>
+        </ui-field>
+        <div class="actions">
+          <ui-button type="submit" _disabled="#login.busy">
+            <is-visible when="#login.busy"><ui-spinner size="14"></ui-spinner></is-visible>
+            Login
+          </ui-button>
+          <ui-button variant="outline" type="button">Login with Google</ui-button>
+        </div>
+        <p class="footer">Don't have an account? <a href="../signup/">Sign up</a></p>
+      </form>
+    </ui-card-content>
+  </ui-card>
+</custom-element>
+
+<custom-element name="signup-form">
+  <script>
+    const signup = useState({ agreed: false });
+
+    function agree(field) {
+      signup.agreed = field.checked;
+    }
+
+    function submit(event) {
+      event.preventDefault();
+      if (!event.target.reportValidity()) return;
+      const name = new FormData(event.target).get("name");
+      document.dispatchEvent(new CustomEvent("toast", { detail: { title: "Account created", description: `Welcome, ${name}!` } }));
+    }
+  </script>
+
+  <style>
+    :host {
+      display: block;
+      width: 100%;
+      max-width: calc(var(--spacing) * 104);
+    }
+    form {
+      display: grid;
+      gap: calc(var(--spacing) * 5);
+    }
+    .pair {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: calc(var(--spacing) * 4);
+    }
+    ui-button {
+      width: 100%;
+    }
+  </style>
+
+  <ui-card>
+    <ui-card-header>
+      <ui-card-title level="1">Create an account</ui-card-title>
+      <ui-card-description>Enter your details to get started.</ui-card-description>
+    </ui-card-header>
+    <ui-card-content>
+      <form onsubmit="submit(event)" novalidate>
+        <div class="pair">
+          <ui-field><ui-label for="name">Name</ui-label><ui-input id="name" name="name" required></ui-input></ui-field>
+          <ui-field><ui-label for="company">Company</ui-label><ui-input id="company" name="company"></ui-input></ui-field>
+        </div>
+        <ui-field><ui-label for="signup-email">Email</ui-label><ui-input id="signup-email" name="email" type="email" required></ui-input></ui-field>
+        <ui-field>
+          <ui-label for="signup-password">Password</ui-label>
+          <ui-input id="signup-password" name="password" type="password" minlength="8" required></ui-input>
+          <ui-field-description>At least 8 characters.</ui-field-description>
+        </ui-field>
+        <ui-checkbox name="terms" required onchange="agree(this)">I agree to the terms and privacy policy</ui-checkbox>
+        <ui-button type="submit" _disabled="!#signup.agreed">Create account</ui-button>
+      </form>
+    </ui-card-content>
+  </ui-card>
+</custom-element>
+
+<custom-element name="otp-form">
+  <script>
+    const otp = useState({ status: "" });
+
+    function complete(event) {
+      otp.status = event.detail.value === "123456" ? "Verified." : "That code is not valid. Try 123456.";
+    }
+  </script>
+
+  <style>
+    :host {
+      display: block;
+      max-width: calc(var(--spacing) * 96);
+    }
+    .center {
+      display: grid;
+      justify-items: center;
+      gap: calc(var(--spacing) * 4);
+    }
+    p {
+      margin: 0;
+      font-size: var(--text-sm);
+      color: var(--muted-foreground);
+    }
+  </style>
+
+  <ui-card>
+    <ui-card-header>
+      <ui-card-title level="1">Verify your email</ui-card-title>
+      <ui-card-description>We sent a 6-digit code to your inbox.</ui-card-description>
+    </ui-card-header>
+    <ui-card-content class="center">
+      <ui-input-otp length="6" separator="3" oncomplete="complete(event)"></ui-input-otp>
+      <p role="status"><slot name="#otp.status">Enter the code to continue.</slot></p>
+    </ui-card-content>
+  </ui-card>
+</custom-element>

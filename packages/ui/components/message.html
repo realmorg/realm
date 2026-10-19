@@ -1,0 +1,77 @@
+<custom-element name="ui-message">
+  <script>
+    defineProps({ align: prop.enum(["start", "end"]).default("start") });
+  </script>
+
+  <style>
+    :host {
+      display: flex;
+      gap: calc(var(--spacing) * 2);
+      width: 100%;
+      min-width: 0;
+      font-size: var(--text-sm);
+    }
+    :host(:state(attr-align-is-end)) {
+      flex-direction: row-reverse;
+    }
+    .content {
+      display: flex;
+      flex-direction: column;
+      gap: calc(var(--spacing) * 2);
+      width: 100%;
+      min-width: 0;
+    }
+    :host(:state(attr-align-is-end)) .content {
+      align-items: flex-end;
+    }
+  </style>
+
+  <slot name="avatar"></slot>
+  <div class="content" part="content">
+    <slot name="header"></slot>
+    <slot></slot>
+    <slot name="footer"></slot>
+  </div>
+</custom-element>
+
+<custom-element name="ui-message-avatar" slot="avatar">
+  <style>
+    :host {
+      display: flex;
+      align-self: flex-end;
+      flex-shrink: 0;
+    }
+  </style>
+
+  <slot></slot>
+</custom-element>
+
+<custom-element name="ui-message-header" slot="header">
+  <style>
+    :host {
+      display: flex;
+      align-items: center;
+      gap: calc(var(--spacing) * 2);
+      padding: 0 calc(var(--spacing) * 3);
+      font-size: var(--text-xs);
+      color: var(--muted-foreground);
+    }
+  </style>
+
+  <slot></slot>
+</custom-element>
+
+<custom-element name="ui-message-footer" slot="footer">
+  <style>
+    :host {
+      display: flex;
+      align-items: center;
+      gap: calc(var(--spacing) * 2);
+      padding: 0 calc(var(--spacing) * 3);
+      font-size: var(--text-xs);
+      color: var(--muted-foreground);
+    }
+  </style>
+
+  <slot></slot>
+</custom-element>

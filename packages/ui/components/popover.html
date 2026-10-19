@@ -1,0 +1,133 @@
+<custom-element name="ui-popover">
+  <script>
+    let wasOpen = false;
+
+    function press() {
+      wasOpen = host.querySelector(":scope > ui-popover-content").matches(":popover-open");
+    }
+
+    function toggle(trigger) {
+      const content = host.querySelector(":scope > ui-popover-content");
+      const open = wasOpen || content.matches(":popover-open");
+      wasOpen = false;
+      if (open) content.hidePopover();
+      else {
+        trigger.firstElementChild?.focus();
+        content.showPopover({ source: trigger });
+      }
+    }
+  </script>
+
+  <style>
+    :host {
+      display: contents;
+    }
+  </style>
+
+  <slot></slot>
+</custom-element>
+
+<custom-element name="ui-popover-trigger">
+  <style>
+    :host {
+      display: inline-block;
+      vertical-align: middle;
+    }
+  </style>
+
+  <span part="trigger" onpointerdown="press()" onclick="toggle(host)"><slot></slot></span>
+</custom-element>
+
+<custom-element name="ui-popover-content">
+  <script>
+    defineProps({
+      placement: prop.enum(["bottom", "top", "left", "right"]).default("bottom"),
+    });
+
+    attrs.popover ??= "auto";
+  </script>
+
+  <style>
+    :host {
+      box-sizing: border-box;
+      width: calc(var(--spacing) * 72);
+      margin: calc(var(--spacing) * 1);
+      padding: calc(var(--spacing) * 4);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      background: var(--popover);
+      color: var(--popover-foreground);
+      box-shadow: var(--shadow-md);
+      inset: auto;
+      position-area: bottom;
+      position-try-fallbacks: flip-block, flip-inline;
+    }
+    :host(:popover-open) {
+      display: grid;
+      gap: calc(var(--spacing) * 4);
+    }
+    :host(:state(attr-width)) {
+      width: calc(var(--spacing) * var(--attr-width));
+    }
+    :host(:state(attr-placement-is-top)) {
+      position-area: top;
+    }
+    :host(:state(attr-placement-is-left)) {
+      position-area: left;
+    }
+    :host(:state(attr-placement-is-right)) {
+      position-area: right;
+    }
+    @supports not (position-area: bottom) {
+      :host {
+        inset: 0;
+        margin: auto;
+        height: fit-content;
+      }
+    }
+  </style>
+
+  <slot></slot>
+</custom-element>
+
+<custom-element name="ui-popover-header">
+  <style>
+    :host {
+      display: grid;
+      gap: calc(var(--spacing) * 1);
+    }
+  </style>
+
+  <slot></slot>
+</custom-element>
+
+<custom-element name="ui-popover-title">
+  <style>
+    :host {
+      display: block;
+    }
+    h3 {
+      margin: 0;
+      font-size: var(--text-sm);
+      font-weight: var(--font-weight-medium);
+      line-height: 1;
+    }
+  </style>
+
+  <h3 part="title"><slot></slot></h3>
+</custom-element>
+
+<custom-element name="ui-popover-description">
+  <style>
+    :host {
+      display: block;
+    }
+    p {
+      margin: 0;
+      font-size: var(--text-sm);
+      color: var(--muted-foreground);
+    }
+  </style>
+
+  <p part="description"><slot></slot></p>
+</custom-element>

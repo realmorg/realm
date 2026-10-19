@@ -1,0 +1,23 @@
+<custom-element name="ui-aspect-ratio">
+  <script>
+    defineProps({ ratio: prop.string().default("16 / 9") });
+  </script>
+
+  <style>
+    :host {
+      display: block;
+      position: relative;
+      aspect-ratio: var(--attr-ratio);
+      overflow: hidden;
+    }
+    ::slotted(img),
+    ::slotted(video),
+    ::slotted(iframe) {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  </style>
+
+  <slot></slot>
+</custom-element>

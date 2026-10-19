@@ -1,0 +1,76 @@
+<custom-element name="ui-collapsible">
+  <script>
+    const props = defineProps({ open: prop.boolean().reflect(), disabled: prop.boolean() });
+
+    function toggled(details) {
+      if (details.open === props.open) return;
+      props.open = details.open;
+      dispatch("toggle");
+    }
+
+    function guard() {
+      return !props.disabled;
+    }
+  </script>
+
+  <style>
+    :host {
+      display: block;
+    }
+    summary {
+      list-style: none;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      outline: none;
+    }
+    summary::-webkit-details-marker {
+      display: none;
+    }
+    summary:focus-visible {
+      box-shadow: var(--focus-ring);
+    }
+    :host(:state(attr-disabled)) summary {
+      pointer-events: none;
+      opacity: 0.5;
+    }
+  </style>
+
+  <details _open="@open" ontoggle="toggled(this)">
+    <summary part="trigger" onclick="return guard()"><slot name="trigger"></slot></summary>
+    <slot></slot>
+  </details>
+</custom-element>
+
+<custom-element name="ui-collapsible-trigger" slot="trigger">
+  <style>
+    :host {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: calc(var(--spacing) * 4);
+      font-size: var(--text-sm);
+      font-weight: var(--font-weight-semibold);
+    }
+    ::slotted(svg) {
+      flex-shrink: 0;
+      width: calc(var(--spacing) * 4);
+      height: calc(var(--spacing) * 4);
+    }
+  </style>
+
+  <slot></slot>
+</custom-element>
+
+<custom-element name="ui-collapsible-content">
+  <style>
+    :host {
+      display: flex;
+      flex-direction: column;
+      gap: calc(var(--spacing) * 2);
+      padding-top: calc(var(--spacing) * 2);
+      font-size: var(--text-sm);
+    }
+  </style>
+
+  <slot></slot>
+</custom-element>

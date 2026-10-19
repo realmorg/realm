@@ -1,0 +1,56 @@
+<custom-element name="ui-code-block">
+  <script>
+    defineProps({ language: prop.string() });
+
+    const copy = useState({ done: false });
+
+    async function copyCode() {
+      await navigator.clipboard.writeText(host.textContent.trim());
+      copy.done = true;
+      setTimeout(() => (copy.done = false), 1500);
+    }
+  </script>
+
+  <style>
+    :host {
+      position: relative;
+      display: block;
+      width: 100%;
+      box-sizing: border-box;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      background: color-mix(in oklab, var(--muted) 40%, transparent);
+      font-family: var(--font-mono);
+      font-size: var(--text-sm);
+    }
+    .code {
+      padding: calc(var(--spacing) * 4) calc(var(--spacing) * 5);
+      overflow-x: auto;
+      white-space: pre;
+    }
+    ::slotted(pre) {
+      margin: 0;
+    }
+    .bar {
+      position: absolute;
+      top: calc(var(--spacing) * 1.5);
+      right: calc(var(--spacing) * 1.5);
+      display: flex;
+      align-items: center;
+      gap: calc(var(--spacing) * 2);
+      font-family: var(--font-sans);
+      font-size: var(--text-xs);
+      text-transform: uppercase;
+      color: var(--muted-foreground);
+    }
+  </style>
+
+  <div class="code" part="code"><slot></slot></div>
+  <div class="bar" part="bar">
+    <span><slot name="@language"></slot></span>
+    <ui-button variant="ghost" size="icon-sm" aria-label="Copy code" onclick="copyCode()">
+      <is-hidden when="#copy.done">⧉</is-hidden>
+      <is-visible when="#copy.done">✓</is-visible>
+    </ui-button>
+  </div>
+</custom-element>

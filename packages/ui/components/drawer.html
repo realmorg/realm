@@ -1,0 +1,224 @@
+<custom-element name="ui-drawer">
+  <script>
+    const props = defineProps({
+      open: prop.boolean().reflect(),
+      side: prop.enum(["bottom", "top", "left", "right"]).default("bottom"),
+    });
+
+    const parts = useChildren("ui-drawer-header, ui-drawer-title, ui-drawer-description");
+    const drawer = useState({
+      get label() {
+        return text("ui-drawer-title");
+      },
+      get description() {
+        return text("ui-drawer-description");
+      },
+    });
+
+    let start = null;
+
+    function text(selector) {
+      const found = parts.flatMap((part) => (part.matches(selector) ? [part] : [...part.querySelectorAll(selector)]));
+      return found.map((part) => part.textContent.trim()).join(" ") || null;
+    }
+
+    function show() {
+      props.open = true;
+    }
+
+    function showFrom(trigger) {
+      trigger.firstElementChild?.focus();
+      show();
+    }
+
+    function close() {
+      props.open = false;
+    }
+
+    function closed() {
+      if (refs.dialog.open) return;
+      props.open = false;
+      dispatch("close", undefined, { bubbles: false, composed: false });
+    }
+
+    function backdrop(event) {
+      if (event.target === refs.dialog) close();
+    }
+
+    function grab(event) {
+      start = event.clientY;
+      if (event.isTrusted) event.target.setPointerCapture(event.pointerId);
+    }
+
+    function release(event) {
+      if (start !== null && event.clientY - start > 80) close();
+      start = null;
+    }
+
+    defineMethods({ showModal: show, show, close });
+
+    const COMMANDS = { "show-modal": show, close, "request-close": close };
+
+    listen("command", (event) => COMMANDS[event.command.replace(/^--/, "")]?.());
+
+    observe(() => {
+      const dialog = refs.dialog;
+      if (!dialog || props.open === dialog.open) return;
+      if (props.open) dialog.showModal();
+      else dialog.close();
+    });
+  </script>
+
+  <style>
+    :host {
+      display: contents;
+    }
+    dialog {
+      box-sizing: border-box;
+      width: 100%;
+      max-width: none;
+      max-height: 80dvh;
+      margin: auto 0 0;
+      padding: calc(var(--spacing) * 4) calc(var(--spacing) * 6) calc(var(--spacing) * 6);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-2xl) var(--radius-2xl) 0 0;
+      background: var(--background);
+      color: var(--foreground);
+    }
+    :host(:state(attr-side-is-top)) dialog {
+      margin: 0 0 auto;
+      border-radius: 0 0 var(--radius-2xl) var(--radius-2xl);
+    }
+    :host(:state(attr-side-is-left)) dialog,
+    :host(:state(attr-side-is-right)) dialog {
+      width: min(calc(var(--spacing) * 96), 80%);
+      height: 100dvh;
+      max-height: none;
+      margin: 0 auto 0 0;
+      border-radius: 0 var(--radius-2xl) var(--radius-2xl) 0;
+    }
+    :host(:state(attr-side-is-right)) dialog {
+      margin: 0 0 0 auto;
+      border-radius: var(--radius-2xl) 0 0 var(--radius-2xl);
+    }
+    dialog[open] {
+      display: grid;
+      gap: calc(var(--spacing) * 4);
+      animation: slide 0.25s ease-out;
+    }
+    dialog::backdrop {
+      background: rgb(0 0 0 / 0.5);
+    }
+    .handle {
+      justify-self: center;
+      width: calc(var(--spacing) * 24);
+      height: calc(var(--spacing) * 2);
+      border-radius: var(--radius-full);
+      background: var(--muted);
+      cursor: grab;
+      touch-action: none;
+    }
+    :host(:not(:state(attr-side-is-bottom))) .handle {
+      display: none;
+    }
+    @keyframes slide {
+      from {
+        translate: 0 calc(var(--spacing) * 8);
+        opacity: 0;
+      }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      dialog[open] {
+        animation: none;
+      }
+    }
+  </style>
+
+  <slot name="trigger"></slot>
+  <dialog
+    ref="dialog"
+    part="dialog"
+    _aria-label="#drawer.label"
+    _aria-description="#drawer.description"
+    onclose="closed()"
+    onclick="backdrop(event)">
+    <div class="handle" part="handle" onpointerdown="grab(event)" onpointerup="release(event)"></div>
+    <slot name="header"></slot>
+    <div part="body"><slot></slot></div>
+    <slot name="footer"></slot>
+  </dialog>
+</custom-element>
+
+<custom-element name="ui-drawer-trigger" slot="trigger">
+  <style>
+    :host,
+    span {
+      display: contents;
+    }
+  </style>
+
+  <span part="trigger" onclick="showFrom(host)"><slot></slot></span>
+</custom-element>
+
+<custom-element name="ui-drawer-close">
+  <style>
+    :host,
+    span {
+      display: contents;
+    }
+  </style>
+
+  <span part="close" onclick="close()"><slot></slot></span>
+</custom-element>
+
+<custom-element name="ui-drawer-header" slot="header">
+  <style>
+    :host {
+      display: grid;
+      gap: calc(var(--spacing) * 1.5);
+    }
+  </style>
+
+  <slot></slot>
+</custom-element>
+
+<custom-element name="ui-drawer-title">
+  <style>
+    :host {
+      display: block;
+    }
+    h2 {
+      margin: 0;
+      font-size: var(--text-base);
+      font-weight: var(--font-weight-semibold);
+    }
+  </style>
+
+  <h2 part="title"><slot></slot></h2>
+</custom-element>
+
+<custom-element name="ui-drawer-description">
+  <style>
+    :host {
+      display: block;
+    }
+    p {
+      margin: 0;
+      font-size: var(--text-sm);
+      color: var(--muted-foreground);
+    }
+  </style>
+
+  <p part="description"><slot></slot></p>
+</custom-element>
+
+<custom-element name="ui-drawer-footer" slot="footer">
+  <style>
+    :host {
+      display: grid;
+      gap: calc(var(--spacing) * 2);
+    }
+  </style>
+
+  <slot></slot>
+</custom-element>

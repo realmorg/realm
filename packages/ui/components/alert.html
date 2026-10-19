@@ -1,0 +1,69 @@
+<custom-element name="ui-alert" role="alert">
+  <script>
+    defineProps({
+      variant: prop.enum(["default", "destructive"]).default("default"),
+    });
+  </script>
+
+  <style>
+    :host {
+      position: relative;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      row-gap: calc(var(--spacing) * 0.5);
+      align-items: start;
+      width: 100%;
+      box-sizing: border-box;
+      padding: calc(var(--spacing) * 3) calc(var(--spacing) * 4);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      background: var(--card);
+      color: var(--card-foreground);
+      font-size: var(--text-sm);
+    }
+    :host(:state(attr-variant-is-destructive)) {
+      color: var(--destructive);
+    }
+    ::slotted(svg) {
+      width: calc(var(--spacing) * 4);
+      height: calc(var(--spacing) * 4);
+      margin-inline-end: calc(var(--spacing) * 3);
+      translate: 0 calc(var(--spacing) * 0.5);
+      grid-row: span 2;
+    }
+    ::slotted(:not(svg)) {
+      grid-column: 2;
+    }
+    :host(:state(attr-variant-is-destructive)) ::slotted(ui-alert-description) {
+      color: color-mix(in oklab, var(--destructive) 90%, transparent);
+    }
+  </style>
+
+  <slot></slot>
+</custom-element>
+
+<custom-element name="ui-alert-title">
+  <style>
+    :host {
+      display: block;
+      min-height: calc(var(--spacing) * 4);
+      font-weight: var(--font-weight-medium);
+      letter-spacing: -0.01em;
+    }
+  </style>
+
+  <slot></slot>
+</custom-element>
+
+<custom-element name="ui-alert-description">
+  <style>
+    :host {
+      display: grid;
+      justify-items: start;
+      gap: calc(var(--spacing) * 1);
+      color: var(--muted-foreground);
+    }
+  </style>
+
+  <slot></slot>
+</custom-element>

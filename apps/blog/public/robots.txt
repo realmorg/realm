@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://realmui.github.io/blog/sitemap-index.xml

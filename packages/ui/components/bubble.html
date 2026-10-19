@@ -1,0 +1,67 @@
+<custom-element name="ui-bubble">
+  <script>
+    defineProps({
+      variant: prop.enum(["default", "secondary", "muted", "outline", "ghost"]).default("default"),
+      align: prop.enum(["start", "end"]).default("start"),
+    });
+  </script>
+
+  <style>
+    :host {
+      display: flex;
+      flex-direction: column;
+      gap: calc(var(--spacing) * 1);
+      width: fit-content;
+      max-width: 80%;
+      min-width: 0;
+    }
+    :host(:state(attr-align-is-end)) {
+      align-self: flex-end;
+    }
+    .content {
+      padding: calc(var(--spacing) * 2) calc(var(--spacing) * 3);
+      border: 1px solid transparent;
+      border-radius: var(--radius-2xl);
+      font-size: var(--text-sm);
+      overflow-wrap: anywhere;
+      background: var(--primary);
+      color: var(--primary-foreground);
+    }
+    :host(:state(attr-variant-is-secondary)) .content {
+      background: var(--secondary);
+      color: var(--secondary-foreground);
+    }
+    :host(:state(attr-variant-is-muted)) .content {
+      background: var(--muted);
+      color: var(--foreground);
+    }
+    :host(:state(attr-variant-is-outline)) .content {
+      border-color: var(--border);
+      background: var(--background);
+      color: var(--foreground);
+    }
+    :host(:state(attr-variant-is-ghost)) {
+      max-width: 100%;
+    }
+    :host(:state(attr-variant-is-ghost)) .content {
+      padding: 0;
+      background: transparent;
+      color: var(--foreground);
+    }
+  </style>
+
+  <div class="content" part="content"><slot></slot></div>
+  <slot name="reactions"></slot>
+</custom-element>
+
+<custom-element name="ui-bubble-reactions" slot="reactions">
+  <style>
+    :host {
+      display: flex;
+      flex-wrap: wrap;
+      gap: calc(var(--spacing) * 1);
+    }
+  </style>
+
+  <slot></slot>
+</custom-element>

@@ -1,0 +1,9 @@
+{
+  "extends": "tsconfig/base.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "types": ["vite/client"],
+    "paths": { "@realmorg/realm": ["../realm/src/index.ts"] }
+  },
+  "include": ["test", "*.config.ts"]
+}

@@ -1,0 +1,51 @@
+{
+  "name": "@realmorg/vite-plugin",
+  "version": "2.0.0-alpha.0",
+  "description": "Pre-assembles REALM components for strict Content Security Policies and writes a custom-elements.json manifest.",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "test": "vitest run --coverage",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@realmorg/realm": "workspace:*",
+    "linkedom": "0.18.13"
+  },
+  "peerDependencies": {
+    "vite": ">=7"
+  },
+  "devDependencies": {
+    "@types/node": "26.6.5",
+    "@vitest/coverage-v8": "5.0.5",
+    "playwright": "1.64.1",
+    "tsconfig": "workspace:*",
+    "typescript": "7.0.2",
+    "vite": "8.3.4",
+    "vitest": "5.0.5"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/realmui/realm.git",
+    "directory": "packages/vite-plugin"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "realm",
+    "vite-plugin",
+    "web-components",
+    "csp"
+  ]
+}

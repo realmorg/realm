@@ -1,0 +1,199 @@
+<custom-element name="todo-app">
+  <script type="module">
+    import { todos } from "./todos.js";
+
+    const props = defineProps({ heading: prop.string().default("Todos") });
+    const draft = useState({ text: "" });
+    const filters = [
+      { id: "all", label: "All" },
+      { id: "active", label: "Active" },
+      { id: "done", label: "Completed" },
+    ];
+    const view = useState({
+      get filters() {
+        return filters.map((filter) => ({
+          ...filter,
+          current: filter.id === todos.filter,
+          variant: filter.id === todos.filter ? "secondary" : "ghost",
+        }));
+      },
+    });
+
+    function add(event) {
+      event.preventDefault();
+      const text = draft.text.trim();
+      if (!text) return;
+      todos.items.push({ id: crypto.randomUUID(), text, done: false, editing: false });
+      draft.text = "";
+    }
+
+    function updateDraft(field) {
+      draft.text = field.value;
+    }
+
+    function toggle(item) {
+      item.done = !item.done;
+    }
+
+    function toggleAll() {
+      const done = !todos.allDone;
+      for (const item of todos.items) item.done = done;
+    }
+
+    function remove(item) {
+      todos.items.splice(todos.items.indexOf(item), 1);
+    }
+
+    async function edit(item, text) {
+      const row = text.closest("li");
+      for (const other of todos.items) other.editing = false;
+      item.editing = true;
+      await tick();
+      row.querySelector("input.edit").focus();
+    }
+
+    function save(item, field) {
+      const text = field.value.trim();
+      if (!item.editing) return;
+      item.editing = false;
+      if (text) item.text = text;
+      else remove(item);
+    }
+
+    function editKeys(item, event) {
+      if (event.key === "Enter") event.target.blur();
+      if (event.key === "Escape") {
+        event.target.value = item.text;
+        item.editing = false;
+        event.target.blur();
+      }
+    }
+
+    function show(filter) {
+      todos.filter = filter.id;
+    }
+
+    function clearDone() {
+      todos.items = todos.items.filter((item) => !item.done);
+    }
+  </script>
+
+  <style>
+    :host {
+      display: block;
+      width: min(calc(var(--spacing) * 136), 100%);
+    }
+    h1 {
+      margin: 0 0 calc(var(--spacing) * 6);
+      font-size: var(--text-2xl);
+      letter-spacing: -0.02em;
+    }
+    form {
+      display: flex;
+      gap: calc(var(--spacing) * 2);
+    }
+    form ui-input {
+      flex: 1;
+    }
+    ul {
+      margin: calc(var(--spacing) * 4) 0 0;
+      padding: 0;
+      list-style: none;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+    }
+    li {
+      display: flex;
+      align-items: center;
+      gap: calc(var(--spacing) * 3);
+      min-height: calc(var(--spacing) * 12);
+      padding: 0 calc(var(--spacing) * 3);
+      border-bottom: 1px solid var(--border);
+    }
+    li:last-child {
+      border-bottom: 0;
+    }
+    .text {
+      flex: 1;
+      cursor: text;
+      overflow-wrap: anywhere;
+    }
+    li[data-done] .text {
+      color: var(--muted-foreground);
+      text-decoration: line-through;
+    }
+    input.edit {
+      flex: 1;
+      height: calc(var(--spacing) * 8);
+      padding: 0 calc(var(--spacing) * 2);
+      border: 1px solid var(--ring);
+      border-radius: var(--radius-md);
+      background: transparent;
+      color: inherit;
+      font: inherit;
+    }
+    .remove {
+      opacity: 0;
+    }
+    li:hover .remove,
+    li:focus-within .remove {
+      opacity: 1;
+    }
+    footer {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: calc(var(--spacing) * 2);
+      margin-top: calc(var(--spacing) * 4);
+      font-size: var(--text-sm);
+      color: var(--muted-foreground);
+    }
+    .filters {
+      display: flex;
+      gap: calc(var(--spacing) * 1);
+    }
+    .empty {
+      padding: calc(var(--spacing) * 8);
+      text-align: center;
+      color: var(--muted-foreground);
+    }
+  </style>
+
+  <h1><slot name="@heading"></slot></h1>
+
+  <form onsubmit="add(event)">
+    <ui-checkbox aria-label="Mark all as complete" _checked="#todos.allDone" _hidden="#todos.isEmpty" onchange="toggleAll()"></ui-checkbox>
+    <ui-input name="todo" aria-label="New todo" placeholder="What needs to be done?" _value="#draft.text" oninput="updateDraft(this)"></ui-input>
+    <ui-button type="submit">Add</ui-button>
+  </form>
+
+  <is-hidden when="#todos.isEmpty">
+    <ul>
+      <li repeat="#todos.visible" as="item" key="id" _data-done="#item.done">
+        <ui-checkbox _checked="#item.done" onchange="toggle(item)"></ui-checkbox>
+        <is-hidden when="#item.editing">
+          <span class="text" ondblclick="edit(item, this)"><slot name="#item.text"></slot></span>
+        </is-hidden>
+        <is-visible when="#item.editing">
+          <input class="edit" aria-label="Edit todo" _value="#item.text" onblur="save(item, this)" onkeydown="editKeys(item, event)">
+        </is-visible>
+        <ui-button class="remove" variant="ghost" size="icon-sm" aria-label="Delete" onclick="remove(item)">✕</ui-button>
+      </li>
+    </ul>
+
+    <footer>
+      <span class="count"><slot name="#todos.summary"></slot></span>
+      <div class="filters" role="group" aria-label="Filter">
+        <repeat-list of="#view.filters" as="filter" key="id">
+          <ui-button size="sm" _variant="#filter.variant" _aria-pressed="#filter.current" onclick="show(filter)"><slot name="#filter.label"></slot></ui-button>
+        </repeat-list>
+      </div>
+      <ui-button size="sm" variant="ghost" _hidden="!#todos.hasDone" onclick="clearDone()">Clear completed</ui-button>
+    </footer>
+  </is-hidden>
+
+  <is-visible when="#todos.isEmpty">
+    <p class="empty">Nothing to do yet. Add your first task above.</p>
+  </is-visible>
+</custom-element>

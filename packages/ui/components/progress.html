@@ -1,0 +1,39 @@
+<custom-element name="ui-progress">
+  <script>
+    defineProps({
+      value: prop.number().min(0),
+      max: prop.number().min(1).default(100),
+      label: prop.string().attribute("aria-label"),
+    });
+  </script>
+
+  <style>
+    :host {
+      display: block;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    progress {
+      appearance: none;
+      display: block;
+      width: 100%;
+      height: calc(var(--spacing) * 2);
+      border: 0;
+      border-radius: var(--radius-full);
+      overflow: hidden;
+      background: color-mix(in oklab, var(--primary) 20%, transparent);
+    }
+    progress::-webkit-progress-bar {
+      background: transparent;
+    }
+    progress::-webkit-progress-value {
+      background: var(--primary);
+      transition: inline-size 0.2s;
+    }
+    progress::-moz-progress-bar {
+      background: var(--primary);
+    }
+  </style>
+
+  <progress part="bar" _value="@value" _max="@max" _aria-label="@label"><slot></slot></progress>
+</custom-element>
