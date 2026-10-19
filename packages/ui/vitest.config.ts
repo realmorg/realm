@@ -1,6 +1,6 @@
 import { playwright } from "@vitest/browser-playwright";
 import { defineConfig } from "vitest/config";
-import { startComponentCoverage, takeComponentCoverage } from "./coverage.config";
+import { startComponentCoverage, takeComponentCoverage } from "./coverage.config.ts";
 
 type Browser = "chromium" | "firefox" | "webkit";
 

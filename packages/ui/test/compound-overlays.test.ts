@@ -336,7 +336,7 @@ describe("dropdown menu parts", () => {
     expect(Math.round(shortcut.getBoundingClientRect().right)).toBeGreaterThan(
       Math.round((items[0] as HTMLElement).getBoundingClientRect().right) - 16,
     );
-    expect(internals(content).states.has("attr-placement-is-bottom-end")).toBe(true);
+    expect(content.matches(":state(attr-placement-is-bottom-end)")).toBe(true);
     expect(content.getBoundingClientRect().top).toBeGreaterThanOrEqual(
       trigger.getBoundingClientRect().bottom,
     );
