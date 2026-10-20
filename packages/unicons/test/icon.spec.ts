@@ -37,9 +37,10 @@ test.describe("u-icon", () => {
       ["length", 48],
     ] as const) {
       const box = await page.locator(`#${id}`).boundingBox();
-      expect(box?.width).toBe(pixels);
-      expect(box?.height).toBe(pixels);
-      expect((await svgOf(page.locator(`#${id}`)).boundingBox())?.width).toBe(pixels);
+      // Firefox on Linux reports rem sizes with float error (47.999996 for 3rem).
+      expect(box?.width).toBeCloseTo(pixels, 2);
+      expect(box?.height).toBeCloseTo(pixels, 2);
+      expect((await svgOf(page.locator(`#${id}`)).boundingBox())?.width).toBeCloseTo(pixels, 2);
     }
     await page.locator("#number").evaluate((el) => el.setAttribute("size", "40"));
     await expect.poll(async () => (await page.locator("#number").boundingBox())?.width).toBe(40);
