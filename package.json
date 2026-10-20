@@ -18,7 +18,8 @@
     "skill": "node scripts/build-skill.mjs",
     "version-packages": "changeset version && node scripts/build-skill.mjs",
     "skill:check": "node scripts/build-skill.mjs --check",
-    "skill:test": "node --test scripts/skill.test.mjs"
+    "skill:test": "node --test scripts/skill.test.mjs",
+    "scripts:test": "node --test scripts/purge-cdn.test.mjs"
   },
   "devDependencies": {
     "@biomejs/biome": "2.5.15",

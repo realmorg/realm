@@ -23,6 +23,7 @@ jobs:
       - run: pnpm skill:check
       - run: pnpm --filter @realmorg/realm exec playwright install --with-deps chromium
       - run: pnpm skill:test
+      - run: pnpm scripts:test
 
   # Each browser runs once: Chromium measures coverage, Firefox and WebKit run the cross-browser suite.
   packages:

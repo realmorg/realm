@@ -57,10 +57,24 @@ const frontmatter = (text) => {
   return { meta, body: text.slice(match[0].length) };
 };
 
+// {{version:ui}} in a page becomes the current version of @realmorg/ui, so pinned examples stay
+// in step with each release.
+const VERSIONS = Object.fromEntries(
+  ["realm", "ui", "unicons", "vite-plugin"].map((name) => [
+    name,
+    JSON.parse(readFileSync(join(repo, `packages/${name}/package.json`), "utf8")).version,
+  ]),
+);
+const withVersions = (text) =>
+  text.replace(/\{\{version:([\w-]+)\}\}/g, (placeholder, name) => {
+    if (!VERSIONS[name]) throw new Error(`Unknown package in ${placeholder}`);
+    return VERSIONS[name];
+  });
+
 const pages = walk(join(root, "content"))
   .filter((file) => file.endsWith(".md"))
   .map((file) => {
-    const { meta, body } = frontmatter(readFileSync(file, "utf8"));
+    const { meta, body } = frontmatter(withVersions(readFileSync(file, "utf8")));
     const path = relative(join(root, "content"), file).replace(/\.md$/, "");
     const slug = path === "index" ? "" : path.replace(/\/index$/, "");
     const depth = slug ? slug.split("/").length : 0;

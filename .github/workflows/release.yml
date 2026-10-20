@@ -25,10 +25,14 @@ jobs:
       - run: pnpm build
       - run: pnpm exec playwright install --with-deps chromium firefox webkit
       - run: pnpm release:check
-      - uses: changesets/action@v2.1.2
+      - id: changesets
+        uses: changesets/action@v2.1.2
         with:
           version-script: pnpm version-packages
           publish-script: pnpm changeset publish
         env:
           NPM_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+      - if: steps.changesets.outputs.published == 'true'
+        name: Refresh the jsDelivr cache for the published packages
+        run: node scripts/purge-cdn.mjs '${{ steps.changesets.outputs.publishedPackages }}'

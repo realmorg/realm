@@ -1,6 +1,6 @@
 ---
 title: Installation
-description: Add REALM and REALM UI to an HTML page with tags from the jsDelivr CDN, pin a version, and serve the page.
+description: Add REALM and REALM UI to an HTML page with tags from the jsDelivr CDN, pin exact versions for production, and host the files yourself.
 group: Getting started
 order: 2
 nav: Installation
@@ -70,10 +70,29 @@ Save it as `index.html` and open it in your browser.
 
 ## Pin a version
 
-`@alpha` always points at the newest alpha release. In production, pin an exact version so a new release cannot change your pages:
+`@alpha` is a tag that always points at the newest alpha release. It is the easiest way to try REALM, but jsDelivr caches what a tag points to for up to 12 hours, so a page can keep getting the previous release for a while after a new one comes out.
+
+In production, pin exact versions. An exact version never changes, so a release cannot change your pages, and jsDelivr caches it for a week:
 
 ```html
-<script type="module" src="https://cdn.jsdelivr.net/npm/@realmorg/realm@2.0.0-alpha.1/dist/realm.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@realmorg/realm@{{version:realm}}/dist/realm.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@realmorg/ui@{{version:ui}}/dist/theme.css">
+<script type="module" src="https://cdn.jsdelivr.net/npm/@realmorg/realm@{{version:realm}}/dist/realm.js"></script>
+
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@{{version:ui}}/dist/ui.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/unicons@{{version:unicons}}/dist/unicons.html"></import-element>
+```
+
+These are the current versions. Each release lists its changes in the package's `CHANGELOG.md`.
+
+## Hosting the files yourself
+
+`<import-element>` fetches component files with `fetch()`, so a file on another domain needs a CORS header that allows your page. jsDelivr sends `Access-Control-Allow-Origin: *` on every file, which is why the tags above work from any site.
+
+To host REALM yourself, install the packages from npm and serve their `dist/` (and, for REALM UI, `components/`) folders from your own domain, or from another domain that sends that header.
+
+```shell
+npm install @realmorg/realm@alpha @realmorg/ui@alpha
 ```
 
 ## Sharing JavaScript between components

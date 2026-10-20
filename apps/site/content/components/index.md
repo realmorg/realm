@@ -52,7 +52,7 @@ To load less, import only the components you use instead of the bundle:
 
 Each file imports the files it depends on, so `sheet.html` also loads `dialog.html`. A file is fetched once, however many files import it.
 
-Pin an exact version (for example `@realmorg/ui@2.0.0-alpha.1`) in production. The package contains:
+Pin an exact version (currently `@realmorg/ui@{{version:ui}}`) in production, as described in [Installation](/docs/installation/#pin-a-version). The package contains:
 
 | File | Contents |
 | --- | --- |
