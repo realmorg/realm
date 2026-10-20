@@ -410,7 +410,7 @@ live-demo[layout="split"] .shiki {
   color: var(--primary-foreground);
 }
 .home .action.primary:hover {
-  background: color-mix(in oklab, var(--primary) 90%, transparent);
+  background: color-mix(in oklab, var(--primary) 88%, var(--foreground));
 }
 .home .action.outline {
   border-color: var(--border);

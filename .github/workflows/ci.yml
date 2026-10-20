@@ -23,7 +23,6 @@ jobs:
       - run: pnpm skill:check
       - run: pnpm --filter @realmorg/realm exec playwright install --with-deps chromium
       - run: pnpm skill:test
-      - run: pnpm --filter @realmorg/vite-plugin test
 
   # Each browser runs once: Chromium measures coverage, Firefox and WebKit run the cross-browser suite.
   packages:
@@ -39,6 +38,7 @@ jobs:
           - { package: "@realmorg/ui", browsers: firefox webkit, run: "test:cross" }
           - { package: "@realmorg/unicons", browsers: chromium, run: coverage }
           - { package: "@realmorg/unicons", browsers: firefox webkit, run: "test:cross" }
+          - { package: "@realmorg/vite-plugin", browsers: chromium firefox webkit, run: test }
     steps:
       - uses: actions/checkout@v5
       - uses: ./.github/actions/setup

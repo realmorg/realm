@@ -95,8 +95,10 @@
       background: var(--primary);
       color: var(--primary-foreground);
     }
+    /* Mixing toward the text colour darkens a light-mode fill and lightens a dark-mode one, so
+       hover never lowers the text contrast. */
     button:hover {
-      background: color-mix(in oklab, var(--primary) 90%, transparent);
+      background: color-mix(in oklab, var(--primary) 88%, var(--foreground));
     }
     button:focus-visible {
       border-color: var(--ring);
@@ -117,7 +119,7 @@
       color: var(--destructive-foreground);
     }
     :host(:state(attr-variant-is-destructive)) button:hover {
-      background: color-mix(in oklab, var(--destructive) 90%, transparent);
+      background: color-mix(in oklab, var(--destructive) 88%, var(--foreground));
     }
     :host(:state(attr-variant-is-outline)) button {
       border-color: var(--border);

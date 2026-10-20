@@ -46,10 +46,12 @@ host.shadowRoot.querySelector("input");
   </script>
 
   <style type="realm">
+    /* The text never wraps, so writing the width cannot change the size again. */
     :host {
       display: block;
       resize: horizontal;
-      overflow: auto;
+      overflow: hidden;
+      white-space: nowrap;
       width: calc(var(--spacing) * 60);
       padding: calc(var(--spacing) * 3);
       border: 1px solid var(--border);

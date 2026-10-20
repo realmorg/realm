@@ -1,5 +1,7 @@
 import { describe, expect, test } from "vitest";
+import { userEvent } from "vitest/browser";
 import theme from "../theme.css?raw";
+import { part, render } from "./setup";
 
 const tokensOf = (selector: string): Record<string, string> => {
   const start = theme.indexOf(`${selector} {`);
@@ -96,6 +98,25 @@ describe("theme contrast", () => {
 
     test(`${scheme} input borders, focus rings and chart colours reach 3:1`, () => {
       expect(failures(tokens, INTERFACE, 3)).toEqual([]);
+    });
+
+    test(`${scheme} filled buttons keep 4.5:1 text contrast on hover`, async () => {
+      document.documentElement.dataset.theme = scheme;
+      const host = await render(
+        '<ui-button>Save</ui-button><ui-button variant="destructive">Delete</ui-button>',
+      );
+      const ratios = [];
+      for (const button of host.querySelectorAll("ui-button")) {
+        const inner = part(button, "button");
+        await userEvent.hover(inner);
+        await new Promise((resolve) => setTimeout(resolve, 300));
+        const { backgroundColor, color } = getComputedStyle(inner);
+        const back = luminance(tokens.background, backgroundColor);
+        const front = luminance(tokens.background, backgroundColor, color);
+        ratios.push((Math.max(front, back) + 0.05) / (Math.min(front, back) + 0.05));
+      }
+      delete document.documentElement.dataset.theme;
+      expect(Math.min(...ratios)).toBeGreaterThanOrEqual(4.5);
     });
   }
 
