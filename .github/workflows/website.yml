@@ -3,6 +3,14 @@ name: Website
 on:
   push:
     branches: [main]
+    # None of these files appear on the website.
+    paths-ignore:
+      - "**/README.md"
+      - "**/CHANGELOG.md"
+      - "**/LICENSE"
+      - ".github/CONTRIBUTING.md"
+      - "PLAN.md"
+      - ".changeset/*.md"
   workflow_dispatch:
 
 jobs:

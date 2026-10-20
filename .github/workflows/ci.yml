@@ -1,9 +1,24 @@
 name: CI
 
+# A change that only touches the files below is not read by any check, so CI does not run.
 on:
   push:
     branches: [main]
+    paths-ignore:
+      - "**/README.md"
+      - "**/CHANGELOG.md"
+      - "**/LICENSE"
+      - ".github/CONTRIBUTING.md"
+      - "PLAN.md"
+      - ".changeset/*.md"
   pull_request:
+    paths-ignore:
+      - "**/README.md"
+      - "**/CHANGELOG.md"
+      - "**/LICENSE"
+      - ".github/CONTRIBUTING.md"
+      - "PLAN.md"
+      - ".changeset/*.md"
 
 concurrency:
   group: ci-${{ github.ref }}

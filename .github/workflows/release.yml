@@ -3,6 +3,13 @@ name: Release
 on:
   push:
     branches: [main]
+    # Changesets are not ignored: a new changeset opens the Version Packages pull request.
+    paths-ignore:
+      - "**/README.md"
+      - "**/CHANGELOG.md"
+      - "**/LICENSE"
+      - ".github/CONTRIBUTING.md"
+      - "PLAN.md"
 
 concurrency: release
 
