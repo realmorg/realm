@@ -179,6 +179,65 @@ describe("definition", () => {
 });
 
 describe("lifecycle", () => {
+  const nestedDepth = (el: Element, name: string) => {
+    let depth = 0;
+    for (
+      let node = root(el).querySelector(name);
+      node;
+      node = node.shadowRoot?.querySelector(name) ?? null
+    )
+      if (node.shadowRoot) depth++;
+    return depth;
+  };
+
+  test("a recursive component renders a tree deeper than the call stack allows", async () => {
+    const name = tag("tree");
+    await define(
+      `<custom-element name="${name}"><script>const props = defineProps({ depth: prop.number().default(0) }); const level = useState({ get next() { return props.depth - 1; }, get more() { return props.depth > 0; } });</script><i><slot name="@depth"></slot></i><is-visible when="#level.more"><${name} _depth="#level.next"></${name}></is-visible></custom-element>`,
+    );
+    const el = mount(name, 'depth="300"');
+    await vi.waitFor(() => expect(nestedDepth(el, name)).toBe(300));
+    let deepest: Element = el;
+    while (root(deepest).querySelector(name))
+      deepest = root(deepest).querySelector(name) as Element;
+    expect(text(root(deepest))).toBe("0");
+    expect(error).not.toHaveBeenCalled();
+  });
+
+  test("a component that renders itself without a stop warns and stops", async () => {
+    const name = tag("forever");
+    await define(`<custom-element name="${name}"><b>again</b><${name}></${name}></custom-element>`);
+    const el = mount(name);
+    await vi.waitFor(() =>
+      expect(warned("is nested 1000 deep. Stop its recursion with a condition.")).toBe(true),
+    );
+    expect(nestedDepth(el, name)).toBe(1000);
+    expect(
+      warn.mock.calls.filter((call) => String(call[1]).includes("is nested 1000 deep")),
+    ).toHaveLength(1);
+    expect(error).not.toHaveBeenCalled();
+  });
+
+  test("a deep component removed before its deferred setup is not set up", async () => {
+    const name = tag("gone");
+    await define(
+      `<custom-element name="${name}"><script>const props = defineProps({ depth: prop.number().default(0) }); const level = useState({ get next() { return props.depth - 1; }, get more() { return props.depth > 0; } });</script><is-visible when="#level.more"><${name} _depth="#level.next"></${name}></is-visible></custom-element>`,
+    );
+    const el = mount(name, 'depth="40"');
+    const deepest = () => {
+      let node: Element = el;
+      while (node.shadowRoot?.querySelector(name))
+        node = node.shadowRoot.querySelector(name) as Element;
+      return node;
+    };
+    const waiting = deepest();
+    expect(waiting.shadowRoot).toBeNull();
+    el.remove();
+    await tick();
+    expect(waiting.shadowRoot).toBeNull();
+    expect(instances.get(waiting)).toBeUndefined();
+  });
+
   test("setup errors are reported and the markup still renders", async () => {
     const name = tag("throws");
     await define(

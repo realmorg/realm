@@ -128,3 +128,44 @@ const status = useState({
 ## Inside tables and selects
 
 The HTML parser moves unknown elements out of `<table>`, `<tr>` and `<select>`. Do not put `<is-visible>` there. Bind `_hidden` on the row or option instead, or filter the list in a getter and [repeat](/docs/lists/) over the result.
+
+## Recursive components
+
+A component can render itself, which is how trees such as folders or comment threads are built. Put the nested copy inside a condition that eventually turns false, here when a node has no children:
+
+```html live
+<custom-element name="file-tree">
+  <script type="realm">
+    const props = defineProps({
+      node: prop.object().default({ name: "src", children: [{ name: "lib", children: [{ name: "store.js" }] }, { name: "app.html" }] }),
+    });
+    const tree = useState({
+      get children() {
+        return props.node.children ?? [];
+      },
+      get hasChildren() {
+        return this.children.length > 0;
+      },
+    });
+  </script>
+
+  <style type="realm">
+    ul {
+      margin: 0;
+      padding-left: calc(var(--spacing) * 4);
+    }
+  </style>
+
+  <slot name="@node.name"></slot>
+  <is-visible when="#tree.hasChildren">
+    <ul>
+      <li repeat="#tree.children" as="child" key="name"><file-tree _node="#child"></file-tree></li>
+    </ul>
+  </is-visible>
+</custom-element>
+
+<file-tree></file-tree>
+```
+
+Trees can be as deep as your data. A component nested more than 1000 components deep is not set up, and the console warns `<file-tree> is nested 1000 deep. Stop its recursion with a condition.` That almost always means the component renders itself with nothing to stop it.
+

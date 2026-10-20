@@ -19,6 +19,15 @@ export const instances = new WeakMap<Node, Instance>();
 const parentOf = (node: Node): Node | null =>
   node.parentNode instanceof ShadowRoot ? node.parentNode.host : node.parentNode;
 
+// Setting up a component connects the components in its markup synchronously, so each nesting
+// level grows the call stack. Every 32nd level finishes setting up in a microtask, on a fresh stack.
+const depthOf = (el: Element) => {
+  let depth = 0;
+  for (let root = el.getRootNode(); root instanceof ShadowRoot; root = root.host.getRootNode())
+    depth++;
+  return depth;
+};
+
 const ancestorSettingUp = (el: Element) => {
   for (let node = parentOf(el); node; node = parentOf(node))
     if (node instanceof Element && settingUp.has(node.localName)) return node.localName;
@@ -230,7 +239,7 @@ export class RealmElement extends HTMLElement {
     return (this.constructor as typeof RealmElement).definition;
   }
 
-  connectedCallback() {
+  connectedCallback(deferred?: boolean) {
     this.#pending = false;
     for (const attribute of this.attributes) bindPageHandler(this, attribute.name, attribute.value);
     if (this.#instance || this.closest("custom-element")) return;
@@ -239,6 +248,15 @@ export class RealmElement extends HTMLElement {
       void customElements.whenDefined(ancestor).then(() => {
         if (this.isConnected) this.connectedCallback();
       });
+      return;
+    }
+    const depth = depthOf(this);
+    if (depth > 1000) {
+      warn(`<${this.localName}> is nested 1000 deep. Stop its recursion with a condition.`);
+      return;
+    }
+    if (depth % 32 > 30 && !deferred) {
+      queueMicrotask(() => this.isConnected && this.connectedCallback(true));
       return;
     }
     const definition = this.#definition;

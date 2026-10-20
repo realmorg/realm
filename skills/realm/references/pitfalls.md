@@ -16,6 +16,7 @@ Common mistakes, what goes wrong, and the fix. Then every console message REALM 
 | `_invalid="#form.error"` where the error can be `""` | `""` is written as an attribute, so the boolean is `true` | Use `null` or `undefined` for "no value", or bind a boolean getter |
 | `_class="#tab.className"` to toggle one class | Replaces the whole class list | `_data-active="#tab.active"` with `[data-active]` in CSS, or a `:state()` |
 | `<todo-app />` | Not valid for custom elements: everything after it becomes its child | `<todo-app></todo-app>` |
+| A component that renders itself with no condition | It nests until REALM stops it at 1000 levels with a warning | Put the nested copy inside `<is-visible>` with a getter that turns false, such as `hasChildren` |
 | `slot="title"` on `<ui-dialog-title>` or other parts | Not needed, can break placement | Write parts without `slot`. They assign themselves |
 | `style="…"` on `ui-*` elements | Fights the component's own styles and the theme | Attributes (`variant`, `size`), a class in your component's `<style>`, or `::part()` |
 | `document.querySelector("todo-app input")` | Shadow roots hide component internals | `ref="field"` and `refs.field` inside the component, or a method from `defineMethods` |
@@ -81,6 +82,7 @@ REALM writes to the console with the prefix `[realm]`. Warnings use `console.war
 | `<x-a> has an error in its <script>. The component renders without it.` | The script has a syntax error, or one of its imports failed |
 | `<x-a> could not load its script URL: message` | `<script src>` failed to load |
 | `Could not load stylesheet URL: message` | A `<link rel="stylesheet">` in a definition failed |
+| `<x-a> is nested 1000 deep. Stop its recursion with a condition.` | The component renders itself without a condition that stops it. It is not set up past that depth. See [Recursive components](https://realm.js.org/docs/control-flow/#recursive-components) |
 
 ### Imports
 

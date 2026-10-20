@@ -22,6 +22,7 @@ REALM writes to the console with the prefix `[realm]`. Warnings use `console.war
 | `<x-a> has an error in its <script>. The component renders without it.` | The script has a syntax error, or one of its imports failed |
 | `<x-a> could not load its script URL: message` | `<script src>` failed to load |
 | `Could not load stylesheet URL: message` | A `<link rel="stylesheet">` in a definition failed |
+| `<x-a> is nested 1000 deep. Stop its recursion with a condition.` | The component renders itself without a condition that stops it. It is not set up past that depth. See [Recursive components](/docs/control-flow/#recursive-components) |
 
 ## Imports
 

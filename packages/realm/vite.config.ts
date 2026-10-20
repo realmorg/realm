@@ -15,6 +15,8 @@ export default defineConfig({
     rolldownOptions: {
       output: {
         minify: true,
+        // Bundler hints such as /* @__PURE__ */ only matter to source bundlers, not in shipped files.
+        comments: { annotation: false },
         chunkFileNames: "chunks/[name]-[hash].js",
       },
     },
