@@ -15,9 +15,9 @@
   <a href="https://github.com/realmorg/realm/blob/main/LICENSE"><img alt="MIT license" src="https://img.shields.io/badge/license-MIT-blue"></a>
 </p>
 
-REALM turns a `<custom-element>` tag into a native web component. You write its script, style and markup in one place, in plain HTML, and the browser runs exactly what you wrote. There is no compiler, no bundler and no config file, so View Source shows your code and there is nothing to install before you start.
+REALM turns a `<custom-element>` tag into a native web component. You write its script, style and markup in one place, in plain HTML, and the browser runs exactly what you wrote. There is no compiler, no bundler and no config file. The runtime is about 16 KB gzipped and works in current Chrome, Edge, Firefox and Safari.
 
-> REALM v2 is in alpha. The API is settling, so pin an exact version in production and read the changelog when you update.
+> REALM v2 is in alpha. Pin an exact version in production, such as `@realmorg/realm@2.0.0-alpha.2`.
 
 ## Try it
 
@@ -63,7 +63,6 @@ What each part does:
 - `<slot name="#counter.count">` shows a value. Markup holds references like this, never expressions, so logic stays in the script where you can read and debug it.
 - `onclick="add()"` is a normal event handler attribute that can call the component's functions.
 - The `<style>` applies inside the component only, through shadow DOM.
-- When the element is removed, everything it started (listeners, timers, requests) stops.
 
 ## Building an app
 
@@ -85,7 +84,7 @@ A component file imports the files it depends on, every file is fetched once, an
 <ui-button variant="outline">Save draft</ui-button>
 ```
 
-**Load data without writing fetch code.** `fetch`, `into`, `render` and `busy` attributes send requests and put the response into state or markup. They abort when the component is removed.
+**Load data without writing fetch code.** `fetch`, `into`, `render` and `busy` attributes send requests and put the response into state or markup.
 
 **Build forms.** Components can be real form fields: they submit with their `name`, reset, validate and follow `<fieldset disabled>`.
 
@@ -105,12 +104,6 @@ npx skills add realmorg/realm
 
 The docs are also available as Markdown for assistants at [realm.js.org/llms.txt](https://realm.js.org/llms.txt).
 
-## In production
-
-- Pin an exact version, such as `@realmorg/realm@2.0.0-alpha.2`, instead of `@alpha`. See [Installation](https://realm.js.org/docs/installation/).
-- REALM works with a strict Content Security Policy. See [Security](https://realm.js.org/docs/security/), and the optional [Vite plugin](https://github.com/realmorg/realm/tree/main/packages/vite-plugin) for a `script-src 'self'` policy.
-- The runtime is about 16 KB gzipped and works in current Chrome, Edge, Firefox and Safari.
-
 ## Packages
 
 | Package | What it is | Load it from |
@@ -129,15 +122,7 @@ The docs are also available as Markdown for assistants at [realm.js.org/llms.txt
 
 ## Contributing
 
-We use AI coding assistants to build REALM, and you are welcome to use one too. [CONTRIBUTING.md](https://github.com/realmorg/realm/blob/main/.github/CONTRIBUTING.md) covers the setup, how changes are proposed and the checks to run. To get started:
-
-```shell
-pnpm install
-pnpm build
-pnpm --filter @realmorg/realm coverage
-```
-
-REALM's behaviour is specified in `openspec/specs`, and every scenario has a test.
+See [CONTRIBUTING.md](https://github.com/realmorg/realm/blob/main/.github/CONTRIBUTING.md).
 
 ## License
 
