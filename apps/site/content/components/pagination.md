@@ -14,7 +14,7 @@ current one, and an ellipsis for each gap. It works in two modes:
 
 - Without `href`, Previous, Next and the page numbers are native buttons. Clicking one (or pressing Enter or Space)
   updates the `page` attribute in place and fires `change`. Use this for client-side lists.
-- With `href`, Previous, Next and every page number are real links built from the pattern, for example
+- With `href`, Previous, Next and every page number are links built from the pattern, for example
   `?page={page}`.
 
 ```html live
@@ -46,7 +46,7 @@ When every page fits, no ellipsis is shown. Previous is disabled on the first pa
 ### Links
 
 With `href`, `{page}` in the pattern is replaced by each page number, so the numbers are crawlable links and work
-without script. The component does not change `page` itself in this mode: the next page load sets it.
+without script. The component does not change `page` itself in this mode. The next page load sets it.
 
 ```html
 <ui-pagination page="2" total="5" href="/invoices?page={page}"></ui-pagination>
@@ -107,7 +107,7 @@ on `change` to cancel the move, for example while data is still loading.
 
 | Event | Detail | Description |
 | --- | --- | --- |
-| `change` | `{ page: number }` | Fires before the page changes, from Previous, Next or a page number. Bubbles and is cancelable: `preventDefault()` keeps the current page and, in `href` mode, stops the link from navigating. Not fired for the current page or a page out of range. |
+| `change` | `{ page: number }` | Fires before the page changes, from Previous, Next or a page number. Bubbles and is cancelable. `preventDefault()` keeps the current page and, in `href` mode, stops the link from navigating. Not fired for the current page or a page out of range. |
 
 ### CSS parts
 
@@ -122,7 +122,7 @@ on `change` to cancel the move, for example while data is still loading.
 
 - The component is a `<nav>` landmark named by `label`, containing a list.
 - The current page has `aria-current="page"`. Ellipses are hidden from assistive technology.
-- Without `href` every control is a native `<button>`: Tab reaches it and Enter or Space activates it. Previous and
+- Without `href` every control is a native `<button>` that Tab reaches and Enter or Space activates. Previous and
   Next are `disabled` at the first and last page.
 - In `href` mode every control is a link reached with Tab. At the first and last page, Previous and Next have no
   `href` and `aria-disabled="true"`.

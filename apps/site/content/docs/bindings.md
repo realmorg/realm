@@ -36,7 +36,7 @@ A `<slot>` whose name starts with `#` or `@` shows that value as its content:
 
 - The value is shown as **text**. Numbers, `0` and `false` are shown as they are.
 - While the value is `""`, `null` or `undefined`, the slot shows its own children, `Guest` above. This is the native fallback content of `<slot>`.
-- The slot stays a real `<slot>` inside the shadow root. Nothing is added outside the component.
+- The slot stays a `<slot>` element inside the shadow root. Nothing is added outside the component.
 - Slots without `#` or `@`, such as `<slot>` and `<slot name="footer">`, are ordinary native slots for content placed inside the component.
 
 ### HTML values

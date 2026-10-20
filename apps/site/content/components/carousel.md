@@ -65,7 +65,7 @@ with a wrapper.
 ### Vertical
 
 `orientation="vertical"` snaps slides top to bottom and moves the buttons above and below the track, rotated. A
-vertical carousel needs a height: set `height` in spacing units and the track fills what the buttons leave. Each
+vertical carousel needs a height. Set `height` in spacing units and the track fills what the buttons leave. Each
 slide fills the track.
 
 ```html live
@@ -174,7 +174,7 @@ The parts place themselves in the carousel's grid, so their source order does no
 | --- | --- | --- | --- |
 | `orientation` | `"horizontal"` \| `"vertical"` | `"horizontal"` | Scroll and snap direction. A vertical carousel needs a `height`. |
 | `label` | string | `"Carousel"` | Accessible name of the region. |
-| `height` | number | none | Height in spacing units: `height="56"` is `calc(var(--spacing) * 56)`. Needed for a vertical carousel. |
+| `height` | number | none | Height in spacing units, so `height="56"` is `calc(var(--spacing) * 56)`. Needed for a vertical carousel. |
 
 `ui-carousel-content`, `ui-carousel-item`, `ui-carousel-previous` and `ui-carousel-next` have no attributes.
 

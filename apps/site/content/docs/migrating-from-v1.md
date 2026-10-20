@@ -1,6 +1,6 @@
 ---
 title: Migrating from v1
-description: Move REALM v1 components to v2, with a tag-by-tag cheat sheet from element-state, element-flow, set-state, http-request and global-state to useState, native handlers, fetch attributes and defineStore.
+description: Move REALM v1 components to v2, with a cheat sheet that maps each v1 tag to its v2 replacement.
 group: Guides
 order: 54
 nav: Migrating from v1
@@ -62,7 +62,7 @@ v2:
 5. **Replace `<element-flow>`.** Each `<trigger-event>` becomes a native `on*` attribute on the element that had the `ref`, calling a function. Each `<set-state>` becomes an assignment in that function.
 6. **Replace `<http-request>`** with fetch attributes (`fetch`, `into`, `render`, `busy`) and `onload`/`onerror`.
 7. **Replace `<global-state>`** with parent state or `defineStore`.
-8. **Inline definitions**: if you defined components directly in the page, give the script and style `type="realm"`.
+8. **Mark inline definitions.** If you defined components directly in the page, give the script and style `type="realm"`.
 9. **Check the console.** v2 warns about invalid references, props and duplicate definitions, naming the component.
 
 ## Cheat sheet
@@ -76,11 +76,11 @@ v2:
 | `<set-state name="items" mutate="push" …>` | `todo.items.push(item)` |
 | `<set-attr name="x" …>` | `attrs.x = value`, or a reflected prop |
 | `<set-timer every="1000">` | `observe(() => { const id = setInterval(…); return () => clearInterval(id); })` |
-| `<slot name="#count"></slot>` | `<slot name="#counter.count"></slot>`: same idea, now a native slot that adds nothing to the page |
+| `<slot name="#count"></slot>` | `<slot name="#counter.count"></slot>`. Now a native slot that adds no element to the page |
 | `<slot name="@label"></slot>` | Unchanged |
-| `_href="#url"` | `_href="#link.url"`: same idea, references now include the state object |
+| `_href="#url"` | `_href="#link.url"`. References now include the state object |
 | `<is-visible value="#x" eq="1">` | `<is-visible when="#state.x" eq="1">`. Hidden content is now removed, not hidden with CSS |
-| `<repeat-list of="#items">` with `$.label` and `!.index` | `<repeat-list of="#todo.items" as="item" index="i" key="id">` with `#item.label` and `#i`; inside lists and tables, the `repeat` attribute |
+| `<repeat-list of="#items">` with `$.label` and `!.index` | `<repeat-list of="#todo.items" as="item" index="i" key="id">` with `#item.label` and `#i`. Inside lists and tables, use the `repeat` attribute |
 | `<element-flow>` with `<trigger-event click="ref">` | `onclick="save()"` on the element |
 | `debounce` on `<trigger-event>` | `debounce` on the element |
 | `<listen-event mounted>` | `onConnected(() => …)` |
@@ -94,7 +94,7 @@ v2:
 | `<import-script>`, `<import-style>` | `import` in the component script, `<link rel="stylesheet">` in the definition |
 | `<web-app>` | Not needed |
 | CSS `var(--attr-x)` | Unchanged |
-| CSS `var(--state-x)` | `var(--state-theme-color)`: the reference path `#theme.color` with dashes |
+| CSS `var(--state-x)` | `var(--state-theme-color)`, the reference path `#theme.color` with dashes |
 | CSS `var(--global-x)` | Read the store in a getter and use `var(--state-…)` |
 | CSS `:host([\@number][gt="5"])` | `:host(:state(attr-number-gt-5))` |
 | CSS `:host([\#counter][eq="5"])` | `:host(:state(state-counter-count-is-5))` |
@@ -112,4 +112,4 @@ v2:
 
 ## Getting help
 
-If something from v1 has no equivalent here, open an issue on [GitHub](https://github.com/realmui/realm/issues) with the v1 markup.
+If something from v1 has no equivalent here, open an issue on [GitHub](https://github.com/realmorg/realm/issues) with the v1 markup.

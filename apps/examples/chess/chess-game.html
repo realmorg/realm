@@ -1,3 +1,7 @@
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/button.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/dialog.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/switch.html"></import-element>
+
 <custom-element name="chess-game">
   <script type="module">
     import { Chess, NAMES, START, SYMBOLS, squareName } from "./chess.js";
@@ -246,7 +250,7 @@
       z-index: 1;
       font-size: var(--text-xs);
       font-weight: var(--font-weight-semibold);
-      color: rgb(0 0 0 / 0.55);
+      color: rgb(0 0 0 / 0.8);
     }
     .rank::before,
     .file::before {

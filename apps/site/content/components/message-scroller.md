@@ -10,7 +10,7 @@ nav: Message Scroller
 
 `ui-message-scroller` is the scrolling area of a chat. It starts scrolled to the bottom and stays pinned there as
 messages are added, but only while the user is already at (or within `threshold` pixels of) the bottom. When the user
-scrolls up to read history, new messages no longer move the view and a "Jump to latest" button appears; clicking it
+scrolls up to read history, new messages no longer move the view and a "Jump to latest" button appears. Clicking it
 scrolls smoothly back down.
 
 Give the scroller a height with the `height` attribute (in spacing units, `height="60"` is
@@ -71,7 +71,7 @@ Give the scroller a height with the `height` attribute (in spacing units, `heigh
 <message-scroller-demo></message-scroller-demo>
 ```
 
-Scroll up in the log and click "Receive a message": the view stays where it is and "Jump to latest" appears.
+Scroll up in the log and click "Receive a message". The view stays where it is and "Jump to latest" appears.
 
 ## Examples
 
@@ -114,7 +114,7 @@ follow new messages when the view is exactly at the end.
 | Attribute | Type | Default | Description |
 | --- | --- | --- | --- |
 | `threshold` | number | `48` | Distance from the bottom, in pixels, within which the scroller stays pinned to new content. Minimum `0`. |
-| `height` | number | | Height in spacing units: `height="60"` is `calc(var(--spacing) * 60)`. Without it, size the scroller from its layout. |
+| `height` | number | | Height in spacing units, so `height="60"` is `calc(var(--spacing) * 60)`. Without it, size the scroller from its layout. |
 
 ### Parts
 
@@ -135,7 +135,7 @@ the bottom while pinned.
 
 | Name | Description |
 | --- | --- |
-| `:state(attr-height)` | Matches while `height` is set; the height comes from `var(--attr-height)`. |
+| `:state(attr-height)` | Matches while `height` is set. The height comes from `var(--attr-height)`. |
 | `:state(state-scroll-pinned)` | Matches while the view is within `threshold` of the bottom. The "Jump to latest" button is hidden in this state. |
 
 ### Accessibility

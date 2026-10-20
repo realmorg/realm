@@ -91,10 +91,12 @@ export default function realm(options: RealmPluginOptions = {}): Plugin {
     },
     configureServer(server) {
       server.middlewares.use((request, response, next) => {
-        const path = decodeURIComponent((request.url as string).split("?")[0] as string);
+        const url = request.url as string;
+        const path = decodeURIComponent(url);
         const file = join(server.config.root, path);
         const fetched = !request.headers.accept?.includes("text/html");
-        if (!fetched || !path.endsWith(".html") || !existsSync(file)) return next();
+        if (!fetched || url.includes("?") || !path.endsWith(".html") || !existsSync(file))
+          return next();
         response.setHeader("content-type", "text/html");
         response.end(readFileSync(file));
       });

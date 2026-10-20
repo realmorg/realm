@@ -1,7 +1,7 @@
 {
   "name": "@realmorg/vite-plugin",
   "version": "2.0.0-alpha.1",
-  "description": "Pre-assembles REALM components for strict Content Security Policies and writes a custom-elements.json manifest.",
+  "description": "Vite plugin that pre-assembles REALM components for strict Content Security Policies and writes a custom-elements.json manifest.",
   "license": "MIT",
   "type": "module",
   "exports": {
@@ -36,7 +36,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/realmui/realm.git",
+    "url": "https://github.com/realmorg/realm.git",
     "directory": "packages/vite-plugin"
   },
   "publishConfig": {

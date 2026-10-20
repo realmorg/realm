@@ -1,0 +1,74 @@
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/button.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/card.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/field.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/input.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/label.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/select.html"></import-element>
+
+<custom-element name="expense-form">
+  <script type="module">
+    import { addExpense, CATEGORIES, today } from "./expenses.js";
+
+    const form = useState({ categories: CATEGORIES, today: today() });
+
+    function add(event) {
+      event.preventDefault();
+      addExpense(new FormData(event.target));
+      event.target.reset();
+      refs.date.value = form.today;
+      dispatch("toast", { title: "Expense added" });
+    }
+  </script>
+
+  <style>
+    :host {
+      display: block;
+    }
+    form {
+      display: grid;
+      gap: calc(var(--spacing) * 4);
+    }
+    .row {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: calc(var(--spacing) * 4);
+    }
+    @media (max-width: 480px) {
+      .row {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+  </style>
+
+  <ui-card>
+    <ui-card-header>
+      <ui-card-title level="2">Add an expense</ui-card-title>
+      <ui-card-description>Every field is required.</ui-card-description>
+    </ui-card-header>
+    <ui-card-content>
+      <form onsubmit="add(event)">
+        <ui-field>
+          <ui-label for="expense-description">Description</ui-label>
+          <ui-input id="expense-description" name="description" required maxlength="60" autocomplete="off" placeholder="Groceries"></ui-input>
+        </ui-field>
+        <div class="row">
+          <ui-field>
+            <ui-label for="expense-amount">Amount (USD)</ui-label>
+            <ui-input id="expense-amount" name="amount" type="number" required min="0.01" step="0.01" inputmode="decimal" placeholder="0.00"></ui-input>
+          </ui-field>
+          <ui-field>
+            <ui-label for="expense-date">Date</ui-label>
+            <ui-input ref="date" id="expense-date" name="date" type="date" required _value="#form.today" _max="#form.today"></ui-input>
+          </ui-field>
+        </div>
+        <ui-field>
+          <ui-label for="expense-category">Category</ui-label>
+          <ui-select id="expense-category" name="category" required placeholder="Choose a category">
+            <option repeat="#form.categories" as="category" key="id" _value="#category.id" _label="#category.label"></option>
+          </ui-select>
+        </ui-field>
+        <ui-button type="submit"><u-icon name="plus"></u-icon> Add expense</ui-button>
+      </form>
+    </ui-card-content>
+  </ui-card>
+</custom-element>

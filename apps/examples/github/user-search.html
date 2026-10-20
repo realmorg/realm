@@ -1,0 +1,122 @@
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/alert.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/avatar.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/input-group.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/spinner.html"></import-element>
+
+<custom-element name="user-search">
+  <script type="module">
+    import { describeFailure, github, noteRate, selectUser } from "./github.js";
+
+    function typed(field) {
+      github.query = field.value;
+    }
+
+    function starting(event) {
+      github.searchError = "";
+      if (github.query.trim()) return;
+      event.preventDefault();
+      github.results = null;
+    }
+
+    function found(event) {
+      noteRate(event.detail.headers);
+    }
+
+    function failed(event) {
+      github.results = null;
+      github.searchError = describeFailure(event, github.query);
+    }
+
+    function choose(user) {
+      selectUser(user.login);
+    }
+  </script>
+
+  <style>
+    :host {
+      display: grid;
+      align-content: start;
+      gap: calc(var(--spacing) * 3);
+    }
+    .summary {
+      margin: 0;
+      color: var(--muted-foreground);
+      font-size: var(--text-sm);
+    }
+    ul {
+      display: grid;
+      gap: calc(var(--spacing) * 1);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+    button {
+      display: flex;
+      align-items: center;
+      gap: calc(var(--spacing) * 3);
+      width: 100%;
+      padding: calc(var(--spacing) * 2);
+      border: 0;
+      border-radius: var(--radius-md);
+      background: transparent;
+      color: inherit;
+      font: inherit;
+      font-size: var(--text-sm);
+      font-weight: var(--font-weight-medium);
+      text-align: left;
+      cursor: pointer;
+    }
+    button:hover {
+      background: var(--accent);
+    }
+    button:focus-visible {
+      outline: 2px solid var(--ring);
+      outline-offset: -2px;
+    }
+    button[aria-current="true"] {
+      background: var(--secondary);
+    }
+  </style>
+
+  <search>
+    <form
+      fetch="https://api.github.com/search/users"
+      trigger="input"
+      debounce="400ms"
+      timeout="10s"
+      headers="#github.headers"
+      params="per_page:#github.perPage"
+      into="#github.results"
+      busy="#github.searching"
+      onloadstart="starting(event)"
+      onload="found(event)"
+      onerror="failed(event)"
+      ontimeout="failed(event)">
+      <ui-input-group name="q" type="search" aria-label="Search GitHub users" placeholder="Search users…" autocomplete="off" oninput="typed(this)">
+        <ui-input-group-addon><u-icon name="search"></u-icon></ui-input-group-addon>
+        <ui-input-group-addon align="inline-end"><is-visible when="#github.searching"><ui-spinner label="Searching"></ui-spinner></is-visible></ui-input-group-addon>
+      </ui-input-group>
+    </form>
+  </search>
+
+  <p class="summary" role="status"><slot name="#github.searchSummary"></slot></p>
+
+  <is-visible when="#github.searchError">
+    <ui-alert variant="destructive">
+      <ui-alert-title>Search failed</ui-alert-title>
+      <ui-alert-description><slot name="#github.searchError"></slot></ui-alert-description>
+    </ui-alert>
+  </is-visible>
+
+  <ul aria-label="Users">
+    <li repeat="#github.users" as="user" key="id">
+      <button type="button" _aria-current="#user.current" onclick="choose(user)">
+        <ui-avatar size="sm" aria-hidden="true">
+          <ui-avatar-image _src="#user.avatar_url"></ui-avatar-image>
+          <ui-avatar-fallback><slot name="#user.initials"></slot></ui-avatar-fallback>
+        </ui-avatar>
+        <slot name="#user.login"></slot>
+      </button>
+    </li>
+  </ul>
+</custom-element>

@@ -117,7 +117,7 @@ Bind `open` with `_open` and listen for `toggle` to keep state in sync.
 
 | Event | Element | Description |
 | --- | --- | --- |
-| `toggle` | `ui-collapsible` | Fires when the user opens or closes it. Bubbles; read `event.target.open`. Not fired when `open` is set from script. |
+| `toggle` | `ui-collapsible` | Fires when the user opens or closes it. Bubbles. Read `event.target.open`. Not fired when `open` is set from script. |
 
 ### CSS parts
 
@@ -128,5 +128,5 @@ Bind `open` with `_open` and listen for `toggle` to keep state in sync.
 ### Accessibility
 
 - The trigger is a native `<summary>`, announced as a button with its expanded state.
-- Tab focuses the trigger; Enter or Space toggles it.
+- Tab focuses the trigger. Enter or Space toggles it.
 - Do not put other interactive elements in the trigger. The summary is already the button.

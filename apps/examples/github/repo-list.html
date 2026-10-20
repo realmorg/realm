@@ -1,0 +1,186 @@
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/alert.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/badge.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/button.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/pagination.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/select.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/skeleton.html"></import-element>
+
+<custom-element name="repo-list">
+  <script type="module">
+    import { describeFailure, github, noteRate, retry, SORTS } from "./github.js";
+
+    const options = useState({ sorts: SORTS, placeholders: [1, 2, 3] });
+
+    function loaded(event) {
+      noteRate(event.detail.headers);
+    }
+
+    function failed(event) {
+      github.reposError = describeFailure(event, github.login);
+    }
+
+    function sortBy(select) {
+      github.sort = select.value;
+      github.page = 1;
+    }
+
+    function paginate(event) {
+      github.page = event.detail.page;
+    }
+  </script>
+
+  <style>
+    :host {
+      display: block;
+    }
+    section {
+      display: grid;
+      gap: calc(var(--spacing) * 4);
+    }
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: calc(var(--spacing) * 3);
+    }
+    h2 {
+      margin: 0;
+      font-size: var(--text-lg);
+    }
+    ul,
+    .placeholders {
+      display: grid;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+    }
+    li,
+    .placeholders > div {
+      display: grid;
+      gap: calc(var(--spacing) * 2);
+      padding: calc(var(--spacing) * 4);
+    }
+    li + li,
+    .placeholders > div + div {
+      border-top: 1px solid var(--border);
+    }
+    .name {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: calc(var(--spacing) * 2);
+    }
+    h3 {
+      margin: 0;
+      font-size: var(--text-base);
+    }
+    h3 a {
+      color: var(--primary);
+      text-underline-offset: calc(var(--spacing) * 1);
+    }
+    .description {
+      margin: 0;
+      color: var(--muted-foreground);
+      font-size: var(--text-sm);
+    }
+    .description:has(slot:empty) {
+      display: none;
+    }
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: calc(var(--spacing) * 4);
+      color: var(--muted-foreground);
+      font-size: var(--text-xs);
+    }
+    .meta span {
+      display: inline-flex;
+      align-items: center;
+      gap: calc(var(--spacing) * 1);
+    }
+    .meta span:has(slot:empty) {
+      display: none;
+    }
+    .empty {
+      margin: 0;
+      color: var(--muted-foreground);
+      font-size: var(--text-sm);
+    }
+    ui-pagination {
+      justify-self: center;
+    }
+  </style>
+
+  <is-visible when="#github.profile">
+    <section
+      aria-labelledby="repositories"
+      _fetch="#github.reposUrl"
+      trigger="load #github.reposRequest"
+      timeout="10s"
+      headers="#github.headers"
+      params="sort:#github.sort, page:#github.page, per_page:#github.perPage"
+      into="#github.repos"
+      busy="#github.reposBusy"
+      onload="loaded(event)"
+      onerror="failed(event)"
+      ontimeout="failed(event)">
+      <div class="toolbar">
+        <h2 id="repositories">Repositories</h2>
+        <ui-select aria-label="Sort repositories" width="48" size="sm" _value="#github.sort" onchange="sortBy(this)">
+          <option repeat="#options.sorts" as="sort" key="id" _value="#sort.id" _label="#sort.label"></option>
+        </ui-select>
+      </div>
+
+      <is-visible when="#github.reposError">
+        <ui-alert variant="destructive">
+          <ui-alert-title>Couldn't load repositories</ui-alert-title>
+          <ui-alert-description>
+            <p><slot name="#github.reposError"></slot></p>
+            <ui-button size="sm" variant="outline" onclick="retry()">Try again</ui-button>
+          </ui-alert-description>
+        </ui-alert>
+      </is-visible>
+
+      <is-visible when="#github.reposBusy">
+        <div class="placeholders" role="status" aria-label="Loading repositories">
+          <div repeat="#options.placeholders" as="placeholder">
+            <ui-skeleton width="48" height="5"></ui-skeleton>
+            <ui-skeleton height="4"></ui-skeleton>
+            <ui-skeleton width="64" height="3"></ui-skeleton>
+          </div>
+        </div>
+      </is-visible>
+
+      <is-hidden when="#github.reposBusy">
+        <is-visible when="#github.rows.length">
+          <ul aria-label="Repositories">
+            <li repeat="#github.rows" as="repo" key="id">
+              <div class="name">
+                <h3><a _href="#repo.url"><slot name="#repo.name"></slot></a></h3>
+                <is-visible when="#repo.fork"><ui-badge variant="outline">Fork</ui-badge></is-visible>
+              </div>
+              <p class="description"><slot name="#repo.description"></slot></p>
+              <div class="meta">
+                <span><u-icon name="code"></u-icon><slot name="#repo.language"></slot></span>
+                <span><u-icon name="star"></u-icon><slot name="#repo.stars"></slot></span>
+                <span><u-icon name="git-fork"></u-icon><slot name="#repo.forks"></slot></span>
+                <span><slot name="#repo.updated"></slot></span>
+              </div>
+            </li>
+          </ul>
+        </is-visible>
+      </is-hidden>
+
+      <is-visible when="#github.noRepos">
+        <p class="empty">No public repositories yet.</p>
+      </is-visible>
+
+      <is-visible when="#github.paged">
+        <ui-pagination label="Repository pages" _page="#github.page" _total="#github.pages" onchange="paginate(event)"></ui-pagination>
+      </is-visible>
+    </section>
+  </is-visible>
+</custom-element>

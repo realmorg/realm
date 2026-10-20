@@ -8,7 +8,7 @@ nav: Badge
 
 # Badge
 
-`ui-badge` is an inline label with a filled or outlined background. It is purely presentational: put it next to
+`ui-badge` is an inline label with a filled or outlined background. It has no behaviour of its own. Put it next to
 the text it describes, or inside a link or button when it should be interactive.
 
 ```html live

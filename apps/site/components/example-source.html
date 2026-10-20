@@ -1,0 +1,208 @@
+<custom-element name="example-source">
+  <script>
+    const templates = new Map();
+
+    const view = useState({
+      mode: "preview",
+      file: "",
+      files: [],
+      copied: false,
+      get code() {
+        return this.mode === "code";
+      },
+      get preview() {
+        return this.mode === "preview";
+      },
+      get tabs() {
+        return this.files.map((name) => ({ name, selected: name === this.file }));
+      },
+      get source() {
+        return this.code ? templates.get(this.file).innerHTML : "";
+      },
+    });
+
+    function show(mode) {
+      view.mode = mode;
+    }
+
+    function open(name) {
+      view.file = name;
+      view.copied = false;
+    }
+
+    function copy() {
+      navigator.clipboard.writeText(templates.get(view.file).content.textContent).then(
+        () => {
+          view.copied = true;
+        },
+        () => {
+          view.copied = false;
+        },
+      );
+    }
+
+    listen(
+      "keydown",
+      (event) => {
+        if (event.key === "Escape") view.mode = "preview";
+      },
+      document,
+    );
+
+    onConnected(() => {
+      for (const template of host.querySelectorAll("template[data-file]")) templates.set(template.dataset.file, template);
+      view.files = [...templates.keys()];
+      view.file = view.files[0];
+    });
+  </script>
+
+  <style>
+    :host {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      display: block;
+      pointer-events: none;
+    }
+    .panel {
+      position: absolute;
+      inset: calc(var(--spacing) * 4) calc(var(--spacing) * 4) calc(var(--spacing) * 20);
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr);
+      max-width: calc(var(--spacing) * 240);
+      margin: 0 auto;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      background: var(--background);
+      color: var(--foreground);
+      box-shadow: var(--shadow-lg);
+      pointer-events: auto;
+    }
+    .bar {
+      display: flex;
+      align-items: center;
+      gap: calc(var(--spacing) * 3);
+      padding: calc(var(--spacing) * 2);
+      border-bottom: 1px solid var(--border);
+    }
+    [role="tablist"] {
+      display: flex;
+      flex: 1;
+      gap: calc(var(--spacing) * 1);
+      min-width: 0;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    button {
+      display: inline-flex;
+      align-items: center;
+      gap: calc(var(--spacing) * 2);
+      height: calc(var(--spacing) * 8);
+      padding: 0 calc(var(--spacing) * 3);
+      border: 0;
+      border-radius: var(--radius-md);
+      background: none;
+      color: var(--muted-foreground);
+      font: inherit;
+      font-size: var(--text-sm);
+      font-weight: var(--font-weight-medium);
+      white-space: nowrap;
+      cursor: pointer;
+    }
+    button:hover {
+      color: var(--foreground);
+    }
+    button:focus-visible {
+      outline: none;
+      box-shadow: var(--focus-ring);
+    }
+    [role="tab"][aria-selected="true"] {
+      background: var(--muted);
+      color: var(--foreground);
+    }
+    .copy {
+      flex: none;
+      border: 1px solid var(--border);
+      color: var(--foreground);
+    }
+    .code {
+      overflow: auto;
+    }
+    .switch {
+      position: absolute;
+      bottom: calc(var(--spacing) * 5);
+      left: 50%;
+      display: flex;
+      gap: calc(var(--spacing) * 1);
+      padding: calc(var(--spacing) * 1);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-full);
+      background: var(--background);
+      box-shadow: var(--shadow-lg);
+      transform: translateX(-50%);
+      pointer-events: auto;
+    }
+    .switch button {
+      border-radius: var(--radius-full);
+      padding: 0 calc(var(--spacing) * 4);
+    }
+    .switch button[aria-pressed="true"] {
+      background: var(--primary);
+      color: var(--primary-foreground);
+    }
+    svg {
+      width: calc(var(--spacing) * 4);
+      height: calc(var(--spacing) * 4);
+    }
+    .shiki {
+      margin: 0;
+      padding: calc(var(--spacing) * 4) calc(var(--spacing) * 5);
+      background: light-dark(var(--shiki-light-bg), var(--shiki-dark-bg));
+      font-family: var(--font-mono);
+      font-size: var(--text-sm);
+      line-height: 1.7;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+    .shiki,
+    .shiki span {
+      color: light-dark(var(--shiki-light), var(--shiki-dark));
+    }
+    /* Wrapped lines hang under their own indentation, recorded on each line as --indent. */
+    .shiki .line {
+      --hang: calc((var(--indent, 0) + 2) * 1ch);
+      display: inline-block;
+      box-sizing: border-box;
+      width: 100%;
+      padding-inline-start: var(--hang);
+      text-indent: calc(var(--hang) * -1);
+    }
+  </style>
+
+  <section class="panel" aria-label="Source code" _hidden="!#view.code">
+    <div class="bar">
+      <div role="tablist" aria-label="Files">
+        <repeat-list of="#view.tabs" as="tab" key="name">
+          <button type="button" role="tab" _aria-selected="#tab.selected" onclick="open(tab.name)"><slot name="#tab.name"></slot></button>
+        </repeat-list>
+      </div>
+      <button type="button" class="copy" onclick="copy()">
+        <is-visible when="#view.copied">Copied</is-visible>
+        <is-hidden when="#view.copied">Copy</is-hidden>
+      </button>
+    </div>
+    <div class="code" role="tabpanel"><slot name="#view.source" html-unsafe></slot></div>
+  </section>
+
+  <aside class="switch" aria-label="Example view">
+    <button type="button" _aria-pressed="#view.preview" onclick="show('preview')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z" /><circle cx="12" cy="12" r="3" /></svg>
+      Preview
+    </button>
+    <button type="button" _aria-pressed="#view.code" onclick="show('code')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m16 18 6-6-6-6" /><path d="m8 6-6 6 6 6" /></svg>
+      Code
+    </button>
+  </aside>
+</custom-element>

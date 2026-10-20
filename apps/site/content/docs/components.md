@@ -73,6 +73,8 @@ There is no `<template>` wrapper and no JavaScript definition API.
 
 The browser ignores scripts and styles with an unknown `type`, so the script does not run in the page scope and the style does not apply to the page. A plain `<script>` in an inline definition has already run as page JavaScript by the time REALM sees it, so REALM warns about it. REALM removes inline definitions from the page once it has read them, including ones added to the page later.
 
+So `type="realm"` belongs only on definitions written in a page. The live demos on this site define their components in the page so the preview runs in place, but their source tabs show each definition the recommended way: in its own file with a plain `<script>` and `<style>`, loaded from `index.html` with `<import-element>`.
+
 ## How it works without a compiler
 
 You never write this yourself, but it explains several rules.

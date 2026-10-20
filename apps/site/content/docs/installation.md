@@ -1,6 +1,6 @@
 ---
 title: Installation
-description: Add REALM to a page from a CDN or install @realmorg/realm from npm, with or without a bundler.
+description: Add REALM and REALM UI to an HTML page with tags from the jsDelivr CDN, pin a version, and serve the page.
 group: Getting started
 order: 2
 nav: Installation
@@ -8,18 +8,18 @@ nav: Installation
 
 # Installation
 
-REALM is one module script and one small stylesheet. Use a CDN for plain HTML pages, or npm when your project already has a bundler.
+REALM loads from a CDN, so there is nothing to install or build. You need a text editor and a web browser.
 
-## From a CDN
+## Add REALM from the CDN
 
-Add both lines to the `<head>`:
+Put both tags in the `<head>` of your HTML file:
 
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@realmorg/realm@2.0.0-alpha.0/dist/realm.css">
-<script type="module" src="https://cdn.jsdelivr.net/npm/@realmorg/realm@2.0.0-alpha.0/dist/realm.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/realm.css">
+<script type="module" src="https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/realm.js"></script>
 ```
 
-`realm.js` starts REALM as soon as it loads: it defines every `<custom-element>` already in the page, watches for new ones, and registers `<import-element>`. Pin an exact version in production URLs.
+`realm.js` starts REALM when it loads. It defines every `<custom-element>` already in the page, watches for new ones, and registers `<import-element>`.
 
 `realm.css` should load before anything renders. It does three things:
 
@@ -27,67 +27,58 @@ Add both lines to the `<head>`:
 - lays out `<is-visible>`, `<is-hidden>` and `<repeat-list>` with `display: contents`,
 - hides custom elements until they are defined (`:not(:defined) { visibility: hidden }`), so a page never flashes unstyled component content.
 
-## Adding REALM UI
+## Add REALM UI
 
-The `@realmorg/ui` package is a set of ready-made `ui-*` components and a theme. Load the theme and import the bundle once per page:
-
-```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@realmorg/ui@2.0.0-alpha.0/theme.css">
-
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@2.0.0-alpha.0/dist/ui.html"></import-element>
-```
-
-`ui.html` contains every component. You can also import single files from `components/`, for example `components/button.html`. See [Components](/components/).
-
-## From npm
-
-```bash
-npm install @realmorg/realm
-```
-
-The package has three entry points:
-
-| Import | What it gives you |
-| --- | --- |
-| `@realmorg/realm/auto` | Starts REALM when imported, and re-exports the API |
-| `@realmorg/realm` | The API without starting: `start`, `useState`, `observe`, `defineStore`, `prop`, `flush`, `toRaw`, `untrack`, `importDefinitions`, `defineComponent` |
-| `@realmorg/realm/realm.css` | The stylesheet described above |
-
-In your app entry:
-
-```js
-import "@realmorg/realm/realm.css";
-import "@realmorg/realm/auto";
-```
-
-Or start it yourself, for example after other setup:
-
-```js
-import { start } from "@realmorg/realm";
-
-start();
-```
-
-`start()` is safe to call more than once.
-
-### Component files with a bundler
-
-Component files are HTML that REALM fetches at runtime, so they must be served as static files. With Vite, put them in `public/`:
-
-```text
-public/
-  components/
-    todo-app.html
-index.html
-src/main.js
-```
+The `@realmorg/ui` package is a set of ready-made `ui-*` components and a theme. Load the theme once per page, after REALM itself. Then import the whole kit with one line:
 
 ```html
-<import-element from="/components/todo-app.html"></import-element>
-<todo-app></todo-app>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/dist/theme.css">
+
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/dist/ui.html"></import-element>
 ```
 
-Shared JavaScript, such as a [store](/docs/stores/), is a normal module. Import it from a component script with a path the browser can load:
+Or import only the components you use. Each one is a file in `components/`:
+
+```html
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/button.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/card.html"></import-element>
+```
+
+Each file brings its own dependencies. `sheet.html`, for example, imports `dialog.html` for you. See [Components](/components/).
+
+## A complete page
+
+```html
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>My REALM page</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/realm.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/dist/theme.css">
+  <script type="module" src="https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/realm.js"></script>
+</head>
+<body>
+  <import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/dist/ui.html"></import-element>
+
+  <ui-button>Hello, REALM</ui-button>
+</body>
+</html>
+```
+
+Save it as `index.html` and open it in your browser.
+
+## Pin a version
+
+`@alpha` always points at the newest alpha release. In production, pin an exact version so a new release cannot change your pages:
+
+```html
+<script type="module" src="https://cdn.jsdelivr.net/npm/@realmorg/realm@2.0.0-alpha.1/dist/realm.js"></script>
+```
+
+## Sharing JavaScript between components
+
+Shared JavaScript, such as a [store](/docs/stores/), is a plain module file. Import it from a component script with a path the browser can load:
 
 ```html
 <custom-element name="cart-badge">
@@ -99,23 +90,25 @@ Shared JavaScript, such as a [store](/docs/stores/), is a normal module. Import 
 </custom-element>
 ```
 
-A bare specifier like `import { defineStore } from "@realmorg/realm"` inside a module that the browser loads directly needs an [import map](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script/type/importmap). Point it at the same file the page uses to start REALM, so there is one runtime:
+To write `import { defineStore } from "@realmorg/realm"` in a module the browser loads directly, add an [import map](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script/type/importmap) that points at the same file the page loads, so there is one runtime:
 
 ```html
 <script type="importmap">
-  { "imports": { "@realmorg/realm": "https://cdn.jsdelivr.net/npm/@realmorg/realm@2.0.0-alpha.0/dist/realm.js" } }
+  { "imports": { "@realmorg/realm": "https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/realm.js" } }
 </script>
 ```
 
 ## Serving pages
 
-`<import-element>` loads files with `fetch`, so pages that import component files must be served over HTTP, not opened from `file://`. Any static server works:
+A page with inline definitions (a `<custom-element>` written directly in the page) works when you open the file straight from disk.
 
-```bash
-npx serve .
-```
+`<import-element>` loads component files with `fetch`, so pages that import your own component files must be served over HTTP rather than opened from `file://`. Any static file server works: your editor's live preview, `python3 -m http.server`, or the static hosting you deploy to.
 
-Inline definitions (a `<custom-element>` written directly in the page) work without a server.
+## Optional: Vite plugin
+
+Load REALM from the CDN in a Vite project too. Component files are plain HTML that REALM fetches at runtime, so serve them as static files from `public/`.
+
+The [Vite plugin](/reference/tooling/vite-plugin/) is an optional dev tool. It pre-assembles components at build time for pages under a strict Content Security Policy, and writes a `custom-elements.json` manifest for editors.
 
 ## Next
 

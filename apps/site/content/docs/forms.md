@@ -8,7 +8,7 @@ nav: Forms
 
 # Forms
 
-Add `form-associated` to a definition and the component becomes a real form field through `ElementInternals`. It takes part in submission and `FormData`, `form.reset()`, `<fieldset disabled>`, validation, labels and back/forward restore, like `<input>`.
+Add `form-associated` to a definition and the component becomes a form field through `ElementInternals`. It takes part in submission and `FormData`, `form.reset()`, `<fieldset disabled>`, validation, labels and back/forward restore, like `<input>`.
 
 ```html
 <custom-element name="star-input" form-associated>
@@ -129,9 +129,9 @@ Most fields wrap a native control. Mark it with `ref="control"` and REALM wires 
 <order-form></order-form>
 ```
 
-Things to see in the demo:
+In the demo:
 
-- `coffee` and `tea` are submitted; `cake` is not, because it is disabled. Its inner buttons and input follow `props.disabled`.
+- `coffee` and `tea` are submitted. `cake` is not, because it is disabled. Its inner buttons and input follow `props.disabled`.
 - Typing a number above `max` makes the field invalid, and submitting is blocked by native validation.
 - Reset puts every field back to its `value` attribute.
 

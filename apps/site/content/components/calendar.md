@@ -9,12 +9,11 @@ nav: Calendar
 # Calendar
 
 `ui-calendar` shows one month as a grid of day buttons. Clicking a day selects it, and the selected date is the
-element's `value` in `YYYY-MM-DD` form. The calendar is form-associated: give it a `name` and the selected date is
-submitted with its form, the same format a native `<input type="date">` uses.
+element's `value` in `YYYY-MM-DD` form. The calendar is form-associated. Give it a `name` and the form submits the selected
+date in the same format a native `<input type="date">` uses.
 
 Dates are handled as plain calendar days in UTC, so a value never shifts across time zones. Today is the user's
-local date. Month and weekday names
-come from `Intl.DateTimeFormat`, and weeks always start on Sunday.
+local date. Month and weekday names come from `Intl.DateTimeFormat`, and weeks always start on Sunday.
 
 ```html live
 <ui-calendar></ui-calendar>
@@ -155,7 +154,7 @@ The calendar submits its `value` under its `name`. Resetting the form returns it
 | Attribute | Type | Default | Description |
 | --- | --- | --- | --- |
 | `value` | string | `""` | Selected date as `YYYY-MM-DD`. Empty means no selection. |
-| `month` | string | | Month shown first, as `YYYY-MM`. Used when the calendar is created; otherwise the month of `value`, or the current month. |
+| `month` | string | | Month shown first, as `YYYY-MM`. Used when the calendar is created. Defaults to the month of `value`, or the current month. |
 | `min` | string | | Earliest selectable date, `YYYY-MM-DD`. |
 | `max` | string | | Latest selectable date, `YYYY-MM-DD`. |
 | `locale` | string | | Locale for the month title and weekday names. Defaults to the browser locale. |
@@ -192,8 +191,8 @@ selected date after navigation.
 ### Accessibility
 
 The days are a table with `role="grid"`, and the selected day has `aria-selected="true"`. The month title is an
-`aria-live="polite"` region, so month changes are announced. Only one day is in the tab order at a time: the
-selected day, or today when nothing is selected.
+`aria-live="polite"` region, so month changes are announced. Only one day is in the tab order at a time (the
+selected day, or today when nothing is selected).
 
 | Key | Action |
 | --- | --- |

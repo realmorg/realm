@@ -1,6 +1,6 @@
 ---
 title: Lifecycle
-description: When a component's script runs, what onConnected and onDisconnected do, how moving and removing elements works, and how signal, host, refs and internals fit in.
+description: When a component's script runs, what happens when an element connects, moves or is removed, and what signal, host, refs and internals are.
 group: Core concepts
 order: 17
 nav: Lifecycle
@@ -8,12 +8,12 @@ nav: Lifecycle
 
 # Lifecycle
 
-REALM follows the native custom element lifecycle. Nothing happens in the constructor; everything happens when the element is connected to the page.
+REALM follows the native custom element lifecycle. The constructor does nothing. All setup runs when the element is connected to the page.
 
 ## When an element connects
 
 1. A shadow root is created (once per element) and the component's stylesheets are adopted.
-2. The script runs for this instance. `host`, `signal` and `internals` are ready; `refs` is still empty because the markup does not exist yet.
+2. The script runs for this instance. `host`, `signal` and `internals` are ready. `refs` is still empty because the markup does not exist yet.
 3. The markup is cloned, and every slot, binding, handler, condition, loop and fetch attribute is connected.
 4. `onConnected` callbacks run. `refs` now holds every element with a `ref` attribute.
 
@@ -30,7 +30,7 @@ onConnected(() => {
 
 A function returned from `onConnected` runs on removal.
 
-`refs` is reactive, so an `observe` written at the top of the script sees refs as soon as the markup exists:
+`refs` is reactive, so an `observe` at the top of the script sees each ref as soon as the markup exists:
 
 ```js
 observe(() => {
@@ -65,7 +65,7 @@ const id = setInterval(poll, 5000);
 signal.addEventListener("abort", () => clearInterval(id));
 ```
 
-Or use the helpers that already do this: `listen` for listeners and `observe` with a returned cleanup for timers.
+The `listen` helper does this for listeners. For timers, return a cleanup function from `observe`.
 
 ## host, refs and internals
 

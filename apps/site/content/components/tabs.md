@@ -9,11 +9,11 @@ nav: Tabs
 # Tabs
 
 `ui-tabs` holds a `ui-tabs-list` of `ui-tabs-trigger` buttons and one `ui-tabs-content` panel per trigger. A trigger
-and a panel belong together when they share a `value`. Only the selected panel is visible; the others get the
+and a panel belong together when they share a `value`. Only the selected panel is visible. The others get the
 `hidden` attribute. The tabs follow the ARIA tabs pattern with automatic activation, so moving focus with the arrow
 keys also selects the tab.
 
-The tabs fill the width of their container; the list itself is as wide as its triggers.
+The tabs fill the width of their container. The list itself is as wide as its triggers.
 
 ```html live
 <div class="demo-narrow">
@@ -111,7 +111,7 @@ Icons inside a trigger are sized to `calc(var(--spacing) * 4)`.
 
 ### Tabs as a filter
 
-A `ui-tabs` without `ui-tabs-content` works as a segmented control: listen for `change` and read `value`. The
+A `ui-tabs` without `ui-tabs-content` works as a segmented control. Listen for `change` and read `value`. The
 dashboard example uses this to switch the data of a chart.
 
 ```html live

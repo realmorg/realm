@@ -10,11 +10,23 @@ nav: Tutorial
 
 In this tutorial you build a reading list: add books, mark them as read, filter them, and keep them after a reload. Each step adds one idea. The demos on this page are live, and each step uses a numbered tag name (`reading-list-2`, `reading-list-3`, …) so they can sit on one page. In your own project, call it `reading-list`.
 
-You need a page with REALM and REALM UI loaded, as in the [Quick start](/docs/quick-start/).
+You need a text editor, a browser and one HTML file. Load REALM and REALM UI from the CDN in its `<head>`, as in the [Quick start](/docs/quick-start/):
+
+```html
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/realm.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/dist/theme.css">
+<script type="module" src="https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/realm.js"></script>
+```
+
+Then import the components at the top of the `<body>`:
+
+```html
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/dist/ui.html"></import-element>
+```
 
 ## Step 1: markup and style
 
-Start with a component that has no script at all. It is still a real custom element with a shadow root and scoped styles.
+Start with a component that has no script at all. It is still a custom element with a shadow root and scoped styles.
 
 ```html
 <custom-element name="reading-list">
@@ -46,7 +58,7 @@ The style only applies inside the component. `ui-input` and `ui-button` come fro
 
 ## Step 2: state and a list
 
-Add a `<script>`. `useState` returns a reactive object: when a property changes, every slot and binding that reads it updates.
+Add a `<script>`. `useState` returns a reactive object. When a property changes, every slot and binding that reads it updates.
 
 ```html live
 <custom-element name="reading-list-2">
@@ -105,7 +117,7 @@ Four things are new:
 
 ## Step 3: events per item, derived values and empty states
 
-Each row gets a checkbox and a remove button. Inside a repeated element, the loop variable (`book`) is available in handlers. Getters on the state object are cached derived values: `summary` recomputes only when the items change.
+Each row gets a checkbox and a remove button. Inside a repeated element, the loop variable (`book`) is available in handlers. Getters on the state object are cached derived values, so `summary` recomputes only when the items change.
 
 ```html live
 <custom-element name="reading-list-3">
@@ -360,14 +372,14 @@ Filters are a lookup table, so adding one is a one-line change. The heading beco
 <reading-list-4 heading="Books for the summer"></reading-list-4>
 ```
 
-- `defineProps` declares typed attributes. `<slot name="@heading">` shows a prop; `@` means "prop", `#` means "script value".
+- `defineProps` declares typed attributes. `<slot name="@heading">` shows a prop. `@` means "prop", `#` means "script value".
 - `_variant="#filter.variant"` passes a value to another component's prop. `_aria-pressed` receives `"true"` or `"false"`, as ARIA expects.
 - `:host(:state(state-books-isEmpty))` matches while `books.isEmpty` is truthy. REALM sets these custom states for every `:state(state-…)` and `:state(attr-…)` selector it finds in the component's styles. See [Styling](/docs/styling/).
 - `<repeat-list>` repeats any content where a list element is not needed.
 
 ## Step 5: keep the list after a reload
 
-Swap `useState` for `defineStore` to share the list between every instance and save it to `localStorage`. Values come back with their types: booleans stay booleans.
+Swap `useState` for `defineStore` to share the list between every instance and save it to `localStorage`. Values come back with their types, so booleans stay booleans.
 
 ```html live
 <custom-element name="reading-list-5">
@@ -462,11 +474,11 @@ Swap `useState` for `defineStore` to share the list between every instance and s
 <reading-list-5></reading-list-5>
 ```
 
-Add a book and reload the page: it is still there. In a larger app, define the store in its own JavaScript module and import it from every component that needs it. See [Stores](/docs/stores/).
+Add a book and reload the page. It is still there. In a larger app, define the store in its own JavaScript module and import it from every component that needs it. See [Stores](/docs/stores/).
 
 ## Step 6: move it into a file
 
-Put the finished definition in `reading-list.html`, switch `type="realm"` back to a plain `<script>` and `<style>`, and load it:
+Put the finished definition in `reading-list.html`, switch `type="realm"` back to a plain `<script>` and `<style>`, and load it. Open the page through any static file server (your editor's live preview works), because `<import-element>` loads files with `fetch`:
 
 ```html
 <import-element from="/components/reading-list.html"></import-element>

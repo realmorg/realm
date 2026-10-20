@@ -142,3 +142,6 @@ coverage-components
 
 # Vitest browser attachments
 .vitest
+
+# Site dev server output
+.dev

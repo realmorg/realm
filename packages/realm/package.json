@@ -1,7 +1,7 @@
 {
   "name": "@realmorg/realm",
   "version": "2.0.0-alpha.1",
-  "description": "Build native web components with HTML: one <custom-element> tag, plain JavaScript, no compiler.",
+  "description": "Write native web components in plain HTML. No compiler or build step.",
   "type": "module",
   "license": "MIT",
   "author": {
@@ -10,10 +10,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/realmui/realm.git",
+    "url": "https://github.com/realmorg/realm.git",
     "directory": "packages/realm"
   },
-  "homepage": "https://realmui.github.io",
+  "homepage": "https://realm.js.org",
   "keywords": [
     "web-components",
     "custom-elements",

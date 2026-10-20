@@ -165,7 +165,7 @@ wrapping element to recolour the chart.
 
 ### Parts
 
-`ui-chart` has no child parts and no slots: it draws everything from its attributes.
+`ui-chart` has no child parts and no slots. It draws everything from its attributes.
 
 ### CSS parts
 
@@ -178,7 +178,7 @@ wrapping element to recolour the chart.
 
 | Property | Description |
 | --- | --- |
-| `--chart-1` … `--chart-5` | Series colours, in order. Defined in `theme.css`; override them on an ancestor, such as a wrapping `<div>`. |
+| `--chart-1` … `--chart-5` | Series colours, in order. Defined in `theme.css`. Override them on an ancestor, such as a wrapping `<div>`. |
 
 The axis labels use the element's `color` (muted foreground by default) and the grid lines use `var(--border)`.
 
@@ -186,5 +186,5 @@ The axis labels use the element's `color` (muted foreground by default) and the 
 
 The SVG has `role="img"` and its accessible name comes from `label`, so describe what the chart shows. Each bar
 has a `<title>` with its category, series and value, shown as a native tooltip on hover. The data is not
-available as a table to screen readers; when the numbers matter, put a `ui-table` with the same data next to the
+available as a table to screen readers. When the numbers matter, put a `ui-table` with the same data next to the
 chart.

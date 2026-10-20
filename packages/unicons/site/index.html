@@ -1,0 +1,724 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Unicons: universal icon web component built with REALM</title>
+    <meta name="description" content="50,939 icons from 31 open source sets in one &lt;u-icon&gt; tag. Each page downloads only the icons it shows. Built with REALM." />
+    <meta property="og:title" content="Unicons by REALM" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="./assets/banner.png" />
+    <link rel="icon" href="./favicons/favicon.ico" sizes="48x48" />
+    <link rel="icon" type="image/png" sizes="32x32" href="./favicons/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="./favicons/favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="./favicons/apple-touch-icon.png" />
+    <link rel="manifest" href="./favicons/site.webmanifest" />
+    <link rel="stylesheet" href="../assets/ui/theme.css" />
+    <link rel="stylesheet" href="./site.css" />
+    <script>try{const t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch{}</script>
+    <script type="module" src="../assets/realm/realm.js"></script>
+    <link rel="modulepreload" href="./unicons.js" />
+    <link rel="preload" href="./unicons.html" as="fetch" crossorigin />
+    <link rel="preload" href="./sets.json" as="fetch" crossorigin />
+    <link rel="preload" href="./meta/lu.json" as="fetch" crossorigin />
+  </head>
+  <body>
+    <import-element from="./unicons.html"></import-element>
+    <import-element from="../assets/ui/components/slider.html"></import-element>
+    <import-element from="../assets/ui/components/select.html"></import-element>
+    <import-element from="../assets/ui/components/toggle-group.html"></import-element>
+
+    <header class="masthead">
+      <a class="brand" href="./"><img src="./assets/logo.svg" alt="Unicons" width="2714" height="474" /></a>
+      <nav aria-label="Unicons">
+        <a href="../">Built with REALM</a>
+        <a href="https://github.com/realmorg/realm/tree/main/packages/unicons" rel="noopener" target="_blank">GitHub</a>
+      </nav>
+    </header>
+
+    <section class="intro" aria-labelledby="intro-title">
+      <div class="intro-copy">
+        <h1 id="intro-title">50,939 icons in one tag</h1>
+        <p>Use any icon from 31 open source sets with one <code>&lt;u-icon&gt;</code> tag. Each page downloads only the icons it shows: no icon font, nothing to install.</p>
+        <html-code code='<script type="module"
+  src="https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/realm.js"></script>
+<import-element
+  from="https://cdn.jsdelivr.net/npm/@realmorg/unicons@alpha/dist/unicons.html">
+</import-element>
+
+<u-icon set="tb" name="heart"></u-icon>'></html-code>
+      </div>
+      <figure class="specimen">
+        <figcaption>The same heart in eight sets</figcaption>
+        <ul>
+          <li><u-icon set="lu" name="heart"></u-icon><code>lu</code></li>
+          <li><u-icon set="tb" name="heart"></u-icon><code>tb</code></li>
+          <li><u-icon set="pi" name="heart"></u-icon><code>pi</code></li>
+          <li><u-icon set="bs" name="heart-fill"></u-icon><code>bs</code></li>
+          <li><u-icon set="fa6" name="heart"></u-icon><code>fa6</code></li>
+          <li><u-icon set="hi2" name="heart"></u-icon><code>hi2</code></li>
+          <li><u-icon set="io5" name="heart-outline"></u-icon><code>io5</code></li>
+          <li><u-icon set="ri" name="heart-line"></u-icon><code>ri</code></li>
+        </ul>
+      </figure>
+    </section>
+
+    <main>
+      <icon-catalog></icon-catalog>
+    </main>
+
+    <custom-element name="icon-catalog">
+      <script type="realm">
+        const PAGE = 240;
+        const COUNT = new Intl.NumberFormat("en");
+        const SWATCHES = { text: "", muted: "var(--muted-foreground)", pink: "var(--primary)" };
+
+        const catalog = useState({
+          sets: [],
+          set: "lu",
+          shown: { set: "lu", names: [] },
+          query: "",
+          limit: PAGE,
+          size: "32",
+          color: "",
+          copied: "",
+          refused: false,
+          get choices() {
+            return this.sets.map((set) => ({
+              ...set,
+              total: COUNT.format(set.count),
+              option: `${set.name} (${set.id}), ${COUNT.format(set.count)}`,
+              selected: set.id === this.set,
+            }));
+          },
+          get swatch() {
+            return Object.keys(SWATCHES).find((key) => SWATCHES[key] === this.color) ?? "";
+          },
+          get custom() {
+            return this.color.startsWith("#") ? this.color : "";
+          },
+          get info() {
+            return this.sets.find((set) => set.id === this.shown.set);
+          },
+          get matches() {
+            const query = this.query.trim().toLowerCase();
+            return query ? this.shown.names.filter((name) => name.includes(query)) : this.shown.names;
+          },
+          get visible() {
+            return this.matches.slice(0, this.limit);
+          },
+          get more() {
+            return this.matches.length > this.limit;
+          },
+          get summary() {
+            return `${this.matches.length} of ${this.shown.names.length} icons`;
+          },
+        });
+
+        function search(value) {
+          catalog.query = value;
+          catalog.limit = PAGE;
+        }
+
+        function choose(value) {
+          catalog.set = value;
+          catalog.limit = PAGE;
+        }
+
+        function resize(value) {
+          catalog.size = String(value);
+        }
+
+        function tint(value) {
+          catalog.color = SWATCHES[value] ?? "";
+        }
+
+        function paint(value) {
+          catalog.color = value;
+        }
+
+        function showMore() {
+          catalog.limit += PAGE;
+        }
+
+        function copy(name) {
+          const token = catalog.color.match(/^var\((--[\w-]+)\)$/)?.[1];
+          const color = token ? getComputedStyle(host).getPropertyValue(token).trim() : catalog.color;
+          const colorAttribute = color ? ` color="${color}"` : "";
+          const markup = `<u-icon set="${catalog.shown.set}" name="${name}" size="${catalog.size}"${colorAttribute}></u-icon>`;
+          catalog.copied = markup;
+          catalog.refused = false;
+          navigator.clipboard?.writeText(markup).catch(() => {
+            catalog.refused = true;
+          });
+        }
+
+        observe(() => {
+          const set = catalog.set;
+          fetch(`./meta/${set}.json`, { signal })
+            .then((response) => response.json())
+            .then((names) => {
+              if (catalog.set === set) catalog.shown = { set, names };
+            })
+            .catch(() => {});
+        });
+      </script>
+
+      <style type="realm">
+        :host {
+          display: grid;
+          grid-template-columns: calc(var(--spacing) * 72) minmax(0, 1fr);
+          gap: calc(var(--spacing) * 10);
+          align-items: start;
+        }
+        /* Pinned by its bottom edge: the column scrolls with the page until its end is in view,
+           then stays there, so the set list never needs a scroller of its own. */
+        aside {
+          position: sticky;
+          bottom: 0;
+          align-self: end;
+          display: grid;
+          gap: calc(var(--spacing) * 4);
+          min-width: 0;
+          padding-block: calc(var(--spacing) * 6);
+        }
+        h2,
+        legend {
+          margin: 0;
+          padding: 0;
+          font-size: var(--text-sm);
+          font-weight: var(--font-weight-semibold);
+        }
+        .panel {
+          display: grid;
+          gap: calc(var(--spacing) * 5);
+          padding: calc(var(--spacing) * 4);
+          border: 1px solid var(--border);
+          border-radius: var(--radius-lg);
+          background: var(--card);
+        }
+        .field {
+          display: grid;
+          gap: calc(var(--spacing) * 3);
+        }
+        .row {
+          display: flex;
+          align-items: baseline;
+          justify-content: space-between;
+          gap: calc(var(--spacing) * 2);
+          font-size: var(--text-sm);
+          color: var(--muted-foreground);
+        }
+        .value,
+        .id,
+        .total {
+          font-family: var(--font-mono);
+          font-size: var(--text-xs);
+          font-variant-numeric: tabular-nums;
+          color: var(--muted-foreground);
+        }
+        ui-slider {
+          min-width: 0;
+        }
+        .colours {
+          display: flex;
+          flex-wrap: wrap;
+          align-items: center;
+          gap: calc(var(--spacing) * 2);
+        }
+        ui-toggle-group {
+          gap: calc(var(--spacing) * 1);
+        }
+        ui-toggle {
+          --ui-radius-start: var(--radius-md);
+          --ui-radius-end: var(--radius-md);
+        }
+        .dot {
+          width: calc(var(--spacing) * 4);
+          height: calc(var(--spacing) * 4);
+          border-radius: var(--radius-full);
+          box-shadow: inset 0 0 0 1px var(--border);
+        }
+        .dot.text {
+          background: var(--foreground);
+        }
+        .dot.muted {
+          background: var(--muted-foreground);
+        }
+        .dot.pink {
+          background: var(--primary);
+        }
+        ui-toggle[pressed]::part(button) {
+          border-color: var(--ring);
+          background: var(--background);
+        }
+        .custom {
+          position: relative;
+          display: grid;
+          place-items: center;
+          width: calc(var(--spacing) * 8);
+          height: calc(var(--spacing) * 8);
+          box-sizing: border-box;
+          border: 1px solid var(--input);
+          border-radius: var(--radius-md);
+          box-shadow: var(--shadow-xs);
+          color: var(--muted-foreground);
+          cursor: pointer;
+        }
+        .custom:hover {
+          background: var(--muted);
+        }
+        .custom:has(:focus-visible) {
+          border-color: var(--ring);
+          box-shadow: var(--focus-ring);
+        }
+        :host(:state(state-catalog-custom)) .custom {
+          border-color: var(--ring);
+        }
+        .custom input {
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+          margin: 0;
+          padding: 0;
+          border: 0;
+          opacity: 0;
+          cursor: pointer;
+        }
+        .custom u-icon {
+          width: calc(var(--spacing) * 4);
+          height: calc(var(--spacing) * 4);
+        }
+        .custom .dot {
+          display: none;
+          background: var(--state-catalog-custom);
+        }
+        :host(:state(state-catalog-custom)) .custom .dot {
+          display: block;
+        }
+        :host(:state(state-catalog-custom)) .custom u-icon {
+          display: none;
+        }
+        fieldset {
+          min-width: 0;
+          margin: 0;
+          padding: calc(var(--spacing) * 2);
+          border: 1px solid var(--border);
+          border-radius: var(--radius-lg);
+          background: var(--card);
+        }
+        /* Floated so the legend sits inside the card instead of on its border. */
+        legend {
+          float: left;
+          display: flex;
+          width: 100%;
+          justify-content: space-between;
+          padding: calc(var(--spacing) * 2) calc(var(--spacing) * 8) calc(var(--spacing) * 3) calc(var(--spacing) * 2);
+          box-sizing: border-box;
+        }
+        legend .total {
+          font-weight: var(--font-weight-normal);
+        }
+        .sets {
+          clear: both;
+          display: grid;
+          gap: calc(var(--spacing) * 0.5);
+          margin: 0;
+          padding: 0;
+          list-style: none;
+        }
+        .sets label {
+          position: relative;
+          display: grid;
+          grid-template-columns: minmax(0, 1fr) auto auto calc(var(--spacing) * 4);
+          align-items: center;
+          gap: calc(var(--spacing) * 2);
+          padding: calc(var(--spacing) * 2);
+          border-radius: var(--radius-md);
+          font-size: var(--text-sm);
+          color: var(--muted-foreground);
+          cursor: pointer;
+          transition: background-color var(--default-transition-duration) var(--default-transition-timing-function);
+        }
+        .sets .name {
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+        .sets .total {
+          min-width: calc(var(--spacing) * 10);
+          text-align: right;
+        }
+        .sets .check {
+          width: calc(var(--spacing) * 4);
+          height: calc(var(--spacing) * 4);
+          color: var(--primary);
+          visibility: hidden;
+        }
+        .sets label:hover {
+          background: color-mix(in oklab, var(--foreground) 4%, transparent);
+          color: var(--foreground);
+        }
+        .sets label:has(:checked) {
+          background: color-mix(in oklab, var(--foreground) 10%, transparent);
+          color: var(--foreground);
+          font-weight: var(--font-weight-medium);
+        }
+        .sets label:has(:checked) .check {
+          visibility: visible;
+        }
+        .sets label:has(:checked) .id,
+        .sets label:has(:checked) .total {
+          color: var(--foreground);
+        }
+        .sets label:has(:focus-visible) {
+          box-shadow: var(--focus-ring);
+        }
+        .sets input {
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+          margin: 0;
+          opacity: 0;
+          cursor: pointer;
+        }
+        .set-select {
+          display: none;
+        }
+        .browser {
+          display: grid;
+          gap: calc(var(--spacing) * 4);
+          min-width: 0;
+        }
+        .toolbar {
+          position: sticky;
+          top: 0;
+          z-index: 1;
+          display: grid;
+          gap: calc(var(--spacing) * 3);
+          padding-block: calc(var(--spacing) * 6) calc(var(--spacing) * 3);
+          background: var(--background);
+        }
+        .search {
+          position: relative;
+          display: block;
+        }
+        .search u-icon {
+          position: absolute;
+          top: 50%;
+          left: calc(var(--spacing) * 4);
+          width: calc(var(--spacing) * 5);
+          height: calc(var(--spacing) * 5);
+          color: var(--muted-foreground);
+          transform: translateY(-50%);
+          pointer-events: none;
+        }
+        input[type="search"] {
+          width: 100%;
+          height: calc(var(--spacing) * 12);
+          padding: 0 calc(var(--spacing) * 4) 0 calc(var(--spacing) * 12);
+          box-sizing: border-box;
+          border: 1px solid var(--input);
+          border-radius: var(--radius-lg);
+          background: var(--background);
+          color: var(--foreground);
+          font: inherit;
+        }
+        input[type="search"]:focus-visible {
+          outline: none;
+          border-color: var(--ring);
+          box-shadow: var(--focus-ring);
+        }
+        .meta {
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: space-between;
+          gap: calc(var(--spacing) * 2);
+          font-size: var(--text-sm);
+          color: var(--muted-foreground);
+        }
+        .meta a {
+          color: inherit;
+          text-underline-offset: 3px;
+        }
+        .meta a:hover {
+          color: var(--foreground);
+        }
+        .grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(calc(var(--spacing) * 28), 1fr));
+          gap: calc(var(--spacing) * 1);
+          margin: 0;
+          padding: 0;
+          list-style: none;
+        }
+        .grid button {
+          display: grid;
+          grid-template-rows: calc(var(--spacing) * 16) auto;
+          place-items: center;
+          gap: calc(var(--spacing) * 1);
+          width: 100%;
+          height: 100%;
+          padding: calc(var(--spacing) * 3) calc(var(--spacing) * 2);
+          box-sizing: border-box;
+          border: 0;
+          border-radius: var(--radius-lg);
+          background: none;
+          color: var(--foreground);
+          font: inherit;
+          cursor: pointer;
+          transition: background-color var(--default-transition-duration) var(--default-transition-timing-function);
+        }
+        .grid button:hover {
+          background: var(--muted);
+        }
+        .grid button:focus-visible {
+          outline: none;
+          box-shadow: var(--focus-ring);
+        }
+        .grid button:active {
+          background: var(--border);
+        }
+        .grid span {
+          display: -webkit-box;
+          max-width: 100%;
+          overflow: hidden;
+          -webkit-box-orient: vertical;
+          -webkit-line-clamp: 2;
+          overflow-wrap: anywhere;
+          font-size: var(--text-xs);
+          line-height: var(--leading-tight);
+          text-align: center;
+          color: var(--muted-foreground);
+        }
+        .grid button:hover span {
+          color: var(--foreground);
+        }
+        .more {
+          justify-self: center;
+          height: calc(var(--spacing) * 10);
+          margin-top: calc(var(--spacing) * 4);
+          padding: 0 calc(var(--spacing) * 6);
+          border: 1px solid var(--input);
+          border-radius: var(--radius-md);
+          background: var(--background);
+          color: var(--foreground);
+          font: inherit;
+          font-size: var(--text-sm);
+          font-weight: var(--font-weight-medium);
+          cursor: pointer;
+        }
+        .more:hover {
+          background: var(--muted);
+        }
+        .more:focus-visible {
+          outline: none;
+          box-shadow: var(--focus-ring);
+        }
+        .copied {
+          position: fixed;
+          left: 50%;
+          bottom: calc(var(--spacing) * 6);
+          z-index: 2;
+          display: none;
+          align-items: center;
+          gap: calc(var(--spacing) * 3);
+          max-width: calc(100% - var(--spacing) * 8);
+          padding: calc(var(--spacing) * 2.5) calc(var(--spacing) * 4);
+          box-sizing: border-box;
+          border: 1px solid var(--border);
+          border-radius: var(--radius-lg);
+          background: var(--popover);
+          color: var(--popover-foreground);
+          box-shadow: var(--shadow-lg);
+          font-size: var(--text-sm);
+          transform: translateX(-50%);
+        }
+        .copied u-icon {
+          color: var(--primary);
+        }
+        :host(:state(state-catalog-refused)) .copied u-icon {
+          display: none;
+        }
+        :host(:state(state-catalog-copied)) .copied {
+          display: flex;
+        }
+        @media (prefers-reduced-motion: no-preference) {
+          :host(:state(state-catalog-copied)) .copied {
+            animation: toast-in 200ms var(--default-transition-timing-function);
+          }
+        }
+        @keyframes toast-in {
+          from {
+            opacity: 0;
+            transform: translate(-50%, calc(var(--spacing) * 2));
+          }
+        }
+        @media (max-width: 860px) {
+          :host {
+            grid-template-columns: minmax(0, 1fr);
+            gap: 0;
+          }
+          aside {
+            position: static;
+            align-self: auto;
+            grid-template-columns: minmax(0, 1fr);
+            gap: calc(var(--spacing) * 3);
+            padding-bottom: 0;
+          }
+          .panel {
+            grid-template-columns: minmax(0, 1fr) auto;
+            align-items: end;
+            gap: calc(var(--spacing) * 4);
+          }
+          .panel h2,
+          fieldset {
+            display: none;
+          }
+          .set-select {
+            display: block;
+            grid-row: 1;
+          }
+          .grid {
+            grid-template-columns: repeat(auto-fill, minmax(calc(var(--spacing) * 22), 1fr));
+          }
+        }
+        @media (max-width: 480px) {
+          .panel {
+            grid-template-columns: minmax(0, 1fr);
+          }
+        }
+      </style>
+
+      <aside aria-label="Customise">
+        <ui-select class="set-select" aria-label="Icon set" _value="#catalog.set" onchange="choose(this.value)">
+          <option repeat="#catalog.choices" as="choice" key="id" _value="#choice.id" _label="#choice.option"></option>
+        </ui-select>
+        <section class="panel" aria-labelledby="preview-title">
+          <h2 id="preview-title">Preview</h2>
+          <div class="field">
+            <div class="row">
+              <span>Size</span>
+              <span class="value"><slot name="#catalog.size"></slot>px</span>
+            </div>
+            <ui-slider aria-label="Size" min="16" max="64" _value="#catalog.size" oninput="resize(this.value)"></ui-slider>
+          </div>
+          <div class="field">
+            <div class="row"><span>Colour</span></div>
+            <div class="colours">
+              <ui-toggle-group aria-label="Colour" _value="#catalog.swatch" onchange="tint(this.value)">
+                <ui-toggle value="text" size="sm" variant="outline" aria-label="Text colour" title="Text colour"><span class="dot text"></span></ui-toggle>
+                <ui-toggle value="muted" size="sm" variant="outline" aria-label="Muted" title="Muted"><span class="dot muted"></span></ui-toggle>
+                <ui-toggle value="pink" size="sm" variant="outline" aria-label="REALM pink" title="REALM pink"><span class="dot pink"></span></ui-toggle>
+              </ui-toggle-group>
+              <label class="custom" title="Custom colour">
+                <input type="color" aria-label="Custom colour" value="#c4288c" oninput="paint(this.value)" />
+                <u-icon name="pipette"></u-icon>
+                <span class="dot"></span>
+              </label>
+            </div>
+          </div>
+        </section>
+        <fieldset>
+          <legend>Icon sets <span class="total"><slot name="#catalog.sets.length"></slot></span></legend>
+          <ul class="sets" fetch="./sets.json" trigger="load" into="#catalog.sets">
+            <li repeat="#catalog.choices" as="choice" key="id">
+              <label>
+                <input type="radio" name="set" _value="#choice.id" _checked="#choice.selected" onchange="choose(this.value)" />
+                <span class="name"><slot name="#choice.name"></slot></span>
+                <code class="id"><slot name="#choice.id"></slot></code>
+                <small class="total"><slot name="#choice.total"></slot></small>
+                <u-icon class="check" name="check"></u-icon>
+              </label>
+            </li>
+          </ul>
+        </fieldset>
+      </aside>
+
+      <div class="browser">
+        <div class="toolbar">
+          <label class="search">
+            <u-icon name="search"></u-icon>
+            <input type="search" placeholder="Search icons" aria-label="Search icons" autocomplete="off" oninput="search(this.value)" debounce="150ms" />
+          </label>
+          <div class="meta">
+            <span><slot name="#catalog.summary"></slot>. Click one to copy its tag.</span>
+            <is-visible when="#catalog.info">
+              <span><a _href="#catalog.info.projectUrl" target="_blank" rel="noopener"><slot name="#catalog.info.name"></slot></a>, <a _href="#catalog.info.licenseUrl" target="_blank" rel="noopener"><slot name="#catalog.info.license"></slot></a></span>
+            </is-visible>
+          </div>
+        </div>
+
+        <ul class="grid">
+          <li repeat="#catalog.visible" as="name">
+            <button type="button" onclick="copy(name)" _title="#name">
+              <u-icon _set="#catalog.shown.set" _name="#name" _size="#catalog.size" _color="#catalog.color"></u-icon>
+              <span><slot name="#name"></slot></span>
+            </button>
+          </li>
+        </ul>
+
+        <is-visible when="#catalog.more">
+          <button type="button" class="more" onclick="showMore()">Show more</button>
+        </is-visible>
+      </div>
+
+      <output class="copied"><u-icon name="check" label="Copied"></u-icon><html-code _code="#catalog.copied"></html-code></output>
+    </custom-element>
+
+    <custom-element name="html-code">
+      <script type="realm">
+        const TOKENS = /(?<punctuation><\/?|\/?>|=)|(?<tag>(?<=<\/?)[\w-]+)|(?<string>"[^"]*")|(?<attribute>[\w-]+)/g;
+        const ESCAPES = { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" };
+
+        const escape = (text) => text.replace(/[&<>"]/g, (character) => ESCAPES[character]);
+        const tokens = (tag) =>
+          tag.replace(TOKENS, (...match) => {
+            const [kind, text] = Object.entries(match.at(-1)).find(([, value]) => value !== undefined);
+            return `<span class="${kind}">${escape(text)}</span>`;
+          });
+
+        const props = defineProps({ code: prop.string().default("") });
+
+        const sample = useState({
+          get html() {
+            return props.code
+              .split(/(<[^>]*>)/)
+              .map((part, index) => (index % 2 ? tokens(part) : escape(part)))
+              .join("");
+          },
+        });
+      </script>
+
+      <style type="realm">
+        :host {
+          display: block;
+          min-width: 0;
+        }
+        pre {
+          margin: 0;
+          font-family: var(--font-mono);
+          font-size: var(--text-xs);
+          line-height: 1.7;
+          color: var(--code-text);
+          white-space: pre-wrap;
+          overflow-wrap: anywhere;
+          word-break: break-all;
+        }
+        .tag {
+          color: var(--code-tag);
+        }
+        .attribute {
+          color: var(--code-attribute);
+        }
+        .string {
+          color: var(--code-string);
+        }
+      </style>
+
+      <pre><code><slot name="#sample.html" html></slot></code></pre>
+    </custom-element>
+  </body>
+</html>

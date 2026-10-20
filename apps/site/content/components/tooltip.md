@@ -50,7 +50,7 @@ tooltip that does not fit flips to the opposite side.
 
 ### Icon buttons
 
-Tooltips suit icon-only buttons. Keep the button's own `aria-label`: the tooltip text becomes the button's
+Tooltips suit icon-only buttons. Keep the button's own `aria-label`, because the tooltip text becomes the button's
 description, not its name.
 
 ```html live
@@ -77,7 +77,7 @@ description, not its name.
 ### Rich content and delay
 
 `ui-tooltip-content` can hold markup such as a keyboard shortcut. `delay` on `ui-tooltip` sets the milliseconds before
-the tooltip appears (default `300`); hiding is immediate.
+the tooltip appears (default `300`). Hiding is immediate.
 
 ```html live
 <ui-tooltip delay="0">
@@ -119,8 +119,8 @@ The content can be bound from a component's state. The trigger's description fol
 | Part | Slot | Renders |
 | --- | --- | --- |
 | `ui-tooltip` | | Its parts, with no box of its own. |
-| `ui-tooltip-trigger` | (default) | An inline block around the trigger. Pointer enter and focus show the tooltip; pointer leave, focus out and Escape hide it. |
-| `ui-tooltip-content` | (default) | The tooltip: a `popover="manual"` element with `role="tooltip"`, in `var(--text-xs)` on the foreground colour, anchored to the trigger. |
+| `ui-tooltip-trigger` | (default) | An inline block around the trigger. Pointer enter and focus show the tooltip. Pointer leave, focus out and Escape hide it. |
+| `ui-tooltip-content` | (default) | A `popover="manual"` element with `role="tooltip"`, in `var(--text-xs)` on the foreground colour, anchored to the trigger. |
 
 ### ui-tooltip attributes
 

@@ -192,6 +192,7 @@ group("dev server", () => {
     expect(await get("index.html", "text/html")).toContain("/@vite/client");
     expect(await get("missing.html", "*/*")).not.toBe(COMPONENTS);
     expect(await get("notes.txt", "*/*")).toBe("not html");
+    expect(await get("components.html?html-proxy&index=0.js", "*/*")).not.toBe(COMPONENTS);
     await server.close();
   });
 });

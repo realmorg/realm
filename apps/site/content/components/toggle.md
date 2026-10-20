@@ -12,7 +12,7 @@ nav: Toggle
 Use it for an on/off option that is shown as a button, such as bold in a text toolbar. For several toggles that share
 one value, wrap them in a [Toggle Group](/components/toggle-group).
 
-A toggle is not form-associated on its own; it submits nothing. Inside a `ui-toggle-group` with a `name`, the group
+A toggle is not form-associated on its own and submits nothing. Inside a `ui-toggle-group` with a `name`, the group
 submits the pressed values.
 
 ```html live
@@ -163,7 +163,7 @@ each toggle a `value`.
 
 | Property | Type | Description |
 | --- | --- | --- |
-| `pressed` | boolean | Current state. Flipped by each click; setting it updates the button. |
+| `pressed` | boolean | Current state. Flipped by each click. Setting it updates the button. |
 
 ### Events
 

@@ -9,7 +9,7 @@ nav: Textarea
 # Textarea
 
 `ui-textarea` wraps a native `<textarea>`. It starts at `rows` lines, grows with its content in browsers that support
-`field-sizing: content`, and can be resized vertically. It is form-associated: its `value` is submitted under its
+`field-sizing: content`, and can be resized vertically. It is form-associated. Its `value` is submitted under its
 `name`, and its validity is the inner textarea's validity.
 
 ```html live
@@ -89,7 +89,7 @@ Listen for `input` to react while the user types.
 ### In a form
 
 The text, including line breaks, is submitted under `name`. `required` and `minlength` block submission with the
-browser's messages, and reset returns to the `value` attribute. Enter adds a new line; it does not submit.
+browser's messages, and reset returns to the `value` attribute. Enter adds a new line and does not submit.
 
 ```html live
 <custom-element name="textarea-form-demo">
@@ -165,7 +165,7 @@ browser's messages, and reset returns to the `value` attribute. Enter adds a new
 
 | Property | Type | Description |
 | --- | --- | --- |
-| `value` | string | Current text. Updated as the user types; setting it updates the field. |
+| `value` | string | Current text. Updated as the user types. Setting it updates the field. |
 
 ### Events
 

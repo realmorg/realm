@@ -8,9 +8,9 @@ nav: Breadcrumb
 
 # Breadcrumb
 
-`ui-breadcrumb` renders a `<nav>` landmark. Inside it, `ui-breadcrumb-list` renders the ordered list, each step is a
+`ui-breadcrumb` renders a `<nav>` landmark. Inside it, `ui-breadcrumb-list` renders the ordered list. Each step is a
 `ui-breadcrumb-item` holding a `ui-breadcrumb-link` or, for the current page, a `ui-breadcrumb-page`. Put a
-`ui-breadcrumb-separator` between items; it draws a chevron unless you give it other content.
+`ui-breadcrumb-separator` between items. It draws a chevron unless you give it other content.
 
 ```html live
 <ui-breadcrumb>
@@ -44,7 +44,7 @@ Content inside `ui-breadcrumb-separator` replaces the chevron.
 
 ### Collapsed middle
 
-Long trails can hide the middle steps. `ui-breadcrumb-ellipsis` draws three dots with a hidden "More" label; put it
+Long trails can hide the middle steps. `ui-breadcrumb-ellipsis` draws three dots with a hidden "More" label. Put it
 in a dropdown menu trigger to reveal the hidden pages.
 
 ```html live

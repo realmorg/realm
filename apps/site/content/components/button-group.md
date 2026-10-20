@@ -9,8 +9,8 @@ nav: Button Group
 # Button Group
 
 `ui-button-group` lays its children out in a row or column and removes the inner corner radii, so neighbouring
-`ui-button` (or `ui-toggle`) elements read as one control. The host has the `group` role. It is a layout element
-only; it does not track a value. For a group of pressable buttons with a selected value, use
+`ui-button` (or `ui-toggle`) elements read as one control. The host has the `group` role. It only handles layout
+and does not track a value. For a group of pressable buttons with a selected value, use
 [Toggle Group](/components/toggle-group).
 
 ```html live
@@ -171,7 +171,7 @@ Grouped buttons keep their form behaviour, so a group can hold the submit and re
 
 | Slot | Description |
 | --- | --- |
-| (default) | The grouped buttons. Every child except the first gets `--ui-radius-start: 0` and a `-1px` start margin so borders overlap; every child except the last gets `--ui-radius-end: 0`. |
+| (default) | The grouped buttons. Every child except the first gets `--ui-radius-start: 0` and a `-1px` start margin so borders overlap. Every child except the last gets `--ui-radius-end: 0`. |
 
 ### CSS states and custom properties
 
@@ -180,7 +180,7 @@ Grouped buttons keep their form behaviour, so a group can hold the submit and re
 | `:state(attr-orientation-is-vertical)` | Set when `orientation="vertical"`. |
 
 The group sets `--ui-radius-start` and `--ui-radius-end` on its children. `ui-button`, `ui-toggle` and
-`ui-button-group-text` read them; other children can use them for their own corner radii.
+`ui-button-group-text` read them. Other children can use them for their own corner radii.
 
 ### Accessibility
 

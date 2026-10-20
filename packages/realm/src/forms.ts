@@ -17,7 +17,9 @@ export const bindControl = (instance: Instance) => {
   const numeric = typeof instance.props?.value === "number";
 
   const validate = () =>
-    instance.internals.setValidity(control.validity, control.validationMessage, control);
+    control.willValidate
+      ? instance.internals.setValidity(control.validity, control.validationMessage, control)
+      : instance.internals.setValidity({});
   const update = () => {
     if (checkable) host.checked = (control as HTMLInputElement).checked;
     else if (keys.has("value")) host.value = numeric ? Number(control.value) : control.value;

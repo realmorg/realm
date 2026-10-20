@@ -1,0 +1,197 @@
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/button.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/input-group.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/kbd.html"></import-element>
+<import-element from="./note-editor.html"></import-element>
+
+<custom-element name="notes-app">
+  <script type="module">
+    import { createNote, notes, select, shortcutFor, step, togglePin } from "./notes.js";
+
+    async function create() {
+      createNote();
+      await tick();
+      refs.editor.edit();
+    }
+
+    const SHORTCUTS = {
+      new: create,
+      pin: togglePin,
+      next: () => step(1),
+      previous: () => step(-1),
+      search: () => refs.search.focus(),
+    };
+
+    function search(field) {
+      notes.query = field.value;
+    }
+
+    function open(note) {
+      select(note.id);
+    }
+
+    function shortcut(event) {
+      const action = SHORTCUTS[shortcutFor(event)];
+      if (!action) return;
+      event.preventDefault();
+      action();
+    }
+
+    listen("keydown", shortcut, document);
+  </script>
+
+  <style>
+    :host {
+      display: grid;
+      grid-template-columns: calc(var(--spacing) * 76) minmax(0, 1fr);
+      width: min(calc(var(--spacing) * 300), 100%);
+      height: min(calc(100dvh - var(--spacing) * 12), calc(var(--spacing) * 190));
+      overflow: hidden;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      background: var(--card);
+      box-shadow: var(--shadow-sm);
+    }
+    aside {
+      display: grid;
+      grid-template-rows: auto auto auto minmax(0, 1fr);
+      gap: calc(var(--spacing) * 3);
+      min-height: 0;
+      padding: calc(var(--spacing) * 4) calc(var(--spacing) * 3);
+      border-right: 1px solid var(--border);
+      background: var(--muted);
+    }
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: calc(var(--spacing) * 2);
+      padding-inline: calc(var(--spacing) * 1);
+    }
+    h1 {
+      margin: 0;
+      font-size: var(--text-xl);
+      letter-spacing: -0.02em;
+    }
+    .summary {
+      margin: 0;
+      padding-inline: calc(var(--spacing) * 1);
+      color: var(--muted-foreground);
+      font-size: var(--text-xs);
+    }
+    nav {
+      min-height: 0;
+      overflow-y: auto;
+    }
+    ul {
+      display: grid;
+      gap: calc(var(--spacing) * 1);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+    .note {
+      display: grid;
+      gap: calc(var(--spacing) * 0.5);
+      width: 100%;
+      padding: calc(var(--spacing) * 2) calc(var(--spacing) * 3);
+      border: 1px solid transparent;
+      border-radius: var(--radius-lg);
+      background: transparent;
+      color: inherit;
+      font: inherit;
+      text-align: left;
+      cursor: pointer;
+    }
+    .note:hover {
+      background: var(--accent);
+    }
+    .note:focus-visible {
+      outline: 2px solid var(--ring);
+      outline-offset: -2px;
+    }
+    .note[aria-current="true"] {
+      border-color: var(--border);
+      background: var(--background);
+      box-shadow: var(--shadow-xs);
+    }
+    .title {
+      display: flex;
+      align-items: center;
+      gap: calc(var(--spacing) * 1.5);
+      overflow: hidden;
+      font-size: var(--text-sm);
+      font-weight: var(--font-weight-medium);
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+    .title u-icon {
+      flex-shrink: 0;
+      color: var(--primary);
+    }
+    .note:not([data-pinned]) .title u-icon {
+      display: none;
+    }
+    .excerpt,
+    .updated {
+      overflow: hidden;
+      color: var(--muted-foreground);
+      font-size: var(--text-xs);
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+    .empty {
+      padding: calc(var(--spacing) * 4);
+      color: var(--muted-foreground);
+      font-size: var(--text-sm);
+      text-align: center;
+    }
+    @media (max-width: 720px) {
+      :host {
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-rows: auto minmax(0, 1fr);
+        height: auto;
+        min-height: calc(100dvh - var(--spacing) * 8);
+      }
+      aside {
+        border-right: 0;
+        border-bottom: 1px solid var(--border);
+      }
+      nav {
+        max-height: calc(var(--spacing) * 44);
+      }
+      .hint {
+        display: none;
+      }
+    }
+  </style>
+
+  <aside>
+    <header>
+      <h1>Notes</h1>
+      <ui-button size="sm" aria-keyshortcuts="Alt+N" onclick="create()"><u-icon name="plus"></u-icon> New <ui-kbd class="hint">Alt N</ui-kbd></ui-button>
+    </header>
+    <search>
+      <ui-input-group ref="search" type="search" aria-label="Search notes" placeholder="Search notes…" aria-keyshortcuts="/" _value="#notes.query" oninput="search(this)">
+        <ui-input-group-addon><u-icon name="search"></u-icon></ui-input-group-addon>
+        <ui-input-group-addon align="inline-end" class="hint"><ui-kbd>/</ui-kbd></ui-input-group-addon>
+      </ui-input-group>
+    </search>
+    <p class="summary" role="status"><slot name="#notes.summary"></slot></p>
+    <nav aria-label="Notes">
+      <ul>
+        <li repeat="#notes.visible" as="note" key="id">
+          <button class="note" type="button" _aria-current="#note.current" _data-pinned="#note.pinned" onclick="open(note)">
+            <span class="title"><u-icon name="pin" label="Pinned"></u-icon><slot name="#note.title"></slot></span>
+            <span class="excerpt"><slot name="#note.excerpt"></slot></span>
+            <span class="updated"><slot name="#note.updated"></slot></span>
+          </button>
+        </li>
+      </ul>
+      <is-hidden when="#notes.visible.length">
+        <p class="empty">No notes match your search.</p>
+      </is-hidden>
+    </nav>
+  </aside>
+
+  <note-editor ref="editor"></note-editor>
+</custom-element>

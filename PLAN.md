@@ -43,8 +43,8 @@ The work is split into ten phases, from archiving v1 to the 2.0 release. Each ph
 | 0. Archive v1 | Done locally (tags `v1-final`, `unicons-v1-final`, tarballs). Pushing waits for the new GitHub remote |
 | 1. Foundation and spikes | Done. Spike results in [section 23](#23-roadmap) |
 | 2–6. Runtime | Done. 137 OpenSpec scenarios, each with a test; 100% coverage; Chromium, Firefox and WebKit |
-| 7. Website and docs | Done. 94 pages (docs, reference, one page per component, examples, blog), built in CI and served at https://realmui.github.io/ by the `realmui/realmui.github.io` repository, which rebuilds when `main` changes. Every page is tested in three browsers |
-| 8. Unicons v2 | Done in `realmui/unicons` (branch `feat/v2`): one `<u-icon>`, 50,939 icons in 31 sets, per-chunk lazy loading |
+| 7. Website and docs | Done. 94 pages (docs, reference, one page per component, examples, blog), built in CI and served at https://realmorg.github.io/ by the `realmorg/realmorg.github.io` repository, which rebuilds when `main` changes. Every page is tested in three browsers |
+| 8. Unicons v2 | Done in `realmorg/unicons` (branch `feat/v2`): one `<u-icon>`, 50,939 icons in 31 sets, per-chunk lazy loading |
 | 9. Release | Not started |
 | After 2.0: REALM UI | Pulled forward. `@realmorg/ui` ports shadcn/ui to about 60 native components |
 
@@ -81,7 +81,7 @@ Specs: `styling`, `component-api`, `forms-a11y`, `bindings` in `openspec/specs`.
 | Turing complete, complex apps | Done: todo, kanban (Trello-like), chess (with an engine), dashboard, weather (Open-Meteo), contacts (CRUD over a service-worker API), login/signup/OTP blocks |
 | Reactive styling | Done (reactive CSS above) |
 | Real imports, no embedded copies | Done. Examples and docs load components through `<import-element>` |
-| Website built purely with REALM, in CI, not committed | Done: `apps/site`, built and deployed by `realmui/realmui.github.io` (triggered from `.github/workflows/website.yml`) |
+| Website built purely with REALM, in CI, not committed | Done: `apps/site`, built and deployed by `realmorg/realmorg.github.io` (triggered from `.github/workflows/website.yml`) |
 | `llms.txt` | Done: `llms.txt`, `llms-full.txt` and a Markdown copy of every page |
 | shadcn/ui ported to native HTML with `:host` styling | Done: `@realmorg/ui`, Tailwind-style tokens in `theme.css`. Compound parts (`ui-card-header`, `ui-dialog-trigger`, …) instead of `slot=` attributes, and no `style=` needed in usage |
 | Test coverage | 100% everywhere: runtime and Vite plugin (V8 via Vitest), and every component script in the UI library, examples and site (V8 block coverage mapped to each component's script and handlers, `scripts/component-coverage.mjs`) |
@@ -992,7 +992,7 @@ Together with bugs A1–A6, this causes:
 1. **One icon component.** `<u-icon set="lu" name="zap" size="24">` renders any icon. Each set is one data file (JSON or an SVG sprite), loaded once with `fetch` attributes and cached.
 2. **Copy-paste still works.** The build also produces one bundle per set, and single-icon files are kept for existing users.
 3. **Only visible icons render** on the website grid.
-4. **Configurable colours.** `fill` and `stroke` can be set through props and CSS variables (open issue realmui/unicons#2). The default stays `currentColor`.
+4. **Configurable colours.** `fill` and `stroke` can be set through props and CSS variables (open issue realmorg/unicons#2). The default stays `currentColor`.
 5. **Tests.** Playwright tests cover:
    - loading a full set with no console errors
    - switching sets quickly
@@ -1162,7 +1162,7 @@ We read their test suites, rewrite the relevant cases against REALM, and credit 
 | 4 | Data fetching | `fetch` attributes, `into`, `render`, `busy`, load events, then links | Race-condition and rendering tests pass |
 | 5 | Imports and shared state | New `<import-element>`, bundles, `defineStore` | 500 imports of 50 files make exactly 50 requests and no errors |
 | 6 | Forms and hardening | Form components, accessibility, manifest, Vite plugin, performance, memory, security | Budgets met; all security pages pass |
-| 7 | Website and docs | New site built with REALM | Deployed to `realmui.github.io` |
+| 7 | Website and docs | New site built with REALM | Deployed to `realmorg.github.io` |
 | 8 | Unicons v2 | New icon component and site | Full-set load with no errors |
 | 9 | Release | Beta, release candidate, 2.0 | Migration guide complete |
 
@@ -1176,7 +1176,7 @@ gh release create v1-final ../realm-v1-final.tar.gz \
   --title "REALM v1 (archived)" --notes "Last v1 source. npm @realmorg/realm@0.0.19."
 ```
 
-Do the same for Unicons (`unicons-v1-final`, now at `github.com/realmui/unicons`). Before pushing, update the git remote: it still points to the `realmorg` organisation, which no longer exists on GitHub. All later work happens on `main`.
+Do the same for Unicons (`unicons-v1-final`, at `github.com/realmorg/unicons`). All later work happens on `main`.
 
 ### Phase 1: Foundation and spikes
 

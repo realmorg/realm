@@ -10,8 +10,8 @@ nav: Input
 
 `ui-input` wraps a native `<input>` in its shadow root and passes the usual attributes through: `type`,
 `placeholder`, `pattern`, `min`, `max`, `minlength` and the rest. It is form-associated, so its `value` is
-submitted under its `name`, its validity is the inner input's validity, and pressing Enter submits the form just
-like a native text field.
+submitted under its `name`, its validity is the inner input's validity, and pressing Enter submits the form as in
+a native text field.
 
 ```html live
 <div class="demo-narrow">
@@ -60,7 +60,7 @@ Use `ui-label for` (or a native `<label>` around the element) to name the input.
 ### Invalid
 
 `invalid` sets `aria-invalid` on the inner input and draws a destructive border. Use it for errors you detect
-yourself, such as a taken username; native constraint errors are reported through validity instead.
+yourself, such as a taken username. Native constraint errors are reported through validity instead.
 
 ```html live
 <div class="demo-narrow">
@@ -190,7 +190,7 @@ browser's own messages. Enter inside a field submits the form. Reset returns eac
 
 | Property | Type | Description |
 | --- | --- | --- |
-| `value` | string | Current value. Updated as the user types; setting it updates the field and the submitted value. |
+| `value` | string | Current value. Updated as the user types. Setting it updates the field and the submitted value. |
 
 Every attribute above is also a property with the same name in camelCase (`label` for `aria-label`).
 
@@ -217,4 +217,4 @@ text-like types. `form.reset()` restores the `value` attribute, and a disabled `
 ### Accessibility
 
 The host delegates focus to the inner input. Name it with `aria-label`, `ui-label for`, or a native `<label>`
-wrapped around the element; in the last two cases the label text is copied to the inner input's `aria-label`.
+wrapped around the element. In the last two cases the label text is copied to the inner input's `aria-label`.

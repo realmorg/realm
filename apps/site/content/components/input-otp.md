@@ -12,7 +12,7 @@ nav: Input OTP
 Backspace moves back, and pasting a whole code fills every box at once. Characters that do not match `pattern` are
 ignored. The boxes use `autocomplete="one-time-code"`, so browsers can offer a code received by SMS.
 
-It is form-associated: the code is the element's `value` and is submitted under its `name`.
+It is form-associated. The code is the element's `value` and is submitted under its `name`.
 
 ```html live
 <ui-input-otp></ui-input-otp>
@@ -175,7 +175,7 @@ or with `addEventListener("complete", …)`.
 ### Forms
 
 `ui-input-otp` is form-associated and submits `value` under its `name`, even when it is incomplete. With `required`
-it reports `valueMissing` with the message "Enter the full code." until all boxes are filled; the validation bubble
+it reports `valueMissing` with the message "Enter the full code." until all boxes are filled. The validation bubble
 points at the first empty box, which takes focus. `form.reset()` restores the `value` attribute.
 
 ### Accessibility

@@ -1,55 +1,82 @@
 ---
 title: API reference
-description: Every REALM export, script helper, tag, attribute, event and CSS hook, with signatures, on one set of reference pages.
-group: Reference
+description: Index of every REALM element, attribute, script helper, event, CSS hook and JavaScript export.
+group: Overview
 order: 1
 nav: Overview
 ---
 
 # API reference
 
-The reference is split by where you use each piece:
+Exact names, types and defaults for everything in REALM. New to REALM? Start with the [Docs](/docs/).
+
+All examples load REALM from the CDN:
+
+```html
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/realm.css">
+<script type="module" src="https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/realm.js"></script>
+```
+
+## Elements
+
+| Element | Purpose |
+| --- | --- |
+| [`<custom-element>`](/reference/elements/custom-element/) | Defines a component |
+| [`<import-element>`](/reference/elements/import-element/) | Loads a file of component definitions |
+| [`<repeat-list>`](/reference/elements/repeat-list/) | Repeats its content for each item of an array |
+| [`<is-visible>`](/reference/elements/is-visible/) | Mounts its content while a condition is true |
+| [`<is-hidden>`](/reference/elements/is-hidden/) | Mounts its content while a condition is false |
+| [Value slots](/reference/elements/value-slots/) | `<slot name="#…">` and `<slot name="@…">` show a value |
+
+## Attributes
+
+| Attribute | Purpose |
+| --- | --- |
+| [`_name`](/reference/attributes/bindings/) | Binds an attribute, property or CSS variable to a reference |
+| [`on…`](/reference/attributes/handlers/) | Event handlers in component markup and on plain pages |
+| [`debounce`, `throttle`](/reference/attributes/debounce-throttle/) | Delay or rate-limit handlers and requests |
+| [`ref`](/reference/attributes/ref/) | Names an element for `refs` and `render` |
+| [`repeat`](/reference/attributes/repeat/) | Repeats one element per item |
+| [`focusgroup`](/reference/attributes/focusgroup/) | Arrow-key focus navigation |
+| [`fetch`, `method`, `params`, `headers`](/reference/fetch/fetch/) | Send a request from markup |
+| [`trigger`, `poll`](/reference/fetch/trigger/) | When the request is sent |
+| [`into`, `into-mode`, `into-key`](/reference/fetch/into/) | Write the response into state |
+| [`render`, `render-mode`, `render-select`](/reference/fetch/render/) | Insert the response as HTML |
+| [`busy`, `timeout`](/reference/fetch/busy-timeout/) | Track a request and set a time limit |
+
+## Script
+
+Names available in every component `<script>` without importing. See [Component script](/reference/script/) for how scripts run.
+
+| Props and state | Element | Lifecycle |
+| --- | --- | --- |
+| [`defineProps`](/reference/script/define-props/) | [`host`](/reference/script/host/) | [`onConnected`](/reference/script/on-connected/) |
+| [`prop`](/reference/script/prop/) | [`refs`](/reference/script/refs/) | [`onDisconnected`](/reference/script/on-disconnected/) |
+| [`useState`](/reference/script/use-state/) | [`signal`](/reference/script/signal/) | [`onFormReset`](/reference/script/on-form-reset/) |
+| [`observe`](/reference/script/observe/) | [`internals`](/reference/script/internals/) | [`onFormDisabled`](/reference/script/on-form-disabled/) |
+| [`tick`](/reference/script/tick/) | [`attrs`](/reference/script/attrs/) | [`onFormStateRestore`](/reference/script/on-form-state-restore/) |
+| [`defineStore`](/reference/script/define-store/) | [`useChildren`](/reference/script/use-children/) | |
+| | [`defineMethods`](/reference/script/define-methods/) | |
+| | [`dispatch`](/reference/script/dispatch/) | |
+| | [`listen`](/reference/script/listen/) | |
+| | [`lookup`](/reference/script/lookup/) | |
+| | [Timers](/reference/script/timers/) | |
+
+## Events, CSS and JavaScript
 
 | Page | Covers |
 | --- | --- |
-| [Script helpers](/reference/script/) | Everything available inside a component `<script>`: `defineProps`, `prop`, `useState`, `observe`, `tick`, `defineStore`, `defineMethods`, `dispatch`, `listen`, `attrs`, `useChildren`, lifecycle hooks, `lookup`, `host`, `refs`, `signal`, `internals` |
-| [Tags and attributes](/reference/markup/) | `<custom-element>`, `<import-element>`, `<is-visible>`, `<is-hidden>`, `<repeat-list>`, value slots, `_` bindings, `on*` handlers, `ref`, `repeat`, `focusgroup`, `debounce`, `throttle` and the fetch attributes |
-| [Events](/reference/events/) | Events REALM fires: request events and `<import-element>` events, plus custom event handler attributes |
-| [CSS](/reference/css/) | `realm.css`, `--attr-*` and `--state-*` variables, `:state()` selectors, `:state(loading)` |
+| [Request events](/reference/events/request-events/) | `loadstart`, `load`, `error`, `abort`, `timeout`, `loadend` from fetch attributes |
+| [Import events](/reference/events/import-events/) | `load` and `error` from `<import-element>` |
+| [Component events](/reference/events/component-events/) | Events your components send, and `change` from delegated controls |
+| [realm.css](/reference/css/realm-css/) | The page and shadow root stylesheet |
+| [`--attr-*` and `--state-*`](/reference/css/variables/) | Reactive CSS custom properties |
+| [`:state()`](/reference/css/states/) | Reactive custom states, including `:state(loading)` |
+| [Design tokens](/reference/css/design-tokens/) | The REALM UI theme variables |
+| [Entry points](/reference/javascript/entry-points/) | `realm.js`, `index.js`, `compiler.js` and what each exports |
+| [`start`](/reference/javascript/start/), [`importDefinitions`](/reference/javascript/import-definitions/), [`defineComponent`](/reference/javascript/define-component/) | Start REALM and define components from JavaScript |
+| [`flush`](/reference/javascript/flush/), [`toRaw`](/reference/javascript/to-raw/), [`untrack`](/reference/javascript/untrack/) | Reactivity utilities |
+| [Compiler](/reference/javascript/compiler/) | `compileDefinition` and `tokenize` |
+| [Vite plugin](/reference/tooling/vite-plugin/) | Assemble components at build time for a strict Content Security Policy |
 
-## Package exports
-
-`@realmorg/realm` (no side effects) and `@realmorg/realm/auto` (starts REALM on import) export the same names:
-
-| Export | Signature | Purpose |
-| --- | --- | --- |
-| `start` | `start(): void` | Adopt REALM's page stylesheet, register `<import-element>`, define every inline `<custom-element>` in the page and watch for new ones. Safe to call more than once |
-| `useState` | `useState<T extends object>(initial: T): T` | Reactive proxy of a plain object or array |
-| `observe` | `observe(fn: () => unknown): () => void` | Run `fn` now and whenever what it read changes; returns a stop function. Not tied to any element when used outside a component |
-| `defineStore` | `defineStore<T extends object>(name: string, initial: T, options?: { persist?: "local" \| "session" \| StorageAdapter }): T` | Named, app-wide reactive store, optionally persisted |
-| `prop` | `prop.string()`, `prop.number()`, … | The prop type builder. See [Script helpers](/reference/script/#prop) |
-| `flush` | `flush(): void` | Apply pending updates synchronously |
-| `toRaw` | `toRaw<T>(value: T): T` | The original object behind a reactive proxy |
-| `untrack` | `untrack<T>(fn: () => T): T` | Run `fn` without subscribing to what it reads |
-| `importDefinitions` | `importDefinitions(url: string): Promise<void>` | Load a file and define every `<custom-element>` in it, sharing requests with `<import-element>` |
-| `defineComponent` | `defineComponent(element: Element, base: string, inline: boolean): Promise<void>` | Low-level: define a component from a `<custom-element>` element you already have, resolving relative URLs against `base`. `<import-element>` and `start` use it |
-
-Types: `Context` (the script helpers), `StoreOptions` and `StorageAdapter` (`{ get(key: string): string | null; set(key: string, value: string): void }`).
-
-## Files
-
-| File | Purpose |
-| --- | --- |
-| `dist/realm.js` | Auto-starting module, for `<script type="module" src>` |
-| `dist/index.js` | Module without side effects |
-| `dist/realm.css` | Page stylesheet: hides definitions, `<import-element>` and undefined elements; `display: contents` for control-flow tags |
-
-## Console messages
-
-REALM writes warnings and errors to the console with the prefix `[realm]`. Each distinct warning is shown once. Warnings name the component and the attribute or prop involved, for example:
-
-- `<price-tag> prop "amount" must be at least 0. Using the default.`
-- `<nav-bar> reads "session" from <app-shell>.`
-- `<todo-app> "#todo.itmes" is not defined in this component or its parents.`
-- `<todo-app> repeat has a duplicate key "3".`
-- `<x-card> is defined twice with different sources (a.html and b.html). Keeping the first.`
+[References and durations](/reference/syntax/) covers the value syntax all attributes share. [Console messages](/reference/console/) lists every warning REALM prints.

@@ -1,6 +1,6 @@
 ---
 title: Components
-description: REALM UI is a set of about sixty accessible ui-* web components in the style of shadcn/ui, built with REALM itself, with a theme of design tokens and dark mode.
+description: About sixty accessible ui-* web components built with REALM, plus a theme of design tokens with dark mode.
 group: Overview
 order: 1
 nav: Introduction
@@ -8,7 +8,7 @@ nav: Introduction
 
 # Components
 
-REALM UI (`@realmorg/ui`) is a set of accessible components in the style of [shadcn/ui](https://ui.shadcn.com), built purely with REALM and native HTML. Every component is a plain `<custom-element>` file you can read, copy and change. This site is built with them.
+REALM UI (`@realmorg/ui`) is a set of accessible components built with REALM and native HTML. Every component is a plain `<custom-element>` file you can read, copy and change. This site is built with them.
 
 ```html live
 <div class="demo-narrow">
@@ -33,29 +33,34 @@ REALM UI (`@realmorg/ui`) is a set of accessible components in the style of [sha
 
 ## Installation
 
-Load the theme and import the bundle once per page, after REALM itself:
+REALM UI needs no installation. Load REALM, the theme and the component bundle from the jsDelivr CDN, once per page:
 
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@realmorg/realm@2.0.0-alpha.0/dist/realm.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@realmorg/ui@2.0.0-alpha.0/theme.css">
-<script type="module" src="https://cdn.jsdelivr.net/npm/@realmorg/realm@2.0.0-alpha.0/dist/realm.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/realm.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/dist/theme.css">
+<script type="module" src="https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/realm.js"></script>
 
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@2.0.0-alpha.0/dist/ui.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/dist/ui.html"></import-element>
 ```
 
-Or install it from npm and serve the files yourself:
+To load less, import only the components you use instead of the bundle:
 
-```bash
-npm install @realmorg/realm @realmorg/ui
+```html
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/button.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/card.html"></import-element>
 ```
+
+Each file imports the files it depends on, so `sheet.html` also loads `dialog.html`. A file is fetched once, however many files import it.
+
+Pin an exact version (for example `@realmorg/ui@2.0.0-alpha.1`) in production. The package contains:
 
 | File | Contents |
 | --- | --- |
-| `@realmorg/ui/theme.css` | Design tokens (colours, spacing, type, radius, shadows) with light and dark values |
-| `@realmorg/ui/ui.html` (`dist/ui.html`) | Every component in one file |
-| `@realmorg/ui/components/<name>.html` | One component (or a small family, such as tabs and tab panels) per file |
+| `dist/theme.css` | Design tokens (colours, spacing, type, radius, shadows) with light and dark values |
+| `dist/ui.html` | Every component in one file |
+| `components/<name>.html` | One component (or a small family, such as tabs and tab panels) per file, with its dependencies imported at the top |
 
-To own a component, copy its file from `components/` into your project and import your copy instead. Components only depend on REALM and the theme tokens.
+To own a component, copy its file from `components/` into your project and import your copy instead. Components depend on REALM, the theme tokens and the files they import at the top, such as `button.html`.
 
 ## Conventions
 
@@ -68,7 +73,7 @@ To own a component, copy its file from `components/` into your project and impor
 
 ## Theming
 
-Override tokens on `:root` or any element. Dark mode follows the system, `data-theme="dark"` on `<html>` forces it, and `data-theme="light"` turns it off. See [Styling](/docs/styling/#design-tokens).
+Override tokens on `:root` or any element. Dark mode follows the system, `data-theme="dark"` on `<html>` forces it, and `data-theme="light"` turns it off. [Theming](/components/theming/) lists every token and has a theme builder.
 
 ```css
 :root {

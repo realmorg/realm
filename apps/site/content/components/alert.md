@@ -8,8 +8,8 @@ nav: Alert
 
 # Alert
 
-`ui-alert` shows a short message in a bordered box: an optional icon on the left, then `ui-alert-title` and
-`ui-alert-description` stacked in the second column. The element has the ARIA role `alert`, so screen readers
+`ui-alert` shows a short message in a bordered box, with an optional icon on the left and `ui-alert-title` and
+`ui-alert-description` stacked beside it. The element has the ARIA role `alert`, so screen readers
 announce it when it is added to the page. It fills the width of its container.
 
 ```html live
@@ -103,6 +103,6 @@ Each part has a single default slot that takes any content.
 
 ### Accessibility
 
-The element has the implicit role `alert` (set through `ElementInternals`), which makes it a live region:
-screen readers read its content when it is inserted. For static content that is present on page load and does
-not need to interrupt, that announcement is usually harmless, but avoid putting many alerts on one page.
+The element has the implicit role `alert` (set through `ElementInternals`), which makes it a live region.
+Screen readers read its content when it is inserted. This is usually harmless for content present on page load, but
+avoid putting many alerts on one page.

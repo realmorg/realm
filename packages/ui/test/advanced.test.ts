@@ -346,6 +346,27 @@ describe("inputs", () => {
     (shadow(links).querySelectorAll('[part="page"]')[1] as HTMLAnchorElement).click();
     expect(links.page).toBe(1);
   });
+
+  test("pagination fits a phone-width container and keeps its Previous and Next names", async () => {
+    await page.viewport(390, 800);
+    try {
+      const host = await render(
+        `<div style="width: 300px"><ui-pagination page="10" total="20" siblings="2"></ui-pagination></div>`,
+      );
+      const pagination = host.querySelector("ui-pagination") as HTMLElement;
+      const bounds = (host.firstElementChild as HTMLElement).getBoundingClientRect();
+      for (const item of shadow(pagination).querySelectorAll("li")) {
+        expect(item.getBoundingClientRect().left).toBeGreaterThanOrEqual(bounds.left);
+        expect(item.getBoundingClientRect().right).toBeLessThanOrEqual(bounds.right);
+      }
+      const previous = part(pagination, "previous");
+      const next = part(pagination, "next");
+      expect(previous.textContent?.replace(/\s+/g, "")).toBe("‹Previous");
+      expect(next.textContent?.replace(/\s+/g, "")).toBe("Next›");
+    } finally {
+      await page.viewport(1280, 800);
+    }
+  });
 });
 
 describe("data display", () => {

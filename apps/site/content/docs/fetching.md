@@ -84,7 +84,7 @@ This demo loads this site's search index when it appears and filters it as you t
 <page-finder></page-finder>
 ```
 
-JSON responses (by `Content-Type`) are parsed; anything else arrives as text.
+JSON responses (by `Content-Type`) are parsed. Anything else arrives as text.
 
 ## Refetching when state changes
 
@@ -100,7 +100,7 @@ The first value doesn't trigger a request (add `load` for that), and writes that
 
 ## Updating one item in a list
 
-After saving or deleting a record, `into-mode="update"` and `into-mode="remove"` change just that item in a list already in state:
+After saving or deleting a record, `into-mode="update"` and `into-mode="remove"` change only that item in a list already in state:
 
 ```html
 <form action="/api/contacts/7" method="put" into="#list.items" into-mode="update">…</form>
@@ -167,11 +167,11 @@ A link with `render` loads the page into the target and updates the address bar 
 | `params` | Extra values to send: `page:#list.page, sort:@order`. Objects are sent as JSON | |
 | `headers` | A reference to a headers object: `headers="#auth.headers"` | |
 | `into` | A writable state path for the response, such as `#todo.items` | |
-| `into-mode` | `replace`, `append`, `prepend`, `update` or `remove`. Append and prepend add to an array, wrapping single values. Update replaces items with the same `into-key` and appends new ones; remove takes them out | `replace` |
+| `into-mode` | `replace`, `append`, `prepend`, `update` or `remove`. Append and prepend add to an array, wrapping single values. Update replaces items with the same `into-key` and appends new ones. Remove takes them out | `replace` |
 | `into-key` | The property that identifies list items for `update` and `remove` | `id` |
 | `render` | The `ref` name of the element that receives the response as HTML | |
 | `render-mode` | See the table above | `replace` |
-| `render-select` | A CSS selector; only matching elements of the response are inserted | |
+| `render-select` | A CSS selector. Only matching elements of the response are inserted | |
 | `busy` | A writable state path set to `true` while the request runs and `false` after | |
 | `timeout` | Abort the request after this long, firing `timeout` | |
 
@@ -184,7 +184,7 @@ A link with `render` loads the page into the target and updates the address bar 
 
 ## Events
 
-The element fires the native resource-loading event names. They do not bubble; handle them on the element:
+The element fires the native resource-loading event names. They do not bubble, so handle them on the element:
 
 | Event | When | `event.detail` |
 | --- | --- | --- |

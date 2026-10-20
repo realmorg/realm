@@ -14,7 +14,7 @@ keys to move the highlight and press Enter, or click an option, to fire a `selec
 option shows a shortcut hint, and `ui-command-empty` sets what shows when nothing matches.
 
 `ui-command` fills the width of its container. On its own it renders inline. Put it in a [Dialog](/components/dialog/)
-to make a command palette; the search on this site works that way.
+to make a command palette. The search on this site works that way.
 
 ```html live
 <div class="demo-narrow">
@@ -159,12 +159,12 @@ the list to see it.
 
 | Part | Slot | Renders |
 | --- | --- | --- |
-| `ui-command` | | A bordered column: the search input, then the filtered list. Fills its container's width. |
+| `ui-command` | | A bordered column with the search input above the filtered list. Fills its container's width. |
 | `<optgroup label="…">` | (data) | A group with the label as its heading. Groups after the first are separated by a line. |
 | `<option>` | (data) | One row in the list, with the `data-shortcut` hint at the end. |
 | `ui-command-empty` | `empty` | The text shown when nothing matches, in place of "No results found.". |
 
-`<option>` and `<optgroup>` are hidden and only used as data; changes to them are picked up automatically. Options
+`<option>` and `<optgroup>` are hidden and used only as data. Changing them updates the list. Options
 outside a group are listed without a heading.
 
 ### ui-command attributes
@@ -179,7 +179,7 @@ outside a group are listed without a heading.
 | --- | --- |
 | `value` | Sent in `event.detail.value`. Also matched by the search. Defaults to the option text. |
 | `label` | Text shown in the list and matched by the search. Defaults to the option text. |
-| `data-shortcut` | Shortcut hint shown at the end of the row. Display only; it does not bind a key. |
+| `data-shortcut` | Shortcut hint shown at the end of the row. Display only. It does not bind a key. |
 
 ### Events
 
@@ -207,4 +207,4 @@ outside a group are listed without a heading.
   highlight to the first match.
 - Focus stays in the input while navigating. The input's `aria-activedescendant` points at the highlighted option
   and `aria-controls` at the listbox. The rows are rendered in the same shadow root as the input so these references
-  work; that is why options are data rather than separate item elements.
+  work. This is why options are data and not separate item elements.

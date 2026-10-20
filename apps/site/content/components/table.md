@@ -185,8 +185,8 @@ component and repeat the rows with the `repeat` attribute on `<tr>` (inside `<ta
 
 | Attribute | Type | Default | Description |
 | --- | --- | --- | --- |
-| `columns` | array of `{ key: string, label?: string }` | `[]` | The columns, in order. `key` is required and selects the value from each row; `label` is the header text and falls back to `key`. Accepts JSON in the attribute, or an array through the `columns` property or a `_columns` binding. |
-| `rows` | array of objects | `[]` | The rows. Each object's values are looked up by column key; missing values render as empty cells. A row's `id`, when present, keys the row so updates reuse its DOM; otherwise the index is used. Accepts JSON or an array, like `columns`. |
+| `columns` | array of `{ key: string, label?: string }` | `[]` | The columns, in order. `key` is required and selects the value from each row. `label` is the header text and falls back to `key`. Accepts JSON in the attribute, or an array through the `columns` property or a `_columns` binding. |
+| `rows` | array of objects | `[]` | The rows. Each object's values are looked up by column key. Missing values render as empty cells. A row's `id`, when present, keys the row so updates reuse its DOM. Otherwise the index is used. Accepts JSON or an array, like `columns`. |
 | `caption` | string | none | Text for the table's `<caption>`, shown under the table. The caption is hidden when this is not set. |
 
 ### Properties
@@ -204,7 +204,7 @@ component and repeat the rows with the `repeat` attribute on `<tr>` (inside `<ta
 
 ### Parts
 
-`ui-table` has no child parts and no slots: it renders everything from `columns`, `rows` and `caption`. For cells
+`ui-table` has no child parts and no slots. It renders everything from `columns`, `rows` and `caption`. For cells
 with markup, use a native table as shown above.
 
 ### CSS parts
@@ -216,7 +216,7 @@ with markup, use a native table as shown above.
 | `row` | Each body row (`<tr>`). |
 | `cell` | Each body cell (`<td>`). |
 
-Rows get a bottom border and a muted background on hover. Cells do not wrap; long tables scroll horizontally
+Rows get a bottom border and a muted background on hover. Cells do not wrap. Long tables scroll horizontally
 inside the element.
 
 ### Accessibility

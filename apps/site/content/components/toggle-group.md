@@ -9,11 +9,11 @@ nav: Toggle Group
 # Toggle Group
 
 `ui-toggle-group` joins `ui-toggle` children into one control with a shared `value`. With `type="single"` at most one
-toggle is pressed, like a segmented control; with `type="multiple"` any number can be pressed, like the bold,
+toggle is pressed, like a segmented control. With `type="multiple"` any number can be pressed, like the bold,
 italic and underline buttons of an editor. The `value` of each `ui-toggle` identifies it.
 
-The group has the `group` role, moves focus between its toggles with the arrow keys, and is form-associated: the
-pressed values are submitted under its `name`, separated by commas.
+The group has the `group` role and moves focus between its toggles with the arrow keys. It is form-associated, and
+the pressed values are submitted under its `name`, separated by commas.
 
 ```html live
 <ui-toggle-group value="left" aria-label="Text alignment">
@@ -64,7 +64,7 @@ and the value becomes empty.
 
 ### Listening for changes
 
-The group fires `change` after every click; read the new `value` from the group. The toggles' own `change` events
+The group fires `change` after every click. Read the new `value` from the group. The toggles' own `change` events
 stop at the group.
 
 ```html live
@@ -220,10 +220,10 @@ empty string when nothing is pressed. Reset returns to the `value` attribute.
 
 `ui-toggle-group` is form-associated and submits `value` under its `name`, including an empty string when nothing
 is pressed. `form.reset()` restores the `value` attribute and the pressed toggles follow it. The group has no
-`disabled` attribute; disable individual toggles instead.
+`disabled` attribute. Disable individual toggles instead.
 
 ### Accessibility
 
-The host has `role="group"`; name it with `aria-label`. Each toggle is a button with `aria-pressed`. The toggles
-form a native `focusgroup`: the arrow keys (Left and Right, or Up and Down when vertical) move focus between them,
+The host has `role="group"`. Name it with `aria-label`. Each toggle is a button with `aria-pressed`. The toggles
+form a native `focusgroup`. The arrow keys (Left and Right, or Up and Down when vertical) move focus between them,
 wrapping at the ends, and Home and End jump to the first and last toggle. Space or Enter presses the focused toggle.

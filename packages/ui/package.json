@@ -1,12 +1,12 @@
 {
   "name": "@realmorg/ui",
   "version": "2.0.0-alpha.1",
-  "description": "REALM UI: accessible components built purely with REALM and native HTML, styled after shadcn/ui.",
+  "description": "About 60 accessible UI components built with REALM.",
   "type": "module",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/realmui/realm.git",
+    "url": "https://github.com/realmorg/realm.git",
     "directory": "packages/ui"
   },
   "files": [

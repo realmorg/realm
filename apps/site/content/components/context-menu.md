@@ -11,7 +11,7 @@ nav: Context Menu
 `ui-context-menu` replaces the browser's context menu inside `ui-context-menu-trigger`. A right-click (or the context
 menu key) on the trigger opens `ui-context-menu-content`, a `popover="auto"` menu, at the pointer position and
 focuses the first enabled item. The items are the same `ui-menu-*` parts used by
-[Dropdown Menu](/components/dropdown-menu/): the arrow keys move between them, Enter or Space chooses one, and choosing
+[Dropdown Menu](/components/dropdown-menu/). The arrow keys move between them, Enter or Space chooses one, and choosing
 fires `select` and closes the menu. Escape and a click outside close it too.
 
 ```html live
@@ -37,7 +37,7 @@ fires `select` and closes the menu. Escape and a click outside close it too.
 
 ### Handle the selection
 
-`select` bubbles from the chosen item; `event.detail.value` is its `value`.
+`select` bubbles from the chosen item, and `event.detail.value` is its `value`.
 
 ```html live
 <custom-element name="context-menu-file-demo">
@@ -106,7 +106,7 @@ fires `select` and closes the menu. Escape and a click outside close it too.
 | --- | --- | --- |
 | `ui-context-menu` | | Its parts, with no box of its own. |
 | `ui-context-menu-trigger` | (default) | A block around the area. A `contextmenu` event inside it opens the menu at the pointer. |
-| `ui-context-menu-content` | (default) | The menu: a bordered `popover="auto"` panel with `role="menu"`, positioned at the pointer with `position: fixed`. |
+| `ui-context-menu-content` | (default) | A bordered `popover="auto"` panel with `role="menu"`, positioned at the pointer with `position: fixed`. |
 | `ui-menu-*` | (default) | Items, labels, groups, separators and shortcuts. See [Dropdown Menu](/components/dropdown-menu/). |
 
 None of the parts has attributes of its own. See [Dropdown Menu](/components/dropdown-menu/) for the item attributes

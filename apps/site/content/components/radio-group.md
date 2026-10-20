@@ -9,7 +9,7 @@ nav: Radio Group
 # Radio Group
 
 `ui-radio-group` turns its `<option>` children into native radio buttons with labels, laid out in a column or a row.
-Choosing a radio sets the group's `value`. The host has the `radiogroup` role and is form-associated: the chosen
+Choosing a radio sets the group's `value`. The host has the `radiogroup` role and is form-associated. The chosen
 option's `value` is submitted under the group's `name`.
 
 Because the radios are native inputs that share a name inside the group's shadow root, the arrow keys move between
@@ -99,7 +99,7 @@ The radio label is the option's `label` attribute, or its text when there is no 
 
 ### In a form
 
-The chosen `value` is submitted under the group's `name`; nothing is submitted while no option is chosen. Reset
+The chosen `value` is submitted under the group's `name`. Nothing is submitted while no option is chosen. Reset
 returns the group to its `value` attribute.
 
 ```html live
@@ -190,7 +190,7 @@ returns the group to its `value` attribute.
 
 | Element | Attributes read | Description |
 | --- | --- | --- |
-| `<option>` | `value`, `label` (or text), `disabled` | One radio. Options stay hidden in place; adding or removing options updates the radios. |
+| `<option>` | `value`, `label` (or text), `disabled` | One radio. Options stay hidden in place. Adding or removing options updates the radios. |
 
 ### CSS parts
 
@@ -213,6 +213,6 @@ bubble points at the first enabled radio, which takes focus. `form.reset()` rest
 
 ### Accessibility
 
-The host has `role="radiogroup"`; name it with `aria-label` or `aria-labelledby`. Each radio is a native input
+The host has `role="radiogroup"`. Name it with `aria-label` or `aria-labelledby`. Each radio is a native input
 inside its own `<label>`, so the option text is its name and clicking the text checks it. Tab moves into the group
 on the checked radio, and the arrow keys move and check the next or previous radio.

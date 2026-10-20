@@ -62,6 +62,8 @@
     }
     ul {
       display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
       align-items: center;
       gap: calc(var(--spacing) * 1);
       margin: 0;
@@ -103,6 +105,16 @@
       pointer-events: none;
       opacity: 0.5;
     }
+    @media (width < 40rem) {
+      .label {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip-path: inset(50%);
+        white-space: nowrap;
+      }
+    }
     .gap {
       display: inline-flex;
       width: calc(var(--spacing) * 9);
@@ -114,10 +126,10 @@
     <ul part="list">
       <li>
         <is-visible when="#pages.kind" eq="link">
-          <a part="previous" _href="#pages.previousUrl" _aria-disabled="#pages.first" onclick="previous(event)">‹ Previous</a>
+          <a part="previous" _href="#pages.previousUrl" _aria-disabled="#pages.first" onclick="previous(event)">‹ <span class="label">Previous</span></a>
         </is-visible>
         <is-visible when="#pages.kind" eq="button">
-          <button type="button" part="previous" _disabled="#pages.first" onclick="previous(event)">‹ Previous</button>
+          <button type="button" part="previous" _disabled="#pages.first" onclick="previous(event)">‹ <span class="label">Previous</span></button>
         </is-visible>
       </li>
       <li repeat="#pages.items" as="item" key="key">
@@ -131,10 +143,10 @@
       </li>
       <li>
         <is-visible when="#pages.kind" eq="link">
-          <a part="next" _href="#pages.nextUrl" _aria-disabled="#pages.last" onclick="next(event)">Next ›</a>
+          <a part="next" _href="#pages.nextUrl" _aria-disabled="#pages.last" onclick="next(event)"><span class="label">Next</span> ›</a>
         </is-visible>
         <is-visible when="#pages.kind" eq="button">
-          <button type="button" part="next" _disabled="#pages.last" onclick="next(event)">Next ›</button>
+          <button type="button" part="next" _disabled="#pages.last" onclick="next(event)"><span class="label">Next</span> ›</button>
         </is-visible>
       </li>
     </ul>

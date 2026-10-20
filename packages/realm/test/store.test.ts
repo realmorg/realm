@@ -75,3 +75,24 @@ describe("defineStore", () => {
     expect(text(root(b as Element))).toBe("2");
   });
 });
+
+test("persisted stores save their data fields and never run getters", async () => {
+  const name = `getters-${Math.random()}`;
+  const reads: string[] = [];
+  const store = defineStore(
+    name,
+    {
+      items: [1, 2],
+      get total() {
+        reads.push("total");
+        return this.items.reduce((sum: number, item: number) => sum + item, 0);
+      },
+    },
+    { persist: "local" },
+  );
+  store.items.push(3);
+  flush();
+  expect(JSON.parse(localStorage.getItem(`realm:${name}`) as string)).toEqual({ items: [1, 2, 3] });
+  expect(reads).toEqual([]);
+  localStorage.removeItem(`realm:${name}`);
+});

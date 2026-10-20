@@ -8,8 +8,8 @@ nav: Attachment
 
 # Attachment
 
-`ui-attachment` shows a file attached to a message or a form: a small preview area, the file name, its size and room
-for actions such as remove. The name is a link with the `download` attribute, so clicking it downloads the file from
+`ui-attachment` shows a file attached to a message or a form, with a small preview area, the file name, its size and
+room for actions such as remove. The name is a link with the `download` attribute, so clicking it downloads the file from
 `href` under that name. Long names are truncated with an ellipsis.
 
 The preview goes in a `ui-attachment-media` child and the buttons in a `ui-attachment-actions` child. Both place
@@ -74,7 +74,7 @@ Put buttons in `ui-attachment-actions`. Give icon buttons an `aria-label` that s
     </li>
   </ul>
 </custom-element>
-<attachment-list-demo></attachment-list-demo>
+<div class="demo-medium"><attachment-list-demo></attachment-list-demo></div>
 ```
 
 ### Image preview

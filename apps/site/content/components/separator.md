@@ -9,8 +9,8 @@ nav: Separator
 # Separator
 
 `ui-separator` draws a one pixel line in the border colour. It is horizontal by default and fills the width of
-its container; set `orientation="vertical"` to divide items in a row. The element has the role `separator` and
-reports its orientation to assistive technology. It has no margin: the space around it comes from the gap of its
+its container. Set `orientation="vertical"` to divide items in a row. The element has the role `separator` and
+reports its orientation to assistive technology. It has no margin. The space around it comes from the gap of its
 container.
 
 ```html live
@@ -84,10 +84,10 @@ separators.
 
 ### CSS parts
 
-None. The separator renders no shadow content; style the element itself.
+None. The separator renders no shadow content. Style the element itself.
 
 ### Accessibility
 
 The element has the role `separator` and `aria-orientation` set from `orientation`, both through
-`ElementInternals`. For a purely decorative line that should be skipped by screen readers, add
+`ElementInternals`. For a decorative line that should be skipped by screen readers, add
 `role="none"`.

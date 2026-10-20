@@ -9,8 +9,8 @@ nav: Message
 # Message
 
 `ui-message` is one row of a conversation. It places an avatar next to a column with an optional header (name), the
-message content (usually one or more [`ui-bubble`](bubble.html) elements) and an optional footer (time or status).
-`align="end"` mirrors the row for messages sent by the current user: the avatar moves to the end and the content
+message content (usually one or more [`ui-bubble`](/components/bubble/) elements) and an optional footer (time or status).
+`align="end"` mirrors the row for messages sent by the current user. The avatar moves to the end and the content
 aligns right.
 
 The avatar, header and footer are child parts: `ui-message-avatar`, `ui-message-header` and `ui-message-footer`. They
@@ -81,8 +81,8 @@ A ghost bubble without an avatar suits long-form replies.
 
 | Part | Slot | Renders |
 | --- | --- | --- |
-| `ui-message` | (root) | The row: avatar beside a column with header, content and footer. |
-| `ui-message-avatar` | `avatar` | Wraps a [`ui-avatar`](avatar.html), aligned to the bottom of the row. |
+| `ui-message` | (root) | The row, with the avatar beside a column with header, content and footer. |
+| `ui-message-avatar` | `avatar` | Wraps a [`ui-avatar`](/components/avatar/), aligned to the bottom of the row. |
 | `ui-message-header` | `header` | A small muted line above the content, such as the sender name and time. |
 | `ui-message-footer` | `footer` | A small muted line below the content, such as the time or a read receipt. |
 

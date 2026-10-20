@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Product · Shop · REALM examples</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/realm.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/dist/theme.css">
+  <script type="module" src="https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/realm.js"></script>
+  <style>
+    body { margin: 0; min-height: 100dvh; }
+    main { width: min(70rem, 100%); margin: 0 auto; padding: 2rem 1rem 4rem; box-sizing: border-box; }
+  </style>
+</head>
+<body>
+  <import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/toaster.html"></import-element>
+  <import-element from="https://cdn.jsdelivr.net/npm/@realmorg/unicons@alpha/dist/unicons.html"></import-element>
+  <import-element from="./components/shop-header.html"></import-element>
+  <import-element from="./components/product-detail.html"></import-element>
+  <shop-header page="product"></shop-header>
+  <main><product-detail></product-detail></main>
+  <ui-toaster></ui-toaster>
+</body>
+</html>

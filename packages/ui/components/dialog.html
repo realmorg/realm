@@ -112,6 +112,13 @@
       border-radius: 0;
       animation: none;
     }
+    :host(:is(:state(attr-side-is-left), :state(attr-side-is-right))) dialog[open] {
+      display: flex;
+      flex-direction: column;
+    }
+    :host(:is(:state(attr-side-is-left), :state(attr-side-is-right))) [part="body"] {
+      flex: 1;
+    }
     :host(:state(attr-side-is-right)) dialog {
       inset: 0 0 0 auto;
       width: min(calc(var(--spacing) * 96), 75%);

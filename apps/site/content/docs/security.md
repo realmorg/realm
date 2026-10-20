@@ -8,7 +8,7 @@ nav: Security
 
 # Security
 
-REALM draws a clear line between code and data.
+REALM treats some sources as code and everything else as data.
 
 | Source | Treated as |
 | --- | --- |
@@ -31,7 +31,7 @@ The sanitiser is deliberately small. It blocks script execution, but it does not
 
 `html-unsafe` skips sanitising. Only use it for HTML you produced yourself.
 
-Text values are always inserted as text nodes, and attribute bindings use `setAttribute`, so state values cannot inject markup. A bound URL attribute such as `_href="#link.url"` is set as given: validate URLs that come from users before putting them in state.
+Text values are always inserted as text nodes, and attribute bindings use `setAttribute`, so state values cannot inject markup. A bound URL attribute such as `_href="#link.url"` is set as given. Validate URLs that come from users before putting them in state.
 
 ## No eval
 
@@ -39,7 +39,7 @@ REALM never uses `eval`, `new Function` or `blob:` URLs. Component scripts and t
 
 ## Content Security Policy
 
-REALM works under a nonce-based policy. Give the page's REALM `<script>` tag a nonce; REALM copies the nonce from the first `script[nonce]` in the document onto every script it inserts:
+REALM works under a nonce-based policy. Give the page's REALM `<script>` tag a nonce. REALM copies the nonce from the first `script[nonce]` in the document onto every script it inserts:
 
 ```html
 <meta http-equiv="Content-Security-Policy" content="script-src 'nonce-r4nd0m' 'strict-dynamic'; style-src 'self' 'unsafe-inline'">
@@ -49,16 +49,16 @@ REALM works under a nonce-based policy. Give the page's REALM `<script>` tag a n
 - Send the policy as an HTTP header in production, and generate a new nonce for every response.
 - `'strict-dynamic'` lets scripts loaded by trusted scripts run, which covers module imports from component scripts.
 - Event handlers in component markup are not inline handler attributes as far as the browser is concerned (REALM removes the attribute and compiles the handler into the component's script), so you do not need `'unsafe-inline'` or `'unsafe-hashes'` for them.
-- Component styles are constructable stylesheets. REALM itself also sets inline `style` custom properties for `--attr-*`, `--state-*` and `_--name` bindings; allow inline styles if you use those.
+- Component styles are constructable stylesheets. REALM itself also sets inline `style` custom properties for `--attr-*`, `--state-*` and `_--name` bindings. Allow inline styles if you use those.
 
 Limits:
 
 - **Hash-only policies** (`script-src 'sha256-…'` without a nonce) cannot allow scripts that are assembled at runtime. Use a nonce.
-- **Trusted Types** (`require-trusted-types-for 'script'`) is not supported yet: REALM assigns the assembled script's text directly.
+- **Trusted Types** (`require-trusted-types-for 'script'`) is not supported yet, because REALM assigns the assembled script's text directly.
 
 ## Imported components
 
-`<import-element from="https://…">` runs code from that origin in your page, exactly like a `<script src>`. Only import from origins you trust, pin versions on CDNs, and restrict them with `script-src` and `connect-src`.
+`<import-element from="https://…">` runs code from that origin in your page, like a `<script src>`. Only import from origins you trust, pin versions on CDNs, and restrict them with `script-src` and `connect-src`.
 
 ## Checklist
 

@@ -1,0 +1,25 @@
+<custom-element name="like-button">
+  <script>
+    const props = defineProps({ count: prop.number().int().min(0).default(0) });
+
+    const like = useState({
+      liked: false,
+      count: props.count,
+      get label() {
+        return this.liked ? "Liked" : "Like";
+      },
+      get variant() {
+        return this.liked ? "default" : "outline";
+      },
+    });
+
+    function toggle() {
+      like.liked = !like.liked;
+      like.count += like.liked ? 1 : -1;
+    }
+  </script>
+
+  <ui-button _variant="#like.variant" _aria-pressed="#like.liked" onclick="toggle()">
+    <u-icon name="heart"></u-icon> <slot name="#like.label"></slot> · <slot name="#like.count"></slot>
+  </ui-button>
+</custom-element>

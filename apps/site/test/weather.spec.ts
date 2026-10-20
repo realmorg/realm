@@ -1,6 +1,6 @@
 import AxeBuilder from "@axe-core/playwright";
 import type { Page, Route } from "@playwright/test";
-import { expect, ready, test } from "./fixtures";
+import { expect, ready, recordLayoutShifts, takeLayoutShift, test } from "./fixtures";
 
 const PLACES = {
   results: [
@@ -192,4 +192,32 @@ test("weather: an unreachable service is reported for search and forecast", asyn
   await expect(page.getByText("The weather service is unavailable right now.")).toBeVisible();
   const logged = errors.splice(0);
   expect(logged.every((message) => /ERR_FAILED|open-meteo\.com/.test(message))).toBe(true);
+});
+
+test("weather: search results and hints open over the page without moving it", async ({
+  page,
+  errors,
+}) => {
+  await mock(page);
+  await recordLayoutShifts(page);
+  await page.goto("examples/weather/");
+  await ready(page, "weather-app");
+  const empty = page.getByRole("heading", { name: "Pick a place" });
+  await expect(empty).toBeVisible();
+  await takeLayoutShift(page);
+  const before = await empty.boundingBox();
+
+  const city = page.getByRole("searchbox", { name: "City" });
+  await city.fill("Berlin");
+  await expect(page.getByRole("list", { name: "Matching places" }).getByRole("button")).toHaveCount(
+    2,
+  );
+  expect(await empty.boundingBox()).toEqual(before);
+  expect(await takeLayoutShift(page)).toBe(0);
+
+  await city.fill("Nowhere");
+  await expect(page.getByText("No places match that name.")).toBeVisible();
+  expect(await empty.boundingBox()).toEqual(before);
+  expect(await takeLayoutShift(page)).toBe(0);
+  void errors;
 });

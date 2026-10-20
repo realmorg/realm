@@ -62,3 +62,10 @@ focusgroup SHALL find focusable items inside shadow roots that do not delegate f
 #### Scenario: focusgroup reaches into shadow roots and skips items that are not rendered
 - **WHEN** a menubar holds links inside shadow roots and a closed menu
 - **THEN** arrow keys move between the links and the menu trigger, skipping hidden items
+
+### Requirement: Disabled delegated controls
+A delegated control that is barred from constraint validation (for example because it is disabled) SHALL report the host as valid.
+
+#### Scenario: a disabled delegated control is valid, whatever its constraints
+- **WHEN** a disabled delegated number input has contradictory constraints
+- **THEN** no error is thrown and the host is not invalid

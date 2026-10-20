@@ -10,7 +10,7 @@ nav: Dialog
 
 `ui-dialog` renders a native `<dialog>` in its shadow root and opens it with `showModal()`. The browser puts it in the
 top layer, makes the rest of the page inert, moves focus into the dialog and returns focus to the trigger when it
-closes. Escape, a click on the backdrop and the built-in close button all ask the dialog to close; a cancelable
+closes. Escape, a click on the backdrop and the built-in close button all ask the dialog to close. A cancelable
 `cancel` event lets you keep it open.
 
 Build it from parts: `ui-dialog-trigger` opens it, `ui-dialog-header` holds the `ui-dialog-title` and
@@ -39,10 +39,10 @@ closes the dialog when the element inside it is clicked.
 
 ### Open and close with commands
 
-The trigger part is the usual way to open the dialog. A button elsewhere on the page can open it too: `ui-dialog`
+The trigger part is the usual way to open the dialog. A button elsewhere on the page can open it too, because `ui-dialog`
 listens for the `command` event that `commandfor` buttons send. It understands `--show-modal`, `--close` and
-`--request-close`, with or without the `--` prefix. `--close` closes straight away; `--request-close` fires `cancel`
-first, like Escape does. `ui-button` accepts either form. On a plain `<button>`, use the `--` form: browsers with native
+`--request-close`, with or without the `--` prefix. `--close` closes straight away. `--request-close` fires `cancel`
+first, like Escape does. `ui-button` accepts either form. On a plain `<button>`, use the `--` form, because browsers with native
 invoker commands only forward custom (`--`) commands to elements that are not a native `<dialog>`.
 
 ```html live
@@ -216,7 +216,7 @@ dialog body, in source order.
 
 | Attribute | Type | Default | Description |
 | --- | --- | --- | --- |
-| `open` | boolean | `false` | Whether the dialog is open. Setting it opens the dialog modally; reflects to the attribute. |
+| `open` | boolean | `false` | Whether the dialog is open. Setting it opens the dialog modally. Reflects. |
 | `side` | `"center"` \| `"top"` \| `"right"` \| `"bottom"` \| `"left"` | `"center"` | Where the dialog sits. Any value other than `center` attaches it to that edge as a full-height or full-width panel. |
 | `hide-close` | boolean | `false` | Hides the close button in the top corner. Property name: `hideClose`. |
 | `persistent` | boolean | `false` | Ignores Escape and backdrop clicks. The close button and `requestClose()` still work. |
@@ -234,9 +234,9 @@ dialog body, in source order.
 | Name | Description |
 | --- | --- |
 | `showModal()` | Opens the dialog modally. |
-| `show()` | Same as `showModal()`; the dialog is always modal. |
+| `show()` | Same as `showModal()`. The dialog is always modal. |
 | `close(value?)` | Closes the dialog. When `value` is given it becomes `returnValue`. Does not fire `cancel`. |
-| `requestClose(value?)` | Fires `cancel`; closes with `value` unless the event was cancelled. |
+| `requestClose(value?)` | Fires `cancel`, then closes with `value` unless the event was cancelled. |
 | `returnValue` | Read-only. The value passed to the last `close(value)` or `ui-dialog-close`, or `""`. |
 | `open` | Boolean property mirroring the attribute. |
 
@@ -254,7 +254,7 @@ dialog body, in source order.
 
 | Event | Detail | Description |
 | --- | --- | --- |
-| `cancel` | none | Fired before the dialog closes from Escape, a backdrop click, the close button, `requestClose()` or `--request-close`. Cancelable; does not bubble. |
+| `cancel` | none | Fired before the dialog closes from Escape, a backdrop click, the close button, `requestClose()` or `--request-close`. Cancelable. Does not bubble. |
 | `close` | none | Fired after the dialog has closed, however it was closed. Does not bubble. |
 
 ### CSS parts

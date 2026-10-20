@@ -9,10 +9,10 @@ nav: Switch
 # Switch
 
 `ui-switch` is a native `<input type="checkbox" role="switch">` drawn as a sliding toggle, with the element's text
-as its label. Use it for a setting that takes effect right away; use [Checkbox](/components/checkbox) for choices
+as its label. Use it for a setting that takes effect right away. Use [Checkbox](/components/checkbox) for choices
 that are confirmed later with a submit button.
 
-It is form-associated: when on, it submits its `value` (or `on`) under its `name`, like a checkbox.
+It is form-associated. When on, it submits its `value` (or `on`) under its `name`, like a checkbox.
 
 ```html live
 <ui-switch>Airplane mode</ui-switch>
@@ -151,7 +151,7 @@ Only switches that are on are submitted. Reset restores the `checked` attribute.
 
 | Property | Type | Description |
 | --- | --- | --- |
-| `checked` | boolean | Current state. Updated when the user toggles; setting it moves the switch. |
+| `checked` | boolean | Current state. Updated when the user toggles. Setting it moves the switch. |
 
 ### Events
 
@@ -182,10 +182,10 @@ Only switches that are on are submitted. Reset restores the `checked` attribute.
 
 ### Forms
 
-`ui-switch` is form-associated. When on it submits `value`, or `on` without one; when off it submits nothing.
+`ui-switch` is form-associated. When on it submits `value`, or `on` without one. When off it submits nothing.
 `form.reset()` restores the `checked` attribute.
 
 ### Accessibility
 
 The inner checkbox has `role="switch"` and `aria-checked`, so screen readers announce it as on or off. Space toggles
-it and the host delegates focus to it. The slotted text labels it; without text, use `aria-label`.
+it and the host delegates focus to it. The slotted text labels it. Without text, use `aria-label`.

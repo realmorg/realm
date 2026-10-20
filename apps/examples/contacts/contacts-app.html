@@ -1,3 +1,14 @@
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/alert.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/alert-dialog.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/avatar.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/button.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/dialog.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/empty.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/field.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/input.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/label.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/spinner.html"></import-element>
+
 <custom-element name="contacts-app">
   <script type="module">
     import { blankContact, toRow } from "./contacts.js";
@@ -125,6 +136,8 @@
     .status {
       display: flex;
       align-items: center;
+      justify-content: flex-end;
+      min-width: calc(var(--spacing) * 28);
       gap: calc(var(--spacing) * 2);
       margin: 0;
       color: var(--muted-foreground);
@@ -142,6 +155,8 @@
     }
     table {
       width: 100%;
+      min-width: calc(var(--spacing) * 232);
+      table-layout: fixed;
       border-collapse: collapse;
       font-size: var(--text-sm);
     }
@@ -157,6 +172,8 @@
       padding: calc(var(--spacing) * 2) calc(var(--spacing) * 3);
       border-top: 1px solid var(--border);
       white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     tbody tr:hover {
       background: var(--muted);
@@ -172,6 +189,7 @@
       text-underline-offset: calc(var(--spacing) * 1);
     }
     .actions {
+      width: calc(var(--spacing) * 36);
       text-align: right;
     }
     .fields {
@@ -192,7 +210,7 @@
   <header>
     <div>
       <h1>Contacts</h1>
-      <p>A REST API served by a service worker, driven entirely by fetch attributes.</p>
+      <p>A REST API in a service worker, loaded and saved with fetch attributes.</p>
     </div>
     <ui-button onclick="create()">New contact</ui-button>
   </header>
@@ -223,7 +241,7 @@
     </ui-alert>
   </is-visible>
 
-  <is-hidden when="#list.empty">
+  <is-visible when="#list.items.length">
     <div class="table">
       <table aria-label="Contacts" _aria-busy="#list.busy">
         <thead>
@@ -251,7 +269,7 @@
         </tbody>
       </table>
     </div>
-  </is-hidden>
+  </is-visible>
 
   <is-visible when="#list.empty">
     <ui-empty>

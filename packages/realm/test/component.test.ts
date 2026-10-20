@@ -482,3 +482,42 @@ test("definitions without a script or handlers insert no script", async () => {
   expect(inserted.filter((node) => node.nodeName === "SCRIPT")).toEqual([]);
   expect(text(root(mount(name)))).toBe("static");
 });
+
+test("a part whose parent finishes setting up later waits for it and reads its state", async () => {
+  const parent = tag("late-parent");
+  const child = tag("early-child");
+  const host = render(`<${parent}><${child}></${child}></${parent}>`);
+  const removed = render(`<${parent}><${child}></${child}></${parent}>`);
+  const define_ = define(`
+    <custom-element name="${parent}">
+      <script>
+        import label from "data:text/javascript,await new Promise((r) => setTimeout(r, 150)); export default 7";
+        const box = useState({ label });
+      </script>
+      <slot></slot>
+    </custom-element>
+    <custom-element name="${child}"><p><slot name="#box.label">missing</slot></p></custom-element>`);
+  const gone = removed.querySelector(child) as Element;
+  await new Promise((resolve) => setTimeout(resolve, 30));
+  gone.remove();
+  await define_;
+  await tick();
+  expect(gone.shadowRoot).toBe(null);
+  expect(text(root(host.querySelector(child)).querySelector("p"))).toBe("7");
+  expect(warned(`<${child}> "#box.label" is not defined`)).toBe(false);
+  expect(warned(`<${child}> reads`)).toBe(false);
+});
+
+test("custom elements inside a component stay hidden until they are defined", async () => {
+  const outer = tag("outer");
+  const inner = tag("inner");
+  await define(
+    `<custom-element name="${outer}"><${inner}><p>plain</p></${inner}><is-visible when="#s.on"><span>shown</span></is-visible><script>const s = useState({ on: true });</script></custom-element>`,
+  );
+  const el = mount(outer);
+  const pending = root(el).querySelector(inner) as Element;
+  expect(getComputedStyle(pending).visibility).toBe("hidden");
+  expect(getComputedStyle(root(el).querySelector("span") as Element).visibility).toBe("visible");
+  await define(`<custom-element name="${inner}"><slot></slot></custom-element>`);
+  expect(getComputedStyle(pending).visibility).toBe("visible");
+});

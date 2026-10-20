@@ -1,0 +1,269 @@
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/badge.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/button.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/dialog.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/empty.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/input.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/pagination.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/select.html"></import-element>
+
+<custom-element name="orders-page">
+  <script type="module">
+    import { money, orders, statuses, statusVariants } from "../data.js";
+
+    const PAGE_SIZE = 8;
+    const NEXT_STEP = {
+      Pending: { status: "Paid", label: "Mark as paid" },
+      Paid: { status: "Shipped", label: "Mark as shipped" },
+    };
+    const toRow = (order) => ({
+      ...order,
+      variant: statusVariants[order.status],
+      amount: money(order.total),
+      count: `${order.items.length} ${order.items.length === 1 ? "item" : "items"}`,
+      viewLabel: `View order ${order.id}`,
+    });
+
+    const list = useState({
+      orders: [...orders],
+      statuses: statuses.map((status) => ({ status })),
+      query: "",
+      status: "all",
+      page: 1,
+      openId: orders[0].id,
+      get filtered() {
+        const query = this.query.trim().toLowerCase();
+        return this.orders.filter(
+          (order) =>
+            (this.status === "all" || order.status === this.status) &&
+            `${order.id} ${order.customer}`.toLowerCase().includes(query),
+        );
+      },
+      get pages() {
+        return Math.max(1, Math.ceil(this.filtered.length / PAGE_SIZE));
+      },
+      get rows() {
+        return this.filtered.slice((this.page - 1) * PAGE_SIZE, this.page * PAGE_SIZE).map(toRow);
+      },
+      get summary() {
+        const first = (this.page - 1) * PAGE_SIZE;
+        const shown = this.rows.length;
+        return shown ? `Showing ${first + 1}–${first + shown} of ${this.filtered.length} orders` : "No orders";
+      },
+      get open() {
+        const order = toRow(this.orders.find((item) => item.id === this.openId));
+        const next = NEXT_STEP[order.status];
+        return {
+          ...order,
+          next: next?.label,
+          lines: order.items.map((item) => ({ ...item, amount: money(item.price * item.quantity) })),
+        };
+      },
+    });
+
+    function search(field) {
+      list.query = field.value;
+      list.page = 1;
+    }
+
+    function filter(select) {
+      list.status = select.value;
+      list.page = 1;
+    }
+
+    function paged(event) {
+      list.page = event.detail.page;
+    }
+
+    function view(order) {
+      list.openId = order.id;
+      refs.detail.showModal();
+    }
+
+    function advance() {
+      const { status } = NEXT_STEP[list.open.status];
+      list.orders = list.orders.map((order) => (order.id === list.openId ? { ...order, status } : order));
+      dispatch("toast", { title: `${list.openId} marked as ${status.toLowerCase()}` });
+    }
+  </script>
+
+  <style>
+    :host {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: calc(var(--spacing) * 4);
+    }
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: calc(var(--spacing) * 3);
+    }
+    .toolbar search {
+      flex: 1;
+      min-width: calc(var(--spacing) * 56);
+    }
+    .table {
+      position: relative;
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: var(--text-sm);
+    }
+    th {
+      height: calc(var(--spacing) * 10);
+      padding: 0 calc(var(--spacing) * 3);
+      color: var(--muted-foreground);
+      font-weight: var(--font-weight-medium);
+      text-align: left;
+      white-space: nowrap;
+    }
+    td {
+      padding: calc(var(--spacing) * 2) calc(var(--spacing) * 3);
+      border-top: 1px solid var(--border);
+      white-space: nowrap;
+    }
+    tbody tr:hover {
+      background: var(--muted);
+    }
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+    .number {
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+    }
+    small {
+      display: block;
+      color: var(--muted-foreground);
+    }
+    .footer {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: calc(var(--spacing) * 3);
+    }
+    .footer p {
+      margin: 0;
+      color: var(--muted-foreground);
+      font-size: var(--text-sm);
+    }
+    dl {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: calc(var(--spacing) * 2) calc(var(--spacing) * 4);
+      margin: 0;
+      font-size: var(--text-sm);
+    }
+    dt {
+      color: var(--muted-foreground);
+    }
+    dd {
+      margin: 0;
+    }
+    .lines {
+      display: grid;
+      gap: calc(var(--spacing) * 2);
+      margin: 0;
+      padding: calc(var(--spacing) * 3) 0;
+      border-block: 1px solid var(--border);
+      list-style: none;
+      font-size: var(--text-sm);
+    }
+    .lines li,
+    .total {
+      display: flex;
+      justify-content: space-between;
+      gap: calc(var(--spacing) * 4);
+    }
+    .total {
+      font-weight: var(--font-weight-semibold);
+    }
+  </style>
+
+  <div class="toolbar">
+    <search>
+      <ui-input type="search" aria-label="Search orders" placeholder="Search by order or customer…" autocomplete="off" oninput="search(this)"></ui-input>
+    </search>
+    <ui-select aria-label="Status" value="all" width="40" onchange="filter(this)">
+      <option value="all">All statuses</option>
+      <option repeat="#list.statuses" as="choice" key="status" _value="#choice.status"><slot name="#choice.status"></slot></option>
+    </ui-select>
+  </div>
+
+  <div class="table">
+    <table aria-label="Orders">
+      <thead>
+        <tr>
+          <th scope="col">Order</th>
+          <th scope="col">Customer</th>
+          <th scope="col">Date</th>
+          <th scope="col">Status</th>
+          <th scope="col" class="number">Total</th>
+          <th scope="col"><span class="sr-only">Actions</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr repeat="#list.rows" as="order" key="id">
+          <td><slot name="#order.id"></slot><small><slot name="#order.count"></slot></small></td>
+          <td><slot name="#order.customer"></slot><small><slot name="#order.email"></slot></small></td>
+          <td><slot name="#order.date"></slot></td>
+          <td><ui-badge _variant="#order.variant"><slot name="#order.status"></slot></ui-badge></td>
+          <td class="number"><slot name="#order.amount"></slot></td>
+          <td class="number"><ui-button size="sm" variant="ghost" _aria-label="#order.viewLabel" onclick="view(order)">View</ui-button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <is-hidden when="#list.filtered.length">
+    <ui-empty>
+      <ui-empty-header>
+        <ui-empty-title>No orders found</ui-empty-title>
+        <ui-empty-description>Try another search or status.</ui-empty-description>
+      </ui-empty-header>
+    </ui-empty>
+  </is-hidden>
+
+  <div class="footer">
+    <p role="status"><slot name="#list.summary"></slot></p>
+    <ui-pagination label="Orders pages" _page="#list.page" _total="#list.pages" onchange="paged(event)"></ui-pagination>
+  </div>
+
+  <ui-dialog ref="detail">
+    <ui-dialog-header>
+      <ui-dialog-title>Order <slot name="#list.open.id"></slot></ui-dialog-title>
+      <ui-dialog-description>Placed on <slot name="#list.open.date"></slot></ui-dialog-description>
+    </ui-dialog-header>
+    <dl>
+      <dt>Customer</dt>
+      <dd><slot name="#list.open.customer"></slot></dd>
+      <dt>Email</dt>
+      <dd><slot name="#list.open.email"></slot></dd>
+      <dt>Status</dt>
+      <dd><ui-badge _variant="#list.open.variant"><slot name="#list.open.status"></slot></ui-badge></dd>
+    </dl>
+    <ul class="lines" aria-label="Items">
+      <li repeat="#list.open.lines" as="line" key="product">
+        <span><slot name="#line.quantity"></slot> × <slot name="#line.product"></slot></span>
+        <span><slot name="#line.amount"></slot></span>
+      </li>
+    </ul>
+    <p class="total"><span>Total</span><span><slot name="#list.open.amount"></slot></span></p>
+    <ui-dialog-footer>
+      <ui-dialog-close><ui-button variant="outline">Close</ui-button></ui-dialog-close>
+      <is-visible when="#list.open.next">
+        <ui-button onclick="advance()"><slot name="#list.open.next"></slot></ui-button>
+      </is-visible>
+    </ui-dialog-footer>
+  </ui-dialog>
+</custom-element>

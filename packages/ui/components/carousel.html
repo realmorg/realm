@@ -1,3 +1,5 @@
+<import-element from="./button.html"></import-element>
+
 <custom-element name="ui-carousel" role="region">
   <script>
     const props = defineProps({
@@ -21,9 +23,17 @@
       return [...(content[0]?.children ?? [])];
     }
 
+    function settle(index) {
+      if (index === position.index) return;
+      position.index = index;
+      dispatch("change", { index });
+    }
+
     function go(index) {
       const all = slides();
-      all[Math.max(0, Math.min(index, all.length - 1))]?.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "start" });
+      const target = Math.max(0, Math.min(index, all.length - 1));
+      all[target]?.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "start" });
+      settle(target);
     }
 
     function previous() {
@@ -42,11 +52,10 @@
     }
 
     function scrolled(track) {
-      const vertical = props.orientation === "vertical";
-      const offset = vertical ? track.scrollTop : track.scrollLeft;
-      const size = vertical ? track.clientHeight : track.clientWidth;
-      position.index = Math.round(offset / (size || 1));
-      dispatch("change", { index: position.index });
+      const edge = props.orientation === "vertical" ? "top" : "left";
+      const start = track.getBoundingClientRect()[edge];
+      const distances = slides().map((slide) => Math.abs(slide.getBoundingClientRect()[edge] - start));
+      settle(distances.indexOf(Math.min(...distances)));
     }
 
     observe(() => {

@@ -161,3 +161,72 @@ describe("import-element", () => {
     expect(calls).toHaveLength(8);
   });
 });
+
+test("an import-element inside a component definition does not import until the component renders it", async () => {
+  respond = () => new Response(file(tag("late")));
+  const url = `/inside-${tag("x")}.html`;
+  render(
+    `<custom-element name="${tag("holder")}"><import-element from="${url}"></import-element></custom-element>`,
+  );
+  await tick();
+  expect(calls.some((call) => call.endsWith(url))).toBe(false);
+  render(`<import-element from="${url}"></import-element>`);
+  await vi.waitFor(() => expect(calls.some((call) => call.endsWith(url))).toBe(true));
+});
+
+test("importing an already loaded file again defines nothing twice and warns about nothing", async () => {
+  const name = tag("again");
+  respond = () =>
+    new Response(
+      `<custom-element name="${name}"><style>p { color: red; }</style><p>x</p></custom-element>`,
+    );
+  const url = new URL(`/again-${name}.html`, location.href).href;
+  await importDefinitions(url);
+  await importDefinitions(url);
+  expect(customElements.get(name)).toBeDefined();
+  expect(warned("defined twice")).toBe(false);
+});
+
+test("a component file imports the files it depends on, once, even when they import it back", async () => {
+  const card = tag("card");
+  const button = tag("button");
+  const unrelated = tag("unrelated");
+  const base = `/deps-${tag("x")}`;
+  const files: Record<string, string> = {
+    [`${base}/card.html`]: `<import-element from="./button.html"></import-element><custom-element name="${card}"><${button}></${button}><import-element from="./unrelated.html"></import-element></custom-element>`,
+    [`${base}/button.html`]: `<import-element from="./card.html"></import-element><custom-element name="${button}"><button>ok</button></custom-element>`,
+    [`${base}/unrelated.html`]: file(unrelated),
+  };
+  respond = (url) =>
+    new Response(files[url.pathname] ?? "", { status: files[url.pathname] ? 200 : 404 });
+  await importDefinitions(new URL(`${base}/card.html`, location.href).href);
+  expect(customElements.get(card)).toBeDefined();
+  expect(customElements.get(button)).toBeDefined();
+  expect(customElements.get(unrelated)).toBeUndefined();
+  expect(calls.filter((call) => call.endsWith("/button.html"))).toHaveLength(1);
+  expect(calls.filter((call) => call.endsWith("/card.html"))).toHaveLength(1);
+});
+
+test("a component file is defined only after the files it depends on", async () => {
+  const shell = tag("shell");
+  const dialog = tag("dialog");
+  const base = `/order-${tag("x")}`;
+  let release: () => void = () => {};
+  const slow = new Promise<void>((resolve) => (release = resolve));
+  respond = async (url) => {
+    if (url.pathname.endsWith("/dialog.html")) {
+      await slow;
+      return new Response(`<custom-element name="${dialog}"><p>d</p></custom-element>`);
+    }
+    return new Response(
+      `<import-element from="./dialog.html"></import-element><custom-element name="${shell}"><${dialog}></${dialog}></custom-element>`,
+    );
+  };
+  const done = importDefinitions(new URL(`${base}/shell.html`, location.href).href);
+  await new Promise((resolve) => setTimeout(resolve, 20));
+  expect(customElements.get(shell)).toBeUndefined();
+  release();
+  await done;
+  expect(customElements.get(dialog)).toBeDefined();
+  expect(customElements.get(shell)).toBeDefined();
+});

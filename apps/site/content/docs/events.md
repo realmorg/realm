@@ -39,7 +39,7 @@ Handlers are compiled together with the script when the component type is define
 <div onscroll="measure()" throttle="100ms"></div>
 ```
 
-Durations accept `ms`, `s` and `m` (`250ms`, `2s`, `1m`); a bare number is milliseconds. Pending debounced calls are cancelled when the element is removed.
+Durations accept `ms`, `s` and `m` (`250ms`, `2s`, `1m`). A bare number is milliseconds. Pending debounced calls are cancelled when the element is removed.
 
 ## Emitting events
 
@@ -68,7 +68,7 @@ A parent handles a child's events with `on<name>` in its markup, whether the nam
 
 ### On a plain page
 
-Browsers only support handler attributes for native event names. REALM adds them for its components: on a plain page, an `on<name>` attribute on a REALM element holds ordinary JavaScript, and the matching property accepts a function, exactly like `onclick`:
+Browsers only support handler attributes for native event names. REALM adds them for its components. On a plain page, an `on<name>` attribute on a REALM element holds ordinary JavaScript, and the matching property accepts a function, like `onclick`:
 
 ```html live
 <custom-element name="rating-stars">
@@ -126,7 +126,7 @@ stars.onrate = (event) => {
 };
 ```
 
-REALM finds a component's custom event names by reading its script for `new CustomEvent("name"` and `new Event("name"`. Native names such as `change`, `input`, `toggle`, `select` and `close` are never redefined; they already work everywhere.
+REALM finds a component's custom event names by reading its script for `new CustomEvent("name"` and `new Event("name"`. Native names such as `change`, `input`, `toggle`, `select` and `close` are never redefined, because they already work everywhere.
 
 ## Listening from the script
 

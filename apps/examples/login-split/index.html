@@ -4,24 +4,24 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Login (split) · REALM blocks</title>
-  <link rel="stylesheet" href="../../assets/realm/realm.css">
-  <link rel="stylesheet" href="../../assets/ui/theme.css">
-  <script type="module" src="../../assets/realm/realm.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/realm.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/dist/theme.css">
+  <script type="module" src="https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/realm.js"></script>
   <style>
     body { margin: 0; min-height: 100dvh; }
     main { min-height: 100dvh; display: grid; grid-template-columns: 1fr 1fr; }
     .form { display: grid; place-items: center; padding: 2rem; }
     .art { background: linear-gradient(135deg, oklch(0.3 0.05 270), oklch(0.15 0.02 270)); display: grid; place-items: end start; padding: 3rem; color: white; }
-    .art blockquote { margin: 0; font-size: 1.125rem; max-width: 28rem; }
+    .art p { margin: 0; font-size: 1.125rem; max-width: 28rem; }
     @media (max-width: 860px) { main { grid-template-columns: 1fr; } .art { display: none; } }
   </style>
 </head>
 <body>
-  <import-element from="../../assets/ui/ui.html"></import-element>
+  <import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/toaster.html"></import-element>
   <import-element from="../blocks/blocks.html"></import-element>
   <main>
     <div class="form"><login-form heading="Welcome back"></login-form></div>
-    <div class="art"><blockquote>“REALM let us ship our design system as plain HTML. No build step, no framework lock-in.”<br><small>— A happy team</small></blockquote></div>
+    <div class="art"><p>This sign-in form is built from REALM UI components in plain HTML, with no build step.</p></div>
   </main>
   <ui-toaster></ui-toaster>
 </body>

@@ -6,11 +6,30 @@
       "outputs": ["dist/**"],
       "env": ["SITE_URL", "SITE_BASE"]
     },
+    "site#build": {
+      "dependsOn": ["^build", "@realmorg/unicons#build"],
+      "outputs": ["dist/**"],
+      "env": ["SITE_URL", "SITE_BASE"]
+    },
     "test": {
       "dependsOn": ["^build"]
     },
+    "site#test": {
+      "dependsOn": ["^build", "@realmorg/unicons#build"]
+    },
+    "@realmorg/unicons#test": {
+      "dependsOn": ["^build", "build"]
+    },
     "coverage": {
       "dependsOn": ["^build"],
+      "outputs": ["coverage/**"]
+    },
+    "site#coverage": {
+      "dependsOn": ["^build", "@realmorg/unicons#build"],
+      "outputs": ["coverage/**"]
+    },
+    "@realmorg/unicons#coverage": {
+      "dependsOn": ["^build", "build"],
       "outputs": ["coverage/**"]
     },
     "typecheck": {

@@ -9,10 +9,10 @@ nav: Alert Dialog
 # Alert Dialog
 
 `ui-alert-dialog` is a modal `<dialog>` with `role="alertdialog"` for confirmations that need an answer, such as
-deleting data. Escape does nothing and there is no close button or backdrop dismissal: the dialog closes when the user
+deleting data. Escape does nothing, and there is no close button or backdrop dismissal. The dialog closes when the user
 picks `ui-alert-dialog-cancel` or `ui-alert-dialog-action`. Each stores its `value` in `returnValue`.
 
-`ui-alert-dialog-trigger` opens the dialog. The header holds the title and description; the footer holds the actions.
+`ui-alert-dialog-trigger` opens the dialog. The header holds the title and description, and the footer holds the actions.
 
 ```html live
 <ui-alert-dialog>
@@ -32,7 +32,7 @@ picks `ui-alert-dialog-cancel` or `ui-alert-dialog-action`. Each stores its `val
 
 ### Read the chosen action
 
-The `close` event fires after the dialog closes. Read `returnValue` to find out which action was chosen:
+The `close` event fires after the dialog closes. Read `returnValue` to find out which action was chosen.
 `ui-alert-dialog-cancel` stores `"cancel"` and `ui-alert-dialog-action` stores `"action"` unless you set `value`.
 
 ```html live
@@ -116,7 +116,7 @@ footer.
 
 | Attribute | Type | Default | Description |
 | --- | --- | --- | --- |
-| `open` | boolean | `false` | Whether the dialog is open. Setting it opens the dialog modally; reflects to the attribute. |
+| `open` | boolean | `false` | Whether the dialog is open. Setting it opens the dialog modally. Reflects. |
 
 ### ui-alert-dialog-action attributes
 
@@ -147,9 +147,9 @@ footer.
 | --- | --- |
 | `--show-modal` | Opens the dialog. |
 | `--close` | Closes the dialog. |
-| `--request-close` | Same as `--close`: the alert dialog has no cancel step. |
+| `--request-close` | Same as `--close`, because the alert dialog has no cancel step. |
 
-`ui-button` also accepts the commands without the `--` prefix; a plain `<button>` needs the prefix.
+`ui-button` also accepts the commands without the `--` prefix. A plain `<button>` needs the prefix.
 
 ### Events
 

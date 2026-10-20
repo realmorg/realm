@@ -1,0 +1,59 @@
+<custom-element name="profile-card">
+  <script>
+    const props = defineProps({
+      name: prop.string().default("Anonymous"),
+      job: prop.string().default(""),
+    });
+
+    const profile = useState({
+      following: false,
+      get initials() {
+        return props.name
+          .split(" ")
+          .map((word) => word[0])
+          .join("");
+      },
+      get label() {
+        return this.following ? "Following" : "Follow";
+      },
+      get variant() {
+        return this.following ? "outline" : "default";
+      },
+    });
+
+    function toggle() {
+      profile.following = !profile.following;
+    }
+  </script>
+
+  <style>
+    :host {
+      display: block;
+    }
+    .profile {
+      display: flex;
+      align-items: center;
+      gap: calc(var(--spacing) * 3);
+    }
+    .name {
+      display: grid;
+      flex: 1;
+      min-width: 0;
+      font-size: var(--text-sm);
+    }
+    .job {
+      color: var(--muted-foreground);
+    }
+  </style>
+
+  <ui-card>
+    <ui-card-content class="profile">
+      <ui-avatar><ui-avatar-fallback><slot name="#profile.initials"></slot></ui-avatar-fallback></ui-avatar>
+      <span class="name">
+        <strong><slot name="@name"></slot></strong>
+        <span class="job"><slot name="@job"></slot></span>
+      </span>
+      <ui-button size="sm" _variant="#profile.variant" _aria-pressed="#profile.following" onclick="toggle()"><slot name="#profile.label"></slot></ui-button>
+    </ui-card-content>
+  </ui-card>
+</custom-element>

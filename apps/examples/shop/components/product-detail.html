@@ -1,0 +1,147 @@
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/badge.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/breadcrumb.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/button.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/empty.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/input.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/label.html"></import-element>
+<import-element from="./product-art.html"></import-element>
+
+<custom-element name="product-detail">
+  <script type="module">
+    import { addedToast, addToCart, productFromUrl, titleFor } from "../shop.js";
+
+    const view = useState({ product: productFromUrl(location.search), quantity: 1 });
+
+    function setQuantity(field) {
+      view.quantity = Number(field.value);
+    }
+
+    function add(event) {
+      event.preventDefault();
+      dispatch("toast", addedToast(view.product, addToCart(view.product, view.quantity)));
+    }
+
+    observe(() => {
+      document.title = titleFor(view.product);
+    });
+  </script>
+
+  <style>
+    :host {
+      display: grid;
+      gap: calc(var(--spacing) * 6);
+    }
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: calc(var(--spacing) * 10);
+      align-items: start;
+    }
+    .info {
+      display: grid;
+      gap: calc(var(--spacing) * 4);
+    }
+    h1 {
+      margin: 0;
+      font-size: var(--text-3xl);
+      letter-spacing: -0.02em;
+    }
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: calc(var(--spacing) * 3);
+      color: var(--muted-foreground);
+      font-size: var(--text-sm);
+    }
+    .rating {
+      display: inline-flex;
+      align-items: center;
+      gap: calc(var(--spacing) * 1);
+    }
+    .price {
+      margin: 0;
+      font-size: var(--text-2xl);
+      font-weight: var(--font-weight-semibold);
+    }
+    .description {
+      margin: 0;
+      line-height: var(--leading-normal);
+    }
+    form {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: end;
+      gap: calc(var(--spacing) * 3);
+    }
+    .quantity {
+      display: grid;
+      gap: calc(var(--spacing) * 2);
+      width: calc(var(--spacing) * 24);
+    }
+    .sold-out {
+      margin: 0;
+      color: var(--muted-foreground);
+    }
+    .links a {
+      color: inherit;
+      font-size: var(--text-sm);
+      text-underline-offset: calc(var(--spacing) * 1);
+    }
+    @media (max-width: 720px) {
+      .layout {
+        grid-template-columns: minmax(0, 1fr);
+        gap: calc(var(--spacing) * 6);
+      }
+    }
+  </style>
+
+  <is-visible when="#view.product">
+    <ui-breadcrumb>
+      <ui-breadcrumb-list>
+        <ui-breadcrumb-item><ui-breadcrumb-link href="./">Products</ui-breadcrumb-link></ui-breadcrumb-item>
+        <ui-breadcrumb-separator></ui-breadcrumb-separator>
+        <ui-breadcrumb-item><ui-breadcrumb-page><slot name="#view.product.name"></slot></ui-breadcrumb-page></ui-breadcrumb-item>
+      </ui-breadcrumb-list>
+    </ui-breadcrumb>
+
+    <div class="layout">
+      <product-art _icon="#view.product.icon" _category="#view.product.category"></product-art>
+      <div class="info">
+        <h1><slot name="#view.product.name"></slot></h1>
+        <div class="meta">
+          <span><slot name="#view.product.categoryLabel"></slot></span>
+          <span class="rating"><u-icon name="star" label="Rating"></u-icon><slot name="#view.product.ratingLabel"></slot></span>
+          <ui-badge variant="outline"><slot name="#view.product.stockLabel"></slot></ui-badge>
+        </div>
+        <p class="price"><slot name="#view.product.priceLabel"></slot></p>
+        <p class="description"><slot name="#view.product.description"></slot></p>
+        <is-visible when="#view.product.inStock">
+          <form onsubmit="add(event)">
+            <div class="quantity">
+              <ui-label for="quantity">Quantity</ui-label>
+              <ui-input id="quantity" type="number" min="1" required _max="#view.product.stock" value="1" oninput="setQuantity(this)"></ui-input>
+            </div>
+            <ui-button type="submit"><u-icon name="shopping-bag"></u-icon> Add to cart</ui-button>
+          </form>
+        </is-visible>
+        <is-hidden when="#view.product.inStock">
+          <p class="sold-out" role="status">This product is sold out. Check back soon.</p>
+        </is-hidden>
+        <p class="links"><a href="cart.html">View your cart</a></p>
+      </div>
+    </div>
+  </is-visible>
+
+  <is-hidden when="#view.product">
+    <h1>Product not found</h1>
+    <ui-empty>
+      <ui-empty-header>
+        <ui-empty-media variant="icon"><u-icon name="package"></u-icon></ui-empty-media>
+        <ui-empty-title level="2">That product does not exist</ui-empty-title>
+        <ui-empty-description>It may have been removed, or the link is wrong.</ui-empty-description>
+      </ui-empty-header>
+      <ui-empty-content><a href="./">Browse all products</a></ui-empty-content>
+    </ui-empty>
+  </is-hidden>
+</custom-element>

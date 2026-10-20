@@ -498,7 +498,7 @@ describe("empty and missing values", () => {
     ).toBe(false);
   });
 
-  test("a carousel with no width reports the first slide", async () => {
+  test("a carousel with no width stays on the first slide without firing change", async () => {
     const host = await render(
       `<div style="width: 0"><ui-carousel><ui-carousel-content><ui-carousel-item>1</ui-carousel-item><ui-carousel-item>2</ui-carousel-item></ui-carousel-content></ui-carousel></div>`,
     );
@@ -510,7 +510,7 @@ describe("empty and missing values", () => {
     part(carousel.querySelector("ui-carousel-content"), "track").dispatchEvent(
       new Event("scrollend"),
     );
-    expect(indexes).toEqual([0]);
+    expect(indexes).toEqual([]);
   });
 
   test("chart plots missing values at zero", async () => {

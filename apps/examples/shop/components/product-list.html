@@ -1,0 +1,199 @@
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/badge.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/button.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/empty.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/input-group.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/select.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/switch.html"></import-element>
+<import-element from="./product-art.html"></import-element>
+
+<custom-element name="product-list">
+  <script type="module">
+    import { addedToast, addToCart, CATEGORIES, catalogue, plural, SORT_OPTIONS } from "../shop.js";
+
+    const filters = useState({
+      query: "",
+      category: "all",
+      sort: "featured",
+      inStock: false,
+      categories: CATEGORIES,
+      sorts: SORT_OPTIONS,
+      get products() {
+        return catalogue(this);
+      },
+      get summary() {
+        return plural(this.products.length, "product");
+      },
+    });
+
+    function search(field) {
+      filters.query = field.value;
+    }
+
+    function pickCategory(select) {
+      filters.category = select.value;
+    }
+
+    function pickSort(select) {
+      filters.sort = select.value;
+    }
+
+    function toggleStock(toggle) {
+      filters.inStock = toggle.checked;
+    }
+
+    function add(product) {
+      dispatch("toast", addedToast(product, addToCart(product)));
+    }
+  </script>
+
+  <style>
+    :host {
+      display: grid;
+      gap: calc(var(--spacing) * 6);
+    }
+    h1 {
+      margin: 0;
+      font-size: var(--text-2xl);
+      letter-spacing: -0.02em;
+    }
+    .intro p {
+      margin: calc(var(--spacing) * 1) 0 0;
+      color: var(--muted-foreground);
+      font-size: var(--text-sm);
+    }
+    .filters {
+      display: grid;
+      grid-template-columns: minmax(0, 2fr) repeat(2, minmax(0, 1fr)) auto;
+      align-items: center;
+      gap: calc(var(--spacing) * 3);
+    }
+    .count {
+      margin: 0;
+      color: var(--muted-foreground);
+      font-size: var(--text-sm);
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(calc(var(--spacing) * 56), 1fr));
+      gap: calc(var(--spacing) * 5);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+    article {
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      gap: calc(var(--spacing) * 3);
+      height: 100%;
+      padding: calc(var(--spacing) * 3);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      background: var(--card);
+      box-sizing: border-box;
+    }
+    h2 {
+      margin: 0;
+      font-size: var(--text-base);
+    }
+    h2 a {
+      color: inherit;
+      text-decoration: none;
+    }
+    h2 a:hover {
+      text-decoration: underline;
+    }
+    h2 a:focus-visible {
+      outline: 2px solid var(--ring);
+      outline-offset: 2px;
+    }
+    .details {
+      display: grid;
+      align-content: start;
+      gap: calc(var(--spacing) * 1);
+      font-size: var(--text-sm);
+    }
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: calc(var(--spacing) * 2);
+      color: var(--muted-foreground);
+    }
+    .rating {
+      display: inline-flex;
+      align-items: center;
+      gap: calc(var(--spacing) * 1);
+    }
+    .buy {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: calc(var(--spacing) * 2);
+    }
+    .price {
+      font-size: var(--text-lg);
+      font-weight: var(--font-weight-semibold);
+    }
+    @media (max-width: 720px) {
+      .filters {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .filters search {
+        grid-column: 1 / -1;
+      }
+    }
+  </style>
+
+  <div class="intro">
+    <h1>Products</h1>
+    <p>Small things for the kitchen, home, desk and outdoors.</p>
+  </div>
+
+  <div class="filters">
+    <search>
+      <ui-input-group type="search" aria-label="Search products" placeholder="Search products…" oninput="search(this)">
+        <ui-input-group-addon><u-icon name="search"></u-icon></ui-input-group-addon>
+      </ui-input-group>
+    </search>
+    <ui-select aria-label="Category" onchange="pickCategory(this)">
+      <option value="all">All categories</option>
+      <option repeat="#filters.categories" as="category" key="id" _value="#category.id" _label="#category.label"></option>
+    </ui-select>
+    <ui-select aria-label="Sort by" onchange="pickSort(this)">
+      <option repeat="#filters.sorts" as="sort" key="id" _value="#sort.id" _label="#sort.label"></option>
+    </ui-select>
+    <ui-switch onchange="toggleStock(this)">In stock only</ui-switch>
+  </div>
+
+  <p class="count" role="status"><slot name="#filters.summary"></slot></p>
+
+  <ul class="grid" aria-label="Products">
+    <li repeat="#filters.products" as="product" key="id">
+      <article>
+        <product-art _icon="#product.icon" _category="#product.category"></product-art>
+        <div class="details">
+          <h2><a _href="#product.href"><slot name="#product.name"></slot></a></h2>
+          <div class="meta">
+            <span><slot name="#product.categoryLabel"></slot></span>
+            <span class="rating"><u-icon name="star" label="Rating"></u-icon><slot name="#product.rating"></slot></span>
+            <ui-badge variant="outline"><slot name="#product.stockLabel"></slot></ui-badge>
+          </div>
+        </div>
+        <div class="buy">
+          <span class="price"><slot name="#product.priceLabel"></slot></span>
+          <ui-button size="sm" _aria-label="#product.addLabel" _disabled="!#product.inStock" onclick="add(product)"><u-icon name="plus"></u-icon> Add</ui-button>
+        </div>
+      </article>
+    </li>
+  </ul>
+
+  <is-hidden when="#filters.products.length">
+    <ui-empty>
+      <ui-empty-header>
+        <ui-empty-media variant="icon"><u-icon name="search"></u-icon></ui-empty-media>
+        <ui-empty-title level="2">No products found</ui-empty-title>
+        <ui-empty-description>Try another search or category.</ui-empty-description>
+      </ui-empty-header>
+    </ui-empty>
+  </is-hidden>
+</custom-element>

@@ -127,4 +127,4 @@ const status = useState({
 
 ## Inside tables and selects
 
-The HTML parser moves unknown elements out of `<table>`, `<tr>` and `<select>`. Do not put `<is-visible>` there; bind `_hidden` on the row or option instead, or filter the list in a getter and [repeat](/docs/lists/) over the result.
+The HTML parser moves unknown elements out of `<table>`, `<tr>` and `<select>`. Do not put `<is-visible>` there. Bind `_hidden` on the row or option instead, or filter the list in a getter and [repeat](/docs/lists/) over the result.

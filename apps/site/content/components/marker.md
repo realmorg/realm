@@ -59,7 +59,7 @@ icon is a leading `<svg>` child, sized to `calc(var(--spacing) * 4)`.
 
 | Attribute | Type | Default | Description |
 | --- | --- | --- | --- |
-| `variant` | `"default"` \| `"separator"` \| `"border"` | `"default"` | `separator` draws lines on both sides; `border` draws a line below. |
+| `variant` | `"default"` \| `"separator"` \| `"border"` | `"default"` | `separator` draws lines on both sides. `border` draws a line below. |
 
 ### Parts
 
@@ -67,11 +67,11 @@ icon is a leading `<svg>` child, sized to `calc(var(--spacing) * 4)`.
 | --- | --- | --- |
 | `ui-marker` | (root) | A full-width row of small muted text. |
 
-The default slot takes any content: the text and an optional leading `<svg>` icon.
+The default slot takes the text and an optional leading `<svg>` icon.
 
 ### CSS parts
 
-None. The shadow root is a single slot; style the host.
+None. The shadow root is a single slot. Style the host.
 
 ### Accessibility
 

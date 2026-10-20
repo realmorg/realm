@@ -1,6 +1,6 @@
 ---
 title: Lists and keys
-description: Repeat content with repeat-list or the repeat attribute, name the item and index, use keys so rows are reused and moved, and repeat rows inside tables and selects.
+description: Repeat content with repeat-list or the repeat attribute, and use keys so rows are moved instead of rebuilt.
 group: Core concepts
 order: 16
 nav: Lists and keys
@@ -68,7 +68,7 @@ With `key`, REALM matches items by that property between updates:
 - removed items are torn down, including their listeners and requests,
 - new items are created.
 
-Without `key`, items are matched by position: changing the first item of a list updates the first row in place. That is fine for static or append-only lists. Use a key whenever items can be reordered, inserted or removed.
+Without `key`, items are matched by position, so changing the first item updates the first row in place. This is fine for static or append-only lists. Use a key when items can be reordered, inserted or removed.
 
 Keys must be unique. A duplicate key logs a warning and the duplicate gets its own row.
 
@@ -133,11 +133,11 @@ Keys must be unique. A duplicate key logs a warning and the duplicate gets its o
 <sortable-names></sortable-names>
 ```
 
-Type in a note, then shuffle: the note moves with its person, because the row is moved, not rebuilt.
+Type a note, then shuffle. The note stays with its person because the row is moved, not rebuilt.
 
 ## Updating lists
 
-Change the array in the script. Every array method that mutates is tracked:
+Change the array in the script. All mutating array methods are tracked:
 
 ```js
 todo.items.push(item);

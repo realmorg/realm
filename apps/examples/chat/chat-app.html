@@ -1,0 +1,180 @@
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/avatar.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/badge.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/input-group.html"></import-element>
+<import-element from="./chat-thread.html"></import-element>
+
+<custom-element name="chat-app">
+  <script type="module">
+    import { chat, open } from "./chat.js";
+
+    function search(field) {
+      chat.query = field.value;
+    }
+
+    function select(conversation) {
+      open(conversation.id);
+    }
+
+    observe(() => {
+      document.title = chat.title;
+    });
+  </script>
+
+  <style>
+    :host {
+      display: grid;
+      grid-template-columns: calc(var(--spacing) * 80) minmax(0, 1fr);
+      width: min(calc(var(--spacing) * 260), 100%);
+      height: min(calc(100dvh - var(--spacing) * 12), calc(var(--spacing) * 180));
+      overflow: hidden;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      background: var(--card);
+      box-shadow: var(--shadow-sm);
+    }
+    aside {
+      display: grid;
+      grid-template-rows: auto auto minmax(0, 1fr);
+      gap: calc(var(--spacing) * 3);
+      min-height: 0;
+      padding: calc(var(--spacing) * 4) calc(var(--spacing) * 3);
+      border-right: 1px solid var(--border);
+    }
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: calc(var(--spacing) * 2);
+      padding: 0 calc(var(--spacing) * 1);
+    }
+    h1 {
+      margin: 0;
+      font-size: var(--text-xl);
+      letter-spacing: -0.02em;
+    }
+    nav {
+      min-height: 0;
+      overflow-y: auto;
+    }
+    ul {
+      display: grid;
+      gap: calc(var(--spacing) * 1);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+    .conversation {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr) auto;
+      align-items: center;
+      gap: calc(var(--spacing) * 3);
+      width: 100%;
+      padding: calc(var(--spacing) * 2);
+      border: 0;
+      border-radius: var(--radius-lg);
+      background: transparent;
+      color: inherit;
+      font: inherit;
+      text-align: left;
+      cursor: pointer;
+    }
+    .conversation:hover {
+      background: var(--accent);
+    }
+    .conversation:focus-visible {
+      outline: 2px solid var(--ring);
+      outline-offset: -2px;
+    }
+    .conversation[aria-current="true"] {
+      background: var(--secondary);
+    }
+    .text {
+      display: grid;
+      min-width: 0;
+    }
+    .name {
+      font-size: var(--text-sm);
+      font-weight: var(--font-weight-medium);
+    }
+    .preview {
+      overflow: hidden;
+      color: var(--muted-foreground);
+      font-size: var(--text-xs);
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+    .meta {
+      display: grid;
+      justify-items: end;
+      gap: calc(var(--spacing) * 1);
+      color: var(--muted-foreground);
+      font-size: var(--text-xs);
+    }
+    .meta ui-badge:not([data-unread]) {
+      visibility: hidden;
+    }
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+    .empty {
+      padding: calc(var(--spacing) * 4);
+      color: var(--muted-foreground);
+      font-size: var(--text-sm);
+      text-align: center;
+    }
+    @media (max-width: 720px) {
+      :host {
+        grid-template-columns: minmax(0, 1fr);
+        height: calc(100dvh - var(--spacing) * 8);
+      }
+      aside {
+        border-right: 0;
+      }
+      :host(:state(state-chat-thread)) aside,
+      :host(:not(:state(state-chat-thread))) chat-thread {
+        display: none;
+      }
+    }
+  </style>
+
+  <aside>
+    <header>
+      <h1>Chat</h1>
+      <is-visible when="#chat.unread">
+        <ui-badge shape="pill"><slot name="#chat.unread"></slot> unread</ui-badge>
+      </is-visible>
+    </header>
+    <search>
+      <ui-input-group type="search" aria-label="Search conversations" placeholder="Search conversations…" oninput="search(this)">
+        <ui-input-group-addon><u-icon name="search"></u-icon></ui-input-group-addon>
+      </ui-input-group>
+    </search>
+    <nav aria-label="Conversations">
+      <ul>
+        <li repeat="#chat.list" as="conversation" key="id">
+          <button class="conversation" type="button" _aria-current="#conversation.current" onclick="select(conversation)">
+            <ui-avatar aria-hidden="true"><ui-avatar-fallback><slot name="#conversation.initials"></slot></ui-avatar-fallback></ui-avatar>
+            <span class="text">
+              <span class="name"><slot name="#conversation.name"></slot></span>
+              <span class="preview"><slot name="#conversation.preview"></slot></span>
+            </span>
+            <span class="meta">
+              <span><slot name="#conversation.time"></slot></span>
+              <ui-badge shape="round" _data-unread="#conversation.hasUnread"><slot name="#conversation.unread"></slot><span class="sr-only"> unread</span></ui-badge>
+            </span>
+          </button>
+        </li>
+      </ul>
+      <is-hidden when="#chat.list.length">
+        <p class="empty">No conversations match your search.</p>
+      </is-hidden>
+    </nav>
+  </aside>
+
+  <chat-thread></chat-thread>
+</custom-element>

@@ -91,7 +91,7 @@ Without `width` or `columns`, the content is a single column at least `calc(var(
 | `ui-navigation-menu-item` | the `<ul>` of `ui-navigation-menu-list` | A list item (`role="listitem"`) and, when it has content, the popover panel. |
 | `ui-navigation-menu-trigger` | a `ui-navigation-menu-item` | A `<button>` with a chevron and `aria-expanded` that opens the item's panel. |
 | `ui-navigation-menu-content` | the popover panel of its `ui-navigation-menu-item` | A grid of links inside the panel. |
-| `ui-navigation-menu-link` | a `ui-navigation-menu-item` or a `ui-navigation-menu-content` | An `<a>`. At the top level it looks like a trigger; inside content it is a block row, where a first child is the title and a last child the muted description. |
+| `ui-navigation-menu-link` | a `ui-navigation-menu-item` or a `ui-navigation-menu-content` | An `<a>`. At the top level it looks like a trigger. Inside content it is a block row, where a first child is the title and a last child the muted description. |
 
 ### Attributes
 
@@ -105,7 +105,7 @@ Without `width` or `columns`, the content is a single column at least `calc(var(
 
 | Attribute | Type | Default | Description |
 | --- | --- | --- | --- |
-| `width` | number | | Width of the content in spacing units: `width="72"` is `calc(var(--spacing) * 72)`. |
+| `width` | number | | Width of the content in spacing units, so `width="72"` is `calc(var(--spacing) * 72)`. |
 | `columns` | number | `1` | Number of equal grid columns for the links. |
 
 #### ui-navigation-menu-link
@@ -129,7 +129,7 @@ Without `width` or `columns`, the content is a single column at least `calc(var(
 ### Accessibility
 
 - `ui-navigation-menu` is a `<nav>` landmark named by `label`. Each `ui-navigation-menu-item` has `role="listitem"`.
-- Links are native `<a>` elements. Triggers are native `<button>` elements with `aria-expanded`: Enter or Space
+- Links are native `<a>` elements. Triggers are native `<button>` elements with `aria-expanded`. Enter or Space
   opens and closes the panel.
 - With the panel open, Tab moves into the panel's links. Escape closes the panel and, when focus was inside it,
   returns focus to the trigger.

@@ -1,25 +1,52 @@
 ---
-title: What's new in REALM v2
-description: REALM v2 replaces v1's tag language with one custom-element holding a plain JavaScript script, a style and markup, and rebuilds the runtime with tests, cleanup, forms, accessibility and a UI library.
-order: 2
-nav: What's new in REALM v2
+title: REALM is dead, long live REALM
+description: Why REALM v1 stopped, what changed in the REALM v2 rewrite, and how to start with it.
+date: 2026-10-20
+author: Ribhararnus Pracutian
+nav: REALM is dead, long live REALM
 ---
 
-# What's new in REALM v2
+# REALM is dead, long live REALM
 
-*19 October 2026*
+*20 October 2026 · Ribhararnus Pracutian*
 
-REALM v2 is a rewrite. The idea is the same as in v1: build web components by writing HTML, with no build step. What changed is how a component describes its logic, and almost everything under the hood.
+In June 2025 I put REALM into [maintenance mode](/blog/project-is-under-maintenance-mode/) and told anyone starting a new project to use something else. REALM is now back as v2, a rewrite. This post covers why v1 stopped, what changed, and how to start.
 
-## A component is one tag with three parts
+## Why v1 stopped
 
-In v1, everything was a tag. Data lived in `<element-state>`, changes were `<set-state>`, clicks were `<trigger-event>` inside `<element-flow>`, requests were `<http-request>` with `<response-ok>` and `<response-fail>`, and markup sat inside a `<template>`. It proved that HTML-first components were pleasant to write, but anything slightly unusual needed deep trees of tags or a `<script type="module/realm">` escape hatch.
+The maintenance post gave three reasons:
 
-In v2, a component is a `<custom-element>` with a `<script>`, a `<style>` and markup:
+- Shadow DOM and the Web Component APIs kept changing across browsers. Keeping v1 working everywhere took more time than one person had.
+- Good component libraries had appeared, with communities behind them.
+- I no longer used REALM in anything I shipped, so I got no feedback from actual use.
+
+There was a fourth reason I did not write down. v1 was built quickly and had no test suite. A later audit found 22 confirmed bugs, including the one that broke Unicons when a page imported many icons.
+
+## Why v2 exists
+
+Two things changed.
+
+First, the platform settled. The APIs v2 depends on, such as `ElementInternals`, custom states (`:state()`), `adoptedStyleSheets` and `AbortSignal`, now behave the same in Chromium, Firefox and WebKit. v2 runs its full test suite in all three browsers on every change, so I find out when that stops being true.
+
+Second, REALM's original goal still holds. You can build a working app with a browser, a text editor, HTML files and one script tag from a CDN. There is no npm, bundler or compiler. Most front-end tools assume a build step before anything shows on screen. REALM does not.
+
+The design also suits code assistants. A REALM component is plain HTML with a short script, and each feature uses the platform's own names: `<slot>`, `onclick`, `fetch`, `action`, `method`. There are no template expressions or custom syntax to learn, so language models can read and write REALM code with few mistakes. The site supports this:
+
+- [llms.txt](/llms.txt) lists every page, and [llms-full.txt](/llms-full.txt) holds the whole documentation in one file.
+- Every page has a Markdown copy. Add `.md` to the address, or use the "View as Markdown" link at the bottom of each page.
+- The runtime's behaviour is written down as [specifications](https://github.com/realmorg/realm/tree/main/openspec/specs). Every scenario in them is a test with the same name, so the specs and the code stay in sync.
+
+## What changed from v1
+
+### One tag, three parts
+
+In v1, everything was a tag. Data lived in `<element-state>`, changes were `<set-state>`, clicks were `<trigger-event>` inside `<element-flow>`, requests were `<http-request>` with `<response-ok>` and `<response-fail>`, and markup sat inside a `<template>`. Simple components were pleasant to write, but anything unusual needed deep trees of tags.
+
+In v2, a component is one `<custom-element>` with a `<script>`, a `<style>` and markup:
 
 ```html
 <custom-element name="counter-button">
-  <script>
+  <script type="realm">
     const counter = useState({ count: 0 });
 
     function increment() {
@@ -27,64 +54,66 @@ In v2, a component is a `<custom-element>` with a `<script>`, a `<style>` and ma
     }
   </script>
 
-  <style>
+  <style type="realm">
     button { font-weight: bold; }
   </style>
 
   <button onclick="increment()">Clicked <slot name="#counter.count"></slot> times</button>
 </custom-element>
+
+<counter-button></counter-button>
 ```
 
-The script is plain JavaScript with a few named helpers: `defineProps` for typed attributes, `useState` for state, `observe` for side effects. Handlers are native `onclick` attributes that call script functions directly. There is still no compiler: REALM assembles each component in the browser.
+The script is plain JavaScript with a few named helpers: `defineProps` for typed attributes, `useState` for state, `observe` for side effects. REALM builds each component in the browser.
 
-## What we kept
+### Native slots and handlers
 
-v1's vocabulary was good, so v2 keeps it and implements it natively:
+- Values are shown with native `<slot name="#…">` and `<slot name="@…">` elements.
+- Events are native `on*` attributes, such as `onclick="save(item)"`, that call functions from the script.
+- Attributes are bound with v1's `_` prefix: `_href="#link.url"`.
+- `<is-visible>`, `<is-hidden>` and `<repeat-list>` are still there. Lists take a `key`, so focus and typed text survive reordering, and the `repeat` attribute works inside tables and selects.
 
-- `<slot name="#…">` and `<slot name="@…">` to show values, now real slots that add nothing to the page,
-- the `_` prefix to bind attributes,
-- `<is-visible>`, `<is-hidden>` and `<repeat-list>`,
-- `<import-element>`,
-- `var(--attr-…)` and `var(--state-…)` in CSS.
+### Requests as attributes
 
-## What is new
+`fetch`, `into`, `render`, `busy`, `trigger`, `poll` and a few others go on the element that starts the request. Forms use their native `action` and `method`. Stale requests are cancelled, so an older, slower response can no longer overwrite a newer one. Results fire the browser's own `load` and `error` events. See [Fetching data](/docs/fetching/).
 
-- **Fine-grained reactivity.** Proxies with cached getters and batched updates. A change updates only the slots and bindings that read it.
-- **Keyed lists.** `key="id"` reuses and moves rows, so focus and typed text survive reordering. The `repeat` attribute works inside tables and selects.
-- **Requests as attributes.** `fetch`, `into`, `render`, `busy`, `trigger`, `poll` and friends, with stale requests cancelled and native `load` and `error` events.
-- **Typed props.** A small zod-style builder: `prop.number().int().min(0).default(0)`. Invalid values warn and fall back instead of crashing.
-- **Real form fields.** `form-associated` components submit, reset, validate and restore through `ElementInternals`.
-- **Accessibility tools.** Default roles, `delegates-focus`, and an implementation of the `focusgroup` proposal for arrow-key navigation.
-- **Reactive CSS states.** `:host(:state(attr-variant-is-outline))` replaces v1's regex-based CSS rewriting.
-- **Stores.** `defineStore` with persistence that keeps value types.
-- **REALM UI.** About sixty accessible `ui-*` components in the style of shadcn/ui, built with REALM itself. This website is built with them.
+### import-element
 
-## What we fixed
+`<import-element from="…">` loads an HTML file and defines every component in it. In v2 each URL is fetched once, however many tags ask for it, and defining a component twice does no harm. This fixes the bug that broke Unicons. See [Importing components](/docs/importing/).
 
-An audit of v1 found 22 confirmed bugs. Some were the kind real projects hit every day:
+### Other changes
 
-- Two `<import-element>` tags loading the same file at the same time both fetched it and both tried to register it, throwing "already defined" inside a promise. This broke Unicons. v2 fetches each URL once and treats duplicate definitions as harmless.
-- Listeners were never removed, so after a list re-rendered a click could run its action several times. Timers and observers kept running after their element was gone. In v2, everything a component starts is tied to an `AbortSignal` and stops on removal, and a memory test proves it.
-- Values read back from `localStorage` came back as strings.
-- HTML state was inserted without sanitising.
-- Inline scripts ran through `blob:` URLs, which a Content Security Policy blocks. v2 never uses `eval`, `new Function` or `blob:` and supports nonce-based policies.
-- An older, slower response could overwrite a newer one.
+- **Fine-grained updates.** A change updates only the slots and bindings that read it.
+- **Typed props.** `prop.number().int().min(0).default(0)`. Invalid values warn and fall back instead of crashing.
+- **Form fields.** `form-associated` components submit, reset, validate and restore like built-in inputs.
+- **Accessibility.** Default roles, `delegates-focus`, and arrow-key navigation through `focusgroup`.
+- **Styling from state.** `:host(:state(attr-variant-is-outline))`, `var(--attr-*)` and `var(--state-*)` replace v1's regex-based CSS rewriting.
+- **Stores.** `defineStore` shares state between components, with persistence that keeps value types.
+- **Cleanup.** Every listener, timer, observer and request a component starts stops when the component is removed.
+- **Security.** No `eval`, `new Function` or `blob:` URLs. HTML values are sanitised, and nonce-based Content Security Policies work.
 
-Every one of these has a regression test.
+### REALM UI
 
-## How it was built
+`@realmorg/ui` is a set of about sixty accessible `ui-*` components, such as buttons, dialogs, menus, tabs and data tables. They are written with REALM, and this website uses them. Browse them in [Components](/components/).
 
-v2 was specified before it was written. Each capability has an OpenSpec specification, and every scenario in a specification is a test with the same name. The runtime keeps 100% test coverage and runs in Chromium, Firefox and WebKit on every change.
+### Unicons v2
 
-## Upgrading
+[Unicons](https://github.com/realmorg/unicons) is rebuilt on REALM v2. Instead of one file per icon, a single `<u-icon>` element renders any of about 50,000 icons in 31 sets, and each set loads once, only when a page uses it.
 
-The [migration guide](/docs/migrating-from-v1/) has a tag-by-tag cheat sheet. Most components move over mechanically: `<element-state>` becomes `useState`, `<trigger-event>` becomes an `on*` attribute, `<set-state>` becomes an assignment.
+## How to start
 
-## Try it
+Add two lines to any HTML page:
+
+```html
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/realm.css">
+<script type="module" src="https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/realm.js"></script>
+```
+
+Then write a `<custom-element>` in the page, or put components in their own files and load them with `<import-element>`. Pin an exact version in production.
 
 - [Quick start](/docs/quick-start/)
 - [Tutorial](/docs/tutorial/)
-- [Components](/components/)
 - [Examples](/examples/)
+- [Migrating from v1](/docs/migrating-from-v1/), with a tag-by-tag cheat sheet
 
-v2 is published as `2.0.0-alpha`. Feedback and bug reports are welcome on [GitHub](https://github.com/realmui/realm).
+v2 is in alpha. Bug reports and feedback are welcome on [GitHub](https://github.com/realmorg/realm).
