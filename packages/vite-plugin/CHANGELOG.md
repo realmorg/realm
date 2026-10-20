@@ -1,5 +1,13 @@
 # @realmorg/vite-plugin
 
+## 2.0.0-alpha.2
+
+### Patch Changes
+
+- b21e827: The dev server leaves requests with a query string to Vite, so HTML proxy modules load correctly.
+- Updated dependencies [b21e827]
+  - @realmorg/realm@2.0.0-alpha.2
+
 ## 2.0.0-alpha.1
 
 ### Minor Changes
