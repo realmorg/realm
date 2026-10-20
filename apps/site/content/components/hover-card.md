@@ -85,8 +85,8 @@ flips when there is not enough room. `width` sets the card width in spacing unit
 | Part | Slot | Renders |
 | --- | --- | --- |
 | `ui-hover-card` | | Its parts, with no box of its own. Holds the delays. |
-| `ui-hover-card-trigger` | (default) | An inline block around the trigger. Pointer enter and focus schedule the card to open; pointer leave and focus out schedule it to close. |
-| `ui-hover-card-content` | (default) | The card: a bordered `popover="manual"` panel with padding, anchored to the trigger. The pointer over it keeps it open. |
+| `ui-hover-card-trigger` | (default) | An inline block around the trigger. Pointer enter and focus schedule the card to open. Pointer leave and focus out schedule it to close. |
+| `ui-hover-card-content` | (default) | A bordered `popover="manual"` panel with padding, anchored to the trigger. The pointer over it keeps it open. |
 
 ### ui-hover-card attributes
 
@@ -100,7 +100,7 @@ flips when there is not enough room. `width` sets the card width in spacing unit
 | Attribute | Type | Default | Description |
 | --- | --- | --- | --- |
 | `placement` | `"bottom"` \| `"top"` \| `"left"` \| `"right"` | `"bottom"` | Side of the trigger the card appears on. |
-| `width` | number | `64` | Card width in spacing units: `n` means `calc(var(--spacing) * n)`. |
+| `width` | number | `64` | Card width in spacing units, where `n` means `calc(var(--spacing) * n)`. |
 
 ### CSS parts
 

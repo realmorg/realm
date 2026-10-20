@@ -57,8 +57,8 @@ export const cart = defineStore(
 </custom-element>
 ```
 
-- A store is reactive, exactly like `useState`, including getters.
-- `defineStore` returns the same store for the same name, wherever it is called. Defining it in a module and importing it is the clearest pattern; calling `defineStore("cart", …)` directly in two component scripts also gives both the same store.
+- A store is reactive like `useState`, including getters.
+- `defineStore` returns the same store for the same name, wherever it is called. Defining it in a module and importing it is the clearest pattern. Calling `defineStore("cart", …)` directly in two component scripts also gives both the same store.
 - Nothing is attached to `window`.
 
 `defineStore` is also available inside component scripts without importing, which is handy for small apps:
@@ -116,7 +116,7 @@ export const cart = defineStore(
       padding: calc(var(--spacing) * 3) calc(var(--spacing) * 4);
       border-radius: var(--radius-md);
       background: var(--state-preview-color);
-      color: white;
+      color: var(--primary-foreground);
       font-weight: var(--font-weight-medium);
     }
   </style>

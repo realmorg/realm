@@ -5,7 +5,8 @@ import { bindPageHandler, definePageHandlerProperty } from "./handlers";
 import { report, warn } from "./log";
 import { prop } from "./props";
 import { attachProps } from "./props-runtime";
-import { effect, reactive, tick } from "./reactivity";
+import { effect, reactive, tick, untrack } from "./reactivity";
+import { settingUp } from "./registry";
 import { defineStore } from "./store";
 import type { Context, Definition, SetupResult } from "./types";
 
@@ -17,6 +18,12 @@ export const instances = new WeakMap<Node, Instance>();
 
 const parentOf = (node: Node): Node | null =>
   node.parentNode instanceof ShadowRoot ? node.parentNode.host : node.parentNode;
+
+const ancestorSettingUp = (el: Element) => {
+  for (let node = parentOf(el); node; node = parentOf(node))
+    if (node instanceof Element && settingUp.has(node.localName)) return node.localName;
+  return undefined;
+};
 
 export class Instance {
   readonly controller = new AbortController();
@@ -57,7 +64,7 @@ export class Instance {
     for (let node = parentOf(this.host); node; node = parentOf(node)) {
       const owner = instances.get(node);
       if (owner?.has(name)) {
-        if (!this.definition.slot)
+        if (!owner.host.contains(this.host))
           warn(`<${this.host.localName}> reads "${name}" from <${owner.host.localName}>.`);
         return { value: owner.get(name) };
       }
@@ -141,6 +148,7 @@ const timers = (signal: AbortSignal) => {
 
 const createContext = (instance: Instance): Context => ({
   ...timers(instance.signal),
+  untrack,
   defineProps: (schema) => attachProps(instance, schema) as never,
   useState: reactive,
   useChildren(selector, attributes = []) {
@@ -226,6 +234,13 @@ export class RealmElement extends HTMLElement {
     this.#pending = false;
     for (const attribute of this.attributes) bindPageHandler(this, attribute.name, attribute.value);
     if (this.#instance || this.closest("custom-element")) return;
+    const ancestor = ancestorSettingUp(this);
+    if (ancestor) {
+      void customElements.whenDefined(ancestor).then(() => {
+        if (this.isConnected) this.connectedCallback();
+      });
+      return;
+    }
     const definition = this.#definition;
     if (definition.slot && !this.hasAttribute("slot")) this.slot = definition.slot;
     const shadow =

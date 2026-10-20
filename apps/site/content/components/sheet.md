@@ -9,7 +9,7 @@ nav: Sheet
 # Sheet
 
 `ui-sheet` is a modal panel attached to one edge of the viewport. It is a thin wrapper around
-[Dialog](/components/dialog/) with `side` set, so it behaves the same way: it opens with `showModal()`, traps focus,
+[Dialog](/components/dialog/) with `side` set, and behaves the same way. It opens with `showModal()`, traps focus,
 closes on Escape, a backdrop click or the close button, and returns focus to the trigger when it closes. The default
 side is `right`.
 
@@ -41,7 +41,7 @@ It has the same parts as the dialog: `ui-sheet-trigger`, `ui-sheet-header` with 
 
 ### Sides
 
-Set `side` to `top`, `right`, `bottom` or `left`. Left and right sheets are full height; top and bottom sheets are
+Set `side` to `top`, `right`, `bottom` or `left`. Left and right sheets are full height. Top and bottom sheets are
 full width.
 
 ```html live
@@ -146,7 +146,7 @@ order.
 
 | Attribute | Type | Default | Description |
 | --- | --- | --- | --- |
-| `open` | boolean | `false` | Whether the sheet is open. Setting it opens the sheet modally; reflects to the attribute. |
+| `open` | boolean | `false` | Whether the sheet is open. Setting it opens the sheet modally. Reflects. |
 | `side` | `"top"` \| `"right"` \| `"bottom"` \| `"left"` | `"right"` | The edge the sheet is attached to. |
 
 ### Properties and methods
@@ -167,7 +167,7 @@ order.
 | `--close` | Closes the sheet. |
 | `--request-close` | Same as `requestClose()`. |
 
-`ui-button` also accepts the commands without the `--` prefix; a plain `<button>` needs the prefix.
+`ui-button` also accepts the commands without the `--` prefix. A plain `<button>` needs the prefix.
 
 ### Events
 
@@ -185,6 +185,6 @@ order.
 
 ### Accessibility
 
-`ui-sheet` inherits the behaviour of `ui-dialog`: the page behind it is inert, focus moves into the sheet on open and
+`ui-sheet` inherits the behaviour of `ui-dialog`. The page behind it is inert, focus moves into the sheet on open and
 back to the trigger on close, Escape and a backdrop click close it, and the close button has `aria-label="Close"`. The
 title and description text name and describe the sheet.

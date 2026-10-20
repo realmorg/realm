@@ -1,0 +1,310 @@
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/button.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/card.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/dialog.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/kbd.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/select.html"></import-element>
+
+<custom-element name="mine-sweeper">
+  <script type="module">
+    import {
+      bestTimes,
+      createGame,
+      fromUrl,
+      handleKey,
+      LEVELS,
+      randomSeed,
+      restart,
+      reveal,
+      tickClock,
+      toggleFlag,
+    } from "./minesweeper.js";
+
+    const start = fromUrl(location.search);
+    const game = useState(createGame(start.levelId, start.seed));
+    const board = useState({
+      levels: Object.values(LEVELS),
+      get best() {
+        return bestTimes();
+      },
+    });
+
+    function open(cell) {
+      if (reveal(game, cell.index)) refs.result.showModal();
+    }
+
+    function aim(cell) {
+      game.cursor = cell.index;
+    }
+
+    function flag(cell, event) {
+      event.preventDefault();
+      toggleFlag(game, cell.index);
+    }
+
+    async function keys(event) {
+      if (!handleKey(game, event.key)) return;
+      event.preventDefault();
+      await tick();
+      refs.grid.querySelector('[tabindex="0"]').focus();
+    }
+
+    function newGame() {
+      restart(game, game.levelId, randomSeed());
+    }
+
+    function replay() {
+      restart(game, game.levelId, game.seed);
+    }
+
+    function changeLevel(select) {
+      restart(game, select.value, randomSeed());
+    }
+
+    function playAgain() {
+      refs.result.close();
+      newGame();
+    }
+
+    observe(() => {
+      if (game.status !== "playing") return;
+      const timer = setInterval(() => tickClock(game), 250);
+      return () => clearInterval(timer);
+    });
+  </script>
+
+  <style>
+    :host {
+      --cell: min(calc(var(--spacing) * 9), calc((100vw - var(--spacing) * 16) / var(--state-game-columns)));
+      display: grid;
+      justify-items: center;
+      gap: calc(var(--spacing) * 5);
+      width: min(calc(var(--spacing) * 200), 100%);
+    }
+    header {
+      display: grid;
+      justify-items: center;
+      gap: calc(var(--spacing) * 1);
+      text-align: center;
+    }
+    h1 {
+      margin: 0;
+      font-size: var(--text-2xl);
+      letter-spacing: -0.02em;
+    }
+    header p {
+      margin: 0;
+      color: var(--muted-foreground);
+      font-size: var(--text-sm);
+    }
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: calc(var(--spacing) * 2);
+    }
+    .panel {
+      display: grid;
+      gap: calc(var(--spacing) * 3);
+      padding: calc(var(--spacing) * 3);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      background: var(--card);
+      box-shadow: var(--shadow-sm);
+    }
+    .counters {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: calc(var(--spacing) * 3);
+      font-family: var(--font-mono);
+      font-size: var(--text-lg);
+      font-weight: var(--font-weight-semibold);
+      font-variant-numeric: tabular-nums;
+    }
+    .counters > span {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: calc(var(--spacing) * 1.5);
+    }
+    .grid {
+      display: grid;
+      gap: 1px;
+    }
+    .row {
+      display: flex;
+      gap: 1px;
+    }
+    .cell {
+      display: grid;
+      place-items: center;
+      width: var(--cell);
+      height: var(--cell);
+      padding: 0;
+      border: 0;
+      border-radius: var(--radius-xs);
+      background: color-mix(in oklab, var(--foreground) 16%, var(--background));
+      color: var(--foreground);
+      font: inherit;
+      font-size: calc(var(--cell) * 0.5);
+      font-weight: var(--font-weight-bold);
+      line-height: 1;
+      cursor: pointer;
+    }
+    .cell:hover {
+      background: color-mix(in oklab, var(--foreground) 24%, var(--background));
+    }
+    .cell:focus-visible {
+      position: relative;
+      outline: 2px solid var(--ring);
+      outline-offset: 1px;
+    }
+    .cell:not([data-state="hidden"], [data-state="flagged"]) {
+      background: var(--background);
+      box-shadow: inset 0 0 0 1px var(--border);
+      cursor: default;
+    }
+    .cell[data-state="exploded"] {
+      background: var(--destructive);
+    }
+    .cell[data-adjacent="1"] {
+      color: var(--chart-2);
+    }
+    .cell[data-adjacent="2"] {
+      color: var(--chart-1);
+    }
+    .cell[data-adjacent="3"] {
+      color: var(--destructive);
+    }
+    .cell[data-adjacent="4"] {
+      color: var(--chart-3);
+    }
+    .cell[data-adjacent="5"],
+    .cell[data-adjacent="6"] {
+      color: var(--chart-4);
+    }
+    .status {
+      margin: 0;
+      color: var(--muted-foreground);
+      font-size: var(--text-sm);
+      text-align: center;
+    }
+    .help {
+      margin: 0;
+      color: var(--muted-foreground);
+      font-size: var(--text-xs);
+      text-align: center;
+    }
+    .board-link {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: calc(var(--spacing) * 2);
+      font-size: var(--text-sm);
+    }
+    .board-link a {
+      color: inherit;
+      text-underline-offset: calc(var(--spacing) * 1);
+    }
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+    .best {
+      width: min(calc(var(--spacing) * 90), 100%);
+    }
+    dl {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: calc(var(--spacing) * 2);
+      margin: 0;
+      font-size: var(--text-sm);
+    }
+    dl div {
+      display: contents;
+    }
+    dt {
+      color: var(--muted-foreground);
+    }
+    dd {
+      margin: 0;
+      font-variant-numeric: tabular-nums;
+      font-weight: var(--font-weight-medium);
+    }
+  </style>
+
+  <header>
+    <h1>Minesweeper</h1>
+    <p>Open every safe square. Numbers count the mines around a square.</p>
+  </header>
+
+  <div class="controls">
+    <ui-select aria-label="Difficulty" width="36" _value="#game.levelId" onchange="changeLevel(this)">
+      <option repeat="#board.levels" as="level" key="id" _value="#level.id" _label="#level.label"></option>
+    </ui-select>
+    <ui-button onclick="newGame()"><u-icon name="refresh-cw"></u-icon> New game</ui-button>
+  </div>
+
+  <section class="panel" aria-label="Board">
+    <div class="counters">
+      <span><span aria-hidden="true">🚩</span><slot name="#game.flagsLeft"></slot><span class="sr-only">mines left to flag</span></span>
+      <span><u-icon name="timer"></u-icon><slot name="#game.clock"></slot><span class="sr-only">seconds</span></span>
+    </div>
+    <div class="grid" ref="grid" role="grid" aria-label="Minefield" aria-keyshortcuts="F" onkeydown="keys(event)">
+      <div class="row" role="row" repeat="#game.rows" as="row" key="id">
+        <span role="gridcell" repeat="#row.cells" as="cell" key="index">
+          <button
+            class="cell"
+            type="button"
+            _tabindex="#cell.tabindex"
+            _data-state="#cell.state"
+            _data-adjacent="#cell.adjacent"
+            _aria-label="#cell.label"
+            onfocus="aim(cell)"
+            onclick="open(cell)"
+            oncontextmenu="flag(cell, event)"><slot name="#cell.text"></slot></button>
+        </span>
+      </div>
+    </div>
+    <p class="status" role="status"><slot name="#game.message"></slot></p>
+  </section>
+
+  <p class="help">Arrow keys move, <ui-kbd>Enter</ui-kbd> or <ui-kbd>Space</ui-kbd> opens a square, <ui-kbd>F</ui-kbd> or right-click places a flag.</p>
+
+  <p class="board-link">
+    <a _href="#game.link">Board <slot name="#game.seed"></slot></a>
+    <ui-button size="sm" variant="outline" onclick="replay()">Replay this board</ui-button>
+  </p>
+
+  <ui-card class="best">
+    <ui-card-header>
+      <ui-card-title level="2">Best times</ui-card-title>
+      <ui-card-description>Saved in this browser.</ui-card-description>
+    </ui-card-header>
+    <ui-card-content>
+      <dl>
+        <div repeat="#board.best" as="record" key="id">
+          <dt><slot name="#record.label"></slot></dt>
+          <dd><slot name="#record.time"></slot></dd>
+        </div>
+      </dl>
+    </ui-card-content>
+  </ui-card>
+
+  <ui-dialog ref="result">
+    <ui-dialog-header>
+      <ui-dialog-title><slot name="#game.result.title"></slot></ui-dialog-title>
+      <ui-dialog-description><slot name="#game.result.description"></slot></ui-dialog-description>
+    </ui-dialog-header>
+    <ui-dialog-footer>
+      <ui-dialog-close><ui-button variant="outline">View board</ui-button></ui-dialog-close>
+      <ui-button onclick="playAgain()">Play again</ui-button>
+    </ui-dialog-footer>
+  </ui-dialog>
+</custom-element>

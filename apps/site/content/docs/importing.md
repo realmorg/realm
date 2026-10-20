@@ -16,7 +16,7 @@ nav: Importing components
 <todo-app></todo-app>
 ```
 
-`from` is resolved against the page, like `href`. Elements used before their definition arrives are upgraded when it does; until then, `realm.css` keeps them hidden.
+`from` is resolved against the page, like `href`. Elements used before their definition arrives are upgraded when it arrives. Until then, `realm.css` keeps them hidden.
 
 ## Behaviour
 
@@ -27,7 +27,7 @@ nav: Importing components
 | Duplicates | Importing the same component twice is harmless. A different definition for a name that already exists keeps the first and warns, naming both files |
 | Errors | A failed request fires `error` on the `<import-element>` and logs a warning. The rest of the page keeps working |
 | Removal | An `<import-element>` removed before its file arrives stays quiet: it fires no events |
-| Throttling | At most six files are fetched at once per origin; the rest wait in a queue |
+| Throttling | At most six files are fetched at once per origin. The rest wait in a queue |
 | Moving | Moving or reinserting an `<import-element>` does not import again |
 
 ## Bundles
@@ -35,10 +35,10 @@ nav: Importing components
 Group components that are used together in one file. REALM UI ships every component in one `ui.html`:
 
 ```html
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@2.0.0-alpha.0/dist/ui.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/dist/ui.html"></import-element>
 ```
 
-Smaller bundles load faster; one file per component makes more requests. A file per feature area is a good default.
+Smaller bundles load faster, but one file per component makes more requests. A file per feature area is a good default.
 
 ## Lazy loading
 

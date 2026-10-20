@@ -12,7 +12,7 @@ nav: Bubble
 container's width, wraps long words, and can align to the end of a flex column for messages sent by the current user.
 A `ui-bubble-reactions` child adds a row below the bubble for reaction chips or small actions.
 
-Use it inside [`ui-message`](message.html) together with an avatar and a timestamp, or on its own in a flex column.
+Use it inside [`ui-message`](/components/message/) together with an avatar and a timestamp, or on its own in a flex column.
 
 ```html live
 <div class="demo-medium demo-stack-tight">
@@ -99,5 +99,5 @@ else in `ui-bubble` is the message content. The default slot of each part takes 
 
 ### Accessibility
 
-`ui-bubble` adds no roles. It is presentational; the reading order is the source order. Put the conversation in a
-[`ui-message-scroller`](message-scroller.html) so new messages are announced.
+`ui-bubble` adds no roles, and the reading order is the source order. Put the conversation in a
+[`ui-message-scroller`](/components/message-scroller/) so new messages are announced.

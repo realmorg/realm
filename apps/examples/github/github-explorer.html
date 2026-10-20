@@ -1,0 +1,74 @@
+<import-element from="./user-search.html"></import-element>
+<import-element from="./user-profile.html"></import-element>
+<import-element from="./repo-list.html"></import-element>
+
+<custom-element name="github-explorer">
+  <script type="module">
+    import { github } from "./github.js";
+  </script>
+
+  <style>
+    :host {
+      display: grid;
+      gap: calc(var(--spacing) * 6);
+      width: min(calc(var(--spacing) * 280), 100%);
+    }
+    header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: end;
+      justify-content: space-between;
+      gap: calc(var(--spacing) * 3);
+    }
+    h1 {
+      display: flex;
+      align-items: center;
+      gap: calc(var(--spacing) * 2);
+      margin: 0;
+      font-size: var(--text-2xl);
+      letter-spacing: -0.02em;
+    }
+    header p {
+      margin: calc(var(--spacing) * 1) 0 0;
+      color: var(--muted-foreground);
+      font-size: var(--text-sm);
+    }
+    .rate {
+      margin: 0;
+      color: var(--muted-foreground);
+      font-size: var(--text-xs);
+    }
+    .layout {
+      display: grid;
+      grid-template-columns: calc(var(--spacing) * 72) minmax(0, 1fr);
+      align-items: start;
+      gap: calc(var(--spacing) * 8);
+    }
+    .main {
+      display: grid;
+      gap: calc(var(--spacing) * 8);
+      min-width: 0;
+    }
+    @media (max-width: 800px) {
+      .layout {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+  </style>
+
+  <header>
+    <div>
+      <h1><u-icon name="github"></u-icon> GitHub explorer</h1>
+      <p>Users and repositories from the public GitHub API, loaded with fetch attributes.</p>
+    </div>
+    <p class="rate" role="status"><slot name="#github.rate"></slot></p>
+  </header>
+
+  <div class="layout">
+    <user-search></user-search>
+    <div class="main">
+      <user-profile></user-profile>
+      <repo-list></repo-list>
+    </div>
+  </div>
+</custom-element>

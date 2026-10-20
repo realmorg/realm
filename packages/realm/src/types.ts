@@ -43,6 +43,7 @@ export interface Context {
   setInterval(callback: (...args: unknown[]) => void, delay?: number, ...args: unknown[]): number;
   clearTimeout(id?: number): void;
   clearInterval(id?: number): void;
+  untrack<T>(fn: () => T): T;
 }
 
 export type Setup = (context: Context) => SetupResult;

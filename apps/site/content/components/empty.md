@@ -195,7 +195,7 @@ A slotted `<svg>` is sized to `calc(var(--spacing) * 6)`.
 
 | Attribute | Type | Default | Description |
 | --- | --- | --- | --- |
-| `level` | number, 1–6 | `3` | The heading level, so the title fits the page outline. |
+| `level` | number, 1 to 6 | `3` | The heading level, so the title fits the page outline. |
 
 The other parts have no attributes.
 

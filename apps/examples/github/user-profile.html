@@ -1,0 +1,155 @@
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/alert.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/avatar.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/button.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/empty.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/skeleton.html"></import-element>
+
+<custom-element name="user-profile">
+  <script type="module">
+    import { describeFailure, github, noteRate, retry } from "./github.js";
+
+    function starting(event) {
+      if (!github.login) event.preventDefault();
+    }
+
+    function loaded(event) {
+      noteRate(event.detail.headers);
+    }
+
+    function failed(event) {
+      github.userError = describeFailure(event, github.login);
+    }
+  </script>
+
+  <style>
+    :host {
+      display: block;
+    }
+    section {
+      display: grid;
+      gap: calc(var(--spacing) * 4);
+    }
+    .profile,
+    .loading {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      align-items: start;
+      gap: calc(var(--spacing) * 5);
+    }
+    .profile ui-avatar {
+      width: calc(var(--spacing) * 20);
+      height: calc(var(--spacing) * 20);
+    }
+    .lines {
+      display: grid;
+      gap: calc(var(--spacing) * 2);
+    }
+    h2 {
+      margin: 0;
+      font-size: var(--text-2xl);
+      letter-spacing: -0.02em;
+    }
+    .login {
+      color: var(--muted-foreground);
+      text-underline-offset: calc(var(--spacing) * 1);
+    }
+    .bio {
+      margin: 0;
+      line-height: var(--leading-normal);
+    }
+    .facts {
+      display: flex;
+      flex-wrap: wrap;
+      gap: calc(var(--spacing) * 2) calc(var(--spacing) * 4);
+      margin: 0;
+      padding: 0;
+      color: var(--muted-foreground);
+      font-size: var(--text-sm);
+      list-style: none;
+    }
+    .facts li {
+      display: inline-flex;
+      align-items: center;
+      gap: calc(var(--spacing) * 1.5);
+    }
+    .facts li:has(slot:empty) {
+      display: none;
+    }
+    .facts a {
+      color: inherit;
+    }
+    @media (max-width: 480px) {
+      .profile,
+      .loading {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+  </style>
+
+  <section
+    aria-label="Profile"
+    _fetch="#github.userUrl"
+    trigger="load #github.userRequest"
+    timeout="10s"
+    headers="#github.headers"
+    into="#github.user"
+    busy="#github.userBusy"
+    onloadstart="starting(event)"
+    onload="loaded(event)"
+    onerror="failed(event)"
+    ontimeout="failed(event)">
+    <is-hidden when="#github.login">
+      <ui-empty>
+        <ui-empty-header>
+          <ui-empty-media variant="icon"><u-icon name="github"></u-icon></ui-empty-media>
+          <ui-empty-title level="2">Find someone on GitHub</ui-empty-title>
+          <ui-empty-description>Search for a user to see their profile and public repositories.</ui-empty-description>
+        </ui-empty-header>
+      </ui-empty>
+    </is-hidden>
+
+    <is-visible when="#github.loadingProfile">
+      <div class="loading" role="status" aria-label="Loading profile">
+        <ui-skeleton shape="circle" width="20" height="20"></ui-skeleton>
+        <div class="lines">
+          <ui-skeleton width="56" height="7"></ui-skeleton>
+          <ui-skeleton width="32" height="4"></ui-skeleton>
+          <ui-skeleton height="4"></ui-skeleton>
+          <ui-skeleton width="72" height="4"></ui-skeleton>
+        </div>
+      </div>
+    </is-visible>
+
+    <is-visible when="#github.userError">
+      <ui-alert variant="destructive">
+        <ui-alert-title>Couldn't load this profile</ui-alert-title>
+        <ui-alert-description>
+          <p><slot name="#github.userError"></slot></p>
+          <ui-button size="sm" variant="outline" onclick="retry()">Try again</ui-button>
+        </ui-alert-description>
+      </ui-alert>
+    </is-visible>
+
+    <is-visible when="#github.profile">
+      <div class="profile">
+        <ui-avatar size="lg">
+          <ui-avatar-image _src="#github.profile.avatar" alt=""></ui-avatar-image>
+          <ui-avatar-fallback><slot name="#github.profile.initials"></slot></ui-avatar-fallback>
+        </ui-avatar>
+        <div class="lines">
+          <h2><slot name="#github.profile.name"></slot></h2>
+          <a class="login" _href="#github.profile.url"><slot name="#github.profile.login"></slot> on GitHub</a>
+          <p class="bio"><slot name="#github.profile.bio"></slot></p>
+          <ul class="facts" aria-label="Details">
+            <li><u-icon name="users"></u-icon><slot name="#github.profile.followers"></slot> · <slot name="#github.profile.following"></slot></li>
+            <li><u-icon name="book-marked"></u-icon><slot name="#github.profile.repos"></slot></li>
+            <li><u-icon name="building"></u-icon><slot name="#github.profile.company"></slot></li>
+            <li><u-icon name="map-pin"></u-icon><slot name="#github.profile.location"></slot></li>
+            <li _hidden="!#github.profile.blog"><u-icon name="link"></u-icon><a _href="#github.profile.blog.href"><slot name="#github.profile.blog.label"></slot></a></li>
+            <li><u-icon name="calendar"></u-icon><slot name="#github.profile.joined"></slot></li>
+          </ul>
+        </div>
+      </div>
+    </is-visible>
+  </section>
+</custom-element>

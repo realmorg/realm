@@ -1,8 +1,11 @@
 # @realmorg/ui
 
-About 60 accessible components in the style of shadcn/ui, built with [REALM](https://realmui.github.io). Every component is a native custom element composed from parts, styled from the design tokens in `theme.css`, and works in forms where it applies.
+About 60 accessible components built with [REALM](https://realm.js.org). Each one is a native custom element made of composable parts (such as `<ui-card-header>`) and styled with the design tokens in `theme.css`. Form controls work as native form fields.
+
+Load REALM, the theme and the components from the CDN. There is no build step.
 
 ```html
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/realm.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/dist/theme.css">
 <script type="module" src="https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/realm.js"></script>
 <import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/dist/ui.html"></import-element>
@@ -22,10 +25,20 @@ About 60 accessible components in the style of shadcn/ui, built with [REALM](htt
 </ui-card>
 ```
 
-- `dist/ui.html` holds every component in one file; `components/*.html` holds them one per file, to copy into a project and own.
-- `theme.css` defines the colour, spacing, radius, shadow and type tokens, with a dark theme.
+To load only what you use, import single files instead of `ui.html`:
 
-Documentation and live demos for each component: [realmui.github.io/components](https://realmui.github.io/components/).
+```html
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/button.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/card.html"></import-element>
+```
+
+Each file imports its own dependencies (`sheet.html` loads `dialog.html`), and each file is fetched once.
+
+- `dist/ui.html` holds every component in one file.
+- `components/*.html` holds one component per file. Import a file on its own, or copy it into your project and edit it.
+- `dist/theme.css` defines the colour, spacing, radius, shadow and type tokens, with a dark theme.
+
+Docs and live demos for each component are at [realm.js.org/components](https://realm.js.org/components/).
 
 ## License
 

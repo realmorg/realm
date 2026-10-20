@@ -1,3 +1,12 @@
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/alert.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/button.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/card.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/chart.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/empty.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/input.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/radio-group.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/spinner.html"></import-element>
+
 <custom-element name="weather-app">
   <script type="module">
     import { currentConditions, dailyForecast, placeLabel } from "./weather.js";
@@ -29,6 +38,9 @@
       },
       get days() {
         return dailyForecast(this.data);
+      },
+      get firstLoad() {
+        return this.busy && !this.data;
       },
       get chart() {
         return this.days.map((day) => ({ day: day.day, High: day.high, Low: day.low }));
@@ -90,14 +102,22 @@
       right: calc(var(--spacing) * 3);
       color: var(--muted-foreground);
     }
-    .results {
-      display: grid;
+    .results,
+    .hint {
+      position: absolute;
+      inset-inline: 0;
+      top: 100%;
+      z-index: 1;
       margin: calc(var(--spacing) * 2) 0 0;
       padding: calc(var(--spacing) * 1);
       border: 1px solid var(--border);
       border-radius: var(--radius-md);
       background: var(--popover);
+      color: var(--popover-foreground);
       box-shadow: var(--shadow-md);
+    }
+    .results {
+      display: grid;
       list-style: none;
     }
     .results ui-button {
@@ -107,7 +127,7 @@
       justify-content: flex-start;
     }
     .hint {
-      margin: calc(var(--spacing) * 2) 0 0;
+      padding: calc(var(--spacing) * 2) calc(var(--spacing) * 3);
       color: var(--muted-foreground);
       font-size: var(--text-sm);
     }
@@ -255,7 +275,7 @@
     </is-visible>
   </form>
 
-  <is-visible when="#weather.busy">
+  <is-visible when="#weather.firstLoad">
     <p class="busy" role="status"><ui-spinner label="Loading forecast"></ui-spinner> Loading forecast…</p>
   </is-visible>
 

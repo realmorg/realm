@@ -1,0 +1,208 @@
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/attachment.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/avatar.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/bubble.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/button.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/message.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/message-scroller.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/textarea.html"></import-element>
+
+<custom-element name="chat-thread">
+  <script type="module">
+    import { attachmentFor, chat, outgoing, reply } from "./chat.js";
+
+    const draft = useState({ text: "", attachment: null });
+
+    function typed(field) {
+      draft.text = field.value;
+    }
+
+    function enter(event) {
+      if (event.key !== "Enter" || event.shiftKey) return;
+      event.preventDefault();
+      refs.composer.requestSubmit();
+    }
+
+    function pick() {
+      refs.file.click();
+    }
+
+    function picked(input) {
+      draft.attachment = attachmentFor(input.files[0]);
+      input.value = "";
+    }
+
+    function detach() {
+      URL.revokeObjectURL(draft.attachment.href);
+      draft.attachment = null;
+    }
+
+    function send(event) {
+      event.preventDefault();
+      const target = chat.active;
+      const message = outgoing(draft.text, draft.attachment);
+      if (!message) return;
+      target.messages.push(message);
+      draft.text = "";
+      draft.attachment = null;
+      setTimeout(() => {
+        target.typing = true;
+      }, 600);
+      setTimeout(() => reply(target), 2000);
+    }
+
+    function back() {
+      chat.thread = false;
+    }
+  </script>
+
+  <style>
+    :host {
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr) auto;
+      min-width: 0;
+      min-height: 0;
+    }
+    header {
+      display: flex;
+      align-items: center;
+      gap: calc(var(--spacing) * 3);
+      padding: calc(var(--spacing) * 3) calc(var(--spacing) * 4);
+      border-bottom: 1px solid var(--border);
+    }
+    .back {
+      display: none;
+    }
+    h2 {
+      margin: 0;
+      font-size: var(--text-base);
+    }
+    header p {
+      margin: 0;
+      color: var(--muted-foreground);
+      font-size: var(--text-xs);
+    }
+    .messages {
+      display: flex;
+      flex-direction: column;
+      gap: calc(var(--spacing) * 4);
+      padding: calc(var(--spacing) * 4);
+    }
+    .typing {
+      display: inline-flex;
+      gap: calc(var(--spacing) * 1);
+      padding-block: calc(var(--spacing) * 1);
+    }
+    .typing i {
+      width: calc(var(--spacing) * 1.5);
+      height: calc(var(--spacing) * 1.5);
+      border-radius: var(--radius-full);
+      background: currentColor;
+      animation: blink 1.2s infinite both;
+    }
+    .typing i:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+    .typing i:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+    @keyframes blink {
+      0%,
+      80%,
+      100% {
+        opacity: 0.25;
+      }
+      40% {
+        opacity: 1;
+      }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .typing i {
+        animation: none;
+      }
+    }
+    form {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr) auto;
+      align-items: end;
+      gap: calc(var(--spacing) * 2);
+      padding: calc(var(--spacing) * 3) calc(var(--spacing) * 4);
+      border-top: 1px solid var(--border);
+    }
+    .pending {
+      grid-column: 1 / -1;
+    }
+    input[type="file"] {
+      display: none;
+    }
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+    @media (max-width: 720px) {
+      .back {
+        display: inline-flex;
+      }
+      header,
+      form {
+        padding-inline: calc(var(--spacing) * 3);
+      }
+    }
+  </style>
+
+  <header>
+    <ui-button class="back" variant="ghost" size="icon-sm" aria-label="Back to conversations" onclick="back()"><u-icon name="arrow-left"></u-icon></ui-button>
+    <ui-avatar aria-hidden="true"><ui-avatar-fallback><slot name="#chat.active.initials"></slot></ui-avatar-fallback></ui-avatar>
+    <div>
+      <h2><slot name="#chat.active.name"></slot></h2>
+      <p><slot name="#chat.status"></slot></p>
+    </div>
+  </header>
+
+  <ui-message-scroller>
+    <div class="messages">
+      <repeat-list of="#chat.messages" as="message" key="id">
+        <ui-message _align="#message.align">
+          <ui-message-avatar><ui-avatar aria-hidden="true"><ui-avatar-fallback><slot name="#message.initials"></slot></ui-avatar-fallback></ui-avatar></ui-message-avatar>
+          <ui-message-header><slot name="#message.sender"></slot></ui-message-header>
+          <is-visible when="#message.text">
+            <ui-bubble _variant="#message.variant" _align="#message.align"><slot name="#message.text"></slot></ui-bubble>
+          </is-visible>
+          <is-visible when="#message.attachment">
+            <ui-attachment _name="#message.attachment.name" _size="#message.attachment.size" _href="#message.attachment.href">
+              <ui-attachment-media><u-icon name="file-text"></u-icon></ui-attachment-media>
+            </ui-attachment>
+          </is-visible>
+          <ui-message-footer><slot name="#message.time"></slot></ui-message-footer>
+        </ui-message>
+      </repeat-list>
+      <is-visible when="#chat.active.typing">
+        <ui-message>
+          <ui-message-avatar><ui-avatar aria-hidden="true"><ui-avatar-fallback><slot name="#chat.active.initials"></slot></ui-avatar-fallback></ui-avatar></ui-message-avatar>
+          <ui-bubble variant="muted">
+            <span class="typing" aria-hidden="true"><i></i><i></i><i></i></span>
+            <span class="sr-only"><slot name="#chat.active.name"></slot> is typing</span>
+          </ui-bubble>
+        </ui-message>
+      </is-visible>
+    </div>
+  </ui-message-scroller>
+
+  <form ref="composer" aria-label="Write a message" onsubmit="send(event)">
+    <is-visible when="#draft.attachment">
+      <ui-attachment class="pending" _name="#draft.attachment.name" _size="#draft.attachment.size">
+        <ui-attachment-media><u-icon name="paperclip"></u-icon></ui-attachment-media>
+        <ui-attachment-actions>
+          <ui-button variant="ghost" size="icon-xs" aria-label="Remove attachment" onclick="detach()"><u-icon name="x"></u-icon></ui-button>
+        </ui-attachment-actions>
+      </ui-attachment>
+    </is-visible>
+    <input ref="file" type="file" aria-label="Attach a file" onchange="picked(this)">
+    <ui-button variant="ghost" size="icon" aria-label="Attach a file" onclick="pick()"><u-icon name="paperclip"></u-icon></ui-button>
+    <ui-textarea rows="1" aria-label="Message" placeholder="Write a message…" _value="#draft.text" oninput="typed(this)" onkeydown="enter(event)"></ui-textarea>
+    <ui-button type="submit" size="icon" aria-label="Send"><u-icon name="send"></u-icon></ui-button>
+  </form>
+</custom-element>

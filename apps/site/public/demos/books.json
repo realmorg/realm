@@ -1,0 +1,6 @@
+[
+  { "id": "dune", "title": "Dune", "author": "Frank Herbert" },
+  { "id": "piranesi", "title": "Piranesi", "author": "Susanna Clarke" },
+  { "id": "circe", "title": "Circe", "author": "Madeline Miller" },
+  { "id": "hail-mary", "title": "Project Hail Mary", "author": "Andy Weir" }
+]

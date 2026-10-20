@@ -1,5 +1,5 @@
 import type { Page } from "@playwright/test";
-import { expect, ready, test } from "./fixtures";
+import { expect, ready, recordLayoutShifts, takeLayoutShift, test } from "./fixtures";
 
 const open = async (page: Page) => {
   await page.goto("examples/contacts/");
@@ -202,5 +202,24 @@ test("contacts: an unreachable API is reported when listing, saving and deleting
   await search.fill("");
   await expect(page.getByText("Couldn't load contacts")).toBeHidden();
   await expect(rows(page)).toHaveCount(10);
+  void errors;
+});
+
+test("contacts: loading and searching keep the table columns in place", async ({
+  page,
+  errors,
+}) => {
+  await recordLayoutShifts(page);
+  await open(page);
+  await expect(rows(page)).toHaveCount(10);
+  expect(await takeLayoutShift(page)).toBe(0);
+
+  const headers = page.getByRole("table", { name: "Contacts" }).getByRole("columnheader");
+  const boxes = () =>
+    headers.evaluateAll((cells) => cells.map((cell) => cell.getBoundingClientRect().toJSON()));
+  const before = await boxes();
+  await page.getByRole("searchbox", { name: "Search contacts" }).fill("mit");
+  await expect(rows(page)).toHaveCount(2);
+  expect(await boxes()).toEqual(before);
   void errors;
 });

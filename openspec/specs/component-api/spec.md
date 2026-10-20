@@ -50,3 +50,10 @@ Inside a component script, `setTimeout`, `setInterval`, `clearTimeout` and `clea
 #### Scenario: timers started by a component stop when it is removed
 - **WHEN** a component starts timeouts and intervals and is removed
 - **THEN** they ran while it was connected and stop afterwards
+
+### Requirement: untrack helper
+Component scripts SHALL have `untrack`, which runs a function without subscribing the current observer to what it reads.
+
+#### Scenario: untrack lets an effect call other components without subscribing to them
+- **WHEN** an observer reads other state inside untrack and that state changes
+- **THEN** the observer does not run again

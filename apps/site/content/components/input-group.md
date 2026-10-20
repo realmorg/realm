@@ -9,12 +9,12 @@ nav: Input Group
 # Input Group
 
 `ui-input-group` draws one bordered box with a native `<input>` in the middle and optional addons before and after
-it: a URL prefix, a currency symbol, a search icon, a unit or a small button. Each addon is a
-`ui-input-group-addon` child; `align` puts it before (`inline-start`, the default) or after (`inline-end`) the input,
+it, such as a URL prefix, a currency symbol, a search icon, a unit or a small button. Each addon is a
+`ui-input-group-addon` child. `align` puts it before (`inline-start`, the default) or after (`inline-end`) the input,
 whatever its position in the source. The whole box shows the focus ring when the input is focused, and it fills the
 width of its container.
 
-It is form-associated: only the text you type is submitted, not the addon text.
+It is form-associated. Only the text you type is submitted, not the addon text.
 
 ```html live
 <div class="demo-narrow">
@@ -96,7 +96,7 @@ icon-only button and give it an `aria-label`.
 
 ### In a form
 
-The input's value is submitted under the element's `name`; the addons are not. `required` takes part in validation,
+The input's value is submitted under the element's `name`, but the addons are not. `required` takes part in validation,
 Enter submits the form, and reset restores the `value` attribute.
 
 ```html live
@@ -193,7 +193,7 @@ The default slot of each part takes any content.
 
 | Property | Type | Description |
 | --- | --- | --- |
-| `value` | string | Current value. Updated as the user types; setting it updates the field. |
+| `value` | string | Current value. Updated as the user types. Setting it updates the field. |
 
 ### Events
 
@@ -210,7 +210,7 @@ The default slot of each part takes any content.
 
 ### Forms
 
-`ui-input-group` is form-associated. It submits the input's `value` under its `name`; addon content is never
+`ui-input-group` is form-associated. It submits the input's `value` under its `name`. Addon content is never
 submitted. Validity comes from the inner input (`required` and `type`), Enter submits the form, `form.reset()`
 restores the `value` attribute, and a disabled `<fieldset>` disables the input.
 

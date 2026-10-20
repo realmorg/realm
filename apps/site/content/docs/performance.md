@@ -1,6 +1,6 @@
 ---
 title: Performance and memory
-description: How REALM batches updates, caches derived values, reuses list rows, shares stylesheets and requests, and frees every listener, timer, observer and request through AbortSignal.
+description: How REALM keeps updates small and stops listeners, timers, observers and requests when an element is removed.
 group: Guides
 order: 51
 nav: Performance and memory
@@ -8,7 +8,7 @@ nav: Performance and memory
 
 # Performance and memory
 
-REALM has no virtual DOM and never re-runs a component. Each slot, binding, condition and loop subscribes to exactly the values it reads, and only those update.
+REALM has no virtual DOM and never re-runs a component. Each slot, binding, condition and loop subscribes to the values it reads, and only those update.
 
 ## Updates
 
@@ -20,12 +20,12 @@ REALM has no virtual DOM and never re-runs a component. Each slot, binding, cond
 
 ## Lists
 
-Keyed lists (`key="id"`) reuse rows for items that stay, move rows instead of re-creating them, and only build rows for new items. Without a key, rows are matched by position. For long, frequently reordered lists, always set a key.
+Keyed lists (`key="id"`) reuse rows for items that stay, move rows instead of re-creating them, and only build rows for new items. Without a key, rows are matched by position. Set a key on long lists that are often reordered.
 
 ## Components
 
 - **One definition per type.** A component's markup, handlers and styles are prepared once. Each instance clones the prepared markup and connects bindings.
-- **Shared stylesheets.** Styles are constructable stylesheets adopted by every instance; nothing is parsed per instance.
+- **Shared stylesheets.** Styles are constructable stylesheets adopted by every instance. Nothing is parsed per instance.
 - **No work in the constructor.** Setup runs when the element connects, following the custom element rules.
 
 ## Loading
@@ -38,14 +38,14 @@ Keyed lists (`key="id"`) reuse rows for items that stay, move rows instead of re
 
 ## Memory and cleanup
 
-Everything a component starts is tied to its `AbortSignal`, which aborts when the element is removed (one microtask after removal, so moving an element is free):
+Everything a component starts is tied to its `AbortSignal`, which aborts when the element is removed (one microtask after removal, so moving an element does not trigger cleanup):
 
 | Started by | Stopped on removal |
 | --- | --- |
 | `observe` in a component | The observer and its cleanup function |
 | Event handlers in markup, `listen()` | The listeners, including ones on `document` and `window` |
 | `debounce` timers | Pending calls are cancelled |
-| Fetch attributes | In-flight requests are aborted; `poll` intervals and `visible` observers stop |
+| Fetch attributes | In-flight requests are aborted. `poll` intervals and `visible` observers stop |
 | `useChildren`, prop and attribute watchers | Their mutation observers disconnect |
 | `onConnected` | The returned cleanup function runs |
 | `defineMethods`, `defineProps` | The added properties and methods are removed from the element |
@@ -53,7 +53,7 @@ Everything a component starts is tied to its `AbortSignal`, which aborts when th
 
 Then the shadow root is emptied, so detached elements hold no subtree.
 
-What REALM cannot clean up is what you start yourself without the signal. Use the helpers:
+REALM cannot clean up what you start yourself without the signal. Use the helpers instead:
 
 ```js
 // Leaks: nothing removes these
@@ -69,8 +69,10 @@ observe(() => {
 fetch(url, { signal });
 ```
 
-Stores live for the lifetime of the page by design.
+Stores are never cleaned up. They live as long as the page.
 
 ## Measuring
 
-The runtime has dedicated memory and performance test suites in Chromium. The memory suite mounts and removes a component with observers, timers, window listeners, debounced handlers, conditions, lists and a polling fetch 1,000 times, then forces garbage collection and checks that every instance was collected; it does the same for rows removed from keyed lists. The performance suite holds keyed list operations to time budgets. In your app, use the browser's Performance panel and heap snapshots; detached REALM elements should not appear in retained trees after removal.
+The runtime has memory and performance test suites in Chromium. The memory suite mounts and removes a component with observers, timers, window listeners, debounced handlers, conditions, lists and a polling fetch 1,000 times. It then forces garbage collection and checks that every instance was collected. It does the same for rows removed from keyed lists. The performance suite holds keyed list operations to time budgets.
+
+In your app, use the browser's Performance panel and heap snapshots. Detached REALM elements should not appear in retained trees after removal.

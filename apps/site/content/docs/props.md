@@ -71,7 +71,7 @@ The third tag has an invalid amount. REALM logs a warning naming the component, 
 | Builder | Attribute text is converted with | Rules |
 | --- | --- | --- |
 | `prop.string()` | As-is | `.min(n)`, `.max(n)` (length), `.pattern(regex)`, `.email()`, `.url()` |
-| `prop.number()` | `Number(text)`; empty text is invalid | `.int()`, `.min(n)`, `.max(n)` |
+| `prop.number()` | `Number(text)`. Empty text is invalid | `.int()`, `.min(n)`, `.max(n)` |
 | `prop.boolean()` | Native rule: present is `true`, absent is `false` | |
 | `prop.enum([...])` | Must be one of the listed strings | |
 | `prop.date()` | `new Date(text)`, usually ISO text | Must be a valid date |

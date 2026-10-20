@@ -1,3 +1,7 @@
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/button.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/checkbox.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/input.html"></import-element>
+
 <custom-element name="todo-app">
   <script type="module">
     import { todos } from "./todos.js";
@@ -92,6 +96,9 @@
       display: flex;
       gap: calc(var(--spacing) * 2);
     }
+    form[data-empty] ui-checkbox {
+      visibility: hidden;
+    }
     form ui-input {
       flex: 1;
     }
@@ -149,6 +156,18 @@
       font-size: var(--text-sm);
       color: var(--muted-foreground);
     }
+    .count,
+    .actions {
+      flex: 1 1 0;
+      white-space: nowrap;
+    }
+    .actions {
+      display: flex;
+      justify-content: flex-end;
+    }
+    footer:not([data-has-done]) .clear {
+      visibility: hidden;
+    }
     .filters {
       display: flex;
       gap: calc(var(--spacing) * 1);
@@ -162,8 +181,8 @@
 
   <h1><slot name="@heading"></slot></h1>
 
-  <form onsubmit="add(event)">
-    <ui-checkbox aria-label="Mark all as complete" _checked="#todos.allDone" _hidden="#todos.isEmpty" onchange="toggleAll()"></ui-checkbox>
+  <form onsubmit="add(event)" _data-empty="#todos.isEmpty">
+    <ui-checkbox aria-label="Mark all as complete" _checked="#todos.allDone" onchange="toggleAll()"></ui-checkbox>
     <ui-input name="todo" aria-label="New todo" placeholder="What needs to be done?" _value="#draft.text" oninput="updateDraft(this)"></ui-input>
     <ui-button type="submit">Add</ui-button>
   </form>
@@ -182,14 +201,16 @@
       </li>
     </ul>
 
-    <footer>
+    <footer _data-has-done="#todos.hasDone">
       <span class="count"><slot name="#todos.summary"></slot></span>
       <div class="filters" role="group" aria-label="Filter">
         <repeat-list of="#view.filters" as="filter" key="id">
           <ui-button size="sm" _variant="#filter.variant" _aria-pressed="#filter.current" onclick="show(filter)"><slot name="#filter.label"></slot></ui-button>
         </repeat-list>
       </div>
-      <ui-button size="sm" variant="ghost" _hidden="!#todos.hasDone" onclick="clearDone()">Clear completed</ui-button>
+      <span class="actions">
+        <ui-button class="clear" size="sm" variant="ghost" onclick="clearDone()">Clear completed</ui-button>
+      </span>
     </footer>
   </is-hidden>
 

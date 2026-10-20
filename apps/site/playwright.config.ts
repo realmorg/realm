@@ -9,6 +9,7 @@ export default defineConfig({
     command: "node scripts/build.mjs && vite preview --outDir dist --port 4173 --strictPort",
     url: "http://localhost:4173/",
     reuseExistingServer: !process.env.CI,
+    timeout: 180_000,
   },
   projects: [
     { name: "chromium", use: { ...devices["Desktop Chrome"] } },

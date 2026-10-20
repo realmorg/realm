@@ -451,3 +451,45 @@ test("timers started by a component stop when it is removed", async () => {
   expect(log.ticks).toBe(ticks);
   expect((window as unknown as { lateTimer?: boolean }).lateTimer).toBeUndefined();
 });
+
+test("a disabled delegated control is valid, whatever its constraints", async () => {
+  const field = tag("range-field");
+  await define(`<custom-element name="${field}" form-associated>
+    <script>defineProps({ value: prop.number().default(1), disabled: prop.boolean() });</script>
+    <input ref="control" type="number" min="1" max="0" _value="@value" _disabled="@disabled"></custom-element>`);
+  const errors: unknown[] = [];
+  const spy = vi.spyOn(console, "error").mockImplementation((...args) => errors.push(args));
+  const el = mount(field, "", "disabled") as unknown as HTMLElement & { value: number };
+  await tick();
+  el.value = 2;
+  await tick();
+  expect(errors).toEqual([]);
+  expect((el as unknown as { matches(s: string): boolean }).matches(":invalid")).toBe(false);
+  spy.mockRestore();
+});
+
+test("hidden elements inside a component stay hidden whatever their display", async () => {
+  const name = tag("hidden-close");
+  await define(
+    `<custom-element name="${name}"><style>button { display: grid; }</style><button hidden>x</button><details hidden="until-found"><summary>s</summary></details></custom-element>`,
+  );
+  const el = mount(name);
+  expect(getComputedStyle(root(el).querySelector("button") as Element).display).toBe("none");
+});
+
+test("untrack lets an effect call other components without subscribing to them", async () => {
+  const name = tag("untracked");
+  await define(`<custom-element name="${name}"><script>
+    const outer = useState({ runs: 0 });
+    const other = useState({ open: false });
+    function toggle() { other.open = !other.open; }
+    observe(() => { outer.runs++; untrack(() => other.open); });
+    defineMethods({ get runs() { return outer.runs; }, toggle });
+  </script></custom-element>`);
+  const el = mount(name) as unknown as { runs: number; toggle(): void };
+  await tick();
+  const runs = el.runs;
+  el.toggle();
+  await tick();
+  expect(el.runs).toBe(runs);
+});

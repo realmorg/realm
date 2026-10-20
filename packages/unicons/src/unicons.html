@@ -1,0 +1,68 @@
+<custom-element name="u-icon">
+  <script type="module">
+    import { loadIcon } from "./unicons.js";
+
+    const LENGTHLESS = /^\d*\.?\d+$/;
+
+    const props = defineProps({
+      name: prop.string().required(),
+      set: prop.string().default("lu"),
+      size: prop.string().default("1em"),
+      color: prop.string(),
+      fill: prop.string(),
+      stroke: prop.string(),
+      strokeWidth: prop.string(),
+      label: prop.string(),
+    });
+
+    const icon = useState({
+      svg: "",
+      get size() {
+        return LENGTHLESS.test(props.size) ? `${props.size}px` : props.size;
+      },
+      get role() {
+        return props.label ? "img" : null;
+      },
+    });
+
+    observe(() => {
+      let current = true;
+      loadIcon(props.set, props.name).then((svg) => {
+        if (current) icon.svg = svg;
+      });
+      return () => {
+        current = false;
+      };
+    });
+  </script>
+
+  <style>
+    :host {
+      display: inline-flex;
+      flex-shrink: 0;
+      width: var(--state-icon-size);
+      height: var(--state-icon-size);
+      vertical-align: -0.125em;
+    }
+    :host(:state(attr-color)) {
+      color: var(--attr-color);
+    }
+    span,
+    svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+    :host(:state(attr-fill)) svg {
+      fill: var(--attr-fill);
+    }
+    :host(:state(attr-stroke)) svg {
+      stroke: var(--attr-stroke);
+    }
+    :host(:state(attr-stroke-width)) svg {
+      stroke-width: var(--attr-stroke-width);
+    }
+  </style>
+
+  <span part="icon" _role="#icon.role" _aria-label="@label" _aria-hidden="!@label"><slot name="#icon.svg" html><slot></slot></slot></span>
+</custom-element>

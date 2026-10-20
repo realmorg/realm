@@ -10,7 +10,7 @@ nav: Scroll Area
 
 `ui-scroll-area` wraps its content in a native scrolling viewport with a thin scrollbar in the theme's border colour.
 Scrolling, momentum and keyboard scrolling are the browser's own. Give it a `height` (or a `width` for horizontal
-scrolling) in spacing units; the content scrolls inside it. `variant="outline"` adds a border.
+scrolling) in spacing units. The content scrolls inside it. `variant="outline"` adds a border.
 
 ```html live
 <ui-scroll-area variant="outline" width="48" height="72">

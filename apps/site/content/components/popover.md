@@ -9,7 +9,7 @@ nav: Popover
 # Popover
 
 `ui-popover` pairs a `ui-popover-trigger` with a `ui-popover-content`. The content is the native
-[popover API](https://developer.mozilla.org/docs/Web/API/Popover_API) with a card style: it sets `popover="auto"` on
+[popover API](https://developer.mozilla.org/docs/Web/API/Popover_API) with a card style. It sets `popover="auto"` on
 itself, so it starts hidden, opens in the top layer, closes when you click outside or press Escape, and closes other
 `auto` popovers when it opens. A click on the trigger toggles it, and it is placed next to the trigger with CSS anchor
 positioning, flipping when there is not enough room.
@@ -65,7 +65,7 @@ positioning, flipping when there is not enough room.
 
 ### Open with popovertarget or a command
 
-`ui-popover-content` is a real popover, so a button anywhere on the page can open it by id: `popovertarget`, or
+`ui-popover-content` is a native popover, so a button anywhere on the page can open it by id with `popovertarget`, or
 `commandfor` with `command="toggle-popover"`, `"show-popover"` or `"hide-popover"`. The popover is then anchored to that
 button. A close button inside the popover can use `hide-popover`.
 
@@ -136,7 +136,7 @@ toggled again or hidden from script.
 | --- | --- | --- |
 | `ui-popover` | | Its parts, with no box of its own. |
 | `ui-popover-trigger` | (default) | An inline block around the trigger. A click on it focuses the element inside and toggles the content, anchored to the trigger. |
-| `ui-popover-content` | (default) | The popover: a bordered card with padding, a gap between children and `popover="auto"`. |
+| `ui-popover-content` | (default) | A bordered card with padding, a gap between children and `popover="auto"`. |
 | `ui-popover-header` | (default) | A column for the title and description, with a small gap. |
 | `ui-popover-title` | (default) | An `<h3>` in `var(--text-sm)` medium. |
 | `ui-popover-description` | (default) | A `<p>` in muted `var(--text-sm)`. |
@@ -146,7 +146,7 @@ toggled again or hidden from script.
 | Attribute | Type | Default | Description |
 | --- | --- | --- | --- |
 | `placement` | `"bottom"` \| `"top"` \| `"left"` \| `"right"` | `"bottom"` | Side of the anchor the popover appears on. It flips when there is not enough room. |
-| `width` | number | `72` | Width in spacing units: `n` means `calc(var(--spacing) * n)`. |
+| `width` | number | `72` | Width in spacing units, where `n` means `calc(var(--spacing) * n)`. |
 | `popover` | `"auto"` \| `"manual"` | `"auto"` | The native popover attribute. Set on connect when missing. |
 
 ### Properties and methods
@@ -158,8 +158,8 @@ toggled again or hidden from script.
 
 | Event | Element | Detail | Description |
 | --- | --- | --- | --- |
-| `beforetoggle` | `ui-popover-content` | `ToggleEvent` | Native. Fired before the popover opens or closes; cancelable when opening. |
-| `toggle` | `ui-popover-content` | `ToggleEvent` | Native. Fired after it opens or closes; `event.newState` is `"open"` or `"closed"`. |
+| `beforetoggle` | `ui-popover-content` | `ToggleEvent` | Native. Fired before the popover opens or closes. Cancelable when opening. |
+| `toggle` | `ui-popover-content` | `ToggleEvent` | Native. Fired after it opens or closes. `event.newState` is `"open"` or `"closed"`. |
 
 ### CSS parts
 

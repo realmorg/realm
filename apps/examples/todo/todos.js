@@ -1,4 +1,4 @@
-import { defineStore } from "../../assets/realm/realm.js";
+import { defineStore } from "https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/realm.js";
 
 export const todos = defineStore(
   "example-todos",

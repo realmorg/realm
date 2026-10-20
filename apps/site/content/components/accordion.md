@@ -9,9 +9,9 @@ nav: Accordion
 # Accordion
 
 `ui-accordion` groups `ui-accordion-item` elements. Each item renders a native `<details>` and `<summary>` in its
-shadow root, so opening and closing, keyboard activation and find-in-page all come from the browser. Put a
-`ui-accordion-trigger` and a `ui-accordion-content` inside each item: the trigger becomes the summary row and the
-content is shown when the item is open. In the default `single` mode, opening one item closes the others. With
+shadow root, so the browser handles opening and closing, keyboard activation and find-in-page. Put a
+`ui-accordion-trigger` and a `ui-accordion-content` inside each item. The trigger becomes the summary row, and the
+content shows when the item is open. In the default `single` mode, opening one item closes the others. With
 `type="multiple"` items open and close independently.
 
 The accordion fills the width of its container.
@@ -180,7 +180,7 @@ attribute.
 
 | Event | Element | Description |
 | --- | --- | --- |
-| `toggle` | `ui-accordion-item` | Fires when the user opens or closes the item. Bubbles; read `event.target.open`. Setting `open` from script, including the automatic closing in `single` mode, does not fire it. |
+| `toggle` | `ui-accordion-item` | Fires when the user opens or closes the item. Bubbles. Read `event.target.open`. Setting `open` from script, including the automatic closing in `single` mode, does not fire it. |
 
 ### CSS parts
 
@@ -194,4 +194,4 @@ attribute.
   state. The trigger's text is the button's name.
 - Tab moves between summaries. Enter or Space opens or closes the focused item.
 - A disabled item's summary stays focusable but does not toggle.
-- Do not put links or buttons inside `ui-accordion-trigger`; the summary is already the button.
+- Do not put links or buttons inside `ui-accordion-trigger`. The summary is already the button.

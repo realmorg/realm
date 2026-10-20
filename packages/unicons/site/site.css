@@ -1,0 +1,221 @@
+/* tastemaker · surface: Unicons catalog (data view with a short intro) · mood: technical · page: catalog
+ * arc: hook(stat headline + install snippet) -> solution(specimen: one name across eight sets) -> use(customizer + searchable grid) -> close(click to copy)
+ * chrome: dark masthead band carrying the unchanged white logo · intro: split copy/specimen · browser: sidebar customizer + sticky search
+ * palette: REALM theme.css values (neutral greys, pink primary), no new colours · contrast: pass (matrix, light and dark)
+ * critique: ShowTell 5 · Phil 4 · Hier 4 · Spec 5 · Restr 4 · Var 4 · ColorHarm 4 · MoodTone 4 · Type 4 · Spatial 4 · Pref 4 */
+
+/* Colours come from REALM UI's theme.css. The masthead stays dark in both themes because the
+   Unicons logo is drawn in white; code colours match the REALM site's Shiki themes
+   (github-light-high-contrast and github-dark-high-contrast). */
+:root {
+  --masthead: oklch(0.145 0 0);
+  --masthead-foreground: oklch(0.985 0 0);
+  --masthead-muted: oklch(0.708 0 0);
+  --code-background: #ffffff;
+  --code-text: #0e1116;
+  --code-tag: #024c1a;
+  --code-attribute: #023b95;
+  --code-string: #032563;
+}
+
+:root[data-theme="dark"] {
+  --masthead: oklch(0.205 0 0);
+  --code-background: #0a0c10;
+  --code-text: #f0f3f6;
+  --code-tag: #72f088;
+  --code-attribute: #91cbff;
+  --code-string: #addcff;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --masthead: oklch(0.205 0 0);
+    --code-background: #0a0c10;
+    --code-text: #f0f3f6;
+    --code-tag: #72f088;
+    --code-attribute: #91cbff;
+    --code-string: #addcff;
+  }
+}
+
+body {
+  margin: 0;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Keep the page still while the components load. */
+u-icon:not(:defined) {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+}
+html-code:not(:defined) {
+  display: block;
+  min-height: calc(var(--spacing) * 40);
+}
+icon-catalog:not(:defined) {
+  display: block;
+  min-height: 100dvh;
+}
+
+.masthead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: calc(var(--spacing) * 6);
+  padding: calc(var(--spacing) * 4)
+    max(calc(var(--spacing) * 6), (100% - calc(var(--spacing) * 320)) / 2);
+  background: var(--masthead);
+  color: var(--masthead-foreground);
+}
+.brand {
+  display: block;
+  border-radius: var(--radius-sm);
+}
+.brand img {
+  display: block;
+  width: auto;
+  height: calc(var(--spacing) * 7);
+}
+.masthead nav {
+  display: flex;
+  gap: calc(var(--spacing) * 6);
+  font-size: var(--text-sm);
+}
+.masthead nav a {
+  color: var(--masthead-muted);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color var(--default-transition-duration) var(--default-transition-timing-function);
+}
+.masthead nav a:hover {
+  color: var(--masthead-foreground);
+}
+.masthead a:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+.intro,
+main {
+  max-width: calc(var(--spacing) * 320);
+  margin: 0 auto;
+  padding-inline: calc(var(--spacing) * 6);
+}
+
+.intro {
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  gap: calc(var(--spacing) * 12);
+  align-items: center;
+  padding-block: calc(var(--spacing) * 16) calc(var(--spacing) * 10);
+}
+.intro h1 {
+  margin: 0 0 calc(var(--spacing) * 4);
+  font-size: clamp(2.25rem, 1.4rem + 3vw, 3.75rem);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+  text-wrap: balance;
+}
+.intro p {
+  max-width: calc(var(--spacing) * 140);
+  margin: 0 0 calc(var(--spacing) * 6);
+  font-size: var(--text-lg);
+  color: var(--muted-foreground);
+  text-wrap: pretty;
+}
+.intro html-code {
+  padding: calc(var(--spacing) * 4) calc(var(--spacing) * 5);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--code-background);
+}
+
+.specimen {
+  margin: 0;
+  padding: calc(var(--spacing) * 6);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  background: var(--card);
+  box-shadow: var(--shadow-xs);
+}
+.specimen figcaption {
+  margin-bottom: calc(var(--spacing) * 5);
+  font-size: var(--text-sm);
+  color: var(--muted-foreground);
+}
+.specimen figcaption code {
+  color: var(--foreground);
+}
+.specimen ul {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: calc(var(--spacing) * 2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.specimen li {
+  display: grid;
+  justify-items: center;
+  gap: calc(var(--spacing) * 2);
+  padding: calc(var(--spacing) * 4) 0 calc(var(--spacing) * 3);
+  border-radius: var(--radius-lg);
+  background: var(--muted);
+}
+.specimen u-icon {
+  width: calc(var(--spacing) * 9);
+  height: calc(var(--spacing) * 9);
+  color: var(--primary);
+}
+.specimen li code {
+  font-size: var(--text-xs);
+  color: var(--muted-foreground);
+}
+code {
+  font-family: var(--font-mono);
+}
+
+main {
+  padding-bottom: calc(var(--spacing) * 24);
+}
+
+@media (max-width: 960px) {
+  .intro {
+    grid-template-columns: minmax(0, 1fr);
+    gap: calc(var(--spacing) * 8);
+    padding-block: calc(var(--spacing) * 10) calc(var(--spacing) * 8);
+  }
+}
+@media (max-width: 480px) {
+  .masthead {
+    padding-inline: calc(var(--spacing) * 4);
+  }
+  .brand img {
+    height: calc(var(--spacing) * 5);
+  }
+  .masthead nav {
+    gap: calc(var(--spacing) * 4);
+  }
+  .intro,
+  main {
+    padding-inline: calc(var(--spacing) * 4);
+  }
+  .specimen {
+    padding: calc(var(--spacing) * 4);
+  }
+  .specimen u-icon {
+    width: calc(var(--spacing) * 7);
+    height: calc(var(--spacing) * 7);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .masthead nav a {
+    transition: none;
+  }
+}

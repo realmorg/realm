@@ -172,7 +172,7 @@ A slotted `<svg>` is sized and muted. `disabled` items are skipped by the keyboa
 | --- | --- | --- |
 | `ui-dropdown-menu` | | Its parts, with no box of its own. |
 | `ui-dropdown-menu-trigger` | (default) | An inline block around the trigger. A click on it focuses the element inside and toggles the menu. |
-| `ui-dropdown-menu-content` | (default) | The menu: a bordered `popover="auto"` panel with `role="menu"`, anchored to the trigger. |
+| `ui-dropdown-menu-content` | (default) | A bordered `popover="auto"` panel with `role="menu"`, anchored to the trigger. |
 | `ui-menu-item` | (default) | A row with `role="menuitem"`: an optional leading `<svg>`, the label and an optional shortcut. |
 | `ui-menu-checkbox-item` | (default) | A row with `role="menuitemcheckbox"` and a check mark when `checked`. |
 | `ui-menu-radio-group` | (default) | A group (`role="group"`) that keeps one radio item checked. |
@@ -203,14 +203,14 @@ The `ui-menu-*` parts work the same in `ui-context-menu-content` and `ui-menubar
 | Attribute | Type | Default | Description |
 | --- | --- | --- | --- |
 | `value` | string | | Sent in `event.detail.value`. |
-| `checked` | boolean | `false` | Whether the item is checked. Toggled when chosen; reflects to the attribute. |
+| `checked` | boolean | `false` | Whether the item is checked. Toggled when chosen. Reflects. |
 | `disabled` | boolean | `false` | Ignores clicks and keys and skips the item in keyboard navigation. |
 
 ### ui-menu-radio-group and ui-menu-radio-item attributes
 
 | Element | Attribute | Type | Default | Description |
 | --- | --- | --- | --- | --- |
-| `ui-menu-radio-group` | `value` | string | | The checked item's value. Updated when an item is chosen; reflects to the attribute. |
+| `ui-menu-radio-group` | `value` | string | | The checked item's value. Updated when an item is chosen. Reflects. |
 | `ui-menu-radio-item` | `value` | string | | The item's value. |
 | `ui-menu-radio-item` | `disabled` | boolean | `false` | Ignores clicks and keys and skips the item in keyboard navigation. |
 
@@ -240,9 +240,9 @@ The `ui-menu-*` parts work the same in `ui-context-menu-content` and `ui-menubar
 
 ### Accessibility
 
-- The content has `role="menu"`; items have `role="menuitem"`, `menuitemcheckbox` or `menuitemradio` with
+- The content has `role="menu"`. Items have `role="menuitem"`, `menuitemcheckbox` or `menuitemradio` with
   `aria-checked`, and `tabindex="-1"`. Groups and the radio group have `role="group"`, separators `role="separator"`.
-- Opening the menu focuses the first enabled item. Arrow Up and Arrow Down move focus and wrap around; Home and End
+- Opening the menu focuses the first enabled item. Arrow Up and Arrow Down move focus and wrap around. Home and End
   jump to the first and last item.
 - Enter and Space choose the focused item. Escape, a click outside or moving focus out of the menu closes it.
 - When the menu closes with focus inside it, focus returns to the trigger.

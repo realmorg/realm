@@ -1,6 +1,15 @@
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/button.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/card.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/checkbox.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/field.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/input.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/input-otp.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/label.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/spinner.html"></import-element>
+
 <custom-element name="login-form">
   <script>
-    const props = defineProps({ heading: prop.string().default("Login to your account") });
+    const props = defineProps({ heading: prop.string().default("Log in to your account") });
     const login = useState({ busy: false });
 
     async function submit(event) {
@@ -53,7 +62,7 @@
   <ui-card>
     <ui-card-header>
       <ui-card-title level="1"><slot name="@heading"></slot></ui-card-title>
-      <ui-card-description>Enter your email below to login to your account</ui-card-description>
+      <ui-card-description>Enter your email and password to log in.</ui-card-description>
     </ui-card-header>
     <ui-card-content>
       <form onsubmit="submit(event)" novalidate>

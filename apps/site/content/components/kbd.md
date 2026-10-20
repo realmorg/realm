@@ -9,7 +9,7 @@ nav: Kbd
 # Kbd
 
 `ui-kbd` shows a single key or key label in a small muted box. `ui-kbd-group` puts several keys in a row for a
-shortcut. Both are presentational; wrap them in a native `<kbd>` when the text should be marked up as keyboard
+shortcut. Both are presentational. Wrap them in a native `<kbd>` when the text should be marked up as keyboard
 input.
 
 ```html live

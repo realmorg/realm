@@ -21,7 +21,7 @@ nav: Progress
 
 ### Custom maximum
 
-`max` defaults to `100`. Use the real total so `value` can be the real count.
+`max` defaults to `100`. Set it to the total so `value` can be a plain count.
 
 ```html live
 <div class="demo-narrow demo-stack-tight">
@@ -119,5 +119,5 @@ The bar uses `var(--primary)`. Set `--primary` on a wrapping element to recolour
 ### Accessibility
 
 The inner `<progress>` has the native `progressbar` role, with its value and maximum exposed to assistive
-technology. Name it with `aria-label` on `ui-progress`, which is passed to the inner bar; a `<label for>` outside
+technology. Name it with `aria-label` on `ui-progress`, which is passed to the inner bar. A `<label for>` outside
 cannot reach into the shadow root. Without `value` the bar is indeterminate and exposes no value.

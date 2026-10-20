@@ -8,7 +8,7 @@ nav: Sidebar
 
 # Sidebar
 
-The sidebar is a family of parts that together build an application shell:
+The sidebar is a set of parts that build an application shell:
 
 - `ui-sidebar-layout` places the `ui-sidebar` next to a `ui-sidebar-inset`, collapses the sidebar to an icon rail,
   and turns it into an off-canvas drawer on screens narrower than 768px.
@@ -21,7 +21,7 @@ The sidebar is a family of parts that together build an application shell:
 - `ui-sidebar-inset` is the main content area.
 
 The layout is designed to fill the viewport (`min-height: 100dvh`). The demos on this page are placed in a box with
-a fixed height; the `ui-sidebar-layout::part(sidebar)` rule shown in the code makes the sidebar follow that box
+a fixed height. The `ui-sidebar-layout::part(sidebar)` rule shown in the code makes the sidebar follow that box
 instead of the viewport.
 
 ```html live
@@ -197,7 +197,7 @@ read the current state.
 ### Handling navigation
 
 Each menu button fires a bubbling, cancelable `select` event when clicked, and its link then navigates as usual
-unless a listener calls `preventDefault()`. Listen once on `ui-sidebar` and keep the current item in state; hash
+unless a listener calls `preventDefault()`. Listen once on `ui-sidebar` and keep the current item in state. Hash
 links like `#projects` keep the page in place. This is how the [dashboard example](/examples/dashboard/) switches
 views without reloading.
 
@@ -282,7 +282,7 @@ on the next page load.
 
 | Element | Fills | Renders |
 | --- | --- | --- |
-| `ui-sidebar-layout` | | The shell: an `<aside>` for the sidebar, the inset beside it, and a backdrop on small screens. |
+| `ui-sidebar-layout` | | The shell, with an `<aside>` for the sidebar, the inset beside it, and a backdrop on small screens. |
 | `ui-sidebar` | the `<aside>` of `ui-sidebar-layout` | The panel, a full-height column. |
 | `ui-sidebar-header` | the top of `ui-sidebar` | A padded column for a logo or team switcher. |
 | `ui-sidebar-content` | the middle of `ui-sidebar` | A scrolling `<nav>` around the groups. |
@@ -291,7 +291,7 @@ on the next page load.
 | `ui-sidebar-group-label` | `ui-sidebar-group` | The small muted heading. Hidden when collapsed. |
 | `ui-sidebar-menu` | `ui-sidebar-group` | A `<ul>` of menu items with Up and Down arrow navigation. |
 | `ui-sidebar-menu-item` | the `<ul>` of `ui-sidebar-menu` | A list item (`role="listitem"`). |
-| `ui-sidebar-menu-button` | `ui-sidebar-menu-item` | The item's `<a>`, with icon and text. Icons are sized to `calc(var(--spacing) * 4)`; when collapsed, only the icon shows. |
+| `ui-sidebar-menu-button` | `ui-sidebar-menu-item` | The item's `<a>`, with icon and text. Icons are sized to `calc(var(--spacing) * 4)`. When collapsed, only the icon shows. |
 | `ui-sidebar-menu-badge` | `ui-sidebar-menu-item` | Short text, such as a count, at the end of the item. Hidden when collapsed. |
 | `ui-sidebar-trigger` | anywhere inside `ui-sidebar-layout` | A ghost icon `ui-button` labelled "Toggle sidebar". |
 | `ui-sidebar-inset` | the main area of `ui-sidebar-layout` | A `<main>` panel with rounded corners next to the sidebar. |
@@ -310,7 +310,7 @@ on the next page load.
 | Attribute | Type | Default | Description |
 | --- | --- | --- | --- |
 | `href` | string | | Link target. Without it, the item is a button activated by Enter and Space. |
-| `current` | boolean | `false` | Marks the current page: highlighted, medium weight, and `aria-current="page"` on the link. |
+| `current` | boolean | `false` | Marks the current page with a highlight, medium weight and `aria-current="page"` on the link. |
 | `label` | string | | Sets the link's `title`, which is the tooltip when the sidebar is collapsed. |
 
 The other parts have no attributes.
@@ -325,7 +325,7 @@ The other parts have no attributes.
 
 | Event | Element | Description |
 | --- | --- | --- |
-| `select` | `ui-sidebar-menu-button` | Fires when the button is clicked. Bubbles and is cancelable: `preventDefault()` stops the link from following its `href`. |
+| `select` | `ui-sidebar-menu-button` | Fires when the button is clicked. Bubbles and is cancelable. `preventDefault()` stops the link from following its `href`. |
 | `sidebartoggle` | `ui-sidebar-trigger` | Fires when the trigger is clicked. Bubbles to the enclosing `ui-sidebar-layout`, which calls `toggle()`. |
 
 ### CSS parts

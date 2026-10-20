@@ -14,7 +14,10 @@
     "change": "changeset",
     "release": "turbo run build test && changeset publish",
     "size": "node scripts/check-size.mjs",
-    "release:check": "node scripts/release-check.mjs"
+    "release:check": "node scripts/release-check.mjs",
+    "skill": "node scripts/build-skill.mjs",
+    "skill:check": "node scripts/build-skill.mjs --check",
+    "skill:test": "node --test scripts/skill.test.mjs"
   },
   "devDependencies": {
     "@biomejs/biome": "2.5.15",

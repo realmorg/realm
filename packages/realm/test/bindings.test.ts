@@ -362,3 +362,14 @@ test("an absent value leaves progress and meter indeterminate", async () => {
   await tick();
   expect(progress.value).toBe(0.5);
 });
+
+test("the repeat attribute on a top-level element keeps updating after the markup is mounted", async () => {
+  const { shadow } = await component(
+    `const list = useState({ items: ["a"] });
+     function add() { list.items.push("b"); }`,
+    `<p repeat="#list.items" as="item"><slot name="#item"></slot></p><button onclick="add()"></button>`,
+  );
+  (shadow.querySelector("button") as HTMLButtonElement).click();
+  await tick();
+  expect([...shadow.querySelectorAll("p")].map((p) => p.textContent)).toEqual(["a", "b"]);
+});

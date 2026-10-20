@@ -54,10 +54,18 @@ const load = (url: string) => {
   return request;
 };
 
-export const importDefinitions = async (url: string) => {
+export const importDefinitions = async (url: string, chain: ReadonlySet<string> = new Set()) => {
   const doc = await load(url);
+  const path = new Set([...chain, url]);
+  const dependencies = [...doc.querySelectorAll("import-element[from]")]
+    .filter((el) => !el.closest("custom-element"))
+    .map((el) => new URL(el.getAttribute("from") as string, url).href)
+    .filter((dependency) => !path.has(dependency));
+  await Promise.all(dependencies.map((dependency) => importDefinitions(dependency, path)));
   await Promise.all(
-    [...doc.querySelectorAll("custom-element")].map((el) => defineComponent(el, url, false)),
+    [...doc.querySelectorAll("custom-element")].map((el) =>
+      defineComponent(el.cloneNode(true) as Element, url, false),
+    ),
   );
 };
 
@@ -90,7 +98,7 @@ export class ImportElement extends HTMLElement {
   #started = false;
 
   async connectedCallback() {
-    if (this.#started) return;
+    if (this.#started || this.closest("custom-element")) return;
     this.#started = true;
     const from = this.getAttribute("from");
     if (!from) {

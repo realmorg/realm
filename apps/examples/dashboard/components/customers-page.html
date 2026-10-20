@@ -1,0 +1,240 @@
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/avatar.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/badge.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/button.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/empty.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/input.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/sheet.html"></import-element>
+
+<custom-element name="customers-page">
+  <script type="module">
+    import { customers, money, orders, statusVariants } from "../data.js";
+
+    const rows = customers.map((customer) => ({
+      ...customer,
+      total: money(customer.spent),
+      mailto: `mailto:${customer.email}`,
+      viewLabel: `View ${customer.name}`,
+      search: `${customer.name} ${customer.email} ${customer.city}`.toLowerCase(),
+    }));
+
+    const people = useState({
+      query: "",
+      openId: rows[0].id,
+      get rows() {
+        const query = this.query.trim().toLowerCase();
+        return rows.filter((customer) => customer.search.includes(query));
+      },
+      get summary() {
+        return `${this.rows.length} of ${rows.length} customers`;
+      },
+      get open() {
+        const customer = rows.find((item) => item.id === this.openId);
+        return {
+          ...customer,
+          orders: orders
+            .filter((order) => order.customer === customer.name)
+            .map((order) => ({ ...order, variant: statusVariants[order.status], amount: money(order.total) })),
+        };
+      },
+    });
+
+    function search(field) {
+      people.query = field.value;
+    }
+
+    function view(customer) {
+      people.openId = customer.id;
+      refs.sheet.showModal();
+    }
+  </script>
+
+  <style>
+    :host {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: calc(var(--spacing) * 4);
+    }
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: calc(var(--spacing) * 3);
+    }
+    .toolbar search {
+      flex: 1;
+      min-width: calc(var(--spacing) * 56);
+    }
+    .toolbar p {
+      margin: 0;
+      color: var(--muted-foreground);
+      font-size: var(--text-sm);
+    }
+    .table {
+      position: relative;
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: var(--text-sm);
+    }
+    th {
+      height: calc(var(--spacing) * 10);
+      padding: 0 calc(var(--spacing) * 3);
+      color: var(--muted-foreground);
+      font-weight: var(--font-weight-medium);
+      text-align: left;
+      white-space: nowrap;
+    }
+    td {
+      padding: calc(var(--spacing) * 2) calc(var(--spacing) * 3);
+      border-top: 1px solid var(--border);
+      white-space: nowrap;
+    }
+    tbody tr:hover {
+      background: var(--muted);
+    }
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+    .number {
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+    }
+    .person {
+      display: flex;
+      align-items: center;
+      gap: calc(var(--spacing) * 3);
+    }
+    small {
+      display: block;
+      color: var(--muted-foreground);
+    }
+    .profile {
+      display: flex;
+      align-items: center;
+      gap: calc(var(--spacing) * 3);
+    }
+    a {
+      color: inherit;
+      text-underline-offset: calc(var(--spacing) * 1);
+    }
+    dl {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: calc(var(--spacing) * 2) calc(var(--spacing) * 4);
+      margin: 0;
+      font-size: var(--text-sm);
+    }
+    dt {
+      color: var(--muted-foreground);
+    }
+    dd {
+      margin: 0;
+    }
+    h3 {
+      margin: 0;
+      font-size: var(--text-sm);
+      font-weight: var(--font-weight-semibold);
+    }
+    .history {
+      display: grid;
+      gap: calc(var(--spacing) * 3);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      font-size: var(--text-sm);
+    }
+    .history li {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: calc(var(--spacing) * 3);
+    }
+  </style>
+
+  <div class="toolbar">
+    <search>
+      <ui-input type="search" aria-label="Search customers" placeholder="Search by name, email or city…" autocomplete="off" oninput="search(this)"></ui-input>
+    </search>
+    <p role="status"><slot name="#people.summary"></slot></p>
+  </div>
+
+  <is-visible when="#people.rows.length">
+    <div class="table">
+      <table aria-label="Customers">
+        <thead>
+          <tr>
+            <th scope="col">Customer</th>
+            <th scope="col">City</th>
+            <th scope="col">Joined</th>
+            <th scope="col" class="number">Orders</th>
+            <th scope="col" class="number">Spent</th>
+            <th scope="col"><span class="sr-only">Actions</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr repeat="#people.rows" as="customer" key="id">
+            <td>
+              <span class="person">
+                <ui-avatar><ui-avatar-fallback><slot name="#customer.initials"></slot></ui-avatar-fallback></ui-avatar>
+                <span><slot name="#customer.name"></slot><small><slot name="#customer.email"></slot></small></span>
+              </span>
+            </td>
+            <td><slot name="#customer.city"></slot></td>
+            <td><slot name="#customer.joined"></slot></td>
+            <td class="number"><slot name="#customer.orders"></slot></td>
+            <td class="number"><slot name="#customer.total"></slot></td>
+            <td class="number"><ui-button size="sm" variant="ghost" _aria-label="#customer.viewLabel" onclick="view(customer)">View</ui-button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </is-visible>
+
+  <is-hidden when="#people.rows.length">
+    <ui-empty>
+      <ui-empty-header>
+        <ui-empty-title>No customers found</ui-empty-title>
+        <ui-empty-description>Try a different name, email or city.</ui-empty-description>
+      </ui-empty-header>
+    </ui-empty>
+  </is-hidden>
+
+  <ui-sheet ref="sheet">
+    <ui-sheet-header>
+      <ui-sheet-title><slot name="#people.open.name"></slot></ui-sheet-title>
+      <ui-sheet-description>Customer since <slot name="#people.open.joined"></slot></ui-sheet-description>
+    </ui-sheet-header>
+    <div class="profile">
+      <ui-avatar size="lg"><ui-avatar-fallback><slot name="#people.open.initials"></slot></ui-avatar-fallback></ui-avatar>
+      <a _href="#people.open.mailto"><slot name="#people.open.email"></slot></a>
+    </div>
+    <dl>
+      <dt>City</dt>
+      <dd><slot name="#people.open.city"></slot></dd>
+      <dt>Orders</dt>
+      <dd><slot name="#people.open.orders.length"></slot></dd>
+      <dt>Spent</dt>
+      <dd><slot name="#people.open.total"></slot></dd>
+    </dl>
+    <h3>Order history</h3>
+    <ul class="history" aria-label="Order history">
+      <li repeat="#people.open.orders" as="order" key="id">
+        <span><slot name="#order.id"></slot><small><slot name="#order.date"></slot></small></span>
+        <ui-badge _variant="#order.variant"><slot name="#order.status"></slot></ui-badge>
+        <span><slot name="#order.amount"></slot></span>
+      </li>
+    </ul>
+    <ui-sheet-footer>
+      <ui-sheet-close><ui-button variant="outline">Close</ui-button></ui-sheet-close>
+    </ui-sheet-footer>
+  </ui-sheet>
+</custom-element>

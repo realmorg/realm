@@ -1,0 +1,127 @@
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/button.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/card.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/field.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/input.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/label.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/select.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/switch.html"></import-element>
+
+<custom-element name="settings-page">
+  <script type="module">
+    import { defaultSettings } from "../data.js";
+
+    const NOTIFICATIONS = [
+      { name: "orderEmails", label: "New orders", description: "An email for every order placed." },
+      { name: "weeklyReport", label: "Weekly report", description: "Sales and visitors, every Monday." },
+      { name: "productUpdates", label: "Low stock", description: "When a product drops below 10 items." },
+      { name: "pushAlerts", label: "Push alerts", description: "Browser notifications for refunds." },
+    ];
+
+    const settings = defineStore("dashboard-settings", defaultSettings, { persist: "local" });
+    const preferences = useState({
+      get notifications() {
+        return NOTIFICATIONS.map((option) => ({ ...option, checked: settings[option.name] }));
+      },
+    });
+
+    function saveProfile(event) {
+      event.preventDefault();
+      Object.assign(settings, Object.fromEntries(new FormData(event.target)));
+      dispatch("toast", { title: "Profile saved", description: settings.name });
+    }
+
+    function saveNotifications(event) {
+      event.preventDefault();
+      const data = new FormData(event.target);
+      for (const option of NOTIFICATIONS) settings[option.name] = data.has(option.name);
+      dispatch("toast", { title: "Notifications saved" });
+    }
+  </script>
+
+  <style>
+    :host {
+      display: grid;
+      gap: calc(var(--spacing) * 6);
+      max-width: calc(var(--spacing) * 160);
+    }
+    form {
+      display: grid;
+      gap: calc(var(--spacing) * 6);
+    }
+    .pair {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(calc(var(--spacing) * 56), 1fr));
+      gap: calc(var(--spacing) * 4);
+    }
+    .switches {
+      display: grid;
+      gap: calc(var(--spacing) * 4);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+    .switches p {
+      margin: calc(var(--spacing) * 1) 0 0 calc(var(--spacing) * 11);
+      color: var(--muted-foreground);
+      font-size: var(--text-sm);
+    }
+  </style>
+
+  <ui-card>
+    <ui-card-header>
+      <ui-card-title level="2">Profile</ui-card-title>
+      <ui-card-description>Shown in the header and on emails to your team.</ui-card-description>
+    </ui-card-header>
+    <form onsubmit="saveProfile(event)">
+      <ui-card-content>
+        <div class="pair">
+          <ui-field>
+            <ui-label for="settings-name">Name</ui-label>
+            <ui-input id="settings-name" name="name" required autocomplete="name" _value="#settings.name"></ui-input>
+          </ui-field>
+          <ui-field>
+            <ui-label for="settings-email">Email</ui-label>
+            <ui-input id="settings-email" name="email" type="email" required autocomplete="email" _value="#settings.email"></ui-input>
+          </ui-field>
+          <ui-field>
+            <ui-label for="settings-language">Language</ui-label>
+            <ui-select id="settings-language" name="language" _value="#settings.language">
+              <option value="en">English</option>
+              <option value="de">Deutsch</option>
+              <option value="id">Bahasa Indonesia</option>
+              <option value="ja">日本語</option>
+            </ui-select>
+          </ui-field>
+          <ui-field>
+            <ui-label for="settings-timezone">Time zone</ui-label>
+            <ui-select id="settings-timezone" name="timezone" _value="#settings.timezone">
+              <option value="utc">UTC</option>
+              <option value="cet">Central European Time</option>
+              <option value="wib">Western Indonesia Time</option>
+              <option value="pst">Pacific Time</option>
+            </ui-select>
+          </ui-field>
+        </div>
+      </ui-card-content>
+      <ui-card-footer justify="end"><ui-button type="submit">Save profile</ui-button></ui-card-footer>
+    </form>
+  </ui-card>
+
+  <ui-card>
+    <ui-card-header>
+      <ui-card-title level="2">Notifications</ui-card-title>
+      <ui-card-description>Choose what we tell you about.</ui-card-description>
+    </ui-card-header>
+    <form onsubmit="saveNotifications(event)">
+      <ui-card-content>
+        <ul class="switches">
+          <li repeat="#preferences.notifications" as="option" key="name">
+            <ui-switch _name="#option.name" _checked="#option.checked"><slot name="#option.label"></slot></ui-switch>
+            <p><slot name="#option.description"></slot></p>
+          </li>
+        </ul>
+      </ui-card-content>
+      <ui-card-footer justify="end"><ui-button type="submit">Save notifications</ui-button></ui-card-footer>
+    </form>
+  </ui-card>
+</custom-element>

@@ -1,6 +1,6 @@
 ---
 title: Item
-description: A flexible row with media, a title, a description and actions, for lists of people, files, settings or notifications.
+description: A row with media, a title, a description and actions, for lists of people, files, settings or notifications.
 group: Display
 order: 207
 nav: Item
@@ -191,8 +191,8 @@ children spread apart.
         <ui-avatar><ui-avatar-fallback>SC</ui-avatar-fallback></ui-avatar>
       </ui-item-media>
       <ui-item-content>
-        <ui-item-title>shadcn</ui-item-title>
-        <ui-item-description>shadcn@vercel.com</ui-item-description>
+        <ui-item-title>realm</ui-item-title>
+        <ui-item-description>realm@example.com</ui-item-description>
       </ui-item-content>
       <ui-item-actions>
         <ui-button variant="ghost" size="sm">Remove</ui-button>
@@ -262,7 +262,7 @@ the `listitem` role.
 
 | Part | Slot | Renders |
 | --- | --- | --- |
-| `ui-item` | | One row: a wrapping flex container with a gap. |
+| `ui-item` | | One row, laid out as a wrapping flex container with a gap. |
 | `ui-item-group` | | A column of items with the role `list`. |
 | `ui-item-media` | (default) | A non-shrinking box for an icon, image or avatar. Slotted `<svg>` is sized to `calc(var(--spacing) * 4)`. |
 | `ui-item-content` | (default) | A flex column that fills the space between media and actions. |
@@ -272,7 +272,7 @@ the `listitem` role.
 | `ui-item-header` | (default) | A full-width row above the rest, children spread apart. |
 | `ui-item-footer` | (default) | A full-width row below the rest, children spread apart. |
 
-`ui-item` lays its parts out in source order: put media first, then content, then actions. Every part has a single
+`ui-item` lays its parts out in source order. Put media first, then content, then actions. Every part has a single
 default slot that takes any content.
 
 ### ui-item attributes
@@ -294,5 +294,5 @@ The other parts have no attributes.
 
 `ui-item-group` has the role `list`, and a `ui-item` directly inside a group has the role `listitem`, so screen
 readers report the list size. A standalone `ui-item` has no role. An item is not focusable or clickable by
-itself; put interactive elements in `ui-item-actions`, or wrap the item in an `<a>` to make the whole row a link.
+itself. Put interactive elements in `ui-item-actions`, or wrap the item in an `<a>` to make the whole row a link.
 Give an image in `ui-item-media` an `alt` text, or `alt=""` when the title already describes it.

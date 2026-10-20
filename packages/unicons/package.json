@@ -1,0 +1,56 @@
+{
+  "name": "@realmorg/unicons",
+  "version": "2.0.0-alpha.0",
+  "description": "A <u-icon> web component for 31 react-icons sets, built with REALM. Icons load on demand.",
+  "type": "module",
+  "license": "MIT",
+  "author": {
+    "name": "Ribhararnus Pracutian",
+    "email": "oknoorap@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/realmorg/realm.git",
+    "directory": "packages/unicons"
+  },
+  "homepage": "https://realm.js.org/unicons/",
+  "keywords": [
+    "icons",
+    "svg",
+    "web-components",
+    "custom-elements",
+    "realm"
+  ],
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    "./unicons.html": "./dist/unicons.html",
+    "./unicons.js": "./dist/unicons.js",
+    "./sets.json": "./dist/sets.json",
+    "./icons/*": "./dist/icons/*",
+    "./meta/*": "./dist/meta/*"
+  },
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "preview": "node test/server.mjs",
+    "test": "playwright test",
+    "test:cross": "playwright test --project firefox --project webkit",
+    "typecheck": "tsc --noEmit",
+    "coverage": "rm -rf coverage-components && playwright test --project chromium && node ../../scripts/component-coverage.mjs coverage-components /unicons/"
+  },
+  "peerDependencies": {
+    "@realmorg/realm": "workspace:^"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.64.1",
+    "@realmorg/realm": "workspace:*",
+    "@types/node": "26.6.5",
+    "react-icons": "5.7.0",
+    "tsconfig": "workspace:*",
+    "typescript": "7.0.2"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

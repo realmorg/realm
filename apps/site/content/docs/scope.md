@@ -8,7 +8,7 @@ nav: Nested components
 
 # Nested components and scope
 
-Components nest freely. A reference such as `#session.user` or a handler name such as `logout` resolves in this order:
+Components can nest. A reference such as `#session.user` or a handler name such as `logout` resolves in this order:
 
 1. loop variables of the surrounding `repeat` or `<repeat-list>`,
 2. the component whose markup contains the reference (its owner),
@@ -39,7 +39,7 @@ Content you place inside a child component is still yours. Here `#todo.remaining
 </custom-element>
 ```
 
-This is plain shadow DOM: the value slot lives in `todo-app`'s shadow root and is projected into `ui-card` through `ui-card`'s own `<slot>`.
+This is standard shadow DOM. The value slot lives in `todo-app`'s shadow root and is projected into `ui-card` through `ui-card`'s own `<slot>`.
 
 ## Parents fill in missing names
 
@@ -81,9 +81,9 @@ When the owner does not define a name, REALM looks in the component that contain
 <app-shell></app-shell>
 ```
 
-`nav-bar` has no `session` and no `signOut`, so both resolve to `app-shell`. Open the console: REALM logs a one-time warning for each name read from a parent (`<nav-bar> reads "session" from <app-shell>.`), so implicit sharing is never a surprise.
+`nav-bar` has no `session` and no `signOut`, so both resolve to `app-shell`. REALM logs a one-time console warning for each name read from a parent (`<nav-bar> reads "session" from <app-shell>.`), so you can see where implicit sharing happens.
 
-Guard rails:
+Rules:
 
 - A component's own names always win over a parent's.
 - A name that no component defines logs a warning and shows the slot's fallback content.

@@ -22,6 +22,8 @@ const runtimes = global[GLOBAL] ?? new Map();
 global[GLOBAL] = runtimes;
 runtimes.set(runtimeId, runtime);
 
+export const settingUp = new Set<string>();
+
 export const RUNTIME = `globalThis[Symbol.for("realm")].get(${JSON.stringify(runtimeId)})`;
 
 let counter = 0;

@@ -1,0 +1,149 @@
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/avatar.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/card.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/chart.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/tabs.html"></import-element>
+
+<custom-element name="overview-page">
+  <script type="module">
+    import { months, recentSales, stats } from "../data.js";
+
+    const SERIES = { all: "desktop,mobile", desktop: "desktop", mobile: "mobile" };
+
+    const overview = useState({
+      stats,
+      months,
+      sales: recentSales,
+      series: "all",
+      get y() {
+        return SERIES[this.series];
+      },
+    });
+
+    function chartTab(tabs) {
+      overview.series = tabs.value;
+    }
+  </script>
+
+  <style>
+    :host {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: calc(var(--spacing) * 4);
+    }
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(calc(var(--spacing) * 52), 1fr));
+      gap: calc(var(--spacing) * 4);
+    }
+    .stat-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .stat-title u-icon {
+      width: calc(var(--spacing) * 4);
+      height: calc(var(--spacing) * 4);
+      color: var(--muted-foreground);
+    }
+    .stat-value {
+      margin: 0;
+      font-size: var(--text-2xl);
+      font-weight: var(--font-weight-bold);
+    }
+    .stat-change {
+      margin: calc(var(--spacing) * 1) 0 0;
+      font-size: var(--text-xs);
+      color: var(--muted-foreground);
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+      gap: calc(var(--spacing) * 4);
+    }
+    .sales {
+      display: grid;
+      gap: calc(var(--spacing) * 5);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+    .sale {
+      display: flex;
+      align-items: center;
+      gap: calc(var(--spacing) * 3);
+      font-size: var(--text-sm);
+    }
+    .sale div {
+      flex: 1;
+      min-width: 0;
+    }
+    .sale p {
+      margin: 0;
+    }
+    .sale small {
+      color: var(--muted-foreground);
+    }
+    .more {
+      color: inherit;
+      font-size: var(--text-sm);
+      font-weight: var(--font-weight-medium);
+      text-underline-offset: calc(var(--spacing) * 1);
+    }
+    @media (max-width: 1000px) {
+      .grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+  </style>
+
+  <section class="stats" aria-label="Key figures">
+    <repeat-list of="#overview.stats" as="stat" key="id">
+      <ui-card>
+        <ui-card-header>
+          <ui-card-description class="stat-title"><slot name="#stat.label"></slot><u-icon _name="#stat.icon"></u-icon></ui-card-description>
+        </ui-card-header>
+        <ui-card-content>
+          <p class="stat-value"><slot name="#stat.value"></slot></p>
+          <p class="stat-change"><slot name="#stat.change"></slot></p>
+        </ui-card-content>
+      </ui-card>
+    </repeat-list>
+  </section>
+
+  <div class="grid">
+    <ui-card>
+      <ui-card-header>
+        <ui-card-title level="2">Visitors</ui-card-title>
+        <ui-card-description>The last 6 months</ui-card-description>
+        <ui-card-action>
+          <ui-tabs value="all" onchange="chartTab(this)">
+            <ui-tabs-list>
+              <ui-tabs-trigger value="all">All</ui-tabs-trigger>
+              <ui-tabs-trigger value="desktop">Desktop</ui-tabs-trigger>
+              <ui-tabs-trigger value="mobile">Mobile</ui-tabs-trigger>
+            </ui-tabs-list>
+          </ui-tabs>
+        </ui-card-action>
+      </ui-card-header>
+      <ui-card-content>
+        <ui-chart x="month" _y="#overview.y" _data="#overview.months" label="Visitors per month"></ui-chart>
+      </ui-card-content>
+    </ui-card>
+    <ui-card>
+      <ui-card-header>
+        <ui-card-title level="2">Recent sales</ui-card-title>
+        <ui-card-description>The latest paid orders.</ui-card-description>
+        <ui-card-action><a class="more" href="orders.html">All orders</a></ui-card-action>
+      </ui-card-header>
+      <ui-card-content>
+        <ul class="sales">
+          <li class="sale" repeat="#overview.sales" as="sale" key="id">
+            <ui-avatar><ui-avatar-fallback><slot name="#sale.initials"></slot></ui-avatar-fallback></ui-avatar>
+            <div><p><slot name="#sale.name"></slot></p><small><slot name="#sale.email"></slot></small></div>
+            <strong><slot name="#sale.amount"></slot></strong>
+          </li>
+        </ul>
+      </ui-card-content>
+    </ui-card>
+  </div>
+</custom-element>

@@ -69,7 +69,7 @@ The `hidden` attribute SHALL hide any component, whatever display its styles giv
 - **THEN** it is not displayed
 
 ### Requirement: Compound parts
-A definition with a `slot` attribute SHALL give each of its elements that slot unless the element sets its own. A part's handlers and values SHALL resolve from the parent component it is placed in when the part does not define them, without the development report REALM gives other components for parent lookups.
+A definition with a `slot` attribute SHALL give each of its elements that slot unless the element sets its own. A part's handlers and values SHALL resolve from the parent component it is placed in when the part does not define them. Parent lookups SHALL be reported during development only when the reader is not inside the owner's light DOM (that is, when it is nested through the owner's shadow markup).
 
 #### Scenario: a definition's slot attribute places its elements in that slot of their parent
 - **WHEN** a part declared with `slot="title"` is placed in a parent with a title slot
@@ -78,3 +78,10 @@ A definition with a `slot` attribute SHALL give each of its elements that slot u
 #### Scenario: compound parts call their parent's functions and show its state without a script
 - **WHEN** a part without a script calls a parent function and shows parent state
 - **THEN** the call reaches the parent, the value updates, and no lookup is reported
+
+### Requirement: Hidden elements in components
+Inside a component's shadow root, an element with the `hidden` attribute SHALL not be displayed, whatever `display` the component's styles give it (except `hidden="until-found"`).
+
+#### Scenario: hidden elements inside a component stay hidden whatever their display
+- **WHEN** a component styles a button with `display: grid` and the button is hidden
+- **THEN** it is not displayed

@@ -10,7 +10,7 @@ nav: Code Block
 
 `ui-code-block` shows code in a bordered, horizontally scrolling block with the language name and a copy button in
 the top corner. The copy button writes the block's text content to the clipboard with
-`navigator.clipboard.writeText()` and shows a check mark for 1.5 seconds. It does not highlight syntax; slot
+`navigator.clipboard.writeText()` and shows a check mark for 1.5 seconds. It does not highlight syntax. Slot
 highlighted markup if you need colours.
 
 Whitespace is preserved, so put the code in a `<pre>` (or start it right after the opening tag) and escape `<` as
@@ -18,7 +18,7 @@ Whitespace is preserved, so put the code in a `<pre>` (or start it right after t
 
 ```html live
 <div class="demo-medium">
-  <ui-code-block language="bash"><pre>pnpm add @realmorg/realm @realmorg/ui</pre></ui-code-block>
+  <ui-code-block language="html"><pre>&lt;script type="module" src="https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/realm.js"&gt;&lt;/script&gt;</pre></ui-code-block>
 </div>
 ```
 
@@ -62,7 +62,7 @@ const user = await response.json();</pre></ui-code-block>
 
 ### Parts
 
-`ui-code-block` has no child parts. Its default slot takes the code, usually a `<pre>`; its trimmed `textContent` is
+`ui-code-block` has no child parts. Its default slot takes the code, usually a `<pre>`. Its trimmed `textContent` is
 what the copy button copies.
 
 ### CSS parts
@@ -74,5 +74,5 @@ what the copy button copies.
 
 ### Accessibility
 
-The copy button is a `ui-button` with `aria-label="Copy code"`. The check mark that confirms the copy is visual only;
+The copy button is a `ui-button` with `aria-label="Copy code"`. The check mark that confirms the copy is visual only, and
 nothing is announced.

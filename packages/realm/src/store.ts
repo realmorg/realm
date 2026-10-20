@@ -43,6 +43,18 @@ export const defineStore = <T extends object>(
       warn(`Stored value for store "${name}" is not valid JSON and was ignored.`);
     }
   }
-  effect(() => adapter.set(key, JSON.stringify(state)));
+  const fields = state as Record<string, unknown>;
+  effect(() =>
+    adapter.set(
+      key,
+      JSON.stringify(
+        Object.fromEntries(
+          Object.keys(fields)
+            .filter((field) => isData(initial, field))
+            .map((field) => [field, fields[field]]),
+        ),
+      ),
+    ),
+  );
   return state;
 };

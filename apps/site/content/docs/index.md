@@ -8,11 +8,11 @@ nav: Introduction
 
 # Introduction
 
-REALM is a small runtime for building native web components in HTML. A component is a single `<custom-element>` tag that holds three things: a `<script>` with plain JavaScript, a `<style>`, and markup. REALM turns it into a real custom element with a shadow root. There is no compiler, no virtual DOM and no build step.
+REALM is a small runtime for building native web components in HTML. A component is a single `<custom-element>` tag that holds three things: a `<script>` with plain JavaScript, a `<style>`, and markup. REALM turns it into a custom element with a shadow root. There is no compiler, no virtual DOM and no build step.
 
-```html
+```html live stacked
 <custom-element name="hello-card">
-  <script>
+  <script type="realm">
     const props = defineProps({ name: prop.string().default("world") });
     const greeting = useState({ count: 0 });
 
@@ -34,7 +34,7 @@ REALM is a small runtime for building native web components in HTML. A component
 <hello-card name="Ana"></hello-card>
 ```
 
-That is the whole model:
+In this example:
 
 - `defineProps` declares typed attributes. `useState` creates reactive state.
 - `<slot name="#greeting.count">` shows a state value. `<slot name="@name">` shows a prop.
@@ -43,23 +43,20 @@ That is the whole model:
 
 ## Why REALM
 
-**Native HTML first.** If the platform has a feature, REALM uses it under its native name: `<slot>` to show content, `on*` attributes for events, `dispatchEvent` to emit them, `ElementInternals` for forms, `:state()` for styling. What you learn carries over to plain HTML and back.
-
-**No expressions in markup.** Attributes and slots hold references such as `#todo.remaining` or `@heading`, never calculations. Formatting, comparisons and combinations live in the script, usually as getters. The only code in markup is native event handlers, exactly as in plain HTML.
-
-**No toolchain.** A page loads one module script. Components can live inline in the page or in their own `.html` files loaded with `<import-element>`. You can still use npm and a bundler for the rest of your app.
-
-**Small and predictable.** The runtime is about 15 KB gzipped. Updates are batched per microtask and only touch the slots and attributes that read the changed value. Everything a component starts stops when it is removed.
+- REALM uses platform features under their native names: `<slot>` to show content, `on*` attributes for events, `dispatchEvent` to emit them, `ElementInternals` for forms and `:state()` for styling. What you know from plain HTML applies here.
+- Markup has no expressions. Attributes and slots hold references such as `#todo.remaining` or `@heading`. Formatting, comparisons and combinations go in the script, usually as getters. The only code in markup is native event handlers, as in plain HTML.
+- There is no build step. A page loads one module script from a CDN. Components live inline in the page or in their own `.html` files loaded with `<import-element>`.
+- The runtime is about 15 KB gzipped. Updates are batched per microtask and only touch the slots and attributes that read the changed value. Everything a component starts stops when it is removed.
 
 ## What REALM is not
 
 - It is not a server framework. It does not render on the server, and pages are not prerendered. See [Modern framework problems](/docs/framework-problems/) for what that means for SEO and first paint.
-- It does not compile templates. Plain `let count = 0` does not update the page; only values from `useState`, `defineProps` and stores do.
+- It does not compile templates. Plain `let count = 0` does not update the page. Only values from `useState`, `defineProps` and stores do.
 - It is not a JavaScript component API. Components are always defined with `<custom-element>`.
 
 ## Where to go next
 
-- [Installation](/docs/installation/): CDN or npm.
+- [Installation](/docs/installation/): two tags from the CDN.
 - [Quick start](/docs/quick-start/): a working page in five minutes.
 - [Tutorial](/docs/tutorial/): build a reading list app step by step.
 - [Component anatomy](/docs/components/): the rules behind the three parts.

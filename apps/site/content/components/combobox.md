@@ -13,8 +13,8 @@ are plain `<option>` elements written as children, like in a `<select>`. Typing 
 one sets the element's `value`. The list is a native manual popover, so it renders in the top layer. It opens when
 the input is focused or clicked, and closes on Escape, on a choice and when focus leaves the input.
 
-It is form-associated: with a `name`, the chosen option's `value` is submitted with the form. Like a native form
-control in a shadcn form, it fills the width of its container; `width` gives it a fixed width instead.
+It is form-associated. With a `name`, the chosen option's `value` is submitted with the form. Like a native form
+control in a form field, it fills the width of its container. `width` gives it a fixed width instead.
 
 ```html live
 <ui-combobox aria-label="Framework" placeholder="Select a framework…" width="60">
@@ -82,7 +82,7 @@ options. Filtering matches the label.
 
 ### Width
 
-By default the combobox fills its container. `width` sets a fixed width in spacing units: `width="48"` is
+By default the combobox fills its container. `width` sets a fixed width in spacing units, so `width="48"` is
 `calc(var(--spacing) * 48)`.
 
 ```html live
@@ -231,7 +231,7 @@ chosen, and `form.reset()` returns to the `value` attribute.
 | --- | --- | --- | --- |
 | `value` | string | `""` | The `value` of the chosen option. |
 | `placeholder` | string | `"Select…"` | Placeholder of the text input. |
-| `width` | number | | Fixed width in spacing units: `n` means `calc(var(--spacing) * n)`. Without it the combobox fills its container. |
+| `width` | number | | Fixed width in spacing units, where `n` means `calc(var(--spacing) * n)`. Without it the combobox fills its container. |
 | `disabled` | boolean | `false` | Disables the input. Also true inside a disabled `<fieldset>`. |
 | `required` | boolean | `false` | The form is invalid until an option is chosen. |
 | `aria-label` | string | | Accessible name, passed to the inner input. Property name: `label`. |

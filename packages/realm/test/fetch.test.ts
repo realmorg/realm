@@ -204,9 +204,12 @@ describe("fetch attributes", () => {
     for (const mode of [...modes, "select"])
       (shadow.getElementById(mode) as HTMLButtonElement).click();
     await vi.waitFor(() => expect(calls).toHaveLength(modes.length + 1));
-    await tick();
     const target = (mode: string) => shadow.querySelector(`[ref="${mode}-target"]`);
-    expect(target("replace")?.innerHTML).toBe('<section><b class="hit">/replace</b></section>');
+    await vi.waitFor(() => {
+      expect(target("replace")?.innerHTML).toBe('<section><b class="hit">/replace</b></section>');
+      expect(target("select")?.innerHTML).toBe('<b class="hit">/select</b>');
+      expect(target("remove")).toBeNull();
+    });
     expect(target("outer")).toBeNull();
     expect(target("append")?.lastElementChild?.localName).toBe("section");
     expect(target("prepend")?.firstElementChild?.localName).toBe("section");

@@ -8,7 +8,7 @@ nav: State and reactivity
 
 # State and reactivity
 
-REALM's reactivity has three pieces: `useState` for state, getters for derived values, and `observe` for side effects. There is no dependency list anywhere. REALM records what each binding, getter and observer reads, and re-runs only those when the values change.
+REALM's reactivity has three pieces: `useState` for state, getters for derived values, and `observe` for side effects. There are no dependency lists. REALM records what each binding, getter and observer reads, and re-runs only those when the values change.
 
 ## useState
 
@@ -29,9 +29,9 @@ delete todo.filter; // added and deleted keys are tracked
 
 - Nested plain objects and arrays become reactive when you read them.
 - Array methods that change the array (`push`, `pop`, `shift`, `unshift`, `splice`, `sort`, `reverse`, `fill`, `copyWithin`), index writes and `length` writes all notify.
-- `includes`, `indexOf` and `lastIndexOf` find items whether you pass the reactive item or the original object.
+- `includes`, `indexOf` and `lastIndexOf` find an item from either the reactive item or the original object.
 - Writing the same value again does nothing.
-- Only plain objects and arrays are made reactive. `Map`, `Set`, `Date` and class instances are stored as they are: replace them to trigger an update.
+- Only plain objects and arrays are made reactive. `Map`, `Set`, `Date` and class instances are stored as they are. Replace them to trigger an update.
 - `useState` called twice with the same object returns the same proxy.
 
 Plain variables are not reactive. `let count = 0` followed by `count++` changes a variable that nothing observes, so the page does not update. Put anything the markup shows into `useState`.
@@ -146,7 +146,7 @@ Things to know:
 
 ### Why not an effect with a dependency array
 
-`observe` has no list to keep in sync with the code, and it does not run after every render, because there are no renders. It runs once, then only when something it actually read has changed.
+`observe` has no list to keep in sync with the code, and it does not run after every render, because there are no renders. It runs once, then only when something it read has changed.
 
 ## Reading without subscribing
 

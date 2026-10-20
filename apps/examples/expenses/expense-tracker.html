@@ -1,0 +1,193 @@
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/card.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/chart.html"></import-element>
+<import-element from="./expense-form.html"></import-element>
+<import-element from="./expense-table.html"></import-element>
+
+<custom-element name="expense-tracker">
+  <script type="module">
+    import { expenses, toggleMonth } from "./expenses.js";
+
+    function showMonth(month) {
+      toggleMonth(month.key);
+    }
+  </script>
+
+  <style>
+    :host {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: calc(var(--spacing) * 6);
+      width: min(calc(var(--spacing) * 300), 100%);
+    }
+    header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: end;
+      justify-content: space-between;
+      gap: calc(var(--spacing) * 4);
+    }
+    h1 {
+      margin: 0;
+      font-size: var(--text-2xl);
+      letter-spacing: -0.02em;
+    }
+    header p {
+      margin: calc(var(--spacing) * 1) 0 0;
+      color: var(--muted-foreground);
+      font-size: var(--text-sm);
+    }
+    .export {
+      display: inline-flex;
+      align-items: center;
+      gap: calc(var(--spacing) * 2);
+      height: calc(var(--spacing) * 9);
+      padding: 0 calc(var(--spacing) * 4);
+      border: 1px solid var(--input);
+      border-radius: var(--radius-md);
+      background: var(--background);
+      box-shadow: var(--shadow-xs);
+      color: var(--foreground);
+      font-size: var(--text-sm);
+      font-weight: var(--font-weight-medium);
+      text-decoration: none;
+    }
+    .export:hover {
+      background: var(--accent);
+      color: var(--accent-foreground);
+    }
+    .export:focus-visible {
+      outline: 2px solid var(--ring);
+      outline-offset: 2px;
+    }
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(calc(var(--spacing) * 52), 1fr));
+      gap: calc(var(--spacing) * 4);
+    }
+    .value {
+      margin: 0;
+      overflow: hidden;
+      font-size: var(--text-2xl);
+      font-weight: var(--font-weight-bold);
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+    .layout {
+      display: grid;
+      grid-template-columns: calc(var(--spacing) * 96) minmax(0, 1fr);
+      align-items: start;
+      gap: calc(var(--spacing) * 6);
+    }
+    .side {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: calc(var(--spacing) * 6);
+    }
+    .main {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: calc(var(--spacing) * 6);
+      min-width: 0;
+    }
+    .months {
+      display: grid;
+      gap: calc(var(--spacing) * 1);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+    .month {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 0 calc(var(--spacing) * 3);
+      width: 100%;
+      padding: calc(var(--spacing) * 2) calc(var(--spacing) * 3);
+      border: 1px solid transparent;
+      border-radius: var(--radius-md);
+      background: transparent;
+      color: inherit;
+      font: inherit;
+      font-size: var(--text-sm);
+      text-align: left;
+      cursor: pointer;
+    }
+    .month:hover {
+      background: var(--accent);
+    }
+    .month:focus-visible {
+      outline: 2px solid var(--ring);
+    }
+    .month[aria-pressed="true"] {
+      border-color: var(--border);
+      background: var(--secondary);
+    }
+    .month small {
+      grid-column: 1 / -1;
+      color: var(--muted-foreground);
+      font-size: var(--text-xs);
+    }
+    @media (max-width: 1000px) {
+      .layout {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+  </style>
+
+  <header>
+    <div>
+      <h1>Expenses</h1>
+      <p>Track spending by category and month. Everything stays in this browser.</p>
+    </div>
+    <a class="export" download="expenses.csv" _href="#expenses.csv"><u-icon name="download"></u-icon> Export CSV</a>
+  </header>
+
+  <section class="stats" aria-label="Totals">
+    <ui-card>
+      <ui-card-header><ui-card-description>Total spent</ui-card-description></ui-card-header>
+      <ui-card-content><p class="value"><slot name="#expenses.total"></slot></p></ui-card-content>
+    </ui-card>
+    <ui-card>
+      <ui-card-header><ui-card-description>Average expense</ui-card-description></ui-card-header>
+      <ui-card-content><p class="value"><slot name="#expenses.average"></slot></p></ui-card-content>
+    </ui-card>
+    <ui-card>
+      <ui-card-header><ui-card-description>Largest expense</ui-card-description></ui-card-header>
+      <ui-card-content><p class="value"><slot name="#expenses.largest"></slot></p></ui-card-content>
+    </ui-card>
+  </section>
+
+  <div class="layout">
+    <div class="side">
+      <expense-form></expense-form>
+      <ui-card>
+        <ui-card-header>
+          <ui-card-title level="2">Monthly summary</ui-card-title>
+          <ui-card-description>Pick a month to filter the table and chart.</ui-card-description>
+        </ui-card-header>
+        <ui-card-content>
+          <ul class="months" aria-label="Months">
+            <li repeat="#expenses.months" as="month" key="key">
+              <button class="month" type="button" _aria-pressed="#month.current" onclick="showMonth(month)">
+                <strong><slot name="#month.label"></slot></strong>
+                <span><slot name="#month.total"></slot></span>
+                <small><slot name="#month.count"></slot> · <slot name="#month.change"></slot></small>
+              </button>
+            </li>
+          </ul>
+        </ui-card-content>
+      </ui-card>
+    </div>
+    <div class="main">
+      <ui-card>
+        <ui-card-header>
+          <ui-card-title level="2">By category</ui-card-title>
+          <ui-card-description>Spending in the current filter.</ui-card-description>
+        </ui-card-header>
+        <ui-card-content>
+          <ui-chart x="category" y="amount" _data="#expenses.byCategory" height="200" label="Spending by category in the current filter"></ui-chart>
+        </ui-card-content>
+      </ui-card>
+      <expense-table></expense-table>
+    </div>
+  </div>
+</custom-element>

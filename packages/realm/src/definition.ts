@@ -2,12 +2,12 @@ import { collectHandlers, HANDLER_PREFIX, setupSource } from "./assemble";
 import { type CssBindings, scanCss } from "./css";
 import { mountElementClass } from "./element";
 import { warn } from "./log";
-import { EMPTY_SETUP, nextId, RUNTIME, runSetupScript } from "./registry";
+import { EMPTY_SETUP, nextId, RUNTIME, runSetupScript, settingUp } from "./registry";
 import type { Definition, Setup } from "./types";
 
 const BASE_SHEET = new CSSStyleSheet();
 BASE_SHEET.replaceSync(
-  "is-visible, is-hidden, repeat-list { display: contents; } :host([hidden]) { display: none !important; }",
+  "is-visible, is-hidden, repeat-list { display: contents; } :host([hidden]), [hidden]:not([hidden='until-found']) { display: none !important; } :not(:defined):not(is-visible, is-hidden, repeat-list) { visibility: hidden; }",
 );
 
 const definitions = new Map<string, Definition>();
@@ -115,6 +115,7 @@ export const defineComponent = async (
     setup: undefined as unknown as Setup,
   };
   definitions.set(name, definition);
+  settingUp.add(name);
   if (src) await loadSetup(definition, new URL(src, base).href);
   else if (!text.trim() && !found.size) definition.setup = EMPTY_SETUP;
   else {
@@ -128,6 +129,7 @@ export const defineComponent = async (
       name,
     );
   }
+  settingUp.delete(name);
   mountElementClass(definition);
 };
 

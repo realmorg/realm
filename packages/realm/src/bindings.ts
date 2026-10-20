@@ -215,6 +215,7 @@ const repeat = (source: Element, template: Node, parent: Node, end: Node | null,
   const as = source.getAttribute("as") ?? "item";
   const indexName = source.getAttribute("index");
   const key = source.getAttribute("key");
+  const container = () => end?.parentNode ?? parent;
   let blocks = new Map<unknown, ListBlock>();
 
   const create = (item: unknown, index: number): ListBlock => {
@@ -225,7 +226,11 @@ const repeat = (source: Element, template: Node, parent: Node, end: Node | null,
       [as, itemBox],
       ...(indexName ? [[indexName, indexBox] as const] : []),
     ];
-    return { ...mountBlock(template, parent, end, scope, vars), item: itemBox, index: indexBox };
+    return {
+      ...mountBlock(template, container(), end, scope, vars),
+      item: itemBox,
+      index: indexBox,
+    };
   };
 
   watch(scope, () => {
@@ -254,7 +259,7 @@ const repeat = (source: Element, template: Node, parent: Node, end: Node | null,
       let cursor = end;
       for (const block of order.reverse()) {
         for (const node of block.nodes.toReversed()) {
-          if (node.nextSibling !== cursor) parent.insertBefore(node, cursor);
+          if (node.nextSibling !== cursor) container().insertBefore(node, cursor);
           cursor = node;
         }
       }

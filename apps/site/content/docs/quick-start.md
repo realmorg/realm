@@ -8,11 +8,11 @@ nav: Quick start
 
 # Quick start
 
-This page builds a working component in one HTML file, then moves it into its own file.
+This page builds a working component in one HTML file, then moves it into its own file. You need a text editor and a web browser. There is nothing to install. REALM loads from a CDN.
 
 ## 1. One HTML file
 
-Create `index.html`:
+Create `index.html`. The two tags in the `<head>` load REALM from the jsDelivr CDN:
 
 ```html
 <!doctype html>
@@ -20,8 +20,8 @@ Create `index.html`:
 <head>
   <meta charset="utf-8">
   <title>My first REALM page</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@realmorg/realm@2.0.0-alpha.0/dist/realm.css">
-  <script type="module" src="https://cdn.jsdelivr.net/npm/@realmorg/realm@2.0.0-alpha.0/dist/realm.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/realm.css">
+  <script type="module" src="https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/realm.js"></script>
 </head>
 <body>
   <custom-element name="greeting-form">
@@ -57,7 +57,7 @@ Create `index.html`:
 </html>
 ```
 
-Open it in a browser and type. Here it is running:
+Open the file in your browser and type a name. The live version:
 
 ```html live
 <custom-element name="greeting-form">
@@ -90,7 +90,7 @@ Open it in a browser and type. Here it is running:
 <greeting-form></greeting-form>
 ```
 
-What happened:
+How it works:
 
 - `useState` returned a reactive object. Writing `greeting.name` updates everything that reads it.
 - `message` is a getter, so it works as a cached derived value.
@@ -100,7 +100,7 @@ What happened:
 
 ## 2. Move the component into its own file
 
-Real components live in their own files. Create `greeting-form.html` with the same definition, using a plain `<script>` and `<style>` (the file is never rendered by the browser directly, so no `type` is needed):
+In an app, each component usually lives in its own file. Create `greeting-form.html` with the same definition, using a plain `<script>` and `<style>` (the file is never rendered by the browser directly, so no `type` is needed):
 
 ```html
 <custom-element name="greeting-form">
@@ -138,15 +138,15 @@ Then load it from the page:
 <greeting-form></greeting-form>
 ```
 
-`<import-element>` fetches the file once, defines every `<custom-element>` in it, and fires `load` or `error`. Serve the folder over HTTP (`npx serve .`), because files are loaded with `fetch`.
+`<import-element>` fetches the file once, defines every `<custom-element>` in it, and fires `load` or `error`. Because files are loaded with `fetch`, open the page through any static file server rather than from disk, for example your editor's live preview or `python3 -m http.server`. There is still nothing to build.
 
 ## 3. Use ready-made components
 
 Add the REALM UI theme and bundle to get buttons, inputs, dialogs and more:
 
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@realmorg/ui@2.0.0-alpha.0/theme.css">
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@2.0.0-alpha.0/dist/ui.html"></import-element>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/dist/theme.css">
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/dist/ui.html"></import-element>
 
 <ui-button variant="outline">Click me</ui-button>
 ```

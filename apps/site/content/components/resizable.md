@@ -100,7 +100,7 @@ A panel can hold another group in the other direction.
 | Attribute | Type | Default | Description |
 | --- | --- | --- | --- |
 | `direction` | `"horizontal"` \| `"vertical"` | `"horizontal"` | Lays the panels out in a row or a column. Handles read it when they connect. |
-| `height` | number | none | Height in spacing units: `height="48"` is `calc(var(--spacing) * 48)`. Without it the group fills its parent's height. |
+| `height` | number | none | Height in spacing units, so `height="48"` is `calc(var(--spacing) * 48)`. Without it the group fills its parent's height. |
 | `variant` | `"default"` \| `"outline"` | `"default"` | `outline` adds a 1px border and `var(--radius-lg)` corners. |
 
 #### ui-resizable-panel
@@ -118,7 +118,7 @@ A panel can hold another group in the other direction.
 
 ### Properties and methods
 
-`ui-resizable-panel` exposes `size` and `min` as properties. Set `size` from script to resize a panel; the handles
+`ui-resizable-panel` exposes `size` and `min` as properties. Set `size` from script to resize a panel. The handles
 read both properties from the panels on either side.
 
 ### Parts

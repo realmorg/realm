@@ -1,0 +1,228 @@
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/button.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/card.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/empty.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/input-group.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/select.html"></import-element>
+
+<custom-element name="expense-table">
+  <script type="module">
+    import { CATEGORIES, clearFilters, expenses, removeExpense, sortBy } from "./expenses.js";
+
+    const options = useState({ categories: CATEGORIES });
+
+    function sort(column) {
+      sortBy(column.key);
+    }
+
+    function filterCategory(select) {
+      expenses.category = select.value;
+    }
+
+    function filterMonth(select) {
+      expenses.month = select.value;
+    }
+
+    function search(field) {
+      expenses.query = field.value;
+    }
+
+    function remove(row) {
+      removeExpense(row.id);
+    }
+  </script>
+
+  <style>
+    :host {
+      display: block;
+      min-width: 0;
+    }
+    .filters {
+      display: grid;
+      grid-template-columns: minmax(0, 2fr) repeat(2, minmax(0, 1fr)) auto;
+      gap: calc(var(--spacing) * 2);
+      margin-bottom: calc(var(--spacing) * 4);
+    }
+    .clear:not([data-active]) {
+      visibility: hidden;
+    }
+    .table {
+      position: relative;
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+    }
+    table {
+      width: 100%;
+      min-width: calc(var(--spacing) * 140);
+      border-collapse: collapse;
+      font-size: var(--text-sm);
+    }
+    th {
+      height: calc(var(--spacing) * 10);
+      padding: 0 calc(var(--spacing) * 2);
+      color: var(--muted-foreground);
+      font-weight: var(--font-weight-medium);
+      text-align: left;
+      white-space: nowrap;
+    }
+    th button {
+      display: inline-flex;
+      align-items: center;
+      gap: calc(var(--spacing) * 1.5);
+      padding: calc(var(--spacing) * 1) calc(var(--spacing) * 1.5);
+      border: 0;
+      border-radius: var(--radius-sm);
+      background: transparent;
+      color: inherit;
+      font: inherit;
+      cursor: pointer;
+    }
+    th button:hover {
+      background: var(--accent);
+      color: var(--accent-foreground);
+    }
+    th button:focus-visible {
+      outline: 2px solid var(--ring);
+    }
+    th[aria-sort="ascending"] button,
+    th[aria-sort="descending"] button {
+      color: var(--foreground);
+    }
+    td {
+      padding: calc(var(--spacing) * 2) calc(var(--spacing) * 3.5);
+      border-top: 1px solid var(--border);
+      white-space: nowrap;
+    }
+    tbody tr:hover {
+      background: var(--muted);
+    }
+    .amount {
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+    }
+    th[data-column="amount"] {
+      text-align: right;
+    }
+    th[data-column="amount"] button {
+      flex-direction: row-reverse;
+    }
+    .actions {
+      width: calc(var(--spacing) * 12);
+      text-align: right;
+    }
+    tfoot td {
+      font-weight: var(--font-weight-semibold);
+    }
+    .category {
+      display: inline-flex;
+      align-items: center;
+      gap: calc(var(--spacing) * 2);
+    }
+    .category::before {
+      content: "";
+      width: calc(var(--spacing) * 2);
+      height: calc(var(--spacing) * 2);
+      border-radius: var(--radius-full);
+      background: var(--muted-foreground);
+    }
+    .category[data-category="food"]::before {
+      background: var(--chart-1);
+    }
+    .category[data-category="housing"]::before {
+      background: var(--chart-2);
+    }
+    .category[data-category="transport"]::before {
+      background: var(--chart-3);
+    }
+    .category[data-category="fun"]::before {
+      background: var(--chart-4);
+    }
+    .category[data-category="health"]::before {
+      background: var(--chart-5);
+    }
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+    @media (max-width: 720px) {
+      .filters {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .filters search {
+        grid-column: 1 / -1;
+      }
+    }
+  </style>
+
+  <ui-card>
+    <ui-card-header>
+      <ui-card-title level="2">Expenses</ui-card-title>
+      <ui-card-description><slot name="#expenses.count"></slot>, <slot name="#expenses.total"></slot> in total</ui-card-description>
+    </ui-card-header>
+    <ui-card-content>
+      <div class="filters">
+        <search>
+          <ui-input-group type="search" aria-label="Search expenses" placeholder="Search descriptions…" _value="#expenses.query" oninput="search(this)">
+            <ui-input-group-addon><u-icon name="search"></u-icon></ui-input-group-addon>
+          </ui-input-group>
+        </search>
+        <ui-select aria-label="Filter by category" _value="#expenses.category" onchange="filterCategory(this)">
+          <option value="all">All categories</option>
+          <option repeat="#options.categories" as="category" key="id" _value="#category.id" _label="#category.label"></option>
+        </ui-select>
+        <ui-select aria-label="Filter by month" _value="#expenses.month" onchange="filterMonth(this)">
+          <option value="all">All months</option>
+          <option repeat="#expenses.months" as="month" key="key" _value="#month.key" _label="#month.label"></option>
+        </ui-select>
+        <ui-button class="clear" variant="ghost" _data-active="#expenses.filtering" onclick="clearFilters()">Clear</ui-button>
+      </div>
+
+      <is-visible when="#expenses.rows.length">
+        <div class="table">
+          <table aria-label="Expenses">
+            <thead>
+              <tr>
+                <th repeat="#expenses.columns" as="column" key="key" scope="col" _data-column="#column.key" _aria-sort="#column.sort">
+                  <button type="button" onclick="sort(column)"><slot name="#column.label"></slot><u-icon _name="#column.icon"></u-icon></button>
+                </th>
+                <th scope="col" class="actions"><span class="sr-only">Actions</span></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr repeat="#expenses.rows" as="row" key="id">
+                <td><slot name="#row.day"></slot></td>
+                <td><slot name="#row.description"></slot></td>
+                <td><span class="category" _data-category="#row.category"><slot name="#row.categoryLabel"></slot></span></td>
+                <td class="amount"><slot name="#row.price"></slot></td>
+                <td class="actions">
+                  <ui-button variant="ghost" size="icon-sm" _aria-label="#row.removeLabel" onclick="remove(row)"><u-icon name="trash-2"></u-icon></ui-button>
+                </td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="3">Total</td>
+                <td class="amount"><slot name="#expenses.total"></slot></td>
+                <td></td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </is-visible>
+
+      <is-hidden when="#expenses.rows.length">
+        <ui-empty>
+          <ui-empty-header>
+            <ui-empty-media variant="icon"><u-icon name="receipt"></u-icon></ui-empty-media>
+            <ui-empty-title>No expenses found</ui-empty-title>
+            <ui-empty-description>Try other filters, or add an expense.</ui-empty-description>
+          </ui-empty-header>
+        </ui-empty>
+      </is-hidden>
+    </ui-card-content>
+  </ui-card>
+</custom-element>

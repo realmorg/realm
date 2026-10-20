@@ -26,7 +26,11 @@ jobs:
       - run: pnpm --filter @realmorg/ui coverage
       - run: pnpm build
       - run: pnpm size
+      - run: pnpm skill:check
+      - run: pnpm skill:test
       - run: pnpm --filter @realmorg/vite-plugin test
+      - run: pnpm --filter @realmorg/unicons test
+      - run: pnpm --filter @realmorg/unicons coverage
 
   e2e:
     runs-on: ubuntu-latest

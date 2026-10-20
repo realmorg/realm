@@ -1,20 +1,38 @@
 <p align="center">
-  <a href="https://realmui.github.io" target="_blank">
+  <a href="https://realm.js.org" target="_blank">
     <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/realmui/realm/HEAD/.github/dark-logo.png">
-      <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/realmui/realm/HEAD/.github/light-logo.png">
-      <img alt="REALM" src="https://raw.githubusercontent.com/realmui/realm/HEAD/.github/light-logo.png" width="350" height="85" style="max-width: 100%;">
+      <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/realmorg/realm/HEAD/.github/dark-logo.png">
+      <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/realmorg/realm/HEAD/.github/light-logo.png">
+      <img alt="REALM" src="https://raw.githubusercontent.com/realmorg/realm/HEAD/.github/light-logo.png" width="350" height="85" style="max-width: 100%;">
     </picture>
   </a>
 </p>
 
 <p align="center">Native web components, written in plain HTML. No compiler, no build step.</p>
 
+## Install
+
+Add two tags from the CDN to any HTML page:
+
+```html
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/realm.css">
+<script type="module" src="https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/realm.js"></script>
+```
+
+For the ready-made `ui-*` components, add the REALM UI theme and bundle:
+
+```html
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/dist/theme.css">
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/dist/ui.html"></import-element>
+```
+
+Pin an exact version (for example `@realmorg/realm@2.0.0-alpha.1`) in production.
+
+## A component
+
 A REALM component is one `<custom-element>` tag holding a `<script>`, a `<style>` and markup:
 
 ```html
-<script type="module" src="https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/realm.js"></script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/realm.css">
 
 <custom-element name="click-counter">
   <script type="realm">
@@ -36,24 +54,26 @@ A REALM component is one `<custom-element>` tag holding a `<script>`, a `<style>
 <click-counter step="2"></click-counter>
 ```
 
-- Values show through native `<slot name="#state.path">`, attributes bind with `_href="#link.url"`, events use native `onclick`.
+- Values show through native `<slot name="#state.path">`. Attributes bind with `_href="#link.url"`. Events use native `onclick`.
 - `fetch`, `into`, `render` and `busy` attributes make requests without code.
-- Components are real form fields, clean up after themselves, and style themselves with reactive CSS states.
-- About 15 KB gzipped. Works in current Chrome, Edge, Firefox and Safari.
+- Components can act as form fields, stop their listeners and requests when removed, and style themselves from reactive CSS states.
+- About 16 KB gzipped. Works in current Chrome, Edge, Firefox and Safari.
 
 ## Packages
+
+REALM and REALM UI load from the CDN. The Vite plugin is an optional dev tool installed from npm.
 
 | Package | |
 | --- | --- |
 | `@realmorg/realm` | The runtime |
-| `@realmorg/ui` | About 60 accessible components in the style of shadcn/ui, built with REALM |
-| `@realmorg/vite-plugin` | Pre-assembles components for strict Content Security Policies and writes `custom-elements.json` |
+| `@realmorg/ui` | About 60 accessible components, built with REALM |
+| `@realmorg/vite-plugin` | Optional, for projects that already use Vite: pre-assembles components for strict Content Security Policies and writes `custom-elements.json` |
 
-Documentation, a tutorial and live examples are at [realmui.github.io](https://realmui.github.io), and in Markdown for language models at [llms.txt](https://realmui.github.io/llms.txt).
+Docs, a tutorial and live examples are at [realm.js.org](https://realm.js.org). [llms.txt](https://realm.js.org/llms.txt) lists the same docs in Markdown for code assistants.
 
 ## Development
 
-The repository holds the runtime, the UI library, the Vite plugin, the website and example apps (a todo list, a Trello-like board, chess, a dashboard, a weather app and a contacts app). See `AGENTS.md` for the rules and commands, `PLAN.md` for the design, and `openspec/specs` for the specification. Every scenario in the specification has a test, and the runtime keeps 100% test coverage in Chromium, Firefox and WebKit.
+The repository holds the runtime, the UI library, the Vite plugin, the website and example apps (a todo list, a kanban board, chess, a dashboard, a weather app and a contacts app). See `AGENTS.md` for the rules and commands, `PLAN.md` for the design, and `openspec/specs` for the specification. Every scenario in the specification has a test, and the runtime keeps 100% test coverage in Chromium, Firefox and WebKit.
 
 ```bash
 pnpm install

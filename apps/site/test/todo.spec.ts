@@ -1,4 +1,4 @@
-import { expect, ready, test } from "./fixtures";
+import { expect, ready, recordLayoutShifts, takeLayoutShift, test } from "./fixtures";
 
 test.beforeEach(async ({ page }) => {
   await page.goto("examples/todo/");
@@ -73,5 +73,38 @@ test("todo: blank todos are ignored, Escape cancels an edit and clearing the tex
   await edit.press("Enter");
   await expect(items).toHaveCount(1);
   await expect(items.nth(0)).toContainText("Buy milk");
+  void errors;
+});
+
+test("todo: adding and completing todos does not shift the layout", async ({ page, errors }) => {
+  await recordLayoutShifts(page);
+  await page.reload();
+  await ready(page, "todo-app");
+  const input = page.getByRole("textbox", { name: "New todo" });
+  const form = page.locator("todo-app form");
+  await expect(page.getByText("Nothing to do yet.")).toBeVisible();
+  await takeLayoutShift(page);
+  const before = await form.boundingBox();
+
+  await input.fill("Buy milk");
+  await input.press("Enter");
+  await expect(page.getByText("1 item left")).toBeVisible();
+  expect(await takeLayoutShift(page)).toBe(0);
+  expect(await form.boundingBox()).toEqual(before);
+
+  for (const text of ["Write docs", "Ship v2"]) {
+    await input.fill(text);
+    await input.press("Enter");
+  }
+  await expect(page.locator("todo-app li")).toHaveCount(3);
+  expect(await form.boundingBox()).toEqual(before);
+  await takeLayoutShift(page);
+
+  const filters = page.getByRole("group", { name: "Filter" });
+  const filtersBefore = await filters.boundingBox();
+  await page.locator("todo-app li").first().getByRole("checkbox").check();
+  await expect(page.getByRole("button", { name: "Clear completed" })).toBeVisible();
+  expect(await takeLayoutShift(page)).toBe(0);
+  expect(await filters.boundingBox()).toEqual(filtersBefore);
   void errors;
 });

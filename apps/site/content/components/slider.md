@@ -170,7 +170,7 @@ The value is submitted as a number string under `name`. Reset returns to the `va
 
 | Property | Type | Description |
 | --- | --- | --- |
-| `value` | number | Current value as a number. Updated while the thumb moves; setting it moves the thumb. |
+| `value` | number | Current value as a number. Updated while the thumb moves. Setting it moves the thumb. |
 
 ### Events
 
@@ -189,7 +189,7 @@ The value is submitted as a number string under `name`. Reset returns to the `va
 
 | Property | Description |
 | --- | --- |
-| `--state-range-percent` | Set on the host to the filled share of the track, for example `40%`. Read-only; useful for drawing a matching tooltip or label. |
+| `--state-range-percent` | Set on the host to the filled share of the track, for example `40%`. Read-only. Use it to draw a matching tooltip or label. |
 
 ### Forms
 
@@ -198,6 +198,6 @@ and a disabled `<fieldset>` disables it.
 
 ### Accessibility
 
-The host delegates focus to the inner native range input, which has the `slider` role and native keyboard support:
-the arrow keys change the value by `step`, Page Up and Page Down by larger amounts, and Home and End jump to `min`
+The host delegates focus to the inner native range input, which has the `slider` role and native keyboard support.
+The arrow keys change the value by `step`, Page Up and Page Down by larger amounts, and Home and End jump to `min`
 and `max`.

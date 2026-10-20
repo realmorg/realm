@@ -1,0 +1,204 @@
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/avatar.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/breadcrumb.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/button.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/command.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/dialog.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/dropdown-menu.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/kbd.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/separator.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/sidebar.html"></import-element>
+
+<custom-element name="dashboard-shell">
+  <script type="module">
+    import { defaultSettings, pages } from "../data.js";
+
+    const props = defineProps({
+      page: prop.enum(pages.map((item) => item.id)).default("overview"),
+    });
+    const settings = defineStore("dashboard-settings", defaultSettings, { persist: "local" });
+    const shell = useState({
+      get nav() {
+        return pages.map((item) => ({ ...item, current: item.id === props.page }));
+      },
+      get current() {
+        return pages.find((item) => item.id === props.page);
+      },
+      get initials() {
+        return settings.name
+          .split(" ")
+          .map((part) => part[0])
+          .join("")
+          .slice(0, 2);
+      },
+    });
+
+    const ACCOUNT = {
+      settings: () => location.assign("settings.html"),
+      logout: () => dispatch("toast", { title: "Signed out", description: "This demo keeps you signed in." }),
+    };
+
+    function search() {
+      refs.palette.showModal();
+    }
+
+    function go(event) {
+      refs.palette.close();
+      location.assign(event.detail.value);
+    }
+
+    function account(event) {
+      ACCOUNT[event.detail.value]();
+    }
+
+    function shortcut(event) {
+      if (event.key.toLowerCase() !== "k" || !(event.metaKey || event.ctrlKey)) return;
+      event.preventDefault();
+      search();
+    }
+
+    listen("keydown", shortcut, document);
+  </script>
+
+  <style>
+    :host {
+      display: block;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: calc(var(--spacing) * 2);
+      padding: calc(var(--spacing) * 2);
+      overflow: hidden;
+      font-weight: var(--font-weight-semibold);
+      white-space: nowrap;
+    }
+    .logo {
+      display: grid;
+      place-content: center;
+      flex-shrink: 0;
+      width: calc(var(--spacing) * 8);
+      height: calc(var(--spacing) * 8);
+      border-radius: var(--radius-md);
+      background: var(--primary);
+      color: var(--primary-foreground);
+    }
+    ui-sidebar-menu-button u-icon {
+      width: calc(var(--spacing) * 4);
+      height: calc(var(--spacing) * 4);
+    }
+    .bar {
+      display: flex;
+      align-items: center;
+      gap: calc(var(--spacing) * 3);
+      height: calc(var(--spacing) * 14);
+      padding: 0 calc(var(--spacing) * 4);
+      border-bottom: 1px solid var(--border);
+    }
+    .bar ui-separator {
+      height: calc(var(--spacing) * 4);
+      align-self: center;
+    }
+    .search {
+      margin-left: auto;
+    }
+    .content {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      align-content: start;
+      gap: calc(var(--spacing) * 6);
+      padding: calc(var(--spacing) * 6);
+    }
+    h1 {
+      margin: 0;
+      font-size: var(--text-2xl);
+      letter-spacing: -0.02em;
+    }
+    .heading p {
+      margin: calc(var(--spacing) * 1) 0 0;
+      color: var(--muted-foreground);
+      font-size: var(--text-sm);
+    }
+    @media (max-width: 640px) {
+      .bar ui-breadcrumb {
+        display: none;
+      }
+      .account-name {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip-path: inset(50%);
+        white-space: nowrap;
+      }
+      .content {
+        padding: calc(var(--spacing) * 4);
+      }
+    }
+  </style>
+
+  <ui-sidebar-layout persist="realm-dashboard-sidebar">
+    <ui-sidebar>
+      <ui-sidebar-header>
+        <div class="brand"><span class="logo" aria-hidden="true">A</span><span>Acme Store</span></div>
+      </ui-sidebar-header>
+      <ui-sidebar-content>
+        <ui-sidebar-group>
+          <ui-sidebar-group-label>Store</ui-sidebar-group-label>
+          <ui-sidebar-menu>
+            <ui-sidebar-menu-item repeat="#shell.nav" as="item" key="id">
+              <ui-sidebar-menu-button _href="#item.href" _current="#item.current" _label="#item.label">
+                <u-icon _name="#item.icon"></u-icon>
+                <slot name="#item.label"></slot>
+              </ui-sidebar-menu-button>
+            </ui-sidebar-menu-item>
+          </ui-sidebar-menu>
+        </ui-sidebar-group>
+      </ui-sidebar-content>
+    </ui-sidebar>
+
+    <ui-sidebar-inset>
+      <div class="bar">
+        <ui-sidebar-trigger></ui-sidebar-trigger>
+        <ui-separator orientation="vertical"></ui-separator>
+        <ui-breadcrumb>
+          <ui-breadcrumb-list>
+            <ui-breadcrumb-item><ui-breadcrumb-link href="./">Acme Store</ui-breadcrumb-link></ui-breadcrumb-item>
+            <ui-breadcrumb-separator></ui-breadcrumb-separator>
+            <ui-breadcrumb-item><ui-breadcrumb-page><slot name="#shell.current.label"></slot></ui-breadcrumb-page></ui-breadcrumb-item>
+          </ui-breadcrumb-list>
+        </ui-breadcrumb>
+        <ui-button class="search" variant="outline" size="sm" onclick="search()">
+          <u-icon name="search"></u-icon> Search… <ui-kbd>⌘K</ui-kbd>
+        </ui-button>
+        <ui-dropdown-menu onselect="account(event)">
+          <ui-dropdown-menu-trigger>
+            <ui-button variant="ghost" size="sm">
+              <ui-avatar size="sm" aria-hidden="true"><ui-avatar-fallback><slot name="#shell.initials"></slot></ui-avatar-fallback></ui-avatar>
+              <span class="account-name"><slot name="#settings.name"></slot></span>
+            </ui-button>
+          </ui-dropdown-menu-trigger>
+          <ui-dropdown-menu-content placement="bottom-end">
+            <ui-menu-item value="settings">Settings</ui-menu-item>
+            <ui-menu-item value="logout" variant="destructive">Log out</ui-menu-item>
+          </ui-dropdown-menu-content>
+        </ui-dropdown-menu>
+      </div>
+
+      <div class="content">
+        <div class="heading">
+          <h1><slot name="#shell.current.label"></slot></h1>
+          <p><slot name="#shell.current.description"></slot></p>
+        </div>
+        <slot></slot>
+      </div>
+    </ui-sidebar-inset>
+  </ui-sidebar-layout>
+
+  <ui-dialog ref="palette" label="Go to a page" hide-close>
+    <ui-command placeholder="Go to a page…" onselect="go(event)">
+      <optgroup label="Pages">
+        <option repeat="#shell.nav" as="command" key="id" _value="#command.href" _label="#command.label"></option>
+      </optgroup>
+    </ui-command>
+  </ui-dialog>
+</custom-element>

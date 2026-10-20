@@ -8,7 +8,7 @@ nav: Accessibility
 
 # Accessibility
 
-REALM components are native elements with shadow roots, so the usual rules apply: use real `<button>`, `<a>`, `<input>` and `<dialog>` elements inside, keep a logical focus order, and expose state with ARIA. REALM adds a few tools that make this easier.
+REALM components are native elements with shadow roots, so the usual rules apply: use native `<button>`, `<a>`, `<input>` and `<dialog>` elements inside, keep a logical focus order, and expose state with ARIA. REALM adds the helpers below.
 
 ## Default roles
 
@@ -81,7 +81,7 @@ Home and End move to the first and last item. Items are the focusable descendant
 
 Click the first button, then use the Left and Right arrows, Home and End.
 
-The focusgroup moves focus. It does not manage `tabindex` for you; when a widget should be a single Tab stop, set `tabindex="-1"` on the items that are not current, as REALM UI's tabs and calendar do.
+The focusgroup moves focus. It does not manage `tabindex`. When a widget should be a single Tab stop, set `tabindex="-1"` on the items that are not current, as REALM UI's tabs and calendar do.
 
 ## ARIA state from data
 
@@ -113,7 +113,7 @@ defineProps({ label: prop.string().attribute("aria-label") });
 
 ## Checklist for your own components
 
-- Use native interactive elements inside; never make a `<div>` clickable.
+- Use native interactive elements inside. Never make a `<div>` clickable.
 - Give icon-only buttons an accessible name.
 - Show focus: style `:focus-visible` (REALM UI uses `box-shadow: var(--focus-ring)`).
 - Respect `prefers-reduced-motion` for animations.

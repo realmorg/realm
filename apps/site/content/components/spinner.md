@@ -9,7 +9,7 @@ nav: Spinner
 # Spinner
 
 `ui-spinner` is a small rotating arc that shows work in progress. It has the role `status` and an accessible
-name taken from `label`, which defaults to "Loading". By default it inherits the current text colour; `variant`
+name taken from `label`, which defaults to "Loading". By default it inherits the current text colour. `variant`
 picks a theme colour instead.
 
 ```html live

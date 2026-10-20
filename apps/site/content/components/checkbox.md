@@ -9,8 +9,8 @@ nav: Checkbox
 # Checkbox
 
 `ui-checkbox` renders a native `<input type="checkbox">` and a `<label>` in its shadow root. The element's text is
-the label, and clicking the label toggles the box. It is form-associated: when checked, it submits its `value`
-(or `on`) under its `name`, exactly like a native checkbox.
+the label, and clicking the label toggles the box. It is form-associated. When checked, it submits its `value`
+(or `on`) under its `name`, like a native checkbox.
 
 ```html live
 <ui-checkbox>Accept terms and conditions</ui-checkbox>
@@ -27,7 +27,7 @@ the label, and clicking the label toggles the box. It is form-associated: when c
 ### Indeterminate
 
 `indeterminate` shows a dash instead of a check mark, for a "select all" box whose items are partly checked. Like
-the native property, it changes only the look; the box still submits according to `checked`. Clicking the box clears
+the native property, it changes only the look. The box still submits according to `checked`. Clicking the box clears
 `indeterminate`, as it does on a native checkbox.
 
 ```html live
@@ -83,7 +83,7 @@ When the checkbox has no text, name it with `aria-label`.
 
 ### In a form
 
-Only checked boxes are submitted. Several checkboxes can share a `name`; `FormData.getAll()` returns every checked
+Only checked boxes are submitted. Several checkboxes can share a `name`, and `FormData.getAll()` returns every checked
 value. `required` blocks submission until the box is checked, and `form.reset()` restores the `checked` attribute.
 
 ```html live
@@ -149,7 +149,7 @@ value. `required` blocks submission until the box is checked, and `form.reset()`
 
 | Attribute | Type | Default | Description |
 | --- | --- | --- | --- |
-| `checked` | boolean | `false` | Whether the box is checked. The attribute is the initial and reset state; the property follows the user. |
+| `checked` | boolean | `false` | Whether the box is checked. The attribute is the initial and reset state. The property follows the user. |
 | `value` | string | | Value submitted when checked. Without it the form submits `on`. |
 | `indeterminate` | boolean | `false` | Shows the mixed state. Visual only. Cleared when the user toggles the box. |
 | `disabled` | boolean | `false` | Disables the box. Also true inside a disabled `<fieldset>`. |
@@ -162,7 +162,7 @@ The `name` attribute is read by the form, as on any form-associated element.
 
 | Property | Type | Description |
 | --- | --- | --- |
-| `checked` | boolean | Current state. Updated when the user toggles the box; setting it updates the box and the submitted value. |
+| `checked` | boolean | Current state. Updated when the user toggles the box. Setting it updates the box and the submitted value. |
 | `value`, `indeterminate`, `disabled`, `required` | | Mirror the attributes above. |
 
 ### Events
@@ -193,7 +193,7 @@ The `name` attribute is read by the form, as on any form-associated element.
 
 ### Forms
 
-`ui-checkbox` is form-associated. When checked it submits `value`, or `on` without one; when unchecked it submits
+`ui-checkbox` is form-associated. When checked it submits `value`, or `on` without one. When unchecked it submits
 nothing. Validity is mirrored from the inner checkbox, so `required` takes part in `checkValidity()` and
 `reportValidity()`. `form.reset()` restores the `checked` attribute, and a disabled `<fieldset>` disables the box.
 

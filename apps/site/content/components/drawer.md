@@ -9,7 +9,7 @@ nav: Drawer
 # Drawer
 
 `ui-drawer` is a modal `<dialog>` that slides in from an edge of the viewport, by default from the bottom. A bottom
-drawer shows a drag handle: drag it down more than 80 pixels to close the drawer. Escape and a click on the backdrop
+drawer shows a drag handle. Drag it down more than 80 pixels to close the drawer. Escape and a click on the backdrop
 also close it, and focus returns to the trigger.
 
 Build it from `ui-drawer-trigger`, `ui-drawer-header` with `ui-drawer-title` and `ui-drawer-description`, the content,
@@ -74,7 +74,7 @@ Set `side` to `top`, `left` or `right`. Only the bottom drawer shows the drag ha
 
 ### React to closing
 
-`close` fires after the drawer closes, however it was closed: a button, Escape, the backdrop or a drag.
+`close` fires after the drawer closes, whether by a button, Escape, the backdrop or a drag.
 
 ```html live
 <custom-element name="drawer-close-demo">
@@ -140,7 +140,7 @@ order.
 
 | Attribute | Type | Default | Description |
 | --- | --- | --- | --- |
-| `open` | boolean | `false` | Whether the drawer is open. Setting it opens the drawer modally; reflects to the attribute. |
+| `open` | boolean | `false` | Whether the drawer is open. Setting it opens the drawer modally. Reflects. |
 | `side` | `"bottom"` \| `"top"` \| `"left"` \| `"right"` | `"bottom"` | The edge the drawer slides in from. |
 
 ### Properties and methods
@@ -160,7 +160,7 @@ order.
 | `--close` | Closes the drawer. |
 | `--request-close` | Same as `--close`. |
 
-`ui-button` also accepts the commands without the `--` prefix; a plain `<button>` needs the prefix.
+`ui-button` also accepts the commands without the `--` prefix. A plain `<button>` needs the prefix.
 
 ### Events
 
@@ -183,4 +183,4 @@ order.
 - The inner `<dialog>` is opened with `showModal()`, so the page behind it is inert and focus stays inside.
 - The text of the title and description parts becomes the drawer's `aria-label` and `aria-description`.
 - Escape and a backdrop click close the drawer. Focus returns to the trigger.
-- The drag handle is a pointer shortcut only; keyboard users close the drawer with Escape or a footer button.
+- The drag handle is a pointer shortcut only. Keyboard users close the drawer with Escape or a footer button.

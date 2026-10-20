@@ -64,9 +64,9 @@ Directions nest. `dir="ltr"` restores left-to-right for a part of the page, such
 ```html live
 <ui-direction dir="rtl">
   <div class="demo-narrow demo-stack-tight">
-    <p class="demo-text">ثبّت الحزمة بالأمر التالي:</p>
+    <p class="demo-text">حمّل المكوّنات بالوسم التالي:</p>
     <ui-direction dir="ltr">
-      <p class="demo-text"><code>npm install @realmorg/ui</code></p>
+      <p class="demo-text"><code>&lt;import-element from="ui.html"&gt;</code></p>
     </ui-direction>
   </div>
 </ui-direction>

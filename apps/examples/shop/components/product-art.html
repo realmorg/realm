@@ -1,0 +1,35 @@
+<custom-element name="product-art">
+  <script>
+    defineProps({
+      icon: prop.string().default("package"),
+      category: prop.string().default(""),
+    });
+  </script>
+
+  <style>
+    :host {
+      --tone: var(--chart-1);
+      display: grid;
+      place-items: center;
+      aspect-ratio: 4 / 3;
+      border-radius: var(--radius-lg);
+      background: color-mix(in oklab, var(--tone) 14%, var(--background));
+      color: var(--tone);
+    }
+    :host(:state(attr-category-is-home)) {
+      --tone: var(--chart-2);
+    }
+    :host(:state(attr-category-is-desk)) {
+      --tone: var(--chart-3);
+    }
+    :host(:state(attr-category-is-outdoors)) {
+      --tone: var(--chart-4);
+    }
+    u-icon {
+      width: 36%;
+      height: 36%;
+    }
+  </style>
+
+  <u-icon _name="@icon" stroke-width="1.5"></u-icon>
+</custom-element>

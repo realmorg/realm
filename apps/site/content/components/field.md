@@ -9,7 +9,7 @@ nav: Field
 # Field
 
 `ui-field` stacks a label, a control, an optional `ui-field-description` and an error message with consistent
-spacing. It is a layout element with the `group` role; the control inside keeps its own form behaviour. Its parts go
+spacing. It is a layout element with the `group` role. The control inside keeps its own form behaviour. Its parts go
 in the default slot and show in source order. `ui-field-group` stacks several fields, and `ui-field-set` groups
 fields under a `ui-field-legend`.
 
@@ -138,7 +138,7 @@ group.
 
 ### In a form
 
-Fields do not change what a form submits; the controls inside do. This form validates on submit and shows the
+Fields do not change what a form submits. The controls inside do. This form validates on submit and shows the
 errors through `error` and `invalid`.
 
 ```html live
@@ -223,7 +223,7 @@ errors through `error` and `invalid`.
 | Part | Slot | Renders |
 | --- | --- | --- |
 | `ui-field` | | One field: label, control, description and error, stacked (or in a row when horizontal). Role `group`. |
-| `ui-label` | (default) | The label of a `ui-field`. A plain child; see [Label](/components/label/). |
+| `ui-label` | (default) | The label of a `ui-field`. A plain child. See [Label](/components/label/). |
 | `ui-field-content` | (default) | A column that keeps a label and description together beside the control in a horizontal field. |
 | `ui-field-description` | (default) | Help text in muted `var(--text-sm)`. Goes in `ui-field`, `ui-field-content` or `ui-field-set`. |
 | `ui-field-group` | (default) | A column of fields with a gap of `calc(var(--spacing) * 7)`. |
@@ -264,5 +264,5 @@ The other parts have no attributes.
 ### Accessibility
 
 `ui-field` has `role="group"`. Its `error` paragraph has `role="alert"`, so a message that appears is announced.
-The field does not link its label, description or error to the control: use `ui-label for` (or `aria-label` on the
+The field does not link its label, description or error to the control. Use `ui-label for` (or `aria-label` on the
 control) for the name. `ui-field-set` has `role="group"` and takes its accessible name from its `ui-field-legend`.

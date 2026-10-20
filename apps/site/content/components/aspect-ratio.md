@@ -67,7 +67,7 @@ A slotted image covers the whole box and is cropped to the ratio.
 
 | Part | Slot | Renders |
 | --- | --- | --- |
-| `ui-aspect-ratio` | (default) | A full-width block at the given ratio that clips overflow. Its default slot takes any content; `<img>`, `<video>` and `<iframe>` fill the box and use `object-fit: cover`. |
+| `ui-aspect-ratio` | (default) | A full-width block at the given ratio that clips overflow. Its default slot takes any content. `<img>`, `<video>` and `<iframe>` fill the box and use `object-fit: cover`. |
 
 ### Attributes
 

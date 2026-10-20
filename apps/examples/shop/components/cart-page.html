@@ -1,0 +1,296 @@
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/alert-dialog.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/button.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/card.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/empty.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/field.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/input.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/label.html"></import-element>
+<import-element from="./product-art.html"></import-element>
+
+<custom-element name="cart-page">
+  <script type="module">
+    import { cart, changeQuantity, placeOrder, removeFromCart, validate } from "../shop.js";
+
+    const checkout = useState({ errors: {}, data: null });
+
+    function less(item) {
+      changeQuantity(item.id, -1);
+    }
+
+    function more(item) {
+      changeQuantity(item.id, 1);
+    }
+
+    function remove(item) {
+      removeFromCart(item.id);
+    }
+
+    function submit(event) {
+      event.preventDefault();
+      const data = new FormData(event.target);
+      checkout.errors = validate(data);
+      if (Object.keys(checkout.errors).length) return;
+      checkout.data = data;
+      refs.confirm.showModal();
+    }
+
+    function closed(dialog) {
+      if (dialog.returnValue === "confirm") placeOrder(checkout.data);
+    }
+  </script>
+
+  <style>
+    :host {
+      display: grid;
+      gap: calc(var(--spacing) * 6);
+    }
+    h1 {
+      margin: 0;
+      font-size: var(--text-2xl);
+      letter-spacing: -0.02em;
+    }
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) calc(var(--spacing) * 100);
+      align-items: start;
+      gap: calc(var(--spacing) * 6);
+    }
+    .lines {
+      display: grid;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+    }
+    .line {
+      display: grid;
+      grid-template-columns: calc(var(--spacing) * 20) minmax(0, 1fr) auto;
+      align-items: center;
+      gap: calc(var(--spacing) * 4);
+      padding: calc(var(--spacing) * 4);
+    }
+    .line + .line {
+      border-top: 1px solid var(--border);
+    }
+    .line h2 {
+      margin: 0;
+      font-size: var(--text-base);
+    }
+    .line h2 a {
+      color: inherit;
+      text-decoration: none;
+    }
+    .line p {
+      margin: calc(var(--spacing) * 1) 0 0;
+      color: var(--muted-foreground);
+      font-size: var(--text-sm);
+    }
+    .stepper {
+      display: flex;
+      align-items: center;
+      gap: calc(var(--spacing) * 2);
+      margin-top: calc(var(--spacing) * 2);
+    }
+    .stepper output {
+      min-width: calc(var(--spacing) * 6);
+      text-align: center;
+      font-variant-numeric: tabular-nums;
+    }
+    .total {
+      font-weight: var(--font-weight-semibold);
+      text-align: right;
+    }
+    .side {
+      display: grid;
+      gap: calc(var(--spacing) * 6);
+    }
+    dl {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: calc(var(--spacing) * 2);
+      margin: 0;
+      font-size: var(--text-sm);
+    }
+    dt {
+      color: var(--muted-foreground);
+    }
+    dd {
+      margin: 0;
+      text-align: right;
+    }
+    .grand {
+      padding-top: calc(var(--spacing) * 2);
+      border-top: 1px solid var(--border);
+      color: var(--foreground);
+      font-size: var(--text-base);
+      font-weight: var(--font-weight-semibold);
+    }
+    .hint {
+      margin: calc(var(--spacing) * 3) 0 0;
+      color: var(--muted-foreground);
+      font-size: var(--text-xs);
+    }
+    form {
+      display: grid;
+      gap: calc(var(--spacing) * 4);
+    }
+    .row {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: calc(var(--spacing) * 4);
+    }
+    .thanks {
+      display: grid;
+      justify-items: center;
+      gap: calc(var(--spacing) * 3);
+      padding: calc(var(--spacing) * 10) calc(var(--spacing) * 4);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      text-align: center;
+    }
+    .thanks u-icon {
+      width: calc(var(--spacing) * 12);
+      height: calc(var(--spacing) * 12);
+      color: var(--primary);
+    }
+    .thanks h2 {
+      margin: 0;
+    }
+    .thanks p {
+      margin: 0;
+      color: var(--muted-foreground);
+    }
+    a {
+      color: inherit;
+      text-underline-offset: calc(var(--spacing) * 1);
+    }
+    @media (max-width: 900px) {
+      .layout {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+    @media (max-width: 480px) {
+      .line {
+        grid-template-columns: calc(var(--spacing) * 16) minmax(0, 1fr);
+      }
+      .total {
+        grid-column: 2;
+        text-align: left;
+      }
+      .row {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+  </style>
+
+  <h1>Your cart</h1>
+
+  <is-visible when="#cart.lines.length">
+    <div class="layout">
+      <ul class="lines" aria-label="Items in your cart">
+        <li class="line" repeat="#cart.items" as="item" key="id">
+          <product-art _icon="#item.icon" _category="#item.category"></product-art>
+          <div>
+            <h2><a _href="#item.href"><slot name="#item.name"></slot></a></h2>
+            <p><slot name="#item.priceLabel"></slot> each</p>
+            <div class="stepper">
+              <ui-button variant="outline" size="icon-sm" _aria-label="#item.decreaseLabel" _disabled="#item.atMin" onclick="less(item)"><u-icon name="minus"></u-icon></ui-button>
+              <output _aria-label="#item.quantityLabel"><slot name="#item.quantity"></slot></output>
+              <ui-button variant="outline" size="icon-sm" _aria-label="#item.increaseLabel" _disabled="#item.atMax" onclick="more(item)"><u-icon name="plus"></u-icon></ui-button>
+              <ui-button variant="ghost" size="sm" _aria-label="#item.removeLabel" onclick="remove(item)">Remove</ui-button>
+            </div>
+          </div>
+          <span class="total"><slot name="#item.lineTotal"></slot></span>
+        </li>
+      </ul>
+
+      <div class="side">
+        <ui-card>
+          <ui-card-header><ui-card-title level="2">Summary</ui-card-title></ui-card-header>
+          <ui-card-content>
+            <dl>
+              <dt>Subtotal</dt><dd><slot name="#cart.totals.subtotal"></slot></dd>
+              <dt>Shipping</dt><dd><slot name="#cart.totals.shipping"></slot></dd>
+              <dt>Tax (8%)</dt><dd><slot name="#cart.totals.tax"></slot></dd>
+              <dt class="grand">Total</dt><dd class="grand"><slot name="#cart.totals.total"></slot></dd>
+            </dl>
+            <is-visible when="#cart.totals.freeShippingHint">
+              <p class="hint"><slot name="#cart.totals.freeShippingHint"></slot></p>
+            </is-visible>
+          </ui-card-content>
+        </ui-card>
+
+        <ui-card>
+          <ui-card-header>
+            <ui-card-title level="2">Checkout</ui-card-title>
+            <ui-card-description>This is a demo. Use any 16-digit number.</ui-card-description>
+          </ui-card-header>
+          <ui-card-content>
+            <form novalidate onsubmit="submit(event)">
+              <ui-field _error="#checkout.errors.name" _invalid="#checkout.errors.name">
+                <ui-label for="checkout-name">Full name</ui-label>
+                <ui-input id="checkout-name" name="name" autocomplete="name" _invalid="#checkout.errors.name"></ui-input>
+              </ui-field>
+              <ui-field _error="#checkout.errors.email" _invalid="#checkout.errors.email">
+                <ui-label for="checkout-email">Email</ui-label>
+                <ui-input id="checkout-email" name="email" type="email" autocomplete="email" _invalid="#checkout.errors.email"></ui-input>
+              </ui-field>
+              <ui-field _error="#checkout.errors.address" _invalid="#checkout.errors.address">
+                <ui-label for="checkout-address">Street address</ui-label>
+                <ui-input id="checkout-address" name="address" autocomplete="street-address" _invalid="#checkout.errors.address"></ui-input>
+              </ui-field>
+              <div class="row">
+                <ui-field _error="#checkout.errors.postcode" _invalid="#checkout.errors.postcode">
+                  <ui-label for="checkout-postcode">Postcode</ui-label>
+                  <ui-input id="checkout-postcode" name="postcode" autocomplete="postal-code" _invalid="#checkout.errors.postcode"></ui-input>
+                </ui-field>
+                <ui-field _error="#checkout.errors.expiry" _invalid="#checkout.errors.expiry">
+                  <ui-label for="checkout-expiry">Expiry (MM/YY)</ui-label>
+                  <ui-input id="checkout-expiry" name="expiry" autocomplete="cc-exp" placeholder="MM/YY" _invalid="#checkout.errors.expiry"></ui-input>
+                </ui-field>
+              </div>
+              <ui-field _error="#checkout.errors.card" _invalid="#checkout.errors.card">
+                <ui-label for="checkout-card">Card number</ui-label>
+                <ui-input id="checkout-card" name="card" inputmode="numeric" autocomplete="cc-number" _invalid="#checkout.errors.card"></ui-input>
+              </ui-field>
+              <ui-button type="submit">Review order</ui-button>
+            </form>
+          </ui-card-content>
+        </ui-card>
+      </div>
+    </div>
+  </is-visible>
+
+  <is-hidden when="#cart.lines.length">
+    <is-visible when="#cart.order">
+      <section class="thanks" aria-label="Order confirmation">
+        <u-icon name="circle-check"></u-icon>
+        <h2>Thank you for your order</h2>
+        <p>Order <strong><slot name="#cart.order.number"></slot></strong> for <slot name="#cart.order.total"></slot> is on its way. A receipt goes to <slot name="#cart.order.email"></slot>.</p>
+        <a href="./">Continue shopping</a>
+      </section>
+    </is-visible>
+    <is-hidden when="#cart.order">
+      <ui-empty>
+        <ui-empty-header>
+          <ui-empty-media variant="icon"><u-icon name="shopping-cart"></u-icon></ui-empty-media>
+          <ui-empty-title level="2">Your cart is empty</ui-empty-title>
+          <ui-empty-description>Add something you like and it will show up here.</ui-empty-description>
+        </ui-empty-header>
+        <ui-empty-content><a href="./">Browse products</a></ui-empty-content>
+      </ui-empty>
+    </is-hidden>
+  </is-hidden>
+
+  <ui-alert-dialog ref="confirm" onclose="closed(this)">
+    <ui-alert-dialog-header>
+      <ui-alert-dialog-title>Place your order?</ui-alert-dialog-title>
+      <ui-alert-dialog-description>Your card will be charged <slot name="#cart.totals.total"></slot>.</ui-alert-dialog-description>
+    </ui-alert-dialog-header>
+    <ui-alert-dialog-footer>
+      <ui-alert-dialog-cancel>Go back</ui-alert-dialog-cancel>
+      <ui-alert-dialog-action value="confirm">Place order</ui-alert-dialog-action>
+    </ui-alert-dialog-footer>
+  </ui-alert-dialog>
+</custom-element>

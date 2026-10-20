@@ -8,7 +8,7 @@ nav: Toaster
 
 # Toaster
 
-`ui-toaster` shows toasts: brief notifications stacked in a corner of the viewport. Place one `<ui-toaster>` per
+`ui-toaster` shows toasts, which are brief notifications stacked in a corner of the viewport. Place one `<ui-toaster>` per
 page, usually at the end of `<body>`. It listens for a `toast` event on `document`, so any script or component can
 show a toast without a reference to the toaster:
 
@@ -59,7 +59,7 @@ Inside a component, dispatch the same event from a script function.
 
 ### Sticky toasts and dismissing from script
 
-`duration` in the detail overrides the toaster's default for one toast; `0` keeps it open until it is dismissed. The
+`duration` in the detail overrides the toaster's default for one toast. `0` keeps it open until it is dismissed. The
 `toast()` method returns an id that you can pass to `dismiss()`.
 
 ```html live
@@ -125,7 +125,7 @@ The `detail` of a `toast` event and the argument of `toast()` take the same fiel
 | `title` | string | `""` | Bold first line. |
 | `description` | string | `""` | Muted second line. Hidden when empty. |
 | `variant` | `"default"` \| `"destructive"` | `"default"` | Destructive toasts use the destructive colour. |
-| `duration` | number | the `duration` attribute | Milliseconds before this toast closes; `0` keeps it open. |
+| `duration` | number | the `duration` attribute | Milliseconds before this toast closes. `0` keeps it open. |
 
 ### Properties and methods
 

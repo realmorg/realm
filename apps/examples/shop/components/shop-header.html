@@ -1,0 +1,89 @@
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/badge.html"></import-element>
+
+<custom-element name="shop-header">
+  <script type="module">
+    import { cart } from "../shop.js";
+
+    const props = defineProps({ page: prop.enum(["products", "product", "cart"]).default("products") });
+    const nav = useState({
+      get products() {
+        return props.page !== "cart";
+      },
+      get cart() {
+        return props.page === "cart";
+      },
+    });
+  </script>
+
+  <style>
+    :host {
+      display: block;
+      border-bottom: 1px solid var(--border);
+      background: var(--background);
+    }
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: calc(var(--spacing) * 4);
+      width: min(calc(var(--spacing) * 280), 100%);
+      margin: 0 auto;
+      padding: calc(var(--spacing) * 3) calc(var(--spacing) * 4);
+      box-sizing: border-box;
+    }
+    a {
+      display: inline-flex;
+      align-items: center;
+      gap: calc(var(--spacing) * 2);
+      color: inherit;
+      text-decoration: none;
+    }
+    .brand {
+      font-weight: var(--font-weight-semibold);
+    }
+    .logo {
+      display: grid;
+      place-content: center;
+      width: calc(var(--spacing) * 8);
+      height: calc(var(--spacing) * 8);
+      border-radius: var(--radius-md);
+      background: var(--primary);
+      color: var(--primary-foreground);
+    }
+    nav {
+      display: flex;
+      gap: calc(var(--spacing) * 1);
+    }
+    nav a {
+      height: calc(var(--spacing) * 9);
+      padding: 0 calc(var(--spacing) * 3);
+      border-radius: var(--radius-md);
+      font-size: var(--text-sm);
+      font-weight: var(--font-weight-medium);
+    }
+    nav a:hover {
+      background: var(--accent);
+    }
+    nav a[aria-current="true"] {
+      background: var(--secondary);
+    }
+    a:focus-visible {
+      outline: 2px solid var(--ring);
+      outline-offset: 2px;
+    }
+    ui-badge:not([data-count]) {
+      display: none;
+    }
+  </style>
+
+  <header>
+    <a class="brand" href="./"><span class="logo" aria-hidden="true"><u-icon name="store"></u-icon></span>REALM Goods</a>
+    <nav aria-label="Shop">
+      <a href="./" _aria-current="#nav.products">Products</a>
+      <a href="cart.html" _aria-current="#nav.cart" _aria-label="#cart.countLabel">
+        <u-icon name="shopping-bag"></u-icon> Cart
+        <ui-badge shape="round" _data-count="#cart.hasItems"><slot name="#cart.count"></slot></ui-badge>
+      </a>
+    </nav>
+  </header>
+</custom-element>

@@ -1,0 +1,532 @@
+<custom-element name="theme-builder">
+  <script type="module">
+    import { contrast, FONTS, GROUPS, PAIRS, PRESETS, stylesheet, tokensOf } from "./theme-tools.js";
+
+    const RADIUS = 0.625;
+
+    const theme = defineStore(
+      "theme-builder",
+      {
+        preset: "realm",
+        light: { ...PRESETS.realm.light },
+        dark: { ...PRESETS.realm.dark },
+        radius: RADIUS,
+        font: "system",
+      },
+      { persist: "local" },
+    );
+
+    const view = useState({
+      mode: "light",
+      copied: false,
+      get colors() {
+        return theme[this.mode];
+      },
+      get presets() {
+        return Object.entries(PRESETS).map(([id, preset]) => ({
+          id,
+          label: preset.label,
+          primary: preset[this.mode].primary,
+          accent: preset[this.mode]["chart-2"],
+          background: preset[this.mode].background,
+          selected: id === theme.preset,
+        }));
+      },
+      get groups() {
+        return GROUPS.map((group) => ({
+          name: group.name,
+          tokens: group.tokens.map((name) => ({ name, value: this.colors[name] })),
+        }));
+      },
+      get checks() {
+        return PAIRS.map(([foreground, background]) => {
+          const ratio = contrast(this.colors[foreground], this.colors[background]);
+          return {
+            id: foreground + background,
+            foreground,
+            background,
+            ratio: ratio.toFixed(2),
+            verdict: ratio >= 4.5 ? "AA" : "Low",
+            variant: ratio >= 4.5 ? "secondary" : "destructive",
+          };
+        });
+      },
+      get radius() {
+        return String(theme.radius);
+      },
+      get font() {
+        return theme.font;
+      },
+      get preview() {
+        const tokens = Object.entries(tokensOf(this.colors)).map(([name, value]) => `--${name}: ${value}`);
+        return [...tokens, `--radius: ${theme.radius}rem`, `--font-sans: ${FONTS[theme.font]}`, `color-scheme: ${this.mode}`].join("; ");
+      },
+      get css() {
+        return stylesheet(theme);
+      },
+    });
+
+    function choose(id) {
+      theme.preset = id;
+      theme.light = { ...PRESETS[id].light };
+      theme.dark = { ...PRESETS[id].dark };
+    }
+
+    function switchMode(value) {
+      view.mode = value || view.mode;
+    }
+
+    function paint(name, value) {
+      theme[view.mode][name] = value;
+      theme.preset = "";
+    }
+
+    function round(value) {
+      theme.radius = Number(value);
+    }
+
+    function typeface(value) {
+      theme.font = value;
+    }
+
+    function reset() {
+      choose("realm");
+      theme.radius = RADIUS;
+      theme.font = "system";
+    }
+
+    function copyCss() {
+      navigator.clipboard.writeText(view.css).then(
+        () => {
+          view.copied = true;
+          setTimeout(() => (view.copied = false), 2000);
+        },
+        () => {
+          view.copied = false;
+        },
+      );
+    }
+  </script>
+
+  <style>
+    :host {
+      display: grid;
+      grid-template-columns: calc(var(--spacing) * 80) minmax(0, 1fr);
+      gap: calc(var(--spacing) * 8);
+      align-items: start;
+      margin: calc(var(--spacing) * 8) 0;
+    }
+    @media (max-width: 1100px) {
+      :host {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+    aside {
+      display: grid;
+      gap: calc(var(--spacing) * 6);
+      min-width: 0;
+    }
+    h3 {
+      margin: 0 0 calc(var(--spacing) * 3);
+      font-size: var(--text-sm);
+      font-weight: var(--font-weight-semibold);
+    }
+    ul {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+    .presets {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: calc(var(--spacing) * 2);
+    }
+    .presets label {
+      display: flex;
+      align-items: center;
+      gap: calc(var(--spacing) * 2);
+      padding: calc(var(--spacing) * 2) calc(var(--spacing) * 3);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      font-size: var(--text-sm);
+      cursor: pointer;
+    }
+    .presets label:has(:checked) {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 1px var(--primary);
+    }
+    .presets label:has(:focus-visible) {
+      box-shadow: var(--focus-ring);
+    }
+    .presets input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+    .swatches {
+      display: flex;
+    }
+    .swatches span {
+      width: calc(var(--spacing) * 3.5);
+      height: calc(var(--spacing) * 3.5);
+      margin-left: calc(var(--spacing) * -1);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-full);
+      background: var(--swatch);
+    }
+    .swatches span:first-child {
+      margin-left: 0;
+    }
+    .row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: var(--text-sm);
+    }
+    .value {
+      color: var(--muted-foreground);
+      font-variant-numeric: tabular-nums;
+    }
+    .settings {
+      display: grid;
+      gap: calc(var(--spacing) * 5);
+    }
+    .setting {
+      display: grid;
+      gap: calc(var(--spacing) * 3);
+    }
+    fieldset {
+      min-width: 0;
+      margin: 0;
+      padding: 0;
+      border: 0;
+    }
+    legend {
+      margin-bottom: calc(var(--spacing) * 2);
+      padding: 0;
+      font-size: var(--text-xs);
+      font-weight: var(--font-weight-semibold);
+      color: var(--muted-foreground);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .colors {
+      display: grid;
+      gap: calc(var(--spacing) * 5);
+    }
+    .tokens {
+      display: grid;
+      gap: calc(var(--spacing) * 1);
+    }
+    .tokens label {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr) auto;
+      align-items: center;
+      gap: calc(var(--spacing) * 3);
+      padding: calc(var(--spacing) * 1) 0;
+      font-size: var(--text-sm);
+    }
+    .tokens code {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--muted-foreground);
+    }
+    input[type="color"] {
+      width: calc(var(--spacing) * 8);
+      height: calc(var(--spacing) * 8);
+      padding: 0;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: none;
+      cursor: pointer;
+    }
+    input[type="color"]::-webkit-color-swatch-wrapper {
+      padding: 0;
+    }
+    input[type="color"]::-webkit-color-swatch {
+      border: 0;
+      border-radius: calc(var(--radius-sm) - 1px);
+    }
+    input[type="color"]::-moz-color-swatch {
+      border: 0;
+      border-radius: calc(var(--radius-sm) - 1px);
+    }
+    input[type="color"]:focus-visible {
+      outline: none;
+      box-shadow: var(--focus-ring);
+    }
+    .output {
+      position: sticky;
+      top: calc(var(--spacing) * 18);
+      display: grid;
+      gap: calc(var(--spacing) * 4);
+      min-width: 0;
+    }
+    @media (max-width: 1100px) {
+      .output {
+        position: static;
+        grid-row: 1;
+      }
+    }
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: calc(var(--spacing) * 3);
+    }
+    /* Tokens that other tokens are computed from are resolved where they are declared, so the
+       preview declares the derived ones again for its own radius and ring. */
+    .preview {
+      --radius-xs: calc(var(--radius) - 6px);
+      --radius-sm: calc(var(--radius) - 4px);
+      --radius-md: calc(var(--radius) - 2px);
+      --radius-lg: var(--radius);
+      --radius-xl: calc(var(--radius) + 4px);
+      --radius-2xl: calc(var(--radius) + 8px);
+      --focus-ring: 0 0 0 2px var(--ring);
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(calc(var(--spacing) * 72), 1fr));
+      gap: calc(var(--spacing) * 4);
+      padding: calc(var(--spacing) * 6);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      background: var(--background);
+      color: var(--foreground);
+      font-family: var(--font-sans);
+    }
+    @media (max-width: 700px) {
+      .preview {
+        padding: calc(var(--spacing) * 4);
+      }
+    }
+    .stack {
+      display: grid;
+      gap: calc(var(--spacing) * 4);
+      align-content: start;
+    }
+    .line {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: calc(var(--spacing) * 2);
+    }
+    .bars {
+      display: flex;
+      align-items: end;
+      gap: calc(var(--spacing) * 2);
+      height: calc(var(--spacing) * 24);
+    }
+    .bars span {
+      flex: 1;
+      border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+    }
+    .bars span:nth-child(1) {
+      height: 60%;
+      background: var(--chart-1);
+    }
+    .bars span:nth-child(2) {
+      height: 85%;
+      background: var(--chart-2);
+    }
+    .bars span:nth-child(3) {
+      height: 45%;
+      background: var(--chart-3);
+    }
+    .bars span:nth-child(4) {
+      height: 100%;
+      background: var(--chart-4);
+    }
+    .bars span:nth-child(5) {
+      height: 70%;
+      background: var(--chart-5);
+    }
+    .checks {
+      display: grid;
+      gap: calc(var(--spacing) * 2);
+    }
+    .checks li {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto auto;
+      align-items: center;
+      gap: calc(var(--spacing) * 3);
+      font-size: var(--text-sm);
+    }
+    .checks code {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      overflow-wrap: anywhere;
+    }
+    .checks .ratio {
+      font-variant-numeric: tabular-nums;
+      color: var(--muted-foreground);
+    }
+    pre {
+      max-height: calc(var(--spacing) * 120);
+      margin: 0;
+      padding: calc(var(--spacing) * 4) calc(var(--spacing) * 5);
+      overflow: auto;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      background: var(--muted);
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      line-height: 1.7;
+    }
+  </style>
+
+  <aside>
+    <section>
+      <h3>Preset</h3>
+      <ul class="presets">
+        <li repeat="#view.presets" as="preset" key="id">
+          <label>
+            <input type="radio" name="preset" _value="#preset.id" _checked="#preset.selected" onchange="choose(preset.id)" />
+            <span class="swatches" aria-hidden="true">
+              <span _--swatch="#preset.primary"></span>
+              <span _--swatch="#preset.accent"></span>
+              <span _--swatch="#preset.background"></span>
+            </span>
+            <slot name="#preset.label"></slot>
+          </label>
+        </li>
+      </ul>
+    </section>
+
+    <section class="settings">
+      <div class="setting">
+        <div class="row"><span>Mode</span></div>
+        <ui-toggle-group aria-label="Mode" _value="#view.mode" onchange="switchMode(this.value)">
+          <ui-toggle value="light" size="sm" variant="outline">Light</ui-toggle>
+          <ui-toggle value="dark" size="sm" variant="outline">Dark</ui-toggle>
+        </ui-toggle-group>
+      </div>
+      <div class="setting">
+        <div class="row">
+          <span>Radius</span>
+          <span class="value"><slot name="#view.radius"></slot>rem</span>
+        </div>
+        <ui-slider aria-label="Radius" min="0" max="1.5" step="0.125" _value="#view.radius" oninput="round(this.value)"></ui-slider>
+      </div>
+      <div class="setting">
+        <div class="row"><span>Font</span></div>
+        <ui-select aria-label="Font" _value="#view.font" onchange="typeface(this.value)">
+          <option value="system">System sans</option>
+          <option value="serif">Serif</option>
+          <option value="rounded">Rounded</option>
+          <option value="mono">Monospace</option>
+        </ui-select>
+      </div>
+    </section>
+
+    <section class="colors">
+      <repeat-list of="#view.groups" as="group" key="name">
+        <fieldset>
+          <legend><slot name="#group.name"></slot></legend>
+          <ul class="tokens">
+            <li repeat="#group.tokens" as="token" key="name">
+              <label>
+                <input type="color" _value="#token.value" oninput="paint(token.name, this.value)" />
+                <span>--<slot name="#token.name"></slot></span>
+                <code><slot name="#token.value"></slot></code>
+              </label>
+            </li>
+          </ul>
+        </fieldset>
+      </repeat-list>
+    </section>
+  </aside>
+
+  <div class="output">
+    <div class="toolbar">
+      <ui-button variant="outline" size="sm" onclick="reset()">Reset</ui-button>
+      <ui-button size="sm" onclick="copyCss()">
+        <is-visible when="#view.copied">Copied</is-visible>
+        <is-hidden when="#view.copied">Copy CSS</is-hidden>
+      </ui-button>
+    </div>
+
+    <ui-tabs value="preview">
+      <ui-tabs-list aria-label="Theme output">
+        <ui-tabs-trigger value="preview">Preview</ui-tabs-trigger>
+        <ui-tabs-trigger value="contrast">Contrast</ui-tabs-trigger>
+        <ui-tabs-trigger value="css">CSS</ui-tabs-trigger>
+      </ui-tabs-list>
+
+      <ui-tabs-content value="preview">
+        <div class="preview" _style="#view.preview">
+          <div class="stack">
+            <ui-card>
+              <ui-card-header>
+                <ui-card-title>Create an account</ui-card-title>
+                <ui-card-description>Enter your email to get started.</ui-card-description>
+              </ui-card-header>
+              <ui-card-content>
+                <div class="stack">
+                  <ui-field>
+                    <ui-label for="theme-email">Email</ui-label>
+                    <ui-input id="theme-email" type="email" placeholder="m@example.com"></ui-input>
+                  </ui-field>
+                  <ui-field>
+                    <ui-label for="theme-password">Password</ui-label>
+                    <ui-input id="theme-password" type="password"></ui-input>
+                  </ui-field>
+                  <ui-checkbox>Remember me</ui-checkbox>
+                </div>
+              </ui-card-content>
+              <ui-card-footer justify="between">
+                <ui-button variant="outline">Cancel</ui-button>
+                <ui-button>Create account</ui-button>
+              </ui-card-footer>
+            </ui-card>
+            <ui-alert>
+              <ui-alert-title>Heads up</ui-alert-title>
+              <ui-alert-description>You can change these colours at any time.</ui-alert-description>
+            </ui-alert>
+          </div>
+          <div class="stack">
+            <div class="line">
+              <ui-button>Primary</ui-button>
+              <ui-button variant="secondary">Secondary</ui-button>
+              <ui-button variant="outline">Outline</ui-button>
+              <ui-button variant="ghost">Ghost</ui-button>
+              <ui-button variant="destructive">Delete</ui-button>
+            </div>
+            <div class="line">
+              <ui-badge>Badge</ui-badge>
+              <ui-badge variant="secondary">Secondary</ui-badge>
+              <ui-badge variant="outline">Outline</ui-badge>
+              <ui-badge variant="destructive">Destructive</ui-badge>
+            </div>
+            <ui-card>
+              <ui-card-header>
+                <ui-card-title>Revenue</ui-card-title>
+                <ui-card-description>Last five months</ui-card-description>
+              </ui-card-header>
+              <ui-card-content>
+                <div class="bars" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
+              </ui-card-content>
+            </ui-card>
+            <ui-switch checked>Email notifications</ui-switch>
+            <ui-slider aria-label="Volume" value="60"></ui-slider>
+            <ui-progress value="45" aria-label="Upload"></ui-progress>
+          </div>
+        </div>
+      </ui-tabs-content>
+
+      <ui-tabs-content value="contrast">
+        <ul class="checks">
+          <li repeat="#view.checks" as="check" key="id">
+            <code>--<slot name="#check.foreground"></slot> on --<slot name="#check.background"></slot></code>
+            <span class="ratio"><slot name="#check.ratio"></slot>:1</span>
+            <ui-badge _variant="#check.variant"><slot name="#check.verdict"></slot></ui-badge>
+          </li>
+        </ul>
+      </ui-tabs-content>
+
+      <ui-tabs-content value="css">
+        <pre><code><slot name="#view.css"></slot></code></pre>
+      </ui-tabs-content>
+    </ui-tabs>
+  </div>
+</custom-element>

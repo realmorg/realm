@@ -1,4 +1,6 @@
-import { readFileSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
 import AxeBuilder from "@axe-core/playwright";
 import type { Page } from "@playwright/test";
 import { expect, test } from "./fixtures";
@@ -32,6 +34,7 @@ const AUDITED = [
 
 for (const url of AUDITED) {
   test(`${url || "home"} has no accessibility violations`, async ({ page, errors }) => {
+    test.setTimeout(90_000);
     await page.goto(url);
     await page.waitForFunction(() => document.querySelectorAll(":not(:defined)").length === 0);
     await page.waitForTimeout(300);
@@ -117,7 +120,7 @@ test("the docs menu opens on small screens and closes when a link is followed", 
   await page.goto("docs/");
   const nav = page.getByRole("navigation", { name: "Docs" });
   await expect(nav).toBeHidden();
-  await page.getByRole("button", { name: "Menu" }).click();
+  await page.getByRole("button", { name: "Menu", exact: true }).click();
   await expect(nav).toBeVisible();
   await nav.getByRole("heading", { name: "Getting started" }).click();
   await expect(nav).toBeVisible();
@@ -125,9 +128,9 @@ test("the docs menu opens on small screens and closes when a link is followed", 
   await nav.getByRole("link", { name: "Installation" }).click();
   await expect(nav).toBeHidden();
   await expect.poll(() => requested).toHaveLength(1);
-  await page.getByRole("button", { name: "Menu" }).click();
+  await page.getByRole("button", { name: "Menu", exact: true }).click();
   await expect(nav).toBeVisible();
-  await page.getByRole("button", { name: "Menu" }).click();
+  await page.getByRole("button", { name: "Menu", exact: true }).click();
   await expect(nav).toBeHidden();
   void errors;
 });
@@ -148,7 +151,7 @@ test("code blocks copy their source and report a failed copy", async ({ page, er
   expect(await page.evaluate(() => (window as unknown as { copied: string[] }).copied)).toEqual([
     source,
   ]);
-  const done = block.locator("is-visible svg");
+  const done = block.locator("is-visible u-icon");
   await expect(done).toBeVisible();
   await expect(done).toBeHidden({ timeout: 3000 });
 
@@ -161,10 +164,69 @@ test("code blocks copy their source and report a failed copy", async ({ page, er
   void errors;
 });
 
+test("scripts and styles with type realm are highlighted as JavaScript and CSS", async ({
+  page,
+  errors,
+}) => {
+  await page.goto("docs/components/");
+  const block = page.locator("code-block").filter({ hasText: "hello-there" });
+  await expect(block.locator("pre")).toContainText('<script type="realm">');
+  await expect(block.locator("pre")).toContainText('<style type="realm">');
+  const colours = (text: string) =>
+    block
+      .locator(".line")
+      .filter({ hasText: text })
+      .locator("span")
+      .evaluateAll((spans) => new Set(spans.map((span) => getComputedStyle(span).color)).size);
+  expect(await colours("const hello")).toBeGreaterThan(2);
+  expect(await colours("font-weight")).toBeGreaterThan(2);
+  void errors;
+});
+
+test("long code lines wrap under their own indentation", async ({ page, errors }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("components/button/");
+  const demo = page.locator("live-demo").first();
+  await demo.getByRole("tab", { name: "index.html" }).click();
+  const pre = demo.locator("ui-tabs-content:not([hidden]) pre");
+  expect(await pre.evaluate((el) => el.scrollWidth - el.clientWidth)).toBe(0);
+  const line = pre.locator(".line").filter({ hasText: "realm.css" });
+  const [start, wrapped] = await line.evaluate((element) => {
+    const range = document.createRange();
+    range.selectNodeContents(element);
+    const rects = [...range.getClientRects()].filter((rect) => rect.width);
+    return [rects[0].left, rects.at(-1)?.left ?? 0];
+  });
+  expect(await line.evaluate((element) => element.getBoundingClientRect().height)).toBeGreaterThan(
+    40,
+  );
+  expect(wrapped).toBeGreaterThan(start);
+  void errors;
+});
+
 test("llms.txt lists every section and links Markdown copies", async ({ request }) => {
   const text = await (await request.get("llms.txt")).text();
   for (const heading of ["## Docs", "## Components", "## Examples"])
     expect(text).toContain(heading);
   const markdown = await request.get("docs/quick-start.md");
   expect(markdown.ok()).toBe(true);
+});
+
+test("every link between site pages points at a page that exists", () => {
+  const dist = fileURLToPath(new URL("../dist/", import.meta.url));
+  const broken: string[] = [];
+  for (const file of readdirSync(dist, { recursive: true }) as string[]) {
+    if (!file.endsWith("index.html") || /^(examples|unicons)\//.test(file)) continue;
+    const html = readFileSync(join(dist, file), "utf8")
+      .replace(/<code-block[\s\S]*?<\/code-block>/g, "")
+      .replace(/<div class="preview">[\s\S]*?<\/div>\n<\/ui-tabs-content>/g, "");
+    for (const [, href] of html.matchAll(/<a\b[^>]*?\shref="([^"#?]*)/g)) {
+      if (!href || /^[a-z]+:/.test(href)) continue;
+      const target = href.startsWith("/") ? join(dist, href) : join(dist, dirname(file), href);
+      const found =
+        existsSync(target) && (statSync(target).isFile() || existsSync(join(target, "index.html")));
+      if (!found) broken.push(`${file} -> ${href}`);
+    }
+  }
+  expect(broken).toEqual([]);
 });

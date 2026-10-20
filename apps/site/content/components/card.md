@@ -82,8 +82,8 @@ the full width, which suits a single submit button.
 <div class="demo-narrow">
   <ui-card>
     <ui-card-header>
-      <ui-card-title>Login to your account</ui-card-title>
-      <ui-card-description>Enter your email below to login to your account.</ui-card-description>
+      <ui-card-title>Log in to your account</ui-card-title>
+      <ui-card-description>Enter your email below to log in.</ui-card-description>
       <ui-card-action><ui-button variant="link">Sign up</ui-button></ui-card-action>
     </ui-card-header>
     <ui-card-content>
@@ -162,7 +162,7 @@ Cards are often rendered from a list with `<repeat-list>`.
 
 | Part | Slot | Renders |
 | --- | --- | --- |
-| `ui-card` | | The bordered panel. A flex column with a gap between its parts; fills its container's width. |
+| `ui-card` | | The bordered panel. A flex column with a gap between its parts. Fills its container's width. |
 | `ui-card-header` | (default) | A grid for the title, description and action, with horizontal padding. |
 | `ui-card-title` | (default) | A heading (level 3 unless `level` says otherwise) in `var(--text-base)` semibold. Place it in `ui-card-header`. |
 | `ui-card-description` | (default) | Supporting text in muted `var(--text-sm)`. Place it in `ui-card-header`. |
@@ -176,7 +176,7 @@ Every part has a single default slot that takes any content.
 
 | Attribute | Type | Default | Description |
 | --- | --- | --- | --- |
-| `level` | number (1–6) | `3` | The heading level, so the title fits the page's outline: `1` for a card that is the page's main content, `2` for cards directly under the page heading. |
+| `level` | number (1 to 6) | `3` | The heading level. Use `1` for a card that is the page's main content and `2` for cards directly under the page heading. |
 
 ### ui-card-footer attributes
 

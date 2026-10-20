@@ -35,13 +35,35 @@ The usual shadow DOM tools apply:
 
 | Selector | Styles |
 | --- | --- |
-| `:host` | The element itself. Give it a `display`; custom elements are `inline` by default |
+| `:host` | The element itself. Give it a `display`. Custom elements are `inline` by default |
 | `:host([attr])`, `:host(.class)` | The element when it has an attribute or class |
 | `::slotted(selector)` | Top-level elements placed into a `<slot>` from outside |
 | `::part(name)` (from outside) | Inner elements marked with `part="name"` |
 | `:host(:state(name))` | The element when it has a custom state |
 
 Inherited properties (`color`, `font-*`, CSS custom properties) still flow in from the page.
+
+## Shadow DOM and utility CSS
+
+Every component renders into a shadow root, and the page's stylesheets do not reach inside it. That is what stops a component's styles from leaking out and the page's styles from leaking in. It also means utility-class frameworks such as Tailwind CSS, UnoCSS or Bootstrap's utility classes do not work in a component's markup. Their classes live in the page's stylesheet, so this gets no padding and no font size:
+
+```html
+<custom-element name="info-note">
+  <!-- p-4 and text-sm are defined in the page, not in this shadow root -->
+  <div class="p-4 text-sm"><slot></slot></div>
+</custom-element>
+```
+
+The Tailwind Play CDN script has the same limit: it writes its styles into the document `<head>` only.
+
+What works instead:
+
+- **Inside a component**, write CSS with the [design tokens](#design-tokens): `padding: calc(var(--spacing) * 4)`, `font-size: var(--text-sm)`.
+- **In the page**, use any CSS you like, utility classes included. Content you pass into a component's `<slot>` stays in the page, so page classes style it.
+- **Across the boundary**, inherited properties and custom properties do flow in. Tokens you set on `:root` reach every component.
+- **For REALM UI components**, use their attributes, `::part()` and `:state()`, described in [Styling components from outside](#styling-components-from-outside).
+
+A component can load a compiled utility stylesheet with `<link rel="stylesheet">`, but every component then carries the whole file and you need a build step to generate it. REALM does not recommend it.
 
 ## Reactive CSS
 
@@ -120,7 +142,7 @@ This is how REALM UI styles its variants without any script:
 ```css
 :host(:state(attr-variant-is-destructive)) button {
   background: var(--destructive);
-  color: white;
+  color: var(--destructive-foreground);
 }
 :host(:state(attr-size-is-sm)) button {
   height: calc(var(--spacing) * 8);
@@ -145,7 +167,7 @@ This is how REALM UI styles its variants without any script:
       background: color-mix(in oklab, var(--chart-4) 30%, transparent);
     }
     :host(:state(attr-left-lte-0)) {
-      background: color-mix(in oklab, var(--destructive) 20%, transparent);
+      background: color-mix(in oklab, var(--destructive) 10%, transparent);
       color: var(--destructive);
     }
   </style>
@@ -175,7 +197,7 @@ REALM adds `:state(loading)` to a component's host while one of its [fetch attri
 
 ## Design tokens
 
-REALM UI's `theme.css` defines the tokens its components use, in the style of shadcn/ui. Use them in your own components so everything matches and theming works:
+REALM UI's `theme.css` defines the tokens its components use. Use them in your own components so they match REALM UI and follow theme changes:
 
 | Group | Tokens |
 | --- | --- |
@@ -204,7 +226,7 @@ Override tokens on `:root`, or on any element to theme a subtree:
 }
 ```
 
-`theme.css` switches to dark colours when the system prefers a dark scheme, unless the page sets `data-theme="light"` on `<html>`. Setting `data-theme="dark"` forces dark mode. A toggle only needs to set that attribute; this site's theme switch does exactly that:
+`theme.css` switches to dark colours when the system prefers a dark scheme, unless the page sets `data-theme="light"` on `<html>`. Setting `data-theme="dark"` forces dark mode. A theme toggle sets that attribute:
 
 ```js
 document.documentElement.dataset.theme = "dark";

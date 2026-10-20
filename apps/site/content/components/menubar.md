@@ -123,7 +123,7 @@ A menubar can also hold plain buttons. Left and Right arrows move focus between 
 | `ui-menubar` | | The bordered bar, `role="menubar"`, with a gap between menus. |
 | `ui-menubar-menu` | (default) | One menu: its trigger and content, with no box of its own. |
 | `ui-menubar-trigger` | (default) | A `<button>` with `role="menuitem"` and `aria-haspopup="menu"` in `var(--text-sm)` medium. A click toggles its menu. |
-| `ui-menubar-content` | (default) | The menu: a bordered `popover="auto"` panel with `role="menu"`, anchored under the trigger. |
+| `ui-menubar-content` | (default) | A bordered `popover="auto"` panel with `role="menu"`, anchored under the trigger. |
 | `ui-menu-*` | (default) | Items, labels, groups, separators and shortcuts. See [Dropdown Menu](/components/dropdown-menu/). |
 
 None of the menubar parts has attributes of its own. See [Dropdown Menu](/components/dropdown-menu/) for the item

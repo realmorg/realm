@@ -9,11 +9,11 @@ nav: Select
 # Select
 
 `ui-select` renders a native `<select>` and copies its `<option>` children into it, so you get the platform's own
-picker, keyboard handling and mobile UI with the theme's styling. It is form-associated: the chosen option's
+picker, keyboard handling and mobile UI with the theme's styling. It is form-associated. The chosen option's
 `value` is submitted under the element's `name`.
 
-Without a `placeholder`, the select behaves like a native one: the option marked `selected`, or else the first
-option, is chosen from the start. It fills the width of its container; `width` gives it a fixed width instead.
+Without a `placeholder`, the select behaves like a native one. The option marked `selected`, or else the first
+option, is chosen from the start. It fills the width of its container. `width` gives it a fixed width instead.
 
 ```html live
 <ui-select aria-label="Fruit" width="48">
@@ -28,7 +28,7 @@ option, is chosen from the start. It fills the width of its container; `width` g
 
 ### Placeholder
 
-`placeholder` adds an empty first entry that cannot be picked again once a real option is chosen. Combine it with
+`placeholder` adds an empty first entry that cannot be picked again once an option is chosen. Combine it with
 `required` to make the user choose.
 
 ```html live
@@ -86,7 +86,7 @@ Set `value` on the element, or `selected` on an option.
 ### Width
 
 By default the select fills its container, like the inputs it sits next to in a form. `width` sets a fixed width in
-spacing units: `width="40"` is `calc(var(--spacing) * 40)`.
+spacing units, so `width="40"` is `calc(var(--spacing) * 40)`.
 
 ```html live
 <div class="demo-stack">
@@ -227,7 +227,7 @@ handling and mobile UI keep working.
 | `value` | string | `""` | The `value` of the chosen option. |
 | `placeholder` | string | | Text of an empty, unselectable first entry. Without it, the first or `selected` option is chosen automatically. |
 | `size` | `"default"` \| `"sm"` | `"default"` | Height of the select. |
-| `width` | number | | Fixed width in spacing units: `n` means `calc(var(--spacing) * n)`. Without it the select fills its container. |
+| `width` | number | | Fixed width in spacing units, where `n` means `calc(var(--spacing) * n)`. Without it the select fills its container. |
 | `disabled` | boolean | `false` | Disables the select. Also true inside a disabled `<fieldset>`. |
 | `required` | boolean | `false` | The form is invalid while the placeholder is shown. |
 | `aria-label` | string | | Accessible name, passed to the inner select. Property name: `label`. |
@@ -267,7 +267,7 @@ handling and mobile UI keep working.
 
 `ui-select` is form-associated. It submits `value` under its `name` (an empty string while the placeholder is
 shown). Validity is mirrored from the inner select, so `required` with a placeholder reports `valueMissing` and the
-validation bubble points at the select. `form.reset()` restores the `value` attribute; without one, the select goes
+validation bubble points at the select. `form.reset()` restores the `value` attribute. Without one, the select goes
 back to the placeholder, or to the first or `selected` option.
 
 ### Accessibility

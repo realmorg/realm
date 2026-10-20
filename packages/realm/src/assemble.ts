@@ -1,7 +1,7 @@
 import { freeNames, splitImports, topLevelNames } from "./scan";
 
 export const HELPERS =
-  "defineProps defineMethods listen useState useChildren tick dispatch attrs observe onConnected onDisconnected onFormReset onFormDisabled onFormStateRestore defineStore lookup prop host refs signal internals setTimeout setInterval clearTimeout clearInterval".split(
+  "defineProps defineMethods listen useState useChildren tick dispatch attrs observe onConnected onDisconnected onFormReset onFormDisabled onFormStateRestore defineStore lookup prop host refs signal internals setTimeout setInterval clearTimeout clearInterval untrack".split(
     " ",
   );
 

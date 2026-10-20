@@ -1,0 +1,224 @@
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/badge.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/button.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/dialog.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/empty.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/field.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/input.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/label.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/select.html"></import-element>
+
+<custom-element name="products-page">
+  <script type="module">
+    import { categories, money, products, stockLevel } from "../data.js";
+
+    const BLANK = { id: 0, name: "", category: "", price: "", stock: "" };
+    const RULES = {
+      name: (value) => (value.trim().length >= 2 ? "" : "Enter at least 2 characters."),
+      category: (value) => (value ? "" : "Choose a category."),
+      price: (value) => (Number(value) > 0 ? "" : "Enter a price above 0."),
+      stock: (value) =>
+        value !== "" && Number.isInteger(Number(value)) && Number(value) >= 0
+          ? ""
+          : "Enter a whole number, 0 or more.",
+    };
+
+    const catalog = useState({
+      items: [...products],
+      categories: categories.map((category) => ({ category })),
+      query: "",
+      get rows() {
+        const query = this.query.trim().toLowerCase();
+        return this.items
+          .filter((product) => `${product.name} ${product.category}`.toLowerCase().includes(query))
+          .map((product) => ({
+            ...product,
+            amount: money(product.price),
+            level: stockLevel(product.stock),
+            editLabel: `Edit ${product.name}`,
+          }));
+      },
+    });
+    const editor = useState({
+      open: false,
+      product: BLANK,
+      errors: {},
+      get title() {
+        return this.product.id ? "Edit product" : "Add product";
+      },
+    });
+
+    async function edit(product) {
+      Object.assign(editor, { product, errors: {}, open: true });
+      await tick();
+      refs.editor.showModal();
+    }
+
+    function create() {
+      edit(BLANK);
+    }
+
+    function closed() {
+      editor.open = false;
+    }
+
+    function search(field) {
+      catalog.query = field.value;
+    }
+
+    function save(event) {
+      event.preventDefault();
+      const data = Object.fromEntries(new FormData(event.target));
+      const errors = Object.fromEntries(Object.entries(RULES).map(([name, rule]) => [name, rule(data[name])]));
+      editor.errors = errors;
+      if (Object.values(errors).some(Boolean)) return;
+      const id = editor.product.id || Math.max(...catalog.items.map((product) => product.id)) + 1;
+      const product = { id, name: data.name.trim(), category: data.category, price: Number(data.price), stock: Number(data.stock) };
+      const exists = catalog.items.some((item) => item.id === id);
+      catalog.items = exists ? catalog.items.map((item) => (item.id === id ? product : item)) : [product, ...catalog.items];
+      dispatch("toast", { title: exists ? "Product updated" : "Product added", description: product.name });
+      refs.editor.close();
+    }
+  </script>
+
+  <style>
+    :host {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: calc(var(--spacing) * 4);
+    }
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: calc(var(--spacing) * 3);
+    }
+    .toolbar search {
+      flex: 1;
+      min-width: calc(var(--spacing) * 56);
+    }
+    .table {
+      position: relative;
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: var(--text-sm);
+    }
+    th {
+      height: calc(var(--spacing) * 10);
+      padding: 0 calc(var(--spacing) * 3);
+      color: var(--muted-foreground);
+      font-weight: var(--font-weight-medium);
+      text-align: left;
+      white-space: nowrap;
+    }
+    td {
+      padding: calc(var(--spacing) * 2) calc(var(--spacing) * 3);
+      border-top: 1px solid var(--border);
+      white-space: nowrap;
+    }
+    tbody tr:hover {
+      background: var(--muted);
+    }
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+    .number {
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+    }
+    form {
+      display: grid;
+      gap: calc(var(--spacing) * 4);
+    }
+    .pair {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: calc(var(--spacing) * 4);
+    }
+  </style>
+
+  <div class="toolbar">
+    <search>
+      <ui-input type="search" aria-label="Search products" placeholder="Search by name or category…" autocomplete="off" oninput="search(this)"></ui-input>
+    </search>
+    <ui-button onclick="create()">Add product</ui-button>
+  </div>
+
+  <div class="table">
+    <table aria-label="Products">
+      <thead>
+        <tr>
+          <th scope="col">Product</th>
+          <th scope="col">Category</th>
+          <th scope="col" class="number">Price</th>
+          <th scope="col" class="number">Stock</th>
+          <th scope="col">Availability</th>
+          <th scope="col"><span class="sr-only">Actions</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr repeat="#catalog.rows" as="product" key="id">
+          <td><slot name="#product.name"></slot></td>
+          <td><slot name="#product.category"></slot></td>
+          <td class="number"><slot name="#product.amount"></slot></td>
+          <td class="number"><slot name="#product.stock"></slot></td>
+          <td><ui-badge _variant="#product.level.variant"><slot name="#product.level.label"></slot></ui-badge></td>
+          <td class="number"><ui-button size="sm" variant="ghost" _aria-label="#product.editLabel" onclick="edit(product)">Edit</ui-button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <is-hidden when="#catalog.rows.length">
+    <ui-empty>
+      <ui-empty-header>
+        <ui-empty-title>No products found</ui-empty-title>
+        <ui-empty-description>Try another search, or add a product.</ui-empty-description>
+      </ui-empty-header>
+    </ui-empty>
+  </is-hidden>
+
+  <ui-dialog ref="editor" onclose="closed()">
+    <ui-dialog-header>
+      <ui-dialog-title><slot name="#editor.title"></slot></ui-dialog-title>
+      <ui-dialog-description>Every field is required.</ui-dialog-description>
+    </ui-dialog-header>
+    <is-visible when="#editor.open">
+      <form novalidate onsubmit="save(event)">
+        <ui-field _error="#editor.errors.name" _invalid="#editor.errors.name">
+          <ui-label for="product-name">Name</ui-label>
+          <ui-input id="product-name" name="name" required minlength="2" autocomplete="off" _value="#editor.product.name" _invalid="#editor.errors.name"></ui-input>
+        </ui-field>
+        <ui-field _error="#editor.errors.category" _invalid="#editor.errors.category">
+          <ui-label for="product-category">Category</ui-label>
+          <ui-select id="product-category" name="category" placeholder="Choose a category" required _value="#editor.product.category">
+            <option repeat="#catalog.categories" as="choice" key="category" _value="#choice.category"><slot name="#choice.category"></slot></option>
+          </ui-select>
+        </ui-field>
+        <div class="pair">
+          <ui-field _error="#editor.errors.price" _invalid="#editor.errors.price">
+            <ui-label for="product-price">Price (USD)</ui-label>
+            <ui-input id="product-price" name="price" type="number" min="0.01" step="0.01" required _value="#editor.product.price" _invalid="#editor.errors.price"></ui-input>
+          </ui-field>
+          <ui-field _error="#editor.errors.stock" _invalid="#editor.errors.stock">
+            <ui-label for="product-stock">Stock</ui-label>
+            <ui-input id="product-stock" name="stock" type="number" min="0" step="1" required _value="#editor.product.stock" _invalid="#editor.errors.stock"></ui-input>
+          </ui-field>
+        </div>
+        <ui-dialog-footer>
+          <ui-dialog-close><ui-button variant="outline">Cancel</ui-button></ui-dialog-close>
+          <ui-button type="submit">Save</ui-button>
+        </ui-dialog-footer>
+      </form>
+    </is-visible>
+  </ui-dialog>
+</custom-element>

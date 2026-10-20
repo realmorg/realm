@@ -8,8 +8,8 @@ nav: Button
 
 # Button
 
-`ui-button` wraps a native `<button>` in its shadow root and adds visual variants and sizes. It is form-associated:
-with `type="submit"` or `type="reset"` it submits or resets the form it sits in, even though the inner button lives
+`ui-button` wraps a native `<button>` in its shadow root and adds visual variants and sizes. It is form-associated.
+With `type="submit"` or `type="reset"` it submits or resets the form it sits in, even though the inner button lives
 in a shadow root. It also forwards the native invoker attributes `popovertarget`, `commandfor` and `command`, so it
 can open popovers and dialogs without script.
 
@@ -49,7 +49,7 @@ Text buttons come in `xs`, `sm`, `default` and `lg`.
 ### Icon buttons
 
 The `icon`, `icon-xs`, `icon-sm` and `icon-lg` sizes make a square button. A slotted `<svg>` is sized to the button
-text automatically. Give icon-only buttons an accessible name with `aria-label`.
+text. Give icon-only buttons an accessible name with `aria-label`.
 
 ```html live
 <ui-button variant="outline" size="icon-xs" aria-label="Add">
@@ -170,7 +170,7 @@ document or shadow root.
 ### Invoke a command
 
 `commandfor` and `command` are the native invoker commands. Browsers without native support get the same
-behaviour: the button dispatches a cancelable `command` event on the target and then calls `showModal()`, `close()`,
+behaviour. The button dispatches a cancelable `command` event on the target and then calls `showModal()`, `close()`,
 `requestClose()`, `togglePopover()`, `showPopover()` or `hidePopover()`. When the target is a component such as
 `ui-dialog` rather than a native `<dialog>`, `show-modal`, `close` and `request-close` are sent as `--show-modal`,
 `--close` and `--request-close`, because browsers only deliver built-in dialog commands to native dialogs.
@@ -204,7 +204,7 @@ behaviour: the button dispatches a cancelable `command` event on the target and 
 
 `ui-button` dispatches no events of its own. Listen for `click` as on any element. When native invoker commands are
 not supported, the button dispatches a cancelable `command` event on the `commandfor` target with `command` and
-`source` properties; calling `preventDefault()` stops the built-in action.
+`source` properties. Calling `preventDefault()` stops the built-in action.
 
 ### Slots
 
@@ -235,5 +235,5 @@ event's `submitter` is `null`.
 
 ### Accessibility
 
-The host delegates focus to the inner native `<button>`, which keeps native keyboard behaviour: Enter and Space
-activate it. `aria-label` is passed to the inner button. A disabled button is removed from the tab order.
+The host delegates focus to the inner native `<button>`, so Enter and Space
+activate it as usual. `aria-label` is passed to the inner button. A disabled button is removed from the tab order.

@@ -134,4 +134,4 @@ The default slot of each part takes any content.
 
 Give `alt` a name when the avatar is the only thing identifying a person. When the name is already shown next to
 the avatar, leave `alt` empty so screen readers skip the image. The fallback text is read as normal text.
-`ui-avatar-group` has `role="group"`; name it with `aria-label` when the group needs a label.
+`ui-avatar-group` has `role="group"`. Name it with `aria-label` when the group needs a label.
