@@ -16,6 +16,7 @@
     "size": "node scripts/check-size.mjs",
     "release:check": "node scripts/release-check.mjs",
     "skill": "node scripts/build-skill.mjs",
+    "version-packages": "changeset version && node scripts/build-skill.mjs",
     "skill:check": "node scripts/build-skill.mjs --check",
     "skill:test": "node --test scripts/skill.test.mjs"
   },

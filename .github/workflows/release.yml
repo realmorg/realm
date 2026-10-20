@@ -27,6 +27,7 @@ jobs:
       - run: pnpm release:check
       - uses: changesets/action@v2.1.2
         with:
+          version-script: pnpm version-packages
           publish-script: pnpm changeset publish
         env:
           NPM_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}

@@ -12,7 +12,7 @@ metadata:
 REALM builds native web components from one HTML tag. There is no compiler, no build step and no virtual DOM. A page loads REALM from a CDN, and each `<custom-element>` becomes a real custom element with a shadow root.
 
 <!-- generated:versions -->
-Written for REALM `2.0.0-alpha.1`, REALM UI `2.0.0-alpha.1` and Unicons `2.0.0-alpha.0`. The CDN tags use the `@alpha` tag, which always points at the newest alpha.
+Written for REALM `2.0.0-alpha.2`, REALM UI `2.0.0-alpha.2` and Unicons `2.0.0-alpha.1`. The CDN tags use the `@alpha` tag, which always points at the newest alpha.
 <!-- /generated:versions -->
 
 ## When to use this skill
