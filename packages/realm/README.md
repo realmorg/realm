@@ -73,7 +73,7 @@ What each part does:
 <todo-list></todo-list>
 ```
 
-A component file imports the files it depends on, every file is fetched once, and `loading="lazy"` waits until the tag appears in the page.
+A component file can import the files it depends on in the same way.
 
 **Use ready-made components.** [REALM UI](https://realm.js.org/components/) has about 60 accessible components (buttons, dialogs, forms, tables, menus, charts) and a theme with dark mode. Load all of them, or one file per component:
 
@@ -83,16 +83,6 @@ A component file imports the files it depends on, every file is fetched once, an
 
 <ui-button variant="outline">Save draft</ui-button>
 ```
-
-**Load data without writing fetch code.** `fetch`, `into`, `render` and `busy` attributes send requests and put the response into state or markup.
-
-**Build forms.** Components can be real form fields: they submit with their `name`, reset, validate and follow `<fieldset disabled>`.
-
-**Share state.** `defineStore("cart", { items: [] }, { persist: "local" })` gives every component the same store, saved to `localStorage` if you ask for it.
-
-**Add icons.** [Unicons](https://realm.js.org/unicons/) is one `<u-icon>` element for 50,939 icons from 31 sets, loaded in small chunks as the page uses them.
-
-**Use it with server-rendered pages.** PHP, Rails, Django, Go or a static site generator can write the tags, and REALM upgrades them in the browser.
 
 ## Using a coding assistant
 
@@ -115,7 +105,8 @@ The docs are also available as Markdown for assistants at [realm.js.org/llms.txt
 
 ## Learn more
 
-- [Docs](https://realm.js.org/docs/): a quick start, a tutorial and guides for state, events, forms, fetching, styling and security
+- [Docs](https://realm.js.org/docs/): a quick start, a tutorial, and guides for loading data, forms, shared state, styling and server-rendered pages
+- [Unicons](https://realm.js.org/unicons/): one `<u-icon>` element for 50,939 icons
 - [Reference](https://realm.js.org/reference/): every element, attribute and script helper
 - [Examples](https://realm.js.org/examples/): complete apps, including a todo list, a kanban board, chess, a dashboard, a shop and a chat
 - [Migrating from v1](https://realm.js.org/docs/migrating-from-v1/). v1 is archived under the `v1-final` tag.
