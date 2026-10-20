@@ -21,3 +21,5 @@ jobs:
           git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
             commit -q --allow-empty -m "Rebuild from realmorg/realm@${GITHUB_SHA}"
           git push -f origin HEAD:rebuild
+          # The push alone starts the deploy, which builds realm's main, so the branch can go.
+          git push origin --delete rebuild
