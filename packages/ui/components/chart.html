@@ -1,0 +1,162 @@
+<custom-element name="ui-chart">
+  <script>
+    const props = defineProps({
+      type: prop.enum(["bar", "line", "area"]).default("bar"),
+      data: prop.array(prop.object()).default([]),
+      x: prop.string().default("label"),
+      y: prop.string().default("value"),
+      height: prop.number().min(80).default(240),
+      label: prop.string().default("Chart"),
+    });
+
+    const WIDTH = 600;
+    const PAD = { top: 12, right: 12, bottom: 28, left: 44 };
+
+    const chart = useState({
+      get series() {
+        return props.y.split(",").map((key, index) => ({ key: key.trim(), color: `var(--chart-${(index % 5) + 1})` }));
+      },
+      get values() {
+        return props.data.flatMap((row) => this.series.map((series) => Number(row[series.key]) || 0));
+      },
+      get max() {
+        return Math.max(1, ...this.values);
+      },
+      get min() {
+        return Math.min(0, ...this.values);
+      },
+      get plotHeight() {
+        return props.height - PAD.top - PAD.bottom;
+      },
+      y(value) {
+        return PAD.top + this.plotHeight * ((this.max - value) / (this.max - this.min));
+      },
+      get step() {
+        return (WIDTH - PAD.left - PAD.right) / Math.max(1, props.data.length);
+      },
+      get viewBox() {
+        return `0 0 ${WIDTH} ${props.height}`;
+      },
+      get ticks() {
+        return [0, 0.25, 0.5, 0.75, 1].map((ratio) => ({
+          key: ratio,
+          y: PAD.top + this.plotHeight * (1 - ratio),
+          label: Math.round(this.min + (this.max - this.min) * ratio).toLocaleString(),
+        }));
+      },
+      get labels() {
+        return props.data.map((row, index) => ({ key: index, x: PAD.left + this.step * (index + 0.5), text: String(row[props.x] ?? "") }));
+      },
+      get bars() {
+        const width = (this.step * 0.7) / this.series.length;
+        return props.data.flatMap((row, index) =>
+          this.series.map((series, s) => {
+            const value = Number(row[series.key]) || 0;
+            const top = this.y(Math.max(value, 0));
+            return {
+              key: `${index}-${series.key}`,
+              x: PAD.left + this.step * index + this.step * 0.15 + width * s,
+              y: top,
+              width,
+              height: this.y(Math.min(value, 0)) - top,
+              color: series.color,
+              title: `${row[props.x]} · ${series.key}: ${value.toLocaleString()}`,
+            };
+          }),
+        );
+      },
+      get lines() {
+        return this.series.map((series) => {
+          const points = props.data.map((row, index) => [
+            PAD.left + this.step * (index + 0.5),
+            this.y(Number(row[series.key]) || 0),
+          ]);
+          const line = points.map(([x, y], index) => `${index ? "L" : "M"}${x},${y}`).join(" ");
+          const zero = this.y(0);
+          const area = points.length ? `${line} L${points.at(-1)[0]},${zero} L${points[0][0]},${zero} Z` : "";
+          return { key: series.key, line, area, color: series.color };
+        });
+      },
+      get legend() {
+        return this.series.length > 1 ? this.series : [];
+      },
+    });
+  </script>
+
+  <style>
+    :host {
+      display: block;
+      width: 100%;
+      box-sizing: border-box;
+      font-size: var(--text-xs);
+      color: var(--muted-foreground);
+    }
+    svg {
+      display: block;
+      width: 100%;
+      height: auto;
+      overflow: visible;
+    }
+    .grid {
+      stroke: var(--border);
+      stroke-dasharray: 3 3;
+    }
+    .tick {
+      fill: currentColor;
+      text-anchor: end;
+      dominant-baseline: middle;
+    }
+    .label {
+      fill: currentColor;
+      text-anchor: middle;
+    }
+    rect {
+      rx: 4;
+    }
+    .line {
+      fill: none;
+      stroke-width: 2;
+    }
+    .area {
+      opacity: 0.2;
+    }
+    :host(:not(:state(attr-type-is-bar))) .bars,
+    :host(:state(attr-type-is-bar)) .lines,
+    :host(:not(:state(attr-type-is-area))) .area {
+      display: none;
+    }
+    .legend {
+      display: flex;
+      justify-content: center;
+      gap: calc(var(--spacing) * 4);
+      margin-top: calc(var(--spacing) * 2);
+    }
+    .legend span::before {
+      content: "";
+      display: inline-block;
+      width: calc(var(--spacing) * 2.5);
+      height: calc(var(--spacing) * 2.5);
+      margin-right: calc(var(--spacing) * 1.5);
+      border-radius: var(--radius-xs);
+      background: var(--swatch);
+    }
+  </style>
+
+  <svg _viewBox="#chart.viewBox" role="img" _aria-label="@label" part="svg">
+    <g repeat="#chart.ticks" as="tick" key="key">
+      <line class="grid" x1="44" x2="588" _y1="#tick.y" _y2="#tick.y"></line>
+      <text class="tick" x="38" _y="#tick.y"><slot name="#tick.label"></slot></text>
+    </g>
+    <text repeat="#chart.labels" as="label" key="key" class="label" _x="#label.x" _y="@height" dy="-8"><slot name="#label.text"></slot></text>
+    <g class="bars">
+      <rect repeat="#chart.bars" as="bar" key="key" _x="#bar.x" _y="#bar.y" _width="#bar.width" _height="#bar.height" _fill="#bar.color"><title><slot name="#bar.title"></slot></title></rect>
+    </g>
+    <g class="lines" repeat="#chart.lines" as="series" key="key">
+      <path class="area" _d="#series.area" _fill="#series.color"></path>
+      <path class="line" _d="#series.line" _stroke="#series.color"></path>
+    </g>
+  </svg>
+  <div class="legend" part="legend">
+    <span repeat="#chart.legend" as="series" key="key" _--swatch="#series.color"><slot name="#series.key"></slot></span>
+  </div>
+</custom-element>

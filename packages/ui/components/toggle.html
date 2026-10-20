@@ -1,0 +1,81 @@
+<custom-element name="ui-toggle" delegates-focus>
+  <script>
+    const props = defineProps({
+      pressed: prop.boolean().reflect(),
+      variant: prop.enum(["default", "outline"]).default("default"),
+      size: prop.enum(["default", "sm", "lg"]).default("default"),
+      disabled: prop.boolean(),
+      value: prop.string(),
+      label: prop.string().attribute("aria-label"),
+    });
+
+    function toggle() {
+      props.pressed = !props.pressed;
+      dispatch("change");
+    }
+  </script>
+
+  <style>
+    :host {
+      display: inline-flex;
+    }
+    button {
+      all: unset;
+      box-sizing: border-box;
+      display: inline-flex;
+      flex: 1;
+      align-items: center;
+      justify-content: center;
+      gap: calc(var(--spacing) * 2);
+      min-width: calc(var(--spacing) * 9);
+      height: calc(var(--spacing) * 9);
+      padding: 0 calc(var(--spacing) * 2);
+      border: 1px solid transparent;
+      border-radius: var(--radius-md);
+      border-start-start-radius: var(--ui-radius-block-start, var(--ui-radius-start, var(--radius-md)));
+      border-end-start-radius: var(--ui-radius-block-end, var(--ui-radius-start, var(--radius-md)));
+      border-start-end-radius: var(--ui-radius-block-start, var(--ui-radius-end, var(--radius-md)));
+      border-end-end-radius: var(--ui-radius-block-end, var(--ui-radius-end, var(--radius-md)));
+      font-size: var(--text-sm);
+      font-weight: var(--font-weight-medium);
+      cursor: pointer;
+      transition: background-color var(--default-transition-duration), color var(--default-transition-duration);
+    }
+    button:hover {
+      background: var(--muted);
+      color: var(--muted-foreground);
+    }
+    :host(:state(attr-pressed)) button {
+      background: var(--accent);
+      color: var(--accent-foreground);
+    }
+    :host(:state(attr-variant-is-outline)) button {
+      border-color: var(--input);
+      box-shadow: var(--shadow-xs);
+    }
+    :host(:state(attr-size-is-sm)) button {
+      min-width: calc(var(--spacing) * 8);
+      height: calc(var(--spacing) * 8);
+      padding: 0 calc(var(--spacing) * 1.5);
+    }
+    :host(:state(attr-size-is-lg)) button {
+      min-width: calc(var(--spacing) * 10);
+      height: calc(var(--spacing) * 10);
+      padding: 0 calc(var(--spacing) * 2.5);
+    }
+    button:focus-visible {
+      border-color: var(--ring);
+      box-shadow: var(--focus-ring);
+    }
+    button:disabled {
+      pointer-events: none;
+      opacity: 0.5;
+    }
+    ::slotted(svg) {
+      width: calc(var(--spacing) * 4);
+      height: calc(var(--spacing) * 4);
+    }
+  </style>
+
+  <button type="button" part="button" _aria-pressed="@pressed" _aria-label="@label" _disabled="@disabled" onclick="toggle()"><slot></slot></button>
+</custom-element>

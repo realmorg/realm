@@ -1,0 +1,194 @@
+<custom-element name="ui-alert-dialog">
+  <script>
+    const props = defineProps({ open: prop.boolean().reflect() });
+
+    const parts = useChildren("ui-alert-dialog-header, ui-alert-dialog-title, ui-alert-dialog-description");
+    const alert = useState({
+      get label() {
+        return text("ui-alert-dialog-title");
+      },
+      get description() {
+        return text("ui-alert-dialog-description");
+      },
+    });
+
+    function text(selector) {
+      const found = parts.flatMap((part) => (part.matches(selector) ? [part] : [...part.querySelectorAll(selector)]));
+      return found.map((part) => part.textContent.trim()).join(" ") || null;
+    }
+
+    function show() {
+      props.open = true;
+    }
+
+    function showFrom(trigger) {
+      trigger.firstElementChild?.focus();
+      show();
+    }
+
+    function close(value) {
+      if (value !== undefined) refs.dialog.returnValue = String(value);
+      props.open = false;
+    }
+
+    function closed() {
+      if (refs.dialog.open) return;
+      props.open = false;
+      dispatch("close", undefined, { bubbles: false, composed: false });
+    }
+
+    defineMethods({
+      showModal: show,
+      show,
+      close,
+      get returnValue() {
+        return refs.dialog.returnValue;
+      },
+    });
+
+    const COMMANDS = { "show-modal": show, close: () => close(), "request-close": () => close() };
+
+    listen("command", (event) => COMMANDS[event.command.replace(/^--/, "")]?.());
+
+    observe(() => {
+      const dialog = refs.dialog;
+      if (!dialog || props.open === dialog.open) return;
+      if (props.open) dialog.showModal();
+      else dialog.close();
+    });
+  </script>
+
+  <style>
+    :host {
+      display: contents;
+    }
+    dialog {
+      box-sizing: border-box;
+      width: 100%;
+      max-width: min(calc(var(--spacing) * 128), calc(100% - calc(var(--spacing) * 8)));
+      padding: calc(var(--spacing) * 6);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      background: var(--background);
+      color: var(--foreground);
+      box-shadow: var(--shadow-lg);
+    }
+    dialog[open] {
+      display: grid;
+      gap: calc(var(--spacing) * 4);
+    }
+    dialog::backdrop {
+      background: rgb(0 0 0 / 0.5);
+    }
+  </style>
+
+  <slot name="trigger"></slot>
+  <dialog
+    ref="dialog"
+    part="dialog"
+    role="alertdialog"
+    _aria-label="#alert.label"
+    _aria-description="#alert.description"
+    onclose="closed()"
+    oncancel="event.preventDefault()">
+    <slot name="header"></slot>
+    <slot></slot>
+    <slot name="footer"></slot>
+  </dialog>
+</custom-element>
+
+<custom-element name="ui-alert-dialog-trigger" slot="trigger">
+  <style>
+    :host,
+    span {
+      display: contents;
+    }
+  </style>
+
+  <span part="trigger" onclick="showFrom(host)"><slot></slot></span>
+</custom-element>
+
+<custom-element name="ui-alert-dialog-header" slot="header">
+  <style>
+    :host {
+      display: grid;
+      gap: calc(var(--spacing) * 2);
+    }
+  </style>
+
+  <slot></slot>
+</custom-element>
+
+<custom-element name="ui-alert-dialog-title">
+  <style>
+    :host {
+      display: block;
+    }
+    h2 {
+      margin: 0;
+      font-size: var(--text-lg);
+      font-weight: var(--font-weight-semibold);
+    }
+  </style>
+
+  <h2 part="title"><slot></slot></h2>
+</custom-element>
+
+<custom-element name="ui-alert-dialog-description">
+  <style>
+    :host {
+      display: block;
+    }
+    p {
+      margin: 0;
+      font-size: var(--text-sm);
+      color: var(--muted-foreground);
+    }
+  </style>
+
+  <p part="description"><slot></slot></p>
+</custom-element>
+
+<custom-element name="ui-alert-dialog-footer" slot="footer">
+  <style>
+    :host {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: calc(var(--spacing) * 2);
+    }
+  </style>
+
+  <slot></slot>
+</custom-element>
+
+<custom-element name="ui-alert-dialog-action">
+  <script>
+    const props = defineProps({
+      value: prop.string().default("action"),
+      variant: prop.enum(["default", "destructive"]).default("default"),
+    });
+  </script>
+
+  <style>
+    :host {
+      display: inline-flex;
+    }
+  </style>
+
+  <ui-button part="button" _variant="@variant" onclick="close(props.value)"><slot></slot></ui-button>
+</custom-element>
+
+<custom-element name="ui-alert-dialog-cancel">
+  <script>
+    const props = defineProps({ value: prop.string().default("cancel") });
+  </script>
+
+  <style>
+    :host {
+      display: inline-flex;
+    }
+  </style>
+
+  <ui-button part="button" variant="outline" onclick="close(props.value)"><slot></slot></ui-button>
+</custom-element>

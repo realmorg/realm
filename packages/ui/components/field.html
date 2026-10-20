@@ -1,0 +1,117 @@
+<custom-element name="ui-field" role="group">
+  <script>
+    const props = defineProps({
+      orientation: prop.enum(["vertical", "horizontal"]).default("vertical"),
+      invalid: prop.boolean(),
+      error: prop.string(),
+    });
+  </script>
+
+  <style>
+    :host {
+      display: flex;
+      flex-direction: column;
+      gap: calc(var(--spacing) * 3);
+      width: 100%;
+    }
+    :host(:state(attr-orientation-is-horizontal)) {
+      flex-flow: row wrap;
+      align-items: center;
+    }
+    :host(:state(attr-orientation-is-horizontal)) ::slotted(ui-label) {
+      flex: 1 1 auto;
+    }
+    ::slotted(ui-label) {
+      line-height: 1.375;
+    }
+    :host(:state(attr-invalid)) ::slotted(ui-label) {
+      color: var(--destructive);
+    }
+    .error {
+      flex-basis: 100%;
+      margin: 0;
+      font-size: var(--text-sm);
+      color: var(--destructive);
+    }
+  </style>
+
+  <slot></slot>
+  <p class="error" role="alert" part="error" _hidden="!@error"><slot name="@error"></slot></p>
+</custom-element>
+
+<custom-element name="ui-field-content">
+  <style>
+    :host {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      gap: calc(var(--spacing) * 1.5);
+      line-height: 1.375;
+    }
+  </style>
+
+  <slot></slot>
+</custom-element>
+
+<custom-element name="ui-field-description">
+  <style>
+    :host {
+      display: block;
+      font-size: var(--text-sm);
+      line-height: 1.375;
+      color: var(--muted-foreground);
+    }
+  </style>
+
+  <slot></slot>
+</custom-element>
+
+<custom-element name="ui-field-group">
+  <style>
+    :host {
+      display: flex;
+      flex-direction: column;
+      gap: calc(var(--spacing) * 7);
+      width: 100%;
+    }
+  </style>
+
+  <slot></slot>
+</custom-element>
+
+<custom-element name="ui-field-set" role="group">
+  <script>
+    function named(slot) {
+      internals.ariaLabelledByElements = slot.assignedElements();
+    }
+  </script>
+
+  <style>
+    :host {
+      display: flex;
+      flex-direction: column;
+      gap: calc(var(--spacing) * 6);
+    }
+    ::slotted(ui-field-description) {
+      margin-top: calc(var(--spacing) * -4);
+    }
+  </style>
+
+  <slot name="legend" onslotchange="named(this)"></slot>
+  <slot></slot>
+</custom-element>
+
+<custom-element name="ui-field-legend" slot="legend">
+  <style>
+    :host {
+      display: block;
+      font-size: var(--text-base);
+      font-weight: var(--font-weight-medium);
+    }
+    :host(:state(attr-variant-is-label)) {
+      font-size: var(--text-sm);
+    }
+  </style>
+
+  <slot></slot>
+</custom-element>

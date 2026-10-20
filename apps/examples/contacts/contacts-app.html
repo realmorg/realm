@@ -1,0 +1,311 @@
+<custom-element name="contacts-app">
+  <script type="module">
+    import { blankContact, toRow } from "./contacts.js";
+
+    const list = useState({
+      items: [],
+      busy: false,
+      failed: false,
+      get rows() {
+        return this.items.map(toRow);
+      },
+      get summary() {
+        return `${this.items.length} ${this.items.length === 1 ? "contact" : "contacts"}`;
+      },
+      get empty() {
+        return !this.busy && this.items.length === 0;
+      },
+    });
+    const editor = useState({
+      contact: blankContact(),
+      errors: {},
+      saving: false,
+      loading: false,
+      get busy() {
+        return this.loading || this.saving;
+      },
+      get creating() {
+        return !this.contact.id;
+      },
+      get title() {
+        return this.creating ? "New contact" : "Edit contact";
+      },
+      get action() {
+        return this.contact.url ?? "api/contacts";
+      },
+      get method() {
+        return this.creating ? "post" : "put";
+      },
+    });
+    const removal = useState({ contact: blankContact(), busy: false });
+
+    function toast(title, description, variant = "default") {
+      dispatch("toast", { title, description, variant });
+    }
+
+    function listFailed() {
+      list.failed = true;
+    }
+
+    function listLoaded() {
+      list.failed = false;
+    }
+
+    function create() {
+      editor.contact = blankContact();
+      editor.errors = {};
+      refs.editor.showModal();
+    }
+
+    function edit(contact) {
+      editor.contact = { ...contact };
+      editor.errors = {};
+      refs.editor.showModal();
+    }
+
+    function saved(event) {
+      const contact = event.detail.data;
+      refs.editor.close();
+      toast(editor.creating ? "Contact created" : "Contact updated", contact.name);
+    }
+
+    function rejected(event) {
+      editor.errors = event.detail.data?.errors ?? {};
+      toast("Couldn't save the contact", event.detail.data?.message ?? "The server is unavailable.", "destructive");
+    }
+
+    function confirmDelete(contact) {
+      removal.contact = contact;
+      refs.confirm.showModal();
+    }
+
+    function removed(event) {
+      const { name } = event.detail.data;
+      refs.confirm.close();
+      toast("Contact deleted", name);
+    }
+
+    function removeFailed(event) {
+      refs.confirm.close();
+      toast("Couldn't delete the contact", event.detail.data?.message ?? "The server is unavailable.", "destructive");
+    }
+  </script>
+
+  <style>
+    :host {
+      display: grid;
+      gap: calc(var(--spacing) * 6);
+      width: min(calc(var(--spacing) * 240), 100%);
+    }
+    header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: end;
+      justify-content: space-between;
+      gap: calc(var(--spacing) * 4);
+    }
+    h1 {
+      margin: 0;
+      font-size: var(--text-2xl);
+      letter-spacing: -0.02em;
+    }
+    header p {
+      margin: calc(var(--spacing) * 1) 0 0;
+      color: var(--muted-foreground);
+      font-size: var(--text-sm);
+    }
+    .toolbar {
+      display: flex;
+      align-items: center;
+      gap: calc(var(--spacing) * 3);
+    }
+    .toolbar search {
+      flex: 1;
+    }
+    .status {
+      display: flex;
+      align-items: center;
+      gap: calc(var(--spacing) * 2);
+      margin: 0;
+      color: var(--muted-foreground);
+      font-size: var(--text-sm);
+      white-space: nowrap;
+    }
+    .table {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      transition: opacity var(--default-transition-duration);
+    }
+    :host(:state(loading)) .table {
+      opacity: 0.7;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: var(--text-sm);
+    }
+    th {
+      height: calc(var(--spacing) * 10);
+      padding: 0 calc(var(--spacing) * 3);
+      color: var(--muted-foreground);
+      font-weight: var(--font-weight-medium);
+      text-align: left;
+      white-space: nowrap;
+    }
+    td {
+      padding: calc(var(--spacing) * 2) calc(var(--spacing) * 3);
+      border-top: 1px solid var(--border);
+      white-space: nowrap;
+    }
+    tbody tr:hover {
+      background: var(--muted);
+    }
+    .person {
+      display: flex;
+      align-items: center;
+      gap: calc(var(--spacing) * 3);
+      font-weight: var(--font-weight-medium);
+    }
+    a {
+      color: inherit;
+      text-underline-offset: calc(var(--spacing) * 1);
+    }
+    .actions {
+      text-align: right;
+    }
+    .fields {
+      display: grid;
+      gap: calc(var(--spacing) * 4);
+      min-width: 0;
+      margin: 0 0 calc(var(--spacing) * 6);
+      padding: 0;
+      border: 0;
+    }
+    .confirm {
+      display: flex;
+      justify-content: flex-end;
+      gap: calc(var(--spacing) * 2);
+    }
+  </style>
+
+  <header>
+    <div>
+      <h1>Contacts</h1>
+      <p>A REST API served by a service worker, driven entirely by fetch attributes.</p>
+    </div>
+    <ui-button onclick="create()">New contact</ui-button>
+  </header>
+
+  <div class="toolbar">
+    <search onsubmit="event.preventDefault()">
+      <form
+        fetch="api/contacts"
+        trigger="load input"
+        debounce="250ms"
+        into="#list.items"
+        busy="#list.busy"
+        onload="listLoaded()"
+        onerror="listFailed()">
+        <ui-input name="q" type="search" aria-label="Search contacts" placeholder="Search by name, email, phone or company…" autocomplete="off"></ui-input>
+      </form>
+    </search>
+    <p class="status" role="status">
+      <is-visible when="#list.busy"><ui-spinner label="Loading contacts"></ui-spinner></is-visible>
+      <slot name="#list.summary"></slot>
+    </p>
+  </div>
+
+  <is-visible when="#list.failed">
+    <ui-alert variant="destructive">
+      <ui-alert-title>Couldn't load contacts</ui-alert-title>
+      <ui-alert-description>The contacts service is unavailable. Reload the page to try again.</ui-alert-description>
+    </ui-alert>
+  </is-visible>
+
+  <is-hidden when="#list.empty">
+    <div class="table">
+      <table aria-label="Contacts" _aria-busy="#list.busy">
+        <thead>
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Phone</th>
+            <th scope="col">Company</th>
+            <th scope="col" class="actions">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr repeat="#list.rows" as="contact" key="id">
+            <td>
+              <span class="person"><ui-avatar><ui-avatar-fallback><slot name="#contact.initials"></slot></ui-avatar-fallback></ui-avatar><slot name="#contact.name"></slot></span>
+            </td>
+            <td><a _href="#contact.mailto"><slot name="#contact.email"></slot></a></td>
+            <td><slot name="#contact.phone"></slot></td>
+            <td><slot name="#contact.company"></slot></td>
+            <td class="actions">
+              <ui-button size="sm" variant="ghost" _aria-label="#contact.editLabel" _fetch="#contact.url" into="#editor.contact" busy="#editor.loading" onloadstart="edit(contact)">Edit</ui-button>
+              <ui-button size="sm" variant="ghost" _aria-label="#contact.deleteLabel" onclick="confirmDelete(contact)">Delete</ui-button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </is-hidden>
+
+  <is-visible when="#list.empty">
+    <ui-empty>
+      <ui-empty-header>
+        <ui-empty-title>No contacts found</ui-empty-title>
+        <ui-empty-description>Try a different search, or add a new contact.</ui-empty-description>
+      </ui-empty-header>
+    </ui-empty>
+  </is-visible>
+
+  <ui-dialog ref="editor" id="contact-editor">
+    <ui-dialog-header>
+      <ui-dialog-title><slot name="#editor.title"></slot></ui-dialog-title>
+      <ui-dialog-description>
+        <is-visible when="#editor.loading">Loading the latest details…</is-visible>
+        <is-hidden when="#editor.loading">Name is required. Everything else is optional.</is-hidden>
+      </ui-dialog-description>
+    </ui-dialog-header>
+    <form _action="#editor.action" _method="#editor.method" busy="#editor.saving" into="#list.items" into-mode="update" onload="saved(event)" onerror="rejected(event)">
+      <fieldset class="fields" _disabled="#editor.loading">
+        <ui-field _error="#editor.errors.name" _invalid="#editor.errors.name">
+          <ui-label for="contact-name">Name</ui-label>
+          <ui-input id="contact-name" name="name" required autocomplete="off" _value="#editor.contact.name" _invalid="#editor.errors.name"></ui-input>
+        </ui-field>
+        <ui-field _error="#editor.errors.email" _invalid="#editor.errors.email">
+          <ui-label for="contact-email">Email</ui-label>
+          <ui-input id="contact-email" name="email" type="email" autocomplete="off" _value="#editor.contact.email" _invalid="#editor.errors.email"></ui-input>
+        </ui-field>
+        <ui-field>
+          <ui-label for="contact-phone">Phone</ui-label>
+          <ui-input id="contact-phone" name="phone" type="tel" autocomplete="off" _value="#editor.contact.phone"></ui-input>
+        </ui-field>
+        <ui-field>
+          <ui-label for="contact-company">Company</ui-label>
+          <ui-input id="contact-company" name="company" autocomplete="off" _value="#editor.contact.company"></ui-input>
+        </ui-field>
+      </fieldset>
+      <ui-dialog-footer>
+        <ui-dialog-close><ui-button variant="outline">Cancel</ui-button></ui-dialog-close>
+        <ui-button type="submit" _disabled="#editor.busy">Save</ui-button>
+      </ui-dialog-footer>
+    </form>
+  </ui-dialog>
+
+  <ui-alert-dialog ref="confirm">
+    <ui-alert-dialog-header>
+      <ui-alert-dialog-title>Delete contact?</ui-alert-dialog-title>
+      <ui-alert-dialog-description><slot name="#removal.contact.name"></slot> will be removed from your contacts.</ui-alert-dialog-description>
+    </ui-alert-dialog-header>
+    <ui-alert-dialog-footer>
+      <form class="confirm" _action="#removal.contact.url" method="delete" busy="#removal.busy" into="#list.items" into-mode="remove" onload="removed(event)" onerror="removeFailed(event)">
+        <ui-alert-dialog-cancel>Cancel</ui-alert-dialog-cancel>
+        <ui-button type="submit" variant="destructive" _disabled="#removal.busy">Delete</ui-button>
+      </form>
+    </ui-alert-dialog-footer>
+  </ui-alert-dialog>
+</custom-element>

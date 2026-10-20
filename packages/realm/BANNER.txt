@@ -1,9 +1,0 @@
-/**
- * @license Realm
- * @link https://realmui.github.io
- * @link https://github.com/realmorg
- * @copyright Copyright (c) Realmorg
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */

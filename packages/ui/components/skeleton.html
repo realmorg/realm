@@ -1,0 +1,30 @@
+<custom-element name="ui-skeleton">
+  <style>
+    :host {
+      display: block;
+      border-radius: var(--radius-md);
+      background: var(--accent);
+      animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+    :host(:state(attr-width)) {
+      width: calc(var(--spacing) * var(--attr-width));
+    }
+    :host(:state(attr-height)) {
+      height: calc(var(--spacing) * var(--attr-height));
+    }
+    :host(:state(attr-shape-is-circle)) {
+      flex-shrink: 0;
+      border-radius: var(--radius-full);
+    }
+    @keyframes pulse {
+      50% {
+        opacity: 0.5;
+      }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      :host {
+        animation: none;
+      }
+    }
+  </style>
+</custom-element>

@@ -1,0 +1,23 @@
+{
+  "name": "site",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "dev": "node scripts/dev.mjs",
+    "preview": "vite preview --outDir dist --port 4173 --strictPort",
+    "test": "playwright test",
+    "coverage": "rm -rf coverage-components && playwright test --project=chromium && node ../../scripts/component-coverage.mjs coverage-components /examples/ && node ../../scripts/component-coverage.mjs coverage-components /components/site.html"
+  },
+  "dependencies": {
+    "@realmorg/realm": "workspace:*",
+    "@realmorg/ui": "workspace:*",
+    "marked": "18.1.1",
+    "shiki": "4.5.0"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.14.0",
+    "@playwright/test": "1.64.1",
+    "vite": "8.3.4"
+  }
+}

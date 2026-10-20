@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>One-time password · REALM blocks</title>
+  <link rel="stylesheet" href="../../assets/realm/realm.css">
+  <link rel="stylesheet" href="../../assets/ui/theme.css">
+  <script type="module" src="../../assets/realm/realm.js"></script>
+  <style>
+    body { margin: 0; min-height: 100dvh; }
+    main { min-height: 100dvh; display: grid; place-items: center; padding: 1.5rem; box-sizing: border-box; }
+  </style>
+</head>
+<body>
+  <import-element from="../../assets/ui/ui.html"></import-element>
+  <import-element from="../blocks/blocks.html"></import-element>
+  <main><otp-form></otp-form></main>
+  <ui-toaster></ui-toaster>
+</body>
+</html>

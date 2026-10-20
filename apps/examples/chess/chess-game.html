@@ -1,0 +1,363 @@
+<custom-element name="chess-game">
+  <script type="module">
+    import { Chess, NAMES, START, SYMBOLS, squareName } from "./chess.js";
+
+    const props = defineProps({ fen: prop.string() });
+    const engine = new Chess(props.fen || START);
+
+    const STATUS = {
+      checkmate: (winner) => `Checkmate. ${winner} wins.`,
+      stalemate: () => "Stalemate. The game is a draw.",
+      "fifty-move": () => "Draw by the fifty-move rule.",
+      insufficient: () => "Draw by insufficient material.",
+      repetition: () => "Draw by threefold repetition.",
+    };
+
+    const game = useState({
+      version: 0,
+      selected: -1,
+      flipped: false,
+      computer: true,
+      thinking: false,
+      pending: null,
+      last: null,
+      get state() {
+        void this.version;
+        return engine.status();
+      },
+      get over() {
+        return !["playing", "check"].includes(this.state);
+      },
+      get targets() {
+        void this.version;
+        return this.selected === -1 ? [] : engine.moves(this.selected).map((move) => move.to);
+      },
+      get squares() {
+        void this.version;
+        const checkSquare = engine.inCheck() ? engine.king(engine.turn) : -1;
+        const order = Array.from({ length: 64 }, (_, i) => (this.flipped ? 63 - i : i));
+        return order.map((index, position) => {
+          const piece = engine.board[index];
+          const name = squareName(index);
+          const row = Math.floor(position / 8);
+          const col = position % 8;
+          return {
+            index,
+            name,
+            light: (Math.floor(index / 8) + (index % 8)) % 2 === 0,
+            symbol: piece ? SYMBOLS[piece.type] : "",
+            color: piece?.color ?? null,
+            label: piece ? `${name}, ${piece.color === "w" ? "white" : "black"} ${NAMES[piece.type]}` : name,
+            movable: Boolean(piece && piece.color === engine.turn && !this.over),
+            selected: index === this.selected,
+            target: this.targets.includes(index),
+            last: this.last !== null && (index === this.last.from || index === this.last.to),
+            check: index === checkSquare,
+            rank: col === 0 ? name[1] : "",
+            file: row === 7 ? name[0] : "",
+          };
+        });
+      },
+      get status() {
+        const state = this.state;
+        const mover = engine.turn === "w" ? "White" : "Black";
+        if (state === "checkmate") return STATUS.checkmate(engine.turn === "w" ? "Black" : "White");
+        if (STATUS[state]) return STATUS[state]();
+        if (this.thinking) return "Computer is thinking…";
+        return state === "check" ? `${mover} is in check.` : `${mover} to move.`;
+      },
+      get moves() {
+        void this.version;
+        const sans = engine.history.map((entry) => entry.san);
+        const rows = [];
+        for (let i = 0; i < sans.length; i += 2) rows.push({ number: i / 2 + 1, white: sans[i], black: sans[i + 1] ?? "" });
+        return rows;
+      },
+      get canUndo() {
+        void this.version;
+        return engine.history.length > 0 && !this.thinking;
+      },
+    });
+
+    const refresh = () => {
+      game.version++;
+    };
+
+    const play = (from, to, promotion) => {
+      const move = engine.move({ from, to, promotion });
+      game.last = { from, to };
+      game.selected = -1;
+      refresh();
+      host.dispatchEvent(new CustomEvent("move", { bubbles: true, detail: { san: move.san, fen: engine.fen() } }));
+      if (game.computer && engine.turn === "b" && !game.over) {
+        game.thinking = true;
+        setTimeout(() => {
+          const reply = engine.bestMove(2);
+          game.thinking = false;
+          if (reply) play(reply.from, reply.to, reply.promotion);
+        }, 150);
+      }
+    };
+
+    const attempt = (from, to) => {
+      const options = engine.moves(from).filter((move) => move.to === to);
+      if (!options.length) return false;
+      if (options.some((move) => move.promotion)) {
+        game.pending = { from, to };
+        refs.promotion.showModal();
+      } else play(from, to);
+      return true;
+    };
+
+    function press(square) {
+      if (game.thinking || game.over) return;
+      if (game.selected !== -1 && attempt(game.selected, square.index)) return;
+      game.selected = square.movable && game.selected !== square.index ? square.index : -1;
+    }
+
+    function dragStart(square, event) {
+      if (!square.movable || game.thinking) return event.preventDefault();
+      game.selected = square.index;
+      event.dataTransfer.setData("text/plain", String(square.index));
+      event.dataTransfer.effectAllowed = "move";
+    }
+
+    function dragOver(square, event) {
+      if (game.targets.includes(square.index)) event.preventDefault();
+    }
+
+    function drop(square, event) {
+      event.preventDefault();
+      attempt(Number(event.dataTransfer.getData("text/plain")), square.index);
+    }
+
+    function promote(type) {
+      const { from, to } = game.pending;
+      game.pending = null;
+      refs.promotion.close();
+      play(from, to, type);
+    }
+
+    function undo() {
+      engine.undo();
+      if (game.computer && engine.turn === "b") engine.undo();
+      game.selected = -1;
+      game.last = null;
+      refresh();
+    }
+
+    function restart() {
+      engine.load(props.fen || START);
+      Object.assign(game, { selected: -1, last: null, thinking: false });
+      refresh();
+    }
+
+    function flip() {
+      game.flipped = !game.flipped;
+    }
+
+    function toggleComputer(field) {
+      game.computer = field.checked;
+    }
+
+    defineMethods({
+      reset: restart,
+      get position() {
+        return engine.fen();
+      },
+    });
+  </script>
+
+  <style>
+    :host {
+      --light: oklch(0.92 0.03 85);
+      --dark: oklch(0.62 0.07 60);
+      display: grid;
+      grid-template-columns: minmax(0, calc(var(--spacing) * 144)) calc(var(--spacing) * 64);
+      gap: calc(var(--spacing) * 6);
+      align-items: start;
+    }
+    .board {
+      display: grid;
+      grid-template-columns: repeat(8, 1fr);
+      aspect-ratio: 1;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-lg);
+      user-select: none;
+    }
+    .square {
+      all: unset;
+      position: relative;
+      display: grid;
+      place-items: center;
+      aspect-ratio: 1;
+      background: var(--dark);
+      cursor: pointer;
+    }
+    .square[data-light] {
+      background: var(--light);
+    }
+    .square[data-last]::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: oklch(0.85 0.15 100 / 0.45);
+    }
+    .square[data-selected]::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: oklch(0.7 0.15 150 / 0.5);
+    }
+    .square[data-check] {
+      background: radial-gradient(circle, oklch(0.65 0.22 25) 0%, oklch(0.65 0.22 25 / 0.3) 60%, transparent 75%), var(--dark);
+    }
+    .square[data-target]::after {
+      content: "";
+      position: absolute;
+      width: 30%;
+      height: 30%;
+      border-radius: 50%;
+      background: rgb(0 0 0 / 0.2);
+    }
+    .square:focus-visible {
+      box-shadow: inset 0 0 0 3px var(--ring);
+    }
+    .piece {
+      position: relative;
+      z-index: 1;
+      font-size: min(4.2vw, 2.6rem);
+      line-height: 1;
+    }
+    .piece[data-color="w"] {
+      color: #fff;
+      text-shadow: 0 0 1px #000, 0 0 1px #000, 0 1px 2px rgb(0 0 0 / 0.6);
+    }
+    .piece[data-color="b"] {
+      color: #1a1a1a;
+    }
+    .piece[draggable="true"] {
+      cursor: grab;
+    }
+    .rank,
+    .file {
+      position: absolute;
+      z-index: 1;
+      font-size: var(--text-xs);
+      font-weight: var(--font-weight-semibold);
+      color: rgb(0 0 0 / 0.55);
+    }
+    .rank::before,
+    .file::before {
+      content: attr(data-label);
+    }
+    .rank {
+      top: calc(var(--spacing) * 0.8);
+      left: calc(var(--spacing) * 1);
+    }
+    .file {
+      right: calc(var(--spacing) * 1);
+      bottom: calc(var(--spacing) * 0.6);
+    }
+    aside {
+      display: grid;
+      gap: calc(var(--spacing) * 4);
+    }
+    h1 {
+      margin: 0;
+      font-size: var(--text-xl);
+    }
+    .status {
+      margin: 0;
+      font-weight: var(--font-weight-medium);
+    }
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: calc(var(--spacing) * 2);
+    }
+    ol {
+      max-height: calc(var(--spacing) * 80);
+      margin: 0;
+      padding: calc(var(--spacing) * 2) 0;
+      overflow-y: auto;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      list-style: none;
+      font-family: var(--font-mono);
+      font-size: var(--text-sm);
+    }
+    li {
+      display: grid;
+      grid-template-columns: calc(var(--spacing) * 10) 1fr 1fr;
+      padding: calc(var(--spacing) * 0.6) calc(var(--spacing) * 3);
+    }
+    li span:first-child {
+      color: var(--muted-foreground);
+    }
+    .choices {
+      display: flex;
+      justify-content: center;
+      gap: calc(var(--spacing) * 2);
+      font-size: var(--text-3xl);
+    }
+    @media (max-width: 760px) {
+      :host {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      .piece {
+        font-size: 9vw;
+      }
+    }
+  </style>
+
+  <div class="board" role="group" aria-label="Chess board">
+    <repeat-list of="#game.squares" as="square" key="name">
+      <button
+        type="button"
+        class="square"
+        _aria-label="#square.label"
+        _data-light="#square.light"
+        _data-selected="#square.selected"
+        _data-target="#square.target"
+        _data-last="#square.last"
+        _data-check="#square.check"
+        _data-square="#square.name"
+        onclick="press(square)"
+        ondragover="dragOver(square, event)"
+        ondrop="drop(square, event)">
+        <span class="piece" aria-hidden="true" _data-color="#square.color" _draggable="#square.movable" ondragstart="dragStart(square, event)"><slot name="#square.symbol"></slot></span>
+        <span class="rank" _data-label="#square.rank"></span>
+        <span class="file" _data-label="#square.file"></span>
+      </button>
+    </repeat-list>
+  </div>
+
+  <aside>
+    <h1>Chess</h1>
+    <p class="status" role="status"><slot name="#game.status"></slot></p>
+    <ui-switch _checked="#game.computer" onchange="toggleComputer(this)">Play against the computer</ui-switch>
+    <div class="controls">
+      <ui-button size="sm" variant="outline" _disabled="!#game.canUndo" onclick="undo()">Undo</ui-button>
+      <ui-button size="sm" variant="outline" onclick="flip()">Flip board</ui-button>
+      <ui-button size="sm" onclick="restart()">New game</ui-button>
+    </div>
+    <ol aria-label="Moves">
+      <li repeat="#game.moves" as="row" key="number"><span><slot name="#row.number"></slot>.</span><span><slot name="#row.white"></slot></span><span><slot name="#row.black"></slot></span></li>
+    </ol>
+  </aside>
+
+  <ui-dialog ref="promotion" persistent hide-close>
+    <ui-dialog-header>
+      <ui-dialog-title>Promote pawn</ui-dialog-title>
+      <ui-dialog-description>Choose the piece your pawn becomes.</ui-dialog-description>
+    </ui-dialog-header>
+    <div class="choices">
+      <ui-button variant="outline" size="icon-lg" aria-label="Queen" onclick="promote('q')">♛</ui-button>
+      <ui-button variant="outline" size="icon-lg" aria-label="Rook" onclick="promote('r')">♜</ui-button>
+      <ui-button variant="outline" size="icon-lg" aria-label="Bishop" onclick="promote('b')">♝</ui-button>
+      <ui-button variant="outline" size="icon-lg" aria-label="Knight" onclick="promote('n')">♞</ui-button>
+    </div>
+  </ui-dialog>
+</custom-element>

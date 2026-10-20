@@ -134,3 +134,11 @@ dist
 
 # MacOS user
 .DS_Store
+
+# Playwright
+test-results
+playwright-report
+coverage-components
+
+# Vitest browser attachments
+.vitest

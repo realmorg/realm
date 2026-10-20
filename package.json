@@ -1,23 +1,30 @@
 {
+  "name": "realm-monorepo",
   "private": true,
+  "type": "module",
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
-    "lint": "turbo run lint",
     "test": "turbo run test",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "coverage": "turbo run coverage",
+    "typecheck": "turbo run typecheck",
+    "lint": "biome check .",
+    "format": "biome format --write .",
+    "spec": "openspec validate --specs --strict && node scripts/check-scenarios.mjs",
     "change": "changeset",
-    "publish-pkgs": "turbo run build lint test && changeset version && changeset publish"
-  },
-  "dependencies": {
-    "@changesets/cli": "^2.26.2"
+    "release": "turbo run build test && changeset publish",
+    "size": "node scripts/check-size.mjs",
+    "release:check": "node scripts/release-check.mjs"
   },
   "devDependencies": {
-    "@turbo/gen": "^1.10.7",
-    "eslint": "^7.32.0",
-    "prettier": "^2.8.8",
-    "turbo": "latest"
+    "@biomejs/biome": "2.5.15",
+    "@changesets/cli": "3.0.3",
+    "@fission-ai/openspec": "1.14.3",
+    "playwright": "1.64.1",
+    "turbo": "2.11.9"
   },
   "packageManager": "pnpm@10.10.0",
-  "name": "turborepo"
+  "engines": {
+    "node": ">=22"
+  }
 }

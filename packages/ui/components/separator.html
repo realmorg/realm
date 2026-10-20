@@ -1,0 +1,25 @@
+<custom-element name="ui-separator" role="separator">
+  <script>
+    const props = defineProps({
+      orientation: prop.enum(["horizontal", "vertical"]).default("horizontal"),
+    });
+    observe(() => {
+      internals.ariaOrientation = props.orientation;
+    });
+  </script>
+
+  <style>
+    :host {
+      display: block;
+      flex-shrink: 0;
+      height: 1px;
+      width: 100%;
+      background: var(--border);
+    }
+    :host(:state(attr-orientation-is-vertical)) {
+      height: auto;
+      width: 1px;
+      align-self: stretch;
+    }
+  </style>
+</custom-element>

@@ -1,0 +1,75 @@
+<custom-element name="ui-input-group" form-associated delegates-focus>
+  <script>
+    defineProps({
+      value: prop.string().default(""),
+      type: prop.enum(["text", "email", "password", "number", "search", "tel", "url"]).default("text"),
+      placeholder: prop.string(),
+      disabled: prop.boolean(),
+      required: prop.boolean(),
+      label: prop.string().attribute("aria-label"),
+    });
+  </script>
+
+  <style>
+    :host {
+      display: flex;
+      align-items: center;
+      min-width: 0;
+      height: calc(var(--spacing) * 9);
+      box-sizing: border-box;
+      border: 1px solid var(--input);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-xs);
+      transition: box-shadow var(--default-transition-duration);
+    }
+    :host(:focus-within) {
+      border-color: var(--ring);
+      box-shadow: var(--focus-ring);
+    }
+    input {
+      flex: 1;
+      min-width: 0;
+      height: 100%;
+      padding: 0 calc(var(--spacing) * 3);
+      border: 0;
+      background: transparent;
+      color: inherit;
+      font: inherit;
+      font-size: var(--text-sm);
+      outline: none;
+    }
+    input::placeholder {
+      color: var(--muted-foreground);
+    }
+  </style>
+
+  <slot></slot>
+  <input ref="control" part="input" _type="@type" _value="@value" _placeholder="@placeholder" _disabled="@disabled" _required="@required" _aria-label="@label">
+</custom-element>
+
+<custom-element name="ui-input-group-addon">
+  <style>
+    :host {
+      display: flex;
+      order: -1;
+      align-items: center;
+      gap: calc(var(--spacing) * 2);
+      height: 100%;
+      padding-inline-start: calc(var(--spacing) * 3);
+      font-size: var(--text-sm);
+      color: var(--muted-foreground);
+      cursor: text;
+      user-select: none;
+    }
+    :host(:state(attr-align-is-inline-end)) {
+      order: 1;
+      padding-inline: 0 calc(var(--spacing) * 3);
+    }
+    ::slotted(svg) {
+      width: calc(var(--spacing) * 4);
+      height: calc(var(--spacing) * 4);
+    }
+  </style>
+
+  <slot></slot>
+</custom-element>

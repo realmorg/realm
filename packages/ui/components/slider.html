@@ -1,0 +1,81 @@
+<custom-element name="ui-slider" form-associated delegates-focus>
+  <script>
+    const props = defineProps({
+      value: prop.number().default(0),
+      min: prop.number().default(0),
+      max: prop.number().default(100),
+      step: prop.number().default(1),
+      disabled: prop.boolean(),
+      label: prop.string().attribute("aria-label"),
+    });
+
+    const range = useState({
+      get percent() {
+        return `${((props.value - props.min) / (props.max - props.min || 1)) * 100}%`;
+      },
+    });
+  </script>
+
+  <style>
+    :host {
+      display: block;
+      min-width: calc(var(--spacing) * 32);
+    }
+    input {
+      --fill: var(--primary);
+      appearance: none;
+      width: 100%;
+      height: calc(var(--spacing) * 4);
+      margin: 0;
+      background: transparent;
+      cursor: pointer;
+      outline: none;
+    }
+    input::-webkit-slider-runnable-track {
+      height: calc(var(--spacing) * 1.5);
+      border-radius: var(--radius-full);
+      background: linear-gradient(to right, var(--fill) var(--state-range-percent), var(--muted) var(--state-range-percent));
+    }
+    input::-moz-range-track {
+      height: calc(var(--spacing) * 1.5);
+      border-radius: var(--radius-full);
+      background: linear-gradient(to right, var(--fill) var(--state-range-percent), var(--muted) var(--state-range-percent));
+    }
+    input::-webkit-slider-thumb {
+      appearance: none;
+      width: calc(var(--spacing) * 4);
+      height: calc(var(--spacing) * 4);
+      margin-top: calc(var(--spacing) * -1.25);
+      border: 1px solid var(--primary);
+      border-radius: var(--radius-full);
+      background: var(--background);
+      box-shadow: var(--shadow-sm);
+    }
+    input::-moz-range-thumb {
+      width: calc(var(--spacing) * 4);
+      height: calc(var(--spacing) * 4);
+      border: 1px solid var(--primary);
+      border-radius: var(--radius-full);
+      background: var(--background);
+    }
+    input:focus-visible::-webkit-slider-thumb {
+      box-shadow: 0 0 0 4px color-mix(in oklab, var(--ring) 50%, transparent);
+    }
+    input:disabled {
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+  </style>
+
+  <input
+    ref="control"
+    type="range"
+    part="control"
+    _min="@min"
+    _max="@max"
+    _step="@step"
+    _value="@value"
+    _disabled="@disabled"
+    _aria-label="@label"
+>
+</custom-element>

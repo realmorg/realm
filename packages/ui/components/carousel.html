@@ -1,0 +1,177 @@
+<custom-element name="ui-carousel" role="region">
+  <script>
+    const props = defineProps({
+      orientation: prop.enum(["horizontal", "vertical"]).default("horizontal"),
+      label: prop.string().default("Carousel"),
+    });
+
+    const content = useChildren("ui-carousel-content");
+    const position = useState({
+      index: 0,
+      get first() {
+        return this.index <= 0;
+      },
+      get last() {
+        return this.index >= slides().length - 1;
+      },
+    });
+    const KEYS = { ArrowLeft: -1, ArrowUp: -1, ArrowRight: 1, ArrowDown: 1 };
+
+    function slides() {
+      return [...(content[0]?.children ?? [])];
+    }
+
+    function go(index) {
+      const all = slides();
+      all[Math.max(0, Math.min(index, all.length - 1))]?.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "start" });
+    }
+
+    function previous() {
+      go(position.index - 1);
+    }
+
+    function next() {
+      go(position.index + 1);
+    }
+
+    function keys(event) {
+      const step = KEYS[event.key];
+      if (!step) return;
+      event.preventDefault();
+      go(position.index + step);
+    }
+
+    function scrolled(track) {
+      const vertical = props.orientation === "vertical";
+      const offset = vertical ? track.scrollTop : track.scrollLeft;
+      const size = vertical ? track.clientHeight : track.clientWidth;
+      position.index = Math.round(offset / (size || 1));
+      dispatch("change", { index: position.index });
+    }
+
+    observe(() => {
+      internals.ariaLabel = props.label;
+      internals.ariaRoleDescription = "carousel";
+    });
+  </script>
+
+  <style>
+    :host {
+      --carousel-direction: row;
+      --carousel-axis: x;
+      --carousel-overflow-x: auto;
+      --carousel-overflow-y: hidden;
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr) auto;
+      align-items: center;
+      width: 100%;
+    }
+    :host(:state(attr-orientation-is-vertical)) {
+      --carousel-direction: column;
+      --carousel-axis: y;
+      --carousel-overflow-x: hidden;
+      --carousel-overflow-y: auto;
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-rows: auto minmax(0, 1fr) auto;
+      justify-items: center;
+    }
+    :host(:state(attr-height)) {
+      height: calc(var(--spacing) * var(--attr-height));
+    }
+    ::slotted(ui-carousel-content) {
+      grid-area: 1 / 2;
+      align-self: stretch;
+    }
+    :host(:state(attr-orientation-is-vertical)) ::slotted(ui-carousel-content) {
+      grid-area: 2 / 1;
+      justify-self: stretch;
+    }
+    ::slotted(ui-carousel-previous) {
+      grid-area: 1 / 1;
+      margin-inline-end: calc(var(--spacing) * 2);
+    }
+    ::slotted(ui-carousel-next) {
+      grid-area: 1 / 3;
+      margin-inline-start: calc(var(--spacing) * 2);
+    }
+    :host(:state(attr-orientation-is-vertical)) ::slotted(ui-carousel-previous) {
+      grid-area: 1 / 1;
+      margin: 0 0 calc(var(--spacing) * 2);
+      rotate: 90deg;
+    }
+    :host(:state(attr-orientation-is-vertical)) ::slotted(ui-carousel-next) {
+      grid-area: 3 / 1;
+      margin: calc(var(--spacing) * 2) 0 0;
+      rotate: 90deg;
+    }
+  </style>
+
+  <slot></slot>
+</custom-element>
+
+<custom-element name="ui-carousel-content">
+  <style>
+    :host {
+      display: flex;
+      min-width: 0;
+      min-height: 0;
+    }
+    .track {
+      display: flex;
+      flex: 1;
+      flex-direction: var(--carousel-direction);
+      gap: calc(var(--spacing) * 4);
+      min-width: 0;
+      min-height: 0;
+      overflow-x: var(--carousel-overflow-x);
+      overflow-y: var(--carousel-overflow-y);
+      scroll-snap-type: var(--carousel-axis) mandatory;
+      scrollbar-width: none;
+      outline: none;
+    }
+    .track:focus-visible {
+      box-shadow: var(--focus-ring);
+    }
+  </style>
+
+  <div class="track" part="track" tabindex="0" onkeydown="keys(event)" onscrollend="scrolled(this)"><slot></slot></div>
+</custom-element>
+
+<custom-element name="ui-carousel-item" role="group">
+  <script>
+    internals.ariaRoleDescription = "slide";
+  </script>
+
+  <style>
+    :host {
+      display: block;
+      box-sizing: border-box;
+      flex: 0 0 100%;
+      min-width: 0;
+      min-height: 0;
+      scroll-snap-align: start;
+    }
+  </style>
+
+  <slot></slot>
+</custom-element>
+
+<custom-element name="ui-carousel-previous">
+  <style>
+    :host {
+      display: inline-flex;
+    }
+  </style>
+
+  <ui-button variant="outline" size="icon" aria-label="Previous slide" _disabled="#position.first" onclick="previous()">‹</ui-button>
+</custom-element>
+
+<custom-element name="ui-carousel-next">
+  <style>
+    :host {
+      display: inline-flex;
+    }
+  </style>
+
+  <ui-button variant="outline" size="icon" aria-label="Next slide" _disabled="#position.last" onclick="next()">›</ui-button>
+</custom-element>

@@ -1,0 +1,293 @@
+<custom-element name="kanban-card">
+  <script type="module">
+    const props = defineProps({ card: prop.object(), column: prop.string() });
+
+    function open() {
+      host.dispatchEvent(new CustomEvent("cardopen", { bubbles: true, composed: true, detail: { id: props.card.id } }));
+    }
+
+    function keys(event) {
+      const moves = { ArrowLeft: -1, ArrowRight: 1 };
+      if (event.key === "Enter") {
+        // Without this, WebKit delivers the same Enter to the editor that opens and submits it.
+        event.preventDefault();
+        open();
+      }
+      if (!(event.key in moves) || !event.altKey) return;
+      event.preventDefault();
+      host.dispatchEvent(new CustomEvent("cardshift", { bubbles: true, composed: true, detail: { id: props.card.id, by: moves[event.key] } }));
+    }
+  </script>
+
+  <style>
+    :host {
+      display: block;
+    }
+    article {
+      display: grid;
+      gap: calc(var(--spacing) * 2);
+      padding: calc(var(--spacing) * 3);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      background: var(--card);
+      box-shadow: var(--shadow-xs);
+      cursor: grab;
+      outline: none;
+    }
+    article:focus-visible {
+      box-shadow: var(--focus-ring);
+    }
+    article:active {
+      cursor: grabbing;
+    }
+    h3 {
+      margin: 0;
+      font-size: var(--text-sm);
+      font-weight: var(--font-weight-medium);
+    }
+    p {
+      margin: 0;
+      font-size: var(--text-sm);
+      color: var(--muted-foreground);
+    }
+  </style>
+
+  <article draggable="true" tabindex="0" part="card" onclick="open()" onkeydown="keys(event)" _aria-label="@card.title">
+    <h3><slot name="@card.title"></slot></h3>
+    <p _hidden="!@card.description"><slot name="@card.description"></slot></p>
+    <ui-badge variant="secondary" _hidden="!@card.label"><slot name="@card.label"></slot></ui-badge>
+  </article>
+</custom-element>
+
+<custom-element name="kanban-board">
+  <script type="module">
+    import { board, findCard, initialColumns, moveCard, newCard } from "./board.js";
+
+    const drag = useState({ cardId: null, over: null });
+    const editor = useState({ id: null, title: "", description: "", label: "", column: "" });
+    const drafts = useState({});
+
+    function updateDraft(column, field) {
+      drafts[column.id] = field.value;
+    }
+
+    function addCard(column, event) {
+      event.preventDefault();
+      const title = (drafts[column.id] ?? "").trim();
+      if (!title) return;
+      column.source.cards.push(newCard(title));
+      drafts[column.id] = "";
+    }
+
+    function dragStart(card, event) {
+      drag.cardId = card.id;
+      event.dataTransfer.setData("text/plain", card.id);
+      event.dataTransfer.effectAllowed = "move";
+    }
+
+    function dragEnd() {
+      drag.cardId = null;
+      drag.over = null;
+    }
+
+    function allow(column, event) {
+      if (!drag.cardId) return;
+      event.preventDefault();
+      drag.over = column.id;
+    }
+
+    function dropOnColumn(column, event) {
+      event.preventDefault();
+      moveCard(drag.cardId, column.id);
+      dragEnd();
+    }
+
+    function dropOnCard(column, index, event) {
+      event.preventDefault();
+      event.stopPropagation();
+      moveCard(drag.cardId, column.id, index);
+      dragEnd();
+    }
+
+    function shift(event) {
+      const found = findCard(event.detail.id);
+      const index = board.columns.indexOf(found.column) + event.detail.by;
+      const target = board.columns[index];
+      if (!target) return;
+      moveCard(event.detail.id, target.id);
+      queueMicrotask(() => {
+        const cards = host.shadowRoot.querySelectorAll("kanban-card");
+        [...cards].find((el) => el.card?.id === event.detail.id)?.shadowRoot.querySelector("article").focus();
+      });
+    }
+
+    function openCard(event) {
+      const found = findCard(event.detail.id);
+      Object.assign(editor, { id: found.card.id, ...found.card, column: found.column.id });
+      refs.dialog.showModal();
+    }
+
+    function edit(field) {
+      editor[field.getAttribute("name")] = field.value;
+    }
+
+    function save(event) {
+      event.preventDefault();
+      const found = findCard(editor.id);
+      Object.assign(found.card, { title: editor.title.trim() || found.card.title, description: editor.description, label: editor.label });
+      if (found.column.id !== editor.column) moveCard(editor.id, editor.column);
+      refs.dialog.close();
+    }
+
+    function removeCard() {
+      const found = findCard(editor.id);
+      found.column.cards.splice(found.index, 1);
+      refs.dialog.close();
+      document.dispatchEvent(new CustomEvent("toast", { detail: { title: "Card deleted", description: found.card.title } }));
+    }
+
+    function reset() {
+      board.columns = initialColumns();
+    }
+
+    const view = useState({
+      get columns() {
+        return board.columns.map((column) => ({
+          id: column.id,
+          title: column.title,
+          cards: column.cards,
+          count: column.cards.length,
+          over: drag.over === column.id,
+          draft: drafts[column.id] ?? "",
+          source: column,
+        }));
+      },
+    });
+  </script>
+
+  <style>
+    :host {
+      display: block;
+      padding: calc(var(--spacing) * 6);
+    }
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: calc(var(--spacing) * 4);
+      margin-bottom: calc(var(--spacing) * 6);
+    }
+    h1 {
+      margin: 0;
+      font-size: var(--text-2xl);
+    }
+    .hint {
+      margin: calc(var(--spacing) * 1) 0 0;
+      font-size: var(--text-sm);
+      color: var(--muted-foreground);
+    }
+    .columns {
+      display: grid;
+      grid-auto-flow: column;
+      grid-auto-columns: minmax(calc(var(--spacing) * 64), 1fr);
+      gap: calc(var(--spacing) * 4);
+      overflow-x: auto;
+      padding-bottom: calc(var(--spacing) * 4);
+    }
+    section {
+      display: flex;
+      flex-direction: column;
+      gap: calc(var(--spacing) * 3);
+      padding: calc(var(--spacing) * 3);
+      border: 1px dashed transparent;
+      border-radius: var(--radius-lg);
+      background: var(--muted);
+      transition: border-color var(--default-transition-duration);
+    }
+    section[data-over] {
+      border-color: var(--ring);
+    }
+    h2 {
+      display: flex;
+      justify-content: space-between;
+      margin: 0;
+      font-size: var(--text-sm);
+    }
+    h2 span {
+      color: var(--muted-foreground);
+      font-weight: var(--font-weight-normal);
+    }
+    .cards {
+      display: grid;
+      gap: calc(var(--spacing) * 2);
+      min-height: calc(var(--spacing) * 8);
+    }
+    form {
+      display: flex;
+      gap: calc(var(--spacing) * 2);
+    }
+    form ui-input {
+      flex: 1;
+    }
+    .fields {
+      display: grid;
+      gap: calc(var(--spacing) * 3);
+    }
+    label {
+      display: grid;
+      gap: calc(var(--spacing) * 1.5);
+      font-size: var(--text-sm);
+      font-weight: var(--font-weight-medium);
+    }
+  </style>
+
+  <header>
+    <div>
+      <h1>Roadmap board</h1>
+      <p class="hint">Drag cards between columns, or focus a card and press Alt + arrow keys. <slot name="#board.total"></slot> cards.</p>
+    </div>
+    <ui-button variant="outline" size="sm" onclick="reset()">Reset board</ui-button>
+  </header>
+
+  <div class="columns" oncardopen="openCard(event)" oncardshift="shift(event)" ondragend="dragEnd()">
+    <repeat-list of="#view.columns" as="column" key="id">
+      <section
+        _aria-label="#column.title"
+        _data-over="#column.over"
+        _data-column="#column.id"
+        ondragover="allow(column, event)"
+        ondrop="dropOnColumn(column, event)">
+        <h2><slot name="#column.title"></slot> <span><slot name="#column.count"></slot></span></h2>
+        <div class="cards">
+          <repeat-list of="#column.cards" as="card" index="index" key="id">
+            <kanban-card _card="#card" _column="#column.id" ondragstart="dragStart(card, event)" ondrop="dropOnCard(column, index, event)"></kanban-card>
+          </repeat-list>
+        </div>
+        <form onsubmit="addCard(column, event)">
+          <ui-input aria-label="New card title" placeholder="Add a card" _value="#column.draft" oninput="updateDraft(column, this)"></ui-input>
+          <ui-button type="submit" size="sm" variant="secondary">Add</ui-button>
+        </form>
+      </section>
+    </repeat-list>
+  </div>
+
+  <ui-dialog ref="dialog">
+    <ui-dialog-header>
+      <ui-dialog-title>Edit card</ui-dialog-title>
+    </ui-dialog-header>
+    <form class="fields" id="edit" onsubmit="save(event)">
+      <label>Title <ui-input name="title" _value="#editor.title" oninput="edit(this)" required></ui-input></label>
+      <label>Description <ui-textarea name="description" _value="#editor.description" oninput="edit(this)"></ui-textarea></label>
+      <label>Label <ui-input name="label" _value="#editor.label" oninput="edit(this)"></ui-input></label>
+      <label>Column
+        <ui-select name="column" _value="#editor.column" onchange="edit(this)">
+          <option repeat="#view.columns" as="column" key="id" _value="#column.id" _label="#column.title"></option>
+        </ui-select>
+      </label>
+    </form>
+    <ui-dialog-footer>
+      <ui-button variant="destructive" onclick="removeCard()">Delete</ui-button>
+      <ui-button onclick="save(event)">Save</ui-button>
+    </ui-dialog-footer>
+  </ui-dialog>
+</custom-element>

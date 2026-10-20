@@ -1,49 +1,69 @@
 <p align="center">
   <a href="https://realmui.github.io" target="_blank">
     <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/realmorg/realm/HEAD/.github/dark-logo.png">
-      <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/realmorg/realm/HEAD/.github/light-logo.png">
-      <img alt="REALM" src="https://raw.githubusercontent.com/realmorg/realm/HEAD/.github/light-logo.png" width="350" height="85" style="max-width: 100%;">
+      <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/realmui/realm/HEAD/.github/dark-logo.png">
+      <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/realmui/realm/HEAD/.github/light-logo.png">
+      <img alt="REALM" src="https://raw.githubusercontent.com/realmui/realm/HEAD/.github/light-logo.png" width="350" height="85" style="max-width: 100%;">
     </picture>
   </a>
 </p>
 
-<p align="center">
-  REALM (Reactive-Lightweight Markup Language). HTML framework for building MVP.
-</p>
+<p align="center">Native web components, written in plain HTML. No compiler, no build step.</p>
 
-<p align="center">
-  <a aria-label="License" href="https://github.com/realmorg/realm/blob/main/LICENSE">
-    <img alt="Community on Github" src="https://img.shields.io/badge/LICENSE-blue.svg?style=for-the-badge&labelColor=blue&logoWidth=20">
-  </a>
-  <a aria-label="Community on Github" href="https://github.com/realmorg/realm/discussions">
-    <img alt="Community on Github" src="https://img.shields.io/badge/Community-hotpink.svg?style=for-the-badge&labelColor=000000&logoWidth=20">
-  </a>
-</p>
+A REALM component is one `<custom-element>` tag holding a `<script>`, a `<style>` and markup:
 
-> [!WARNING]
->
-> ## Realm Framework Status: Maintenance Mode
+```html
+<script type="module" src="https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/realm.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/realm.css">
 
-Realm Framework is now in **maintenance mode**. This decision has been made due to instability in the Shadow DOM and Web Component API, as well as shifts in the web development ecosystem. While the framework will remain available with occasional bug fixes, we recommend exploring alternatives like [Shoelace](https://github.com/shoelace-style/shoelace) for new projects.
+<custom-element name="click-counter">
+  <script type="realm">
+    const props = defineProps({ step: prop.number().default(1) });
+    const counter = useState({ count: 0 });
 
-For more details, please read the full announcement here: [Project is Under Maintenance Mode](http://realmui.github.io/blog/posts/project-is-under-maintenance-mode).
+    function add() {
+      counter.count += props.step;
+    }
+  </script>
 
-Thank you for your support,  
-**The Realm Framework Team**
+  <style>
+    button { font: inherit; }
+  </style>
 
-## Documentation
+  <button onclick="add()">Clicked <slot name="#counter.count">0</slot> times</button>
+</custom-element>
 
-Visit https://realmui.github.io to view the full documentation.
+<click-counter step="2"></click-counter>
+```
 
-## What is Realm?
+- Values show through native `<slot name="#state.path">`, attributes bind with `_href="#link.url"`, events use native `onclick`.
+- `fetch`, `into`, `render` and `busy` attributes make requests without code.
+- Components are real form fields, clean up after themselves, and style themselves with reactive CSS states.
+- About 15 KB gzipped. Works in current Chrome, Edge, Firefox and Safari.
 
-Realm is an HTML framework for building MVP. It is designed to be simple, lightweight, and easy to use. Realm is built on top of Native web components. No-tooling, No-bundler, less javascript. Just take care of your product and ship it fast.
+## Packages
 
-## Contributing
+| Package | |
+| --- | --- |
+| `@realmorg/realm` | The runtime |
+| `@realmorg/ui` | About 60 accessible components in the style of shadcn/ui, built with REALM |
+| `@realmorg/vite-plugin` | Pre-assembles components for strict Content Security Policies and writes `custom-elements.json` |
 
-Please see [CONTRIBUTING.md](https://github.com/realmorg/realm/blob/main/.github/CONTRIBUTING.md).
+Documentation, a tutorial and live examples are at [realmui.github.io](https://realmui.github.io), and in Markdown for language models at [llms.txt](https://realmui.github.io/llms.txt).
 
-### LICENSE
+## Development
 
-Copyright 2023 - [MIT License](https://github.com/realmorg/realm/blob/main/LICENSE).
+The repository holds the runtime, the UI library, the Vite plugin, the website and example apps (a todo list, a Trello-like board, chess, a dashboard, a weather app and a contacts app). See `AGENTS.md` for the rules and commands, `PLAN.md` for the design, and `openspec/specs` for the specification. Every scenario in the specification has a test, and the runtime keeps 100% test coverage in Chromium, Firefox and WebKit.
+
+```bash
+pnpm install
+pnpm build
+pnpm --filter @realmorg/realm coverage
+pnpm --filter site test
+```
+
+REALM v1 is archived under the `v1-final` tag.
+
+## License
+
+MIT

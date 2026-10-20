@@ -1,0 +1,35 @@
+<custom-element name="ui-kbd">
+  <style>
+    :host {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: calc(var(--spacing) * 1);
+      height: calc(var(--spacing) * 5);
+      min-width: calc(var(--spacing) * 5);
+      padding: 0 calc(var(--spacing) * 1);
+      border-radius: var(--radius-xs);
+      background: var(--muted);
+      color: var(--muted-foreground);
+      font-family: var(--font-sans);
+      font-size: var(--text-xs);
+      font-weight: var(--font-weight-medium);
+      pointer-events: none;
+      user-select: none;
+    }
+  </style>
+
+  <slot></slot>
+</custom-element>
+
+<custom-element name="ui-kbd-group">
+  <style>
+    :host {
+      display: inline-flex;
+      align-items: center;
+      gap: calc(var(--spacing) * 1);
+    }
+  </style>
+
+  <slot></slot>
+</custom-element>

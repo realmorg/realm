@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Contacts · REALM examples</title>
+  <link rel="stylesheet" href="../../assets/realm/realm.css">
+  <link rel="stylesheet" href="../../assets/ui/theme.css">
+  <script type="module" src="../../assets/realm/realm.js"></script>
+  <script type="module">
+    // The mock API lives in a service worker, so the app is only imported once the worker controls this page.
+    // A first visit or a hard reload leaves the page uncontrolled, so the worker is asked to claim it.
+    const { serviceWorker } = navigator;
+    await serviceWorker.register("./sw.js");
+    const registration = await serviceWorker.ready;
+    if (!serviceWorker.controller) {
+      const controlled = new Promise((resolve) => serviceWorker.addEventListener("controllerchange", resolve, { once: true }));
+      registration.active.postMessage("claim");
+      await controlled;
+    }
+    const app = document.createElement("import-element");
+    app.setAttribute("from", "./contacts-app.html");
+    document.body.append(app);
+  </script>
+  <style>
+    body { margin: 0; min-height: 100dvh; display: grid; place-items: start center; padding: 3rem 1rem; box-sizing: border-box; }
+  </style>
+</head>
+<body>
+  <import-element from="../../assets/ui/ui.html"></import-element>
+  <main><contacts-app></contacts-app></main>
+  <ui-toaster></ui-toaster>
+</body>
+</html>

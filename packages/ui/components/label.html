@@ -1,0 +1,40 @@
+<custom-element name="ui-label">
+  <script>
+    const props = defineProps({ for: prop.string() });
+
+    const CHECKABLE = new Set(["checkbox", "radio"]);
+
+    function target() {
+      return props.for ? host.getRootNode().getElementById(props.for) : null;
+    }
+
+    function activate() {
+      const field = target();
+      if (!field) return;
+      field.focus();
+      if (CHECKABLE.has(field.type) || "checked" in field) (field.shadowRoot?.querySelector('[ref="control"]') ?? field).click();
+    }
+
+    onConnected(() => {
+      const field = target();
+      if (field && !field.hasAttribute("aria-label")) field.setAttribute("aria-label", host.textContent.trim());
+    });
+  </script>
+
+  <style>
+    :host {
+      display: inline-flex;
+      align-items: center;
+      gap: calc(var(--spacing) * 2);
+      font-size: var(--text-sm);
+      font-weight: var(--font-weight-medium);
+      line-height: 1;
+      user-select: none;
+    }
+    :host(:state(attr-for)) {
+      cursor: pointer;
+    }
+  </style>
+
+  <span part="label" onclick="activate()"><slot></slot></span>
+</custom-element>

@@ -1,0 +1,139 @@
+<custom-element name="ui-input-otp" form-associated>
+  <script>
+    const props = defineProps({
+      value: prop.string().default(""),
+      length: prop.number().int().min(1).max(12).default(6),
+      pattern: prop.string().default("[0-9]"),
+      separator: prop.number().int().min(0).default(0),
+      disabled: prop.boolean(),
+      required: prop.boolean(),
+    });
+
+    const otp = useState({
+      get slots() {
+        return Array.from({ length: props.length }, (_, index) => ({
+          index,
+          char: props.value[index] ?? "",
+          gap: props.separator > 0 && index > 0 && index % props.separator === 0,
+          label: `Character ${index + 1} of ${props.length}`,
+        }));
+      },
+      get complete() {
+        return props.value.length === props.length;
+      },
+    });
+
+    const KEYS = { ArrowLeft: -1, ArrowRight: 1 };
+
+    function boxes() {
+      return [...refs.group.querySelectorAll("input")];
+    }
+
+    function accept(text) {
+      const matcher = new RegExp(`^${props.pattern}$`);
+      return [...text].filter((char) => matcher.test(char)).join("");
+    }
+
+    async function write(start, text) {
+      const chars = [...props.value.padEnd(start, " ")];
+      [...accept(text)].forEach((char, offset) => {
+        chars[start + offset] = char;
+      });
+      props.value = chars.join("").slice(0, props.length).trimEnd();
+      dispatch("change");
+      if (otp.complete) dispatch("complete", { value: props.value });
+      await tick();
+      boxes()[Math.min(start + accept(text).length, props.length - 1)]?.focus();
+    }
+
+    function input(slot, field) {
+      const text = field.value;
+      field.value = slot.char;
+      if (text) write(slot.index, text.slice(-1));
+    }
+
+    function paste(slot, event) {
+      event.preventDefault();
+      write(slot.index, event.clipboardData.getData("text"));
+    }
+
+    function keys(slot, event) {
+      const step = KEYS[event.key];
+      if (step) boxes()[slot.index + step]?.focus();
+      if (event.key !== "Backspace") return;
+      event.preventDefault();
+      const target = slot.char ? slot.index : slot.index - 1;
+      if (target < 0) return;
+      props.value = props.value.slice(0, target) + props.value.slice(target + 1);
+      boxes()[target]?.focus();
+      dispatch("change");
+    }
+
+    observe(() => {
+      const missing = props.required && !otp.complete;
+      const anchor = refs.group?.querySelectorAll("input")[Math.min(props.value.length, props.length - 1)];
+      internals.setValidity(missing ? { valueMissing: true } : {}, missing ? "Enter the full code." : "", anchor);
+    });
+  </script>
+
+  <style>
+    :host {
+      display: inline-flex;
+    }
+    .group {
+      display: flex;
+      align-items: center;
+    }
+    input {
+      box-sizing: border-box;
+      width: calc(var(--spacing) * 9);
+      height: calc(var(--spacing) * 9);
+      margin-left: -1px;
+      border: 1px solid var(--input);
+      background: transparent;
+      color: inherit;
+      font: inherit;
+      font-size: var(--text-sm);
+      text-align: center;
+      outline: none;
+    }
+    input:first-child,
+    input[data-gap] {
+      margin-left: 0;
+      border-start-start-radius: var(--radius-md);
+      border-end-start-radius: var(--radius-md);
+    }
+    input:last-child {
+      border-start-end-radius: var(--radius-md);
+      border-end-end-radius: var(--radius-md);
+    }
+    input[data-gap] {
+      margin-inline-start: calc(var(--spacing) * 6);
+    }
+    input:focus-visible {
+      position: relative;
+      border-color: var(--ring);
+      box-shadow: var(--focus-ring);
+    }
+    input:disabled {
+      opacity: 0.5;
+    }
+  </style>
+
+  <div class="group" ref="group" part="group" role="group">
+    <repeat-list of="#otp.slots" as="slot" key="index">
+      <input
+        part="slot"
+        inputmode="numeric"
+        autocomplete="one-time-code"
+        maxlength="2"
+        _value="#slot.char"
+        _aria-label="#slot.label"
+        _data-gap="#slot.gap"
+        _disabled="@disabled"
+        oninput="input(slot, this)"
+        onpaste="paste(slot, event)"
+        onkeydown="keys(slot, event)">
+    </repeat-list>
+  </div>
+</custom-element>

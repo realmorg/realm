@@ -1,0 +1,113 @@
+<custom-element name="ui-card">
+  <style>
+    :host {
+      display: flex;
+      flex-direction: column;
+      gap: calc(var(--spacing) * 6);
+      padding: calc(var(--spacing) * 6) 0;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      background: var(--card);
+      color: var(--card-foreground);
+      box-shadow: var(--shadow-xs);
+    }
+  </style>
+
+  <slot></slot>
+</custom-element>
+
+<custom-element name="ui-card-header">
+  <style>
+    :host {
+      display: grid;
+      grid-auto-rows: min-content;
+      align-items: start;
+      gap: calc(var(--spacing) * 1.5);
+      padding: 0 calc(var(--spacing) * 6);
+    }
+    ::slotted(:not(ui-card-action)) {
+      grid-column: 1;
+    }
+  </style>
+
+  <slot></slot>
+</custom-element>
+
+<custom-element name="ui-card-title">
+  <script>
+    defineProps({ level: prop.number().int().min(1).max(6).default(3) });
+  </script>
+
+  <style>
+    :host {
+      display: block;
+    }
+    [part="title"] {
+      margin: 0;
+      font-size: var(--text-base);
+      font-weight: var(--font-weight-semibold);
+      line-height: 1;
+    }
+  </style>
+
+  <div part="title" role="heading" _aria-level="@level"><slot></slot></div>
+</custom-element>
+
+<custom-element name="ui-card-description">
+  <style>
+    :host {
+      display: block;
+      font-size: var(--text-sm);
+      color: var(--muted-foreground);
+    }
+  </style>
+
+  <slot></slot>
+</custom-element>
+
+<custom-element name="ui-card-action">
+  <style>
+    :host {
+      display: block;
+      grid-column: 2;
+      grid-row: 1 / span 2;
+      justify-self: end;
+    }
+  </style>
+
+  <slot></slot>
+</custom-element>
+
+<custom-element name="ui-card-content">
+  <style>
+    :host {
+      display: block;
+      padding: 0 calc(var(--spacing) * 6);
+    }
+  </style>
+
+  <slot></slot>
+</custom-element>
+
+<custom-element name="ui-card-footer">
+  <style>
+    :host {
+      display: flex;
+      align-items: center;
+      gap: calc(var(--spacing) * 2);
+      padding: 0 calc(var(--spacing) * 6);
+    }
+    :host(:state(attr-justify-is-between)) {
+      justify-content: space-between;
+    }
+    :host(:state(attr-justify-is-end)) {
+      justify-content: flex-end;
+    }
+    :host(:state(attr-orientation-is-vertical)) {
+      flex-direction: column;
+      align-items: stretch;
+    }
+  </style>
+
+  <slot></slot>
+</custom-element>

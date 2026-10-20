@@ -1,0 +1,97 @@
+<custom-element name="ui-tooltip">
+  <script>
+    const props = defineProps({
+      delay: prop.number().min(0).default(300),
+    });
+
+    const parts = useChildren("ui-tooltip-trigger, ui-tooltip-content");
+
+    let timer;
+
+    function tip() {
+      return parts.find((part) => part.localName === "ui-tooltip-content");
+    }
+
+    function show(trigger) {
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        if (!tip().matches(":popover-open")) tip().showPopover({ source: trigger });
+      }, props.delay);
+    }
+
+    function hide() {
+      clearTimeout(timer);
+      if (tip().matches(":popover-open")) tip().hidePopover();
+    }
+
+    function key(event) {
+      if (event.key === "Escape") hide();
+    }
+
+    function describe() {
+      const text = tip()?.textContent.trim() ?? "";
+      for (const trigger of parts.filter((part) => part.localName === "ui-tooltip-trigger"))
+        for (const element of trigger.children) element.setAttribute("aria-description", text);
+    }
+
+    observe(describe);
+  </script>
+
+  <style>
+    :host {
+      display: contents;
+    }
+  </style>
+
+  <slot></slot>
+</custom-element>
+
+<custom-element name="ui-tooltip-trigger">
+  <style>
+    :host {
+      display: inline-block;
+      vertical-align: middle;
+    }
+  </style>
+
+  <span part="trigger" onpointerenter="show(host)" onpointerleave="hide()" onfocusin="show(host)" onfocusout="hide()" onkeydown="key(event)"><slot></slot></span>
+</custom-element>
+
+<custom-element name="ui-tooltip-content" role="tooltip">
+  <script>
+    defineProps({
+      placement: prop.enum(["top", "bottom", "left", "right"]).default("top"),
+    });
+
+    attrs.popover ??= "manual";
+  </script>
+
+  <style>
+    :host {
+      margin: 0 0 calc(var(--spacing) * 1);
+      padding: calc(var(--spacing) * 1.5) calc(var(--spacing) * 3);
+      border: 0;
+      border-radius: var(--radius-md);
+      background: var(--foreground);
+      color: var(--background);
+      font-size: var(--text-xs);
+      inset: auto;
+      position-area: top;
+      position-try-fallbacks: flip-block;
+    }
+    :host(:state(attr-placement-is-bottom)) {
+      position-area: bottom;
+      margin: calc(var(--spacing) * 1) 0 0;
+    }
+    :host(:state(attr-placement-is-left)) {
+      position-area: left;
+      margin: 0 calc(var(--spacing) * 1) 0 0;
+    }
+    :host(:state(attr-placement-is-right)) {
+      position-area: right;
+      margin: 0 0 0 calc(var(--spacing) * 1);
+    }
+  </style>
+
+  <slot></slot>
+</custom-element>

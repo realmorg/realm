@@ -1,0 +1,17 @@
+<custom-element name="ui-direction">
+  <script>
+    const props = defineProps({ dir: prop.enum(["ltr", "rtl"]).default("ltr") });
+
+    observe(() => {
+      attrs.dir = props.dir;
+    });
+  </script>
+
+  <style>
+    :host {
+      display: contents;
+    }
+  </style>
+
+  <slot></slot>
+</custom-element>

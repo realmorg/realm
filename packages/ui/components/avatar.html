@@ -1,0 +1,127 @@
+<custom-element name="ui-avatar">
+  <script>
+    defineProps({
+      size: prop.enum(["sm", "default", "lg"]).default("default"),
+      shape: prop.enum(["circle", "square"]).default("circle"),
+    });
+
+    const image = useState({ failed: false, loaded: false });
+
+    function loaded() {
+      image.loaded = true;
+      image.failed = false;
+    }
+
+    function failed() {
+      image.failed = true;
+    }
+  </script>
+
+  <style>
+    :host {
+      position: relative;
+      display: inline-flex;
+      flex-shrink: 0;
+      width: calc(var(--spacing) * 8);
+      height: calc(var(--spacing) * 8);
+      overflow: hidden;
+      border-radius: var(--radius-full);
+      font-size: var(--text-sm);
+      vertical-align: middle;
+    }
+    :host(:state(attr-size-is-sm)) {
+      width: calc(var(--spacing) * 6);
+      height: calc(var(--spacing) * 6);
+      font-size: var(--text-xs);
+    }
+    :host(:state(attr-size-is-lg)) {
+      width: calc(var(--spacing) * 10);
+      height: calc(var(--spacing) * 10);
+    }
+    :host(:state(attr-shape-is-square)) {
+      border-radius: var(--radius-md);
+    }
+  </style>
+
+  <slot></slot>
+</custom-element>
+
+<custom-element name="ui-avatar-image">
+  <script>
+    defineProps({
+      src: prop.string(),
+      alt: prop.string().default(""),
+    });
+  </script>
+
+  <style>
+    :host {
+      display: contents;
+    }
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  </style>
+
+  <is-hidden when="#image.failed">
+    <img part="image" _src="@src" _alt="@alt" _hidden="!#image.loaded" onload="loaded()" onerror="failed()">
+  </is-hidden>
+</custom-element>
+
+<custom-element name="ui-avatar-fallback">
+  <style>
+    :host {
+      display: contents;
+    }
+    span {
+      display: flex;
+      width: 100%;
+      height: 100%;
+      align-items: center;
+      justify-content: center;
+      background: var(--muted);
+    }
+  </style>
+
+  <is-hidden when="#image.loaded">
+    <span part="fallback"><slot></slot></span>
+  </is-hidden>
+</custom-element>
+
+<custom-element name="ui-avatar-group" role="group">
+  <style>
+    :host {
+      display: flex;
+      align-items: center;
+    }
+    ::slotted(*) {
+      box-shadow: 0 0 0 calc(var(--spacing) * 0.5) var(--background);
+    }
+    ::slotted(:not(:first-child)) {
+      margin-inline-start: calc(var(--spacing) * -2);
+    }
+  </style>
+
+  <slot></slot>
+</custom-element>
+
+<custom-element name="ui-avatar-group-count">
+  <style>
+    :host {
+      display: inline-flex;
+      flex-shrink: 0;
+      align-items: center;
+      justify-content: center;
+      width: calc(var(--spacing) * 8);
+      height: calc(var(--spacing) * 8);
+      border-radius: var(--radius-full);
+      background: var(--muted);
+      color: var(--muted-foreground);
+      font-size: var(--text-sm);
+    }
+  </style>
+
+  <slot></slot>
+</custom-element>

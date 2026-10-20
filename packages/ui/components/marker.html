@@ -1,0 +1,35 @@
+<custom-element name="ui-marker">
+  <script>
+    defineProps({ variant: prop.enum(["default", "separator", "border"]).default("default") });
+  </script>
+
+  <style>
+    :host {
+      display: flex;
+      align-items: center;
+      gap: calc(var(--spacing) * 2);
+      width: 100%;
+      min-height: calc(var(--spacing) * 4);
+      font-size: var(--text-sm);
+      color: var(--muted-foreground);
+    }
+    :host(:state(attr-variant-is-separator))::before,
+    :host(:state(attr-variant-is-separator))::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+    :host(:state(attr-variant-is-border)) {
+      padding-bottom: calc(var(--spacing) * 2);
+      border-bottom: 1px solid var(--border);
+    }
+    ::slotted(svg) {
+      width: calc(var(--spacing) * 4);
+      height: calc(var(--spacing) * 4);
+      flex-shrink: 0;
+    }
+  </style>
+
+  <slot></slot>
+</custom-element>

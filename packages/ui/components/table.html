@@ -1,0 +1,75 @@
+<custom-element name="ui-table">
+  <script>
+    const props = defineProps({
+      columns: prop.array(prop.object({ key: prop.string().required(), label: prop.string() })).default([]),
+      rows: prop.array(prop.object()).default([]),
+      caption: prop.string(),
+    });
+
+    const table = useState({
+      get headers() {
+        return props.columns.map((column) => ({ key: column.key, label: column.label ?? column.key }));
+      },
+      get grid() {
+        return props.rows.map((row, index) => ({
+          id: row.id ?? index,
+          cells: props.columns.map((column) => ({ key: column.key, value: row[column.key] ?? "" })),
+        }));
+      },
+    });
+  </script>
+
+  <style>
+    :host {
+      display: block;
+      width: 100%;
+      box-sizing: border-box;
+      overflow-x: auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: var(--text-sm);
+      caption-side: bottom;
+    }
+    caption {
+      margin-top: calc(var(--spacing) * 4);
+      color: var(--muted-foreground);
+    }
+    th {
+      height: calc(var(--spacing) * 10);
+      padding: 0 calc(var(--spacing) * 2);
+      text-align: left;
+      font-weight: var(--font-weight-medium);
+      white-space: nowrap;
+      color: var(--foreground);
+    }
+    td {
+      padding: calc(var(--spacing) * 2);
+      white-space: nowrap;
+    }
+    tr {
+      border-bottom: 1px solid var(--border);
+    }
+    tbody tr:last-child {
+      border-bottom: 0;
+    }
+    tbody tr:hover {
+      background: color-mix(in oklab, var(--muted) 50%, transparent);
+    }
+  </style>
+
+  <table part="table">
+    <caption _hidden="!@caption"><slot name="@caption"></slot></caption>
+    <thead>
+      <tr>
+        <th repeat="#table.headers" as="column" key="key" part="head"><slot name="#column.label"></slot></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr repeat="#table.grid" as="row" key="id" part="row">
+        <td repeat="#row.cells" as="cell" key="key" part="cell"><slot name="#cell.value"></slot></td>
+      </tr>
+    </tbody>
+  </table>
+</custom-element>

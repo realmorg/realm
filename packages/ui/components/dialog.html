@@ -1,0 +1,274 @@
+<custom-element name="ui-dialog">
+  <script>
+    const props = defineProps({
+      open: prop.boolean().reflect(),
+      side: prop.enum(["center", "top", "right", "bottom", "left"]).default("center"),
+      hideClose: prop.boolean().attribute("hide-close"),
+      persistent: prop.boolean(),
+      label: prop.string(),
+      description: prop.string(),
+    });
+
+    const parts = useChildren("ui-dialog-header, ui-dialog-title, ui-dialog-description");
+    const dialog = useState({
+      get label() {
+        return props.label ?? text("ui-dialog-title");
+      },
+      get description() {
+        return props.description ?? text("ui-dialog-description");
+      },
+    });
+
+    function text(selector) {
+      const found = parts.flatMap((part) => (part.matches(selector) ? [part] : [...part.querySelectorAll(selector)]));
+      return found.map((part) => part.textContent.trim()).join(" ") || null;
+    }
+
+    function show() {
+      props.open = true;
+    }
+
+    function showFrom(trigger) {
+      trigger.firstElementChild?.focus();
+      show();
+    }
+
+    function close(value) {
+      if (value !== undefined) refs.dialog.returnValue = String(value);
+      props.open = false;
+    }
+
+    function requestClose(value) {
+      if (dispatch("cancel", undefined, { bubbles: false, composed: false })) close(value);
+    }
+
+    function closed() {
+      if (refs.dialog.open) return;
+      props.open = false;
+      dispatch("close", undefined, { bubbles: false, composed: false });
+    }
+
+    function cancelled(event) {
+      event.preventDefault();
+      if (!props.persistent) requestClose();
+    }
+
+    function backdrop(event) {
+      if (event.target === refs.dialog && !props.persistent) requestClose();
+    }
+
+    const COMMANDS = { "show-modal": show, close: () => close(), "request-close": () => requestClose() };
+
+    defineMethods({
+      showModal: show,
+      show,
+      close,
+      requestClose,
+      get returnValue() {
+        return refs.dialog.returnValue;
+      },
+    });
+
+    listen("command", (event) => COMMANDS[event.command.replace(/^--/, "")]?.());
+
+    observe(() => {
+      const dialog = refs.dialog;
+      if (!dialog || props.open === dialog.open) return;
+      if (props.open) dialog.showModal();
+      else dialog.close();
+    });
+  </script>
+
+  <style>
+    :host {
+      display: contents;
+    }
+    dialog {
+      box-sizing: border-box;
+      width: 100%;
+      max-width: min(calc(var(--spacing) * 128), calc(100% - calc(var(--spacing) * 8)));
+      max-height: calc(100% - calc(var(--spacing) * 8));
+      padding: calc(var(--spacing) * 6);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      background: var(--background);
+      color: var(--foreground);
+      box-shadow: var(--shadow-lg);
+      overflow: auto;
+    }
+    dialog[open] {
+      display: grid;
+      gap: calc(var(--spacing) * 4);
+      animation: zoom 0.2s ease-out;
+    }
+    dialog::backdrop {
+      background: rgb(0 0 0 / 0.5);
+      animation: fade 0.2s ease-out;
+    }
+    :host(:state(attr-side):not(:state(attr-side-is-center))) dialog {
+      margin: 0;
+      max-width: none;
+      max-height: none;
+      border-radius: 0;
+      animation: none;
+    }
+    :host(:state(attr-side-is-right)) dialog {
+      inset: 0 0 0 auto;
+      width: min(calc(var(--spacing) * 96), 75%);
+      height: 100%;
+    }
+    :host(:state(attr-side-is-left)) dialog {
+      inset: 0 auto 0 0;
+      width: min(calc(var(--spacing) * 96), 75%);
+      height: 100%;
+    }
+    :host(:state(attr-side-is-top)) dialog {
+      inset: 0 0 auto 0;
+      width: 100%;
+      height: auto;
+    }
+    :host(:state(attr-side-is-bottom)) dialog {
+      inset: auto 0 0 0;
+      width: 100%;
+      height: auto;
+    }
+    .close {
+      all: unset;
+      position: absolute;
+      top: calc(var(--spacing) * 4);
+      right: calc(var(--spacing) * 4);
+      display: grid;
+      place-content: center;
+      width: calc(var(--spacing) * 6);
+      height: calc(var(--spacing) * 6);
+      border-radius: var(--radius-xs);
+      opacity: 0.7;
+      cursor: pointer;
+    }
+    .close:hover {
+      opacity: 1;
+    }
+    .close:focus-visible {
+      box-shadow: 0 0 0 2px var(--ring);
+    }
+    .close svg {
+      width: calc(var(--spacing) * 4);
+      height: calc(var(--spacing) * 4);
+    }
+    @keyframes zoom {
+      from {
+        opacity: 0;
+        scale: 0.95;
+      }
+    }
+    @keyframes fade {
+      from {
+        opacity: 0;
+      }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      dialog[open],
+      dialog::backdrop {
+        animation: none;
+      }
+    }
+  </style>
+
+  <slot name="trigger"></slot>
+  <dialog
+    ref="dialog"
+    part="dialog"
+    _aria-label="#dialog.label"
+    _aria-description="#dialog.description"
+    onclose="closed()"
+    oncancel="cancelled(event)"
+    onclick="backdrop(event)">
+    <slot name="header"></slot>
+    <div part="body"><slot></slot></div>
+    <slot name="footer"></slot>
+    <button type="button" class="close" part="close" aria-label="Close" _hidden="@hideClose" onclick="requestClose()">
+      <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12" /></svg>
+    </button>
+  </dialog>
+</custom-element>
+
+<custom-element name="ui-dialog-trigger" slot="trigger">
+  <style>
+    :host,
+    span {
+      display: contents;
+    }
+  </style>
+
+  <span part="trigger" onclick="showFrom(host)"><slot></slot></span>
+</custom-element>
+
+<custom-element name="ui-dialog-close">
+  <script>
+    const props = defineProps({ value: prop.string() });
+  </script>
+
+  <style>
+    :host,
+    span {
+      display: contents;
+    }
+  </style>
+
+  <span part="close" onclick="close(props.value)"><slot></slot></span>
+</custom-element>
+
+<custom-element name="ui-dialog-header" slot="header">
+  <style>
+    :host {
+      display: grid;
+      gap: calc(var(--spacing) * 2);
+    }
+  </style>
+
+  <slot></slot>
+</custom-element>
+
+<custom-element name="ui-dialog-title">
+  <style>
+    :host {
+      display: block;
+    }
+    h2 {
+      margin: 0;
+      font-size: var(--text-lg);
+      font-weight: var(--font-weight-semibold);
+      line-height: 1;
+    }
+  </style>
+
+  <h2 part="title"><slot></slot></h2>
+</custom-element>
+
+<custom-element name="ui-dialog-description">
+  <style>
+    :host {
+      display: block;
+    }
+    p {
+      margin: 0;
+      font-size: var(--text-sm);
+      color: var(--muted-foreground);
+    }
+  </style>
+
+  <p part="description"><slot></slot></p>
+</custom-element>
+
+<custom-element name="ui-dialog-footer" slot="footer">
+  <style>
+    :host {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: calc(var(--spacing) * 2);
+    }
+  </style>
+
+  <slot></slot>
+</custom-element>

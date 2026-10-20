@@ -1,0 +1,56 @@
+<custom-element name="ui-badge">
+  <script>
+    defineProps({
+      variant: prop.enum(["default", "secondary", "destructive", "outline"]).default("default"),
+      shape: prop.enum(["default", "pill", "round"]).default("default"),
+    });
+  </script>
+
+  <style>
+    :host {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: calc(var(--spacing) * 1);
+      width: fit-content;
+      padding: calc(var(--spacing) * 0.5) calc(var(--spacing) * 2);
+      border: 1px solid transparent;
+      border-radius: var(--radius-md);
+      font-size: var(--text-xs);
+      font-weight: var(--font-weight-medium);
+      white-space: nowrap;
+      background: var(--primary);
+      color: var(--primary-foreground);
+    }
+    :host(:state(attr-variant-is-secondary)) {
+      background: var(--secondary);
+      color: var(--secondary-foreground);
+    }
+    :host(:state(attr-variant-is-destructive)) {
+      background: var(--destructive);
+      color: white;
+    }
+    :host(:state(attr-variant-is-outline)) {
+      background: transparent;
+      border-color: var(--border);
+      color: var(--foreground);
+    }
+    :host(:state(attr-shape-is-pill)) {
+      border-radius: var(--radius-full);
+    }
+    :host(:state(attr-shape-is-round)) {
+      box-sizing: border-box;
+      min-width: calc(var(--spacing) * 5);
+      height: calc(var(--spacing) * 5);
+      padding: 0 calc(var(--spacing) * 1);
+      border-radius: var(--radius-full);
+      font-variant-numeric: tabular-nums;
+    }
+    ::slotted(svg) {
+      width: calc(var(--spacing) * 3);
+      height: calc(var(--spacing) * 3);
+    }
+  </style>
+
+  <slot></slot>
+</custom-element>

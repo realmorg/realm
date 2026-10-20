@@ -1,0 +1,94 @@
+<custom-element name="ui-hover-card">
+  <script>
+    const props = defineProps({
+      openDelay: prop.number().attribute("open-delay").min(0).default(500),
+      closeDelay: prop.number().attribute("close-delay").min(0).default(300),
+    });
+
+    let timer;
+    let source;
+
+    function apply(open) {
+      const card = host.querySelector(":scope > ui-hover-card-content");
+      if (card.matches(":popover-open") === open) return;
+      if (open) card.showPopover({ source });
+      else card.hidePopover();
+    }
+
+    function schedule(open, trigger = source) {
+      source = trigger;
+      clearTimeout(timer);
+      timer = setTimeout(() => apply(open), open ? props.openDelay : props.closeDelay);
+    }
+
+    function dismiss(event) {
+      if (event.key !== "Escape") return;
+      clearTimeout(timer);
+      apply(false);
+    }
+
+    listen("keydown", dismiss, document);
+  </script>
+
+  <style>
+    :host {
+      display: contents;
+    }
+  </style>
+
+  <slot></slot>
+</custom-element>
+
+<custom-element name="ui-hover-card-trigger">
+  <style>
+    :host {
+      display: inline-block;
+    }
+  </style>
+
+  <span part="trigger" onpointerenter="schedule(true, host)" onpointerleave="schedule(false)" onfocusin="schedule(true, host)" onfocusout="schedule(false)"><slot></slot></span>
+</custom-element>
+
+<custom-element name="ui-hover-card-content">
+  <script>
+    defineProps({
+      placement: prop.enum(["bottom", "top", "left", "right"]).default("bottom"),
+    });
+
+    attrs.popover ??= "manual";
+  </script>
+
+  <style>
+    :host {
+      box-sizing: border-box;
+      width: calc(var(--spacing) * 64);
+      margin: calc(var(--spacing) * 1);
+      padding: 0;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      background: var(--popover);
+      color: var(--popover-foreground);
+      box-shadow: var(--shadow-md);
+      inset: auto;
+      position-area: bottom;
+      position-try-fallbacks: flip-block, flip-inline;
+    }
+    :host(:state(attr-width)) {
+      width: calc(var(--spacing) * var(--attr-width));
+    }
+    :host(:state(attr-placement-is-top)) {
+      position-area: top;
+    }
+    :host(:state(attr-placement-is-left)) {
+      position-area: left;
+    }
+    :host(:state(attr-placement-is-right)) {
+      position-area: right;
+    }
+    div {
+      padding: calc(var(--spacing) * 4);
+    }
+  </style>
+
+  <div part="content" onpointerenter="schedule(true)" onpointerleave="schedule(false)"><slot></slot></div>
+</custom-element>

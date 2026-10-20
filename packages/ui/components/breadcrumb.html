@@ -1,0 +1,129 @@
+<custom-element name="ui-breadcrumb">
+  <script>
+    defineProps({ label: prop.string().default("Breadcrumb") });
+  </script>
+
+  <style>
+    :host {
+      display: block;
+    }
+  </style>
+
+  <nav _aria-label="@label"><slot></slot></nav>
+</custom-element>
+
+<custom-element name="ui-breadcrumb-list">
+  <style>
+    :host {
+      display: block;
+    }
+    ol {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: calc(var(--spacing) * 1.5);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      font-size: var(--text-sm);
+      color: var(--muted-foreground);
+      overflow-wrap: anywhere;
+    }
+  </style>
+
+  <ol part="list"><slot></slot></ol>
+</custom-element>
+
+<custom-element name="ui-breadcrumb-item" role="listitem">
+  <style>
+    :host {
+      display: inline-flex;
+      align-items: center;
+      gap: calc(var(--spacing) * 1.5);
+    }
+  </style>
+
+  <slot></slot>
+</custom-element>
+
+<custom-element name="ui-breadcrumb-link">
+  <script>
+    defineProps({ href: prop.string() });
+  </script>
+
+  <style>
+    a {
+      color: inherit;
+      text-decoration: none;
+      border-radius: var(--radius-xs);
+      outline: none;
+      transition: color var(--default-transition-duration);
+    }
+    a:hover {
+      color: var(--foreground);
+    }
+    a:focus-visible {
+      box-shadow: var(--focus-ring);
+    }
+  </style>
+
+  <a part="link" _href="@href"><slot></slot></a>
+</custom-element>
+
+<custom-element name="ui-breadcrumb-page">
+  <style>
+    span {
+      font-weight: var(--font-weight-normal);
+      color: var(--foreground);
+    }
+  </style>
+
+  <span part="page" role="link" aria-disabled="true" aria-current="page"><slot></slot></span>
+</custom-element>
+
+<custom-element name="ui-breadcrumb-separator" role="presentation">
+  <script>
+    internals.ariaHidden = "true";
+  </script>
+
+  <style>
+    :host {
+      display: inline-flex;
+      align-items: center;
+    }
+    ::slotted(svg),
+    svg {
+      width: calc(var(--spacing) * 3.5);
+      height: calc(var(--spacing) * 3.5);
+    }
+  </style>
+
+  <slot><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6" /></svg></slot>
+</custom-element>
+
+<custom-element name="ui-breadcrumb-ellipsis">
+  <style>
+    :host {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: calc(var(--spacing) * 9);
+      height: calc(var(--spacing) * 9);
+    }
+    svg {
+      width: calc(var(--spacing) * 4);
+      height: calc(var(--spacing) * 4);
+    }
+    span {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+  </style>
+
+  <svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.5" /><circle cx="12" cy="12" r="1.5" /><circle cx="19" cy="12" r="1.5" /></svg>
+  <span part="label"><slot>More</slot></span>
+</custom-element>

@@ -1,0 +1,141 @@
+<custom-element name="ui-sheet">
+  <script>
+    const props = defineProps({
+      open: prop.boolean().reflect(),
+      side: prop.enum(["top", "right", "bottom", "left"]).default("right"),
+    });
+
+    const parts = useChildren("ui-sheet-header, ui-sheet-title, ui-sheet-description");
+    const sheet = useState({
+      get label() {
+        return text("ui-sheet-title");
+      },
+      get description() {
+        return text("ui-sheet-description");
+      },
+    });
+
+    function text(selector) {
+      const found = parts.flatMap((part) => (part.matches(selector) ? [part] : [...part.querySelectorAll(selector)]));
+      return found.map((part) => part.textContent.trim()).join(" ") || null;
+    }
+
+    function show() {
+      props.open = true;
+    }
+
+    function showFrom(trigger) {
+      trigger.firstElementChild?.focus();
+      show();
+    }
+
+    function close() {
+      props.open = false;
+    }
+
+    function requestClose() {
+      refs.dialog.requestClose();
+    }
+
+    function closed() {
+      props.open = false;
+      dispatch("close", undefined, { bubbles: false, composed: false });
+    }
+
+    const COMMANDS = { "show-modal": show, close, "request-close": requestClose };
+
+    defineMethods({ showModal: show, show, close, requestClose });
+
+    listen("command", (event) => COMMANDS[event.command.replace(/^--/, "")]?.());
+  </script>
+
+  <style>
+    :host {
+      display: contents;
+    }
+  </style>
+
+  <slot name="trigger"></slot>
+  <ui-dialog ref="dialog" part="dialog" _side="@side" _open="@open" _label="#sheet.label" _description="#sheet.description" onclose="closed()">
+    <slot name="header" slot="header"></slot>
+    <slot></slot>
+    <slot name="footer" slot="footer"></slot>
+  </ui-dialog>
+</custom-element>
+
+<custom-element name="ui-sheet-trigger" slot="trigger">
+  <style>
+    :host,
+    span {
+      display: contents;
+    }
+  </style>
+
+  <span part="trigger" onclick="showFrom(host)"><slot></slot></span>
+</custom-element>
+
+<custom-element name="ui-sheet-close">
+  <style>
+    :host,
+    span {
+      display: contents;
+    }
+  </style>
+
+  <span part="close" onclick="close()"><slot></slot></span>
+</custom-element>
+
+<custom-element name="ui-sheet-header" slot="header">
+  <style>
+    :host {
+      display: grid;
+      gap: calc(var(--spacing) * 2);
+    }
+  </style>
+
+  <slot></slot>
+</custom-element>
+
+<custom-element name="ui-sheet-title">
+  <style>
+    :host {
+      display: block;
+    }
+    h2 {
+      margin: 0;
+      font-size: var(--text-lg);
+      font-weight: var(--font-weight-semibold);
+      line-height: 1;
+    }
+  </style>
+
+  <h2 part="title"><slot></slot></h2>
+</custom-element>
+
+<custom-element name="ui-sheet-description">
+  <style>
+    :host {
+      display: block;
+    }
+    p {
+      margin: 0;
+      font-size: var(--text-sm);
+      color: var(--muted-foreground);
+    }
+  </style>
+
+  <p part="description"><slot></slot></p>
+</custom-element>
+
+<custom-element name="ui-sheet-footer" slot="footer">
+  <style>
+    :host {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: calc(var(--spacing) * 2);
+    }
+  </style>
+
+  <slot></slot>
+</custom-element>

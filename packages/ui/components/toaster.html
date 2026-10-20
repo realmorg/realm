@@ -1,0 +1,128 @@
+<custom-element name="ui-toaster">
+  <script>
+    const props = defineProps({
+      position: prop.enum(["bottom-right", "bottom-left", "bottom-center", "top-right", "top-left", "top-center"]).default("bottom-right"),
+      duration: prop.number().min(0).default(4000),
+    });
+
+    const toasts = useState({ list: [] });
+    const timers = new Map();
+    let counter = 0;
+
+    function dismiss(toast) {
+      clearTimeout(timers.get(toast.id));
+      timers.delete(toast.id);
+      const index = toasts.list.findIndex((item) => item.id === toast.id);
+      if (index !== -1) toasts.list.splice(index, 1);
+    }
+
+    function add(detail = {}) {
+      const toast = {
+        id: ++counter,
+        title: detail.title ?? "",
+        description: detail.description ?? "",
+        variant: detail.variant ?? "default",
+      };
+      toasts.list.push(toast);
+      const duration = detail.duration ?? props.duration;
+      if (duration > 0) timers.set(toast.id, setTimeout(() => dismiss(toast), duration));
+      return toast.id;
+    }
+
+    defineMethods({ toast: add, dismiss: (id) => dismiss({ id }) });
+    listen("toast", (event) => add(event.detail), document);
+    onConnected(() => {
+      observe(() => {
+        const region = refs.region;
+        const open = toasts.list.length > 0;
+        if (!region.isConnected) return;
+        if (open && !region.matches(":popover-open")) region.showPopover();
+        if (!open && region.matches(":popover-open")) region.hidePopover();
+      });
+    });
+  </script>
+
+  <style>
+    ol {
+      position: fixed;
+      inset: auto calc(var(--spacing) * 4) calc(var(--spacing) * 4) auto;
+      display: flex;
+      flex-direction: column;
+      gap: calc(var(--spacing) * 2);
+      width: min(calc(var(--spacing) * 88), calc(100% - calc(var(--spacing) * 8)));
+      margin: 0;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      list-style: none;
+      overflow: visible;
+    }
+    :host(:state(attr-position-is-bottom-left)) ol {
+      inset: auto auto calc(var(--spacing) * 4) calc(var(--spacing) * 4);
+    }
+    :host(:state(attr-position-is-bottom-center)) ol {
+      inset: auto 0 calc(var(--spacing) * 4) 0;
+      margin: 0 auto;
+    }
+    :host(:state(attr-position-is-top-right)) ol {
+      inset: calc(var(--spacing) * 4) calc(var(--spacing) * 4) auto auto;
+    }
+    :host(:state(attr-position-is-top-left)) ol {
+      inset: calc(var(--spacing) * 4) auto auto calc(var(--spacing) * 4);
+    }
+    :host(:state(attr-position-is-top-center)) ol {
+      inset: calc(var(--spacing) * 4) 0 auto 0;
+      margin: 0 auto;
+    }
+    li {
+      position: relative;
+      display: grid;
+      gap: calc(var(--spacing) * 1);
+      padding: calc(var(--spacing) * 4) calc(var(--spacing) * 10) calc(var(--spacing) * 4) calc(var(--spacing) * 4);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      background: var(--popover);
+      color: var(--popover-foreground);
+      font-size: var(--text-sm);
+      box-shadow: var(--shadow-md);
+      animation: enter 0.2s ease-out;
+    }
+    li[data-variant="destructive"] {
+      border-color: var(--destructive);
+      color: var(--destructive);
+    }
+    strong {
+      font-weight: var(--font-weight-semibold);
+    }
+    p {
+      margin: 0;
+      color: var(--muted-foreground);
+    }
+    button {
+      all: unset;
+      position: absolute;
+      top: calc(var(--spacing) * 3);
+      right: calc(var(--spacing) * 3);
+      cursor: pointer;
+      opacity: 0.6;
+    }
+    button:hover,
+    button:focus-visible {
+      opacity: 1;
+    }
+    @keyframes enter {
+      from {
+        opacity: 0;
+        translate: 0 calc(var(--spacing) * 2);
+      }
+    }
+  </style>
+
+  <ol ref="region" part="region" popover="manual" aria-live="polite">
+    <li repeat="#toasts.list" as="toast" key="id" part="toast" _data-variant="#toast.variant">
+      <strong><slot name="#toast.title"></slot></strong>
+      <p _hidden="!#toast.description"><slot name="#toast.description"></slot></p>
+      <button type="button" aria-label="Dismiss" onclick="dismiss(toast)">×</button>
+    </li>
+  </ol>
+</custom-element>

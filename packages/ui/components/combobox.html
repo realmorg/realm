@@ -1,0 +1,224 @@
+<custom-element name="ui-combobox" form-associated delegates-focus>
+  <script>
+    const props = defineProps({
+      value: prop.string().default(""),
+      placeholder: prop.string().default("Select…"),
+      disabled: prop.boolean(),
+      required: prop.boolean(),
+      label: prop.string().attribute("aria-label"),
+    });
+
+    const options = useChildren("option", ["value", "label", "disabled"]);
+    const combo = useState({
+      query: "",
+      active: 0,
+      open: false,
+      get items() {
+        return options.map((option) => ({ value: option.value, label: option.label, disabled: option.disabled }));
+      },
+      get selected() {
+        return this.items.find((item) => item.value === props.value);
+      },
+      get visible() {
+        const query = this.query.trim().toLowerCase();
+        return this.items
+          .filter((item) => !query || item.label.toLowerCase().includes(query))
+          .map((item, index) => ({ ...item, id: `option-${index}`, active: index === this.active, chosen: item.value === props.value }));
+      },
+      get none() {
+        return this.visible.length === 0;
+      },
+      get text() {
+        return this.open ? this.query : (this.selected?.label ?? "");
+      },
+      get activeId() {
+        return this.open ? this.visible[this.active]?.id : null;
+      },
+    });
+
+    const KEYS = {
+      ArrowDown: () => move(1),
+      ArrowUp: () => move(-1),
+      Enter: () => combo.visible[combo.active] && choose(combo.visible[combo.active]),
+      Escape: () => close(),
+    };
+
+    function move(step) {
+      openList();
+      const count = combo.visible.length;
+      if (count) combo.active = (combo.active + step + count) % count;
+    }
+
+    function openList() {
+      if (combo.open) return;
+      combo.open = true;
+      combo.query = "";
+      combo.active = Math.max(0, combo.visible.findIndex((item) => item.chosen));
+      refs.list.showPopover();
+    }
+
+    function close() {
+      combo.open = false;
+      if (refs.list.matches(":popover-open")) refs.list.hidePopover();
+    }
+
+    function choose(item) {
+      if (item.disabled) return;
+      props.value = item.value;
+      close();
+      dispatch("change");
+    }
+
+    function search(field) {
+      openList();
+      combo.query = field.value;
+      combo.active = 0;
+    }
+
+    function keys(event) {
+      const action = KEYS[event.key];
+      if (!action || (event.key === "Escape" && !combo.open)) return;
+      event.preventDefault();
+      action();
+    }
+
+    observe(() => {
+      const missing = props.required && !props.value;
+      internals.setValidity(missing ? { valueMissing: true } : {}, missing ? "Please select an item." : "", refs.input);
+    });
+  </script>
+
+  <style>
+    :host {
+      display: block;
+      min-width: calc(var(--spacing) * 48);
+    }
+    :host(:state(attr-width)) {
+      width: calc(var(--spacing) * var(--attr-width));
+    }
+    .field {
+      display: flex;
+      align-items: center;
+      height: calc(var(--spacing) * 9);
+      box-sizing: border-box;
+      border: 1px solid var(--input);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-xs);
+      anchor-name: --combobox;
+    }
+    .field:focus-within {
+      border-color: var(--ring);
+      box-shadow: var(--focus-ring);
+    }
+    input {
+      flex: 1;
+      min-width: 0;
+      height: 100%;
+      padding: 0 calc(var(--spacing) * 3);
+      border: 0;
+      background: transparent;
+      color: inherit;
+      font: inherit;
+      font-size: var(--text-sm);
+      outline: none;
+    }
+    .chevron {
+      width: calc(var(--spacing) * 4);
+      height: calc(var(--spacing) * 4);
+      margin-right: calc(var(--spacing) * 2);
+      opacity: 0.5;
+    }
+    [role="listbox"] {
+      box-sizing: border-box;
+      width: anchor-size(width);
+      min-width: calc(var(--spacing) * 48);
+      max-height: calc(var(--spacing) * 72);
+      margin: calc(var(--spacing) * 1) 0 0;
+      padding: calc(var(--spacing) * 1);
+      overflow-y: auto;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      background: var(--popover);
+      color: var(--popover-foreground);
+      box-shadow: var(--shadow-md);
+      inset: auto;
+      position-anchor: --combobox;
+      position-area: bottom span-right;
+      position-try-fallbacks: flip-block;
+    }
+    [role="option"] {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: calc(var(--spacing) * 1.5) calc(var(--spacing) * 2);
+      border-radius: var(--radius-sm);
+      font-size: var(--text-sm);
+      cursor: default;
+    }
+    [role="option"][data-active] {
+      background: var(--accent);
+      color: var(--accent-foreground);
+    }
+    [role="option"][aria-disabled="true"] {
+      opacity: 0.5;
+    }
+    .check {
+      visibility: hidden;
+    }
+    [aria-selected="true"] .check {
+      visibility: visible;
+    }
+    .empty {
+      margin: 0;
+      padding: calc(var(--spacing) * 4);
+      text-align: center;
+      font-size: var(--text-sm);
+      color: var(--muted-foreground);
+    }
+    .source {
+      display: none;
+    }
+  </style>
+
+  <div class="field" part="field">
+    <input
+      ref="input"
+      part="input"
+      role="combobox"
+      aria-autocomplete="list"
+      aria-controls="list"
+      _aria-expanded="#combo.open"
+      _aria-activedescendant="#combo.activeId"
+      _aria-label="@label"
+      _placeholder="@placeholder"
+      _value="#combo.text"
+      _disabled="@disabled"
+      onfocus="openList()"
+      onclick="openList()"
+      onblur="close()"
+      oninput="search(this)"
+      onkeydown="keys(event)">
+    <svg aria-hidden="true" class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m7 15 5 5 5-5M7 9l5-5 5 5" /></svg>
+  </div>
+  <div id="list" ref="list" role="listbox" popover="manual" part="list" onpointerdown="event.preventDefault()">
+    <repeat-list of="#combo.visible" as="item" key="value">
+      <div
+        role="option"
+        part="option"
+        _id="#item.id"
+        _aria-selected="#item.chosen"
+        _aria-disabled="#item.disabled"
+        _data-active="#item.active"
+        onclick="choose(item)">
+        <slot name="#item.label"></slot>
+        <svg aria-hidden="true" class="check" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5" /></svg>
+      </div>
+    </repeat-list>
+    <p class="empty" part="empty" _hidden="!#combo.none"><slot name="empty">No results found.</slot></p>
+  </div>
+  <div class="source"><slot></slot></div>
+</custom-element>
+
+<custom-element name="ui-combobox-empty" slot="empty">
+  <slot></slot>
+</custom-element>

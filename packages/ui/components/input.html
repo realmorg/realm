@@ -1,0 +1,82 @@
+<custom-element name="ui-input" form-associated delegates-focus>
+  <script>
+    defineProps({
+      value: prop.string().default(""),
+      type: prop
+        .enum(["text", "email", "password", "number", "search", "tel", "url", "date", "time", "datetime-local", "month", "week", "color"])
+        .default("text"),
+      placeholder: prop.string(),
+      autocomplete: prop.string(),
+      inputmode: prop.string(),
+      pattern: prop.string(),
+      min: prop.string(),
+      max: prop.string(),
+      step: prop.string(),
+      minlength: prop.number(),
+      maxlength: prop.number(),
+      disabled: prop.boolean(),
+      readonly: prop.boolean(),
+      required: prop.boolean(),
+      invalid: prop.boolean(),
+      label: prop.string().attribute("aria-label"),
+    });
+  </script>
+
+  <style>
+    :host {
+      display: block;
+      min-width: 0;
+    }
+    input {
+      box-sizing: border-box;
+      width: 100%;
+      height: calc(var(--spacing) * 9);
+      padding: calc(var(--spacing) * 1) calc(var(--spacing) * 3);
+      border: 1px solid var(--input);
+      border-radius: var(--radius-md);
+      background: transparent;
+      color: inherit;
+      font: inherit;
+      font-size: var(--text-sm);
+      box-shadow: var(--shadow-xs);
+      outline: none;
+      transition: color var(--default-transition-duration), box-shadow var(--default-transition-duration);
+    }
+    input::placeholder {
+      color: var(--muted-foreground);
+    }
+    input:focus-visible {
+      border-color: var(--ring);
+      box-shadow: var(--focus-ring);
+    }
+    input:disabled {
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+    input[aria-invalid="true"] {
+      border-color: var(--destructive);
+      box-shadow: 0 0 0 3px color-mix(in oklab, var(--destructive) 20%, transparent);
+    }
+  </style>
+
+  <input
+    ref="control"
+    _aria-label="@label"
+    part="input"
+    _type="@type"
+    _value="@value"
+    _placeholder="@placeholder"
+    _autocomplete="@autocomplete"
+    _inputmode="@inputmode"
+    _pattern="@pattern"
+    _min="@min"
+    _max="@max"
+    _step="@step"
+    _minlength="@minlength"
+    _maxlength="@maxlength"
+    _disabled="@disabled"
+    _readonly="@readonly"
+    _required="@required"
+    _aria-invalid="@invalid"
+>
+</custom-element>

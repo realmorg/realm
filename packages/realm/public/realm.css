@@ -1,0 +1,14 @@
+custom-element,
+import-element {
+  display: none;
+}
+
+is-visible,
+is-hidden,
+repeat-list {
+  display: contents;
+}
+
+:not(:defined) {
+  visibility: hidden;
+}

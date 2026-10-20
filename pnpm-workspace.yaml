@@ -1,7 +1,6 @@
 packages:
-  - apps/*
   - packages/*
-ignoredBuiltDependencies:
-  - core-js-pure
+  - apps/site
+  - apps/examples
 onlyBuiltDependencies:
   - esbuild

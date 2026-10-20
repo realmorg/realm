@@ -1,0 +1,43 @@
+{
+  "name": "@realmorg/ui",
+  "version": "2.0.0-alpha.0",
+  "description": "REALM UI: accessible components built purely with REALM and native HTML, styled after shadcn/ui.",
+  "type": "module",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/realmui/realm.git",
+    "directory": "packages/ui"
+  },
+  "files": [
+    "dist",
+    "components",
+    "theme.css"
+  ],
+  "exports": {
+    "./ui.html": "./dist/ui.html",
+    "./theme.css": "./theme.css",
+    "./components/*": "./components/*"
+  },
+  "scripts": {
+    "build": "node scripts/bundle.mjs",
+    "test": "vitest run",
+    "test:cross": "vitest run --project cross",
+    "typecheck": "tsc --noEmit",
+    "coverage": "rm -rf coverage-components && vitest run --project chromium && node ../../scripts/component-coverage.mjs coverage-components"
+  },
+  "devDependencies": {
+    "@realmorg/realm": "workspace:*",
+    "@vitest/browser-playwright": "5.0.5",
+    "playwright": "1.64.1",
+    "tsconfig": "workspace:*",
+    "vite": "8.3.4",
+    "vitest": "5.0.5"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "peerDependencies": {
+    "@realmorg/realm": "workspace:^"
+  }
+}

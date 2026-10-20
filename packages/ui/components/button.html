@@ -1,0 +1,186 @@
+<custom-element name="ui-button" form-associated delegates-focus>
+  <script>
+    const props = defineProps({
+      variant: prop.enum(["default", "destructive", "outline", "secondary", "ghost", "link"]).default("default"),
+      size: prop.enum(["default", "xs", "sm", "lg", "icon", "icon-xs", "icon-sm", "icon-lg"]).default("default"),
+      type: prop.enum(["button", "submit", "reset"]).default("button"),
+      disabled: prop.boolean().reflect(),
+      label: prop.string().attribute("aria-label"),
+      description: prop.string().attribute("aria-description"),
+      popovertarget: prop.string(),
+      popovertargetaction: prop.enum(["toggle", "show", "hide"]),
+      commandfor: prop.string(),
+      command: prop.string(),
+    });
+
+    const NATIVE_COMMANDS = "commandForElement" in HTMLButtonElement.prototype;
+    const COMMAND_METHODS = {
+      "show-modal": "showModal",
+      close: "close",
+      "request-close": "requestClose",
+      "toggle-popover": "togglePopover",
+      "show-popover": "showPopover",
+      "hide-popover": "hidePopover",
+    };
+    const DIALOG_COMMANDS = new Set(["show-modal", "close", "request-close"]);
+    const FORM_ACTIONS = { submit: "requestSubmit", reset: "reset" };
+
+    function target(id) {
+      return id ? host.getRootNode().getElementById(id) : null;
+    }
+
+    function nativeCommand(element) {
+      const command = props.command ?? "";
+      const customTarget = element && !(element instanceof HTMLDialogElement);
+      return customTarget && DIALOG_COMMANDS.has(command) ? `--${command}` : command;
+    }
+
+    function emulateCommand() {
+      const element = target(props.commandfor);
+      if (NATIVE_COMMANDS || !element || !props.command) return;
+      const event = Object.assign(new Event("command", { cancelable: true }), { command: props.command, source: host });
+      if (element.dispatchEvent(event)) element[COMMAND_METHODS[props.command]]?.();
+    }
+
+    function activate() {
+      if (props.disabled) return;
+      emulateCommand();
+      const action = FORM_ACTIONS[props.type];
+      if (internals.form && action) HTMLFormElement.prototype[action].call(internals.form);
+    }
+
+    observe(() => {
+      const button = refs.button;
+      if (!button) return;
+      button.popoverTargetElement = target(props.popovertarget);
+      if (props.popovertargetaction) button.popoverTargetAction = props.popovertargetaction;
+      if (!NATIVE_COMMANDS) return;
+      const element = target(props.commandfor);
+      button.commandForElement = element;
+      button.command = nativeCommand(element);
+    });
+  </script>
+
+  <style>
+    :host {
+      display: inline-flex;
+      vertical-align: middle;
+    }
+    :host([hidden]) {
+      display: none;
+    }
+    button {
+      all: unset;
+      box-sizing: border-box;
+      display: inline-flex;
+      flex: 1;
+      align-items: center;
+      justify-content: center;
+      gap: calc(var(--spacing) * 2);
+      height: calc(var(--spacing) * 9);
+      padding: calc(var(--spacing) * 2) calc(var(--spacing) * 4);
+      border: 1px solid transparent;
+      border-radius: var(--radius-md);
+      border-start-start-radius: var(--ui-radius-block-start, var(--ui-radius-start, var(--radius-md)));
+      border-end-start-radius: var(--ui-radius-block-end, var(--ui-radius-start, var(--radius-md)));
+      border-start-end-radius: var(--ui-radius-block-start, var(--ui-radius-end, var(--radius-md)));
+      border-end-end-radius: var(--ui-radius-block-end, var(--ui-radius-end, var(--radius-md)));
+      font: inherit;
+      font-size: var(--text-sm);
+      line-height: calc(var(--spacing) * 5);
+      font-weight: var(--font-weight-medium);
+      white-space: nowrap;
+      cursor: pointer;
+      transition: background-color var(--default-transition-duration), color var(--default-transition-duration), box-shadow var(--default-transition-duration), opacity var(--default-transition-duration);
+      background: var(--primary);
+      color: var(--primary-foreground);
+    }
+    button:hover {
+      background: color-mix(in oklab, var(--primary) 90%, transparent);
+    }
+    button:focus-visible {
+      border-color: var(--ring);
+      box-shadow: var(--focus-ring);
+    }
+    button:disabled {
+      pointer-events: none;
+      opacity: 0.5;
+    }
+    ::slotted(svg) {
+      width: calc(var(--spacing) * 4);
+      height: calc(var(--spacing) * 4);
+      flex-shrink: 0;
+      pointer-events: none;
+    }
+    :host(:state(attr-variant-is-destructive)) button {
+      background: var(--destructive);
+      color: white;
+    }
+    :host(:state(attr-variant-is-destructive)) button:hover {
+      background: color-mix(in oklab, var(--destructive) 90%, transparent);
+    }
+    :host(:state(attr-variant-is-outline)) button {
+      border-color: var(--border);
+      background: var(--background);
+      color: var(--foreground);
+      box-shadow: var(--shadow-xs);
+    }
+    :host(:state(attr-variant-is-outline)) button:hover,
+    :host(:state(attr-variant-is-ghost)) button:hover {
+      background: var(--accent);
+      color: var(--accent-foreground);
+    }
+    :host(:state(attr-variant-is-secondary)) button {
+      background: var(--secondary);
+      color: var(--secondary-foreground);
+    }
+    :host(:state(attr-variant-is-secondary)) button:hover {
+      background: color-mix(in oklab, var(--secondary) 80%, transparent);
+    }
+    :host(:state(attr-variant-is-ghost)) button {
+      background: transparent;
+      color: var(--foreground);
+    }
+    :host(:state(attr-variant-is-link)) button {
+      background: transparent;
+      color: var(--primary);
+      text-underline-offset: 4px;
+    }
+    :host(:state(attr-variant-is-link)) button:hover {
+      text-decoration: underline;
+    }
+    :host(:state(attr-size-is-xs)) button {
+      height: calc(var(--spacing) * 6);
+      gap: calc(var(--spacing) * 1);
+      padding: 0 calc(var(--spacing) * 2);
+      font-size: var(--text-xs);
+    }
+    :host(:state(attr-size-is-sm)) button {
+      height: calc(var(--spacing) * 8);
+      gap: calc(var(--spacing) * 1.5);
+      padding: 0 calc(var(--spacing) * 3);
+    }
+    :host(:state(attr-size-is-lg)) button {
+      height: calc(var(--spacing) * 10);
+      padding: 0 calc(var(--spacing) * 6);
+    }
+    :host(:is(:state(attr-size-is-icon), :state(attr-size-is-icon-xs), :state(attr-size-is-icon-sm), :state(attr-size-is-icon-lg))) button {
+      padding: 0;
+      width: calc(var(--spacing) * 9);
+    }
+    :host(:state(attr-size-is-icon-xs)) button {
+      width: calc(var(--spacing) * 6);
+      height: calc(var(--spacing) * 6);
+    }
+    :host(:state(attr-size-is-icon-sm)) button {
+      width: calc(var(--spacing) * 8);
+      height: calc(var(--spacing) * 8);
+    }
+    :host(:state(attr-size-is-icon-lg)) button {
+      width: calc(var(--spacing) * 10);
+      height: calc(var(--spacing) * 10);
+    }
+  </style>
+
+  <button type="button" ref="button" part="button" _aria-label="@label" _aria-description="@description" _disabled="@disabled" onclick="activate()"><slot></slot></button>
+</custom-element>

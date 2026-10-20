@@ -1,0 +1,49 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter @realmorg/realm exec playwright install --with-deps chromium firefox webkit
+      - run: pnpm lint
+      - run: pnpm typecheck
+      - run: pnpm spec
+      - run: pnpm --filter @realmorg/realm coverage
+      - run: pnpm --filter @realmorg/realm test:cross
+      - run: pnpm --filter @realmorg/ui test
+      - run: pnpm --filter @realmorg/ui coverage
+      - run: pnpm build
+      - run: pnpm size
+      - run: pnpm --filter @realmorg/vite-plugin test
+
+  e2e:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter site exec playwright install --with-deps chromium firefox webkit
+      - run: pnpm build
+      - run: pnpm --filter site test
+      - run: pnpm --filter site coverage
+      - if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: apps/site/test-results
