@@ -1,5 +1,5 @@
 import { spawn } from "node:child_process";
-import { mkdirSync, renameSync, rmSync, watch } from "node:fs";
+import { existsSync, mkdirSync, renameSync, rmSync, watch } from "node:fs";
 import { fileURLToPath } from "node:url";
 import realm from "@realmorg/vite-plugin";
 import { createServer } from "vite";
@@ -22,8 +22,9 @@ const build = () => {
     await run("scripts/bundle.mjs", `${root}../../packages/ui`);
     const next = `${root}.dev/next-${Date.now()}`;
     const code = await run("scripts/build.mjs", root, { SITE_OUT: next });
-    if (code !== 0) {
+    if (code !== 0 || !existsSync(next)) {
       rmSync(next, { recursive: true, force: true, maxRetries: 5 });
+      console.error("The site did not build. Still serving the last build.");
       return false;
     }
     rmSync(site, { recursive: true, force: true, maxRetries: 5 });
