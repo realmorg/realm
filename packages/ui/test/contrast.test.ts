@@ -120,6 +120,10 @@ describe("theme contrast", () => {
     });
   }
 
+  test("the theme turns off double-tap zoom and keeps pinch zoom", () => {
+    expect(getComputedStyle(document.documentElement).touchAction).toBe("manipulation");
+  });
+
   test("the focus ring is drawn in the ring colour at full strength", () => {
     expect(light["focus-ring"]).toBe("0 0 0 2px var(--ring)");
   });

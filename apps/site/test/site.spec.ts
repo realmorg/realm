@@ -120,7 +120,7 @@ test("the docs menu opens on small screens and closes when a link is followed", 
   await page.goto("docs/");
   const nav = page.getByRole("navigation", { name: "Docs" });
   await expect(nav).toBeHidden();
-  await page.getByRole("button", { name: "Menu", exact: true }).click();
+  await page.getByRole("button", { name: "Browse Docs", exact: true }).click();
   await expect(nav).toBeVisible();
   await nav.getByRole("heading", { name: "Getting started" }).click();
   await expect(nav).toBeVisible();
@@ -128,9 +128,9 @@ test("the docs menu opens on small screens and closes when a link is followed", 
   await nav.getByRole("link", { name: "Installation" }).click();
   await expect(nav).toBeHidden();
   await expect.poll(() => requested).toHaveLength(1);
-  await page.getByRole("button", { name: "Menu", exact: true }).click();
+  await page.getByRole("button", { name: "Browse Docs", exact: true }).click();
   await expect(nav).toBeVisible();
-  await page.getByRole("button", { name: "Menu", exact: true }).click();
+  await page.getByRole("button", { name: "Browse Docs", exact: true }).click();
   await expect(nav).toBeHidden();
   void errors;
 });

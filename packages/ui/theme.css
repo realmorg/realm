@@ -138,6 +138,11 @@
   }
 }
 
+/* Taps respond at once and a double tap does not zoom. Pinch zoom still works. */
+html {
+  touch-action: manipulation;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);

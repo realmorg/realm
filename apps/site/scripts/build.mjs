@@ -486,11 +486,12 @@ const template = (page, { html, toc }) => {
   const p = page.prefix;
   const home = page.meta.layout === "home";
   const wide = page.meta.layout === "wide";
+  const sectionLabel = SECTIONS.find((s) => s.id === page.section)?.label ?? "Site";
   const editUrl = `https://github.com/realmorg/realm/edit/main/apps/site/content/${relative(join(root, "content"), page.file)}`;
   const body = home
     ? `<main id="main" class="home">${html}</main>`
-    : `<site-layout${wide ? " wide" : ""}>
-  <nav slot="nav" class="sidebar" aria-label="${escapeHtml(SECTIONS.find((s) => s.id === page.section)?.label ?? "Site")}">${navFor(page)}</nav>
+    : `<site-layout${wide ? " wide" : ""} label="${escapeHtml(sectionLabel)}">
+  <nav slot="nav" class="sidebar" aria-label="${escapeHtml(sectionLabel)}">${navFor(page)}</nav>
   <article id="main" class="prose${wide ? " wide" : ""}">${html}${pager(page)}<p class="edit"><a href="${editUrl}" rel="noopener" target="_blank">Edit this page on GitHub</a> · <a href="${p}${page.slug}.md">View as Markdown</a></p></article>
   <nav slot="toc" class="toc" aria-label="On this page">${tocFor(toc)}</nav>
 </site-layout>`;

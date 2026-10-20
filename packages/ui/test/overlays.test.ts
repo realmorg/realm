@@ -16,6 +16,31 @@ const key = (target: Element, name: string) =>
   );
 
 describe("ui-dialog", () => {
+  test("opening focuses the dialog itself unless an element inside has autofocus", async () => {
+    const host = await render(`
+      <ui-dialog id="plain"><ui-dialog-header><ui-dialog-title>Plain</ui-dialog-title></ui-dialog-header><input aria-label="name" /></ui-dialog>
+      <ui-dialog id="auto"><input aria-label="email" autofocus /></ui-dialog>
+      <ui-drawer id="drawer"><input aria-label="search" /></ui-drawer>
+      <ui-drawer id="auto-drawer"><input aria-label="query" autofocus /></ui-drawer>`);
+    for (const [id, expected] of [
+      ["plain", "dialog"],
+      ["auto", "input"],
+      ["drawer", "dialog"],
+      ["auto-drawer", "input"],
+    ] as const) {
+      const overlay = host.querySelector(`#${id}`) as Dialog;
+      overlay.showModal();
+      await tick();
+      const focused =
+        expected === "dialog" ? shadow(overlay).activeElement : document.activeElement;
+      expect(focused?.localName, id).toBe(expected);
+      if (expected === "dialog")
+        expect(getComputedStyle(focused as Element).outlineStyle).toBe("none");
+      overlay.close();
+      await tick();
+    }
+  });
+
   test("opens through the open attribute and methods, closes with events", async () => {
     const host = await render(
       `<ui-dialog><ui-dialog-header><ui-dialog-title>Edit</ui-dialog-title><ui-dialog-description>Change things</ui-dialog-description></ui-dialog-header>Body<ui-dialog-footer><ui-button>Save</ui-button></ui-dialog-footer></ui-dialog>`,

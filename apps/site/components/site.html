@@ -385,6 +385,7 @@
 
 <custom-element name="site-layout">
   <script>
+    defineProps({ label: prop.string().default("Site") });
     const layout = useState({ open: false });
 
     function toggle() {
@@ -467,7 +468,7 @@
   </style>
 
   <div class="menu">
-    <ui-button variant="outline" size="sm" onclick="toggle()">Menu</ui-button>
+    <ui-button variant="outline" size="sm" onclick="toggle()">Browse <slot name="@label">Site</slot></ui-button>
   </div>
   <div class="nav" part="nav" onclick="close(event)"><slot name="nav"></slot></div>
   <main part="main"><slot></slot></main>

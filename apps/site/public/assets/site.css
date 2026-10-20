@@ -167,6 +167,22 @@ live-demo[layout="split"] .shiki {
 .prose.wide {
   max-width: none;
 }
+/* Room for the theme builder before it loads, a little under its real height at each width,
+   so the text below it does not jump. */
+theme-builder:not(:defined) {
+  display: block;
+  min-height: calc(var(--spacing) * 382);
+}
+@media (max-width: 1100px) {
+  theme-builder:not(:defined) {
+    min-height: calc(var(--spacing) * 537);
+  }
+}
+@media (max-width: 480px) {
+  theme-builder:not(:defined) {
+    min-height: calc(var(--spacing) * 650);
+  }
+}
 .prose.wide > :not(.wide-block) {
   max-width: calc(var(--spacing) * 192);
 }

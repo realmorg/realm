@@ -74,8 +74,11 @@
     observe(() => {
       const dialog = refs.dialog;
       if (!dialog || props.open === dialog.open) return;
-      if (props.open) dialog.showModal();
-      else dialog.close();
+      if (!props.open) return dialog.close();
+      dialog.showModal();
+      // Left to the browser, focus lands on the first button (often close) with a focus ring after a
+      // tap, and Firefox and WebKit ignore autofocus on slotted content.
+      (host.querySelector("[autofocus]") ?? dialog).focus();
     });
   </script>
 
@@ -95,6 +98,9 @@
       color: var(--foreground);
       box-shadow: var(--shadow-lg);
       overflow: auto;
+    }
+    dialog:focus {
+      outline: none;
     }
     dialog[open] {
       display: grid;
@@ -185,6 +191,7 @@
   <dialog
     ref="dialog"
     part="dialog"
+    tabindex="-1"
     _aria-label="#dialog.label"
     _aria-description="#dialog.description"
     onclose="closed()"
