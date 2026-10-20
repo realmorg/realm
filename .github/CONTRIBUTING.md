@@ -1,56 +1,77 @@
 # Contributing to REALM
 
-Thank you for your interest in contributing to REALM! We welcome contributions from developers like you. Please take a moment to review the guidelines below to ensure a smooth collaboration process.
+Thank you for helping with REALM. This guide covers how we work, how to set up the repository and how to send a change.
 
-## Prerequisites
+## We build REALM with AI
 
-Before you start contributing to REALM, make sure you have the following prerequisites installed on your system:
+REALM is developed with AI coding assistants, and we encourage you to use one too: Claude Code, Codex, Cursor, Copilot or any other. The repository is set up so an assistant can work in it well:
 
-- Latest NodeJS
-- PNPM - https://pnpm.io
+- **[`AGENTS.md`](../AGENTS.md)** holds the rules for this codebase: commands, coding conventions and how components are written. Claude Code reads it through `CLAUDE.md`, and most other assistants read `AGENTS.md` directly.
+- **OpenSpec skills** in `.claude/skills` and `.agents/skills` take a change from idea to archive: `/opsx:explore` to think it through, `/opsx:propose` to write the proposal, design, specs and tasks, `/opsx:apply` to implement it and `/opsx:archive` to finish.
+- **The REALM agent skill** in [`skills/realm`](../skills/realm) teaches an assistant to write REALM components, use REALM UI and Unicons, and avoid common mistakes. Install it in your own projects with `npx skills add realmorg/realm`.
 
-## Getting Started
+Using AI does not change who is responsible for the change: you are. Before you open a pull request:
 
-To get started with contributing, follow these steps:
+- Read and understand every line you submit, and be ready to explain it in review.
+- Run the checks below yourself. Do not rely on the assistant saying they pass.
+- Keep the change focused. Ask the assistant for one change at a time and review the diff before you commit.
+- Never paste secrets, tokens or private data into an assistant.
 
-1. Clone the repository:
+You do not need to say which tool you used.
+
+## Setting up
+
+You need Node.js 22 or later and [pnpm](https://pnpm.io).
+
 ```shell
 git clone https://github.com/realmorg/realm.git
-````
-
-2. Install the project dependencies:
-```shell
+cd realm
 pnpm install
 ```
 
-3. Start the development server:
+The repository is a monorepo:
 
-```shell
-pnpm dev --filter realm
-```
+| Folder | Contents |
+| --- | --- |
+| `packages/realm` | The runtime, `@realmorg/realm` |
+| `packages/ui` | REALM UI components, `@realmorg/ui` |
+| `packages/unicons` | The icon library, `@realmorg/unicons` |
+| `packages/vite-plugin` | The Vite plugin, `@realmorg/vite-plugin` |
+| `apps/site` | The website at realm.js.org, built with REALM |
+| `apps/examples` | Example apps, served by the website |
+| `skills/realm` | The REALM agent skill |
+| `openspec/specs` | The specification of REALM's behaviour |
 
-4. Create an HTML file in the `packages/realm/playground` directory. You can use this file to experiment with REALM and test your changes.
+To work on the website, the docs or the examples, run `pnpm --filter site dev` and open http://localhost:5173/.
 
-5. Access the HTML file directly in your browser using a relative path, or you can use the `npx serve . --cors` command to serve the playground directory.
+## Making a change
 
-## Submitting Changes
+1. **Behaviour changes start as an OpenSpec proposal.** REALM's behaviour is specified in `openspec/specs`. Propose a change with `/opsx:propose` (or `pnpm exec openspec` in a terminal) instead of editing the specs directly. Fixes to docs, examples or tests do not need a proposal.
+2. **Every change comes with tests.** Each spec scenario has a test with the same title, and the coverage of `packages/realm/src` and of every component script stays at 100%.
+3. **Package changes need a changeset.** Run `pnpm change` and describe the change for the changelog.
 
-When you're ready to submit your changes, please follow these steps:
+Run the checks before you push:
 
-1. Commit your changes with conventional commit (https://www.conventionalcommits.org/) message.
-2. Push your codes and create a pull request against the main repository.
-3. Provide a clear and concise description of your changes in the pull request, including any related issues or additional context.
-4. Wait for feedback and address any requested changes.
+| Check | Command |
+| --- | --- |
+| Lint and format | `pnpm lint` (fix with `pnpm format`) |
+| Types | `pnpm typecheck` |
+| Specs | `pnpm spec` |
+| Runtime tests with the coverage gate | `pnpm --filter @realmorg/realm coverage` |
+| Runtime in Firefox and WebKit | `pnpm --filter @realmorg/realm test:cross` |
+| UI components | `pnpm --filter @realmorg/ui coverage` and `pnpm --filter @realmorg/ui test:cross` |
+| Website and examples | `pnpm --filter site coverage` and `pnpm --filter site test` |
+| Runtime size | `pnpm build && pnpm size` |
+| Agent skill | `pnpm skill:check` and `pnpm skill:test` |
 
-## Code Style
-When contributing code to REALM, please adhere to the project's code style guidelines. Make sure your code is well-formatted, readable, and follows the established conventions.
+## Sending a pull request
 
-## Issue Tracker
-If you encounter any issues or have suggestions for improvements, please create an issue in the [issue tracker](https://github.com/realmorg/realm/issues). Provide as much detail as possible to help us understand and address the problem.
+1. Use [Conventional Commits](https://www.conventionalcommits.org/) for commit messages, such as `fix(ui): keep hovered buttons readable`.
+2. Open a pull request against `main` and describe what changed and why. Link related issues.
+3. CI runs every check in Chromium, Firefox and WebKit. A maintainer reviews and merges the pull request when it passes.
 
-## Contact
-If you have any questions or need further assistance, you can reach out to the project maintainers at [god@realm.codes](mailto:god@realm.codes).
+## Issues and questions
 
-Thank you for your contribution! 🎉
+Report bugs and suggest improvements in the [issue tracker](https://github.com/realmorg/realm/issues). For a bug, include the smallest page that shows it, the browser and what you expected to happen.
 
-Feel free to customize and modify the generated CONTRIBUTING.md file according to your project's specific needs.
+For anything else, contact the maintainers at [god@realm.codes](mailto:god@realm.codes).
