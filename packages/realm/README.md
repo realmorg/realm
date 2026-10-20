@@ -63,6 +63,7 @@ What each part does:
 - `<slot name="#counter.count">` shows a value. Markup holds references like this, never expressions, so logic stays in the script where you can read and debug it.
 - `onclick="add()"` is a normal event handler attribute that can call the component's functions.
 - The `<style>` applies inside the component only, through shadow DOM.
+- When the element is removed, everything it started (listeners, timers, requests) stops.
 
 ## Building an app
 
@@ -92,19 +93,7 @@ A component file imports the files it depends on, every file is fetched once, an
 
 **Add icons.** [Unicons](https://realm.js.org/unicons/) is one `<u-icon>` element for 50,939 icons from 31 sets, loaded in small chunks as the page uses them.
 
-**Render on your server.** PHP, Rails, Django, Go or a static site generator can write the tags. The HTML that search engines receive already contains your content, and REALM upgrades the tags in the browser.
-
-## When something goes wrong
-
-REALM checks your markup as it runs and logs a `[realm]` warning that names the component and the problem, for example:
-
-```
-[realm] <todo-list> _hidden="#todo.items.length === 0" must be a reference like "#state.path" or "@prop".
-```
-
-Every message is listed with its cause in the [console reference](https://realm.js.org/reference/console/).
-
-Everything a component starts (listeners, timers, observers, requests) stops when it is removed from the page.
+**Use it with server-rendered pages.** PHP, Rails, Django, Go or a static site generator can write the tags, and REALM upgrades them in the browser.
 
 ## Using a coding assistant
 
@@ -116,11 +105,11 @@ npx skills add realmorg/realm
 
 The docs are also available as Markdown for assistants at [realm.js.org/llms.txt](https://realm.js.org/llms.txt).
 
-## Shipping
+## In production
 
-- **Pin versions.** `@alpha` always points at the newest alpha, and jsDelivr can cache it for up to 12 hours. In production, use an exact version such as `@realmorg/realm@2.0.0-alpha.2`.
-- **Content Security Policy.** REALM never uses `eval`, `new Function` or `blob:` URLs. It works under a nonce policy with `'strict-dynamic'`. For a policy of only `script-src 'self'`, the optional [Vite plugin](https://github.com/realmorg/realm/tree/main/packages/vite-plugin) assembles component scripts into files at build time.
-- **Size and browsers.** The runtime is about 16 KB gzipped and works in current Chrome, Edge, Firefox and Safari.
+- Pin an exact version, such as `@realmorg/realm@2.0.0-alpha.2`, instead of `@alpha`. See [Installation](https://realm.js.org/docs/installation/).
+- REALM works with a strict Content Security Policy. See [Security](https://realm.js.org/docs/security/), and the optional [Vite plugin](https://github.com/realmorg/realm/tree/main/packages/vite-plugin) for a `script-src 'self'` policy.
+- The runtime is about 16 KB gzipped and works in current Chrome, Edge, Firefox and Safari.
 
 ## Packages
 
@@ -135,7 +124,7 @@ The docs are also available as Markdown for assistants at [realm.js.org/llms.txt
 
 - [Docs](https://realm.js.org/docs/): a quick start, a tutorial and guides for state, events, forms, fetching, styling and security
 - [Reference](https://realm.js.org/reference/): every element, attribute and script helper
-- [Examples](https://realm.js.org/examples/): complete apps (a todo list, a kanban board, chess, a dashboard, a shop, chat, notes and more), each with a button that shows its source
+- [Examples](https://realm.js.org/examples/): complete apps, including a todo list, a kanban board, chess, a dashboard, a shop and a chat
 - [Migrating from v1](https://realm.js.org/docs/migrating-from-v1/). v1 is archived under the `v1-final` tag.
 
 ## Contributing
@@ -148,7 +137,7 @@ pnpm build
 pnpm --filter @realmorg/realm coverage
 ```
 
-The behaviour of REALM is specified in `openspec/specs`, and every scenario there has a test. The runtime keeps 100% test coverage in Chromium, Firefox and WebKit.
+REALM's behaviour is specified in `openspec/specs`, and every scenario has a test.
 
 ## License
 
