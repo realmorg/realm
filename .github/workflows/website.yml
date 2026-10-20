@@ -11,5 +11,13 @@ jobs:
     steps:
       - name: Ask realmui.github.io to rebuild the site
         env:
-          GH_TOKEN: ${{ secrets.REALM_PAT }}
-        run: gh api repos/realmui/realmui.github.io/dispatches -f event_type=realm-main
+          DEPLOY_KEY: ${{ secrets.SITE_DEPLOY_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          printf '%s\n' "$DEPLOY_KEY" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+          git init -q rebuild && cd rebuild
+          git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
+            commit -q --allow-empty -m "Rebuild from realmui/realm@${GITHUB_SHA}"
+          git push -f git@github.com:realmui/realmui.github.io.git HEAD:rebuild
