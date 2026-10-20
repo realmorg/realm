@@ -1,5 +1,15 @@
 # @realmorg/realm
 
+## 2.0.0-alpha.1
+
+### Major Changes
+
+- 8d1c45d: REALM v2: components are single `<custom-element>` tags holding a `<script>`, `<style>` and markup, assembled at runtime without a compiler. Adds `defineProps` with a typed prop builder, `useState`, `observe`, native value slots, `_` attribute bindings, native `on<event>` handlers for custom events, attribute-driven fetching, a rewritten `<import-element>`, and `defineStore`. See the migration guide for v1 changes.
+
+### Minor Changes
+
+- 8d1c45d: Pre-assembled components for strict Content Security Policies: a definition's `<script src>` loads a setup module, `@realmorg/realm/compiler` produces one, and `@realmorg/vite-plugin` precompiles build output and writes `custom-elements.json`.
+
 ## 0.0.19
 
 ### Patch Changes
