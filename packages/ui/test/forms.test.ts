@@ -179,6 +179,33 @@ describe("choices", () => {
     expect(field.value).toBe("");
   });
 
+  test("ui-slider does not rewrite its control while it is dragged", async () => {
+    const host = await render(`<ui-slider value="10"></ui-slider>`);
+    const slider = host.querySelector("ui-slider") as Field;
+    const input = part<HTMLInputElement>(slider, "control");
+    expect(input.value).toBe("10");
+    const native = Object.getOwnPropertyDescriptor(
+      HTMLInputElement.prototype,
+      "value",
+    ) as PropertyDescriptor;
+    const writes: unknown[] = [];
+    Object.defineProperty(input, "value", {
+      get: () => native.get?.call(input),
+      set(value) {
+        writes.push(value);
+        native.set?.call(input, value);
+      },
+    });
+    native.set?.call(input, "40");
+    input.dispatchEvent(new Event("input", { bubbles: true, composed: true }));
+    await tick();
+    expect(slider.value).toBe(40);
+    expect(writes).toEqual([]);
+    (slider as unknown as { value: number }).value = 70;
+    await tick();
+    expect(writes).toEqual(["70"]);
+  });
+
   test("ui-slider keeps touch drags to itself", async () => {
     const host = await render(`<ui-slider value="10"></ui-slider>`);
     const input = part(host.querySelector("ui-slider"), "control");

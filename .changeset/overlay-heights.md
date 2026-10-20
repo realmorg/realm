@@ -13,3 +13,4 @@ Overlays keep a steady size on phones:
 - Every component sets `touch-action: manipulation` inside its shadow root, so tapping a button quickly does not zoom the page in iOS Safari.
 - Dialogs, alert dialogs, drawers and popovers pack their grid rows at the start. Mobile Safari otherwise stretches them to their maximum height, even with `height: fit-content`.
 - `ui-slider` sets `touch-action: none` on its control, so iOS never turns a drag into a page pan, and its thumb is 24px on touch screens.
+- `ui-slider` writes to its native input only when its value really changes, for example when code sets it. Rewriting the value Safari had just set during a finger drag made the thumb jump around.

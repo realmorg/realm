@@ -14,6 +14,12 @@
         return `${((props.value - props.min) / (props.max - props.min || 1)) * 100}%`;
       },
     });
+
+    // Writing the value Safari just set, during a finger drag, makes the thumb jump.
+    observe(() => {
+      const value = String(props.value);
+      if (refs.control && refs.control.value !== value) refs.control.value = value;
+    });
   </script>
 
   <style>
@@ -96,7 +102,6 @@
     _min="@min"
     _max="@max"
     _step="@step"
-    _value="@value"
     _disabled="@disabled"
     _aria-label="@label"
 >
