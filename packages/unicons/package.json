@@ -1,6 +1,6 @@
 {
   "name": "@realmorg/unicons",
-  "version": "2.0.0-alpha.0",
+  "version": "2.0.0-alpha.1",
   "description": "A <u-icon> web component for 31 react-icons sets, built with REALM. Icons load on demand.",
   "type": "module",
   "license": "MIT",
