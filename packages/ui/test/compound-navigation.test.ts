@@ -1,4 +1,5 @@
 import { describe, expect, test, vi } from "vitest";
+import { userEvent } from "vitest/browser";
 import { part, render, shadow, tick } from "./setup";
 
 const key = (target: Element, name: string) =>
@@ -297,6 +298,10 @@ describe("ui-navigation-menu parts", () => {
       getComputedStyle(part(docs?.querySelector("ui-navigation-menu-link") as Element, "link"))
         .flexDirection,
     ).toBe("row");
+    const parking = document.createElement("div");
+    parking.style.cssText = "position: fixed; right: 0; bottom: 0; width: 4px; height: 4px";
+    document.body.append(parking);
+    await userEvent.hover(parking);
     trigger.dispatchEvent(new PointerEvent("pointerleave"));
     await vi.waitFor(() => expect(trigger.getAttribute("aria-expanded")).toBe("false"));
     trigger.dispatchEvent(new PointerEvent("pointerenter"));
@@ -305,6 +310,7 @@ describe("ui-navigation-menu parts", () => {
     await vi.waitFor(() => expect(panel.matches(":popover-open")).toBe(true));
     panel.dispatchEvent(new PointerEvent("pointerleave"));
     await vi.waitFor(() => expect(panel.matches(":popover-open")).toBe(false));
+    parking.remove();
     trigger.click();
     expect(panel.matches(":popover-open")).toBe(true);
     trigger.click();
