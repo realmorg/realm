@@ -5,49 +5,71 @@ on:
     branches: [main]
   pull_request:
 
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   check:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v5
-        with:
-          node-version: 22
-          cache: pnpm
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm --filter @realmorg/realm exec playwright install --with-deps chromium firefox webkit
+      - uses: ./.github/actions/setup
       - run: pnpm lint
       - run: pnpm typecheck
       - run: pnpm spec
-      - run: pnpm --filter @realmorg/realm coverage
-      - run: pnpm --filter @realmorg/realm test:cross
-      - run: pnpm --filter @realmorg/ui test
-      - run: pnpm --filter @realmorg/ui coverage
       - run: pnpm build
       - run: pnpm size
       - run: pnpm skill:check
+      - run: pnpm --filter @realmorg/realm exec playwright install --with-deps chromium
       - run: pnpm skill:test
       - run: pnpm --filter @realmorg/vite-plugin test
-      - run: pnpm --filter @realmorg/unicons test
-      - run: pnpm --filter @realmorg/unicons coverage
 
-  e2e:
+  # Each browser runs once: Chromium measures coverage, Firefox and WebKit run the cross-browser suite.
+  packages:
+    name: ${{ matrix.package }} (${{ matrix.browsers }})
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { package: "@realmorg/realm", browsers: chromium, run: coverage }
+          - { package: "@realmorg/realm", browsers: firefox webkit, run: "test:cross" }
+          - { package: "@realmorg/ui", browsers: chromium, run: coverage }
+          - { package: "@realmorg/ui", browsers: firefox webkit, run: "test:cross" }
+          - { package: "@realmorg/unicons", browsers: chromium, run: coverage }
+          - { package: "@realmorg/unicons", browsers: firefox webkit, run: "test:cross" }
     steps:
       - uses: actions/checkout@v5
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v5
-        with:
-          node-version: 22
-          cache: pnpm
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm --filter site exec playwright install --with-deps chromium firefox webkit
-      - run: pnpm build
-      - run: pnpm --filter site test
-      - run: pnpm --filter site coverage
+      - uses: ./.github/actions/setup
+      - run: pnpm --filter "${{ matrix.package }}" exec playwright install --with-deps ${{ matrix.browsers }}
+      - run: pnpm turbo run build --filter="${{ matrix.package }}..."
+      - run: pnpm --filter "${{ matrix.package }}" ${{ matrix.run }}
+
+  site:
+    name: site (${{ matrix.browser }}${{ matrix.shard && format(' {0}', matrix.shard) || '' }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { browser: chromium, run: coverage }
+          - { browser: firefox, shard: 1/2 }
+          - { browser: firefox, shard: 2/2 }
+          - { browser: webkit, shard: 1/2 }
+          - { browser: webkit, shard: 2/2 }
+    steps:
+      - uses: actions/checkout@v5
+      - uses: ./.github/actions/setup
+      - run: pnpm --filter site exec playwright install --with-deps ${{ matrix.browser }}
+      # The tests build the site themselves. They need the packages it is made from.
+      - run: pnpm turbo run build --filter="site^..." --filter="@realmorg/unicons"
+      - if: matrix.run == 'coverage'
+        run: pnpm --filter site coverage
+      - if: matrix.run != 'coverage'
+        run: pnpm --filter site exec playwright test --project=${{ matrix.browser }} --shard=${{ matrix.shard }}
       - if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: playwright-report
+          name: playwright-report-${{ matrix.browser }}-${{ strategy.job-index }}
           path: apps/site/test-results
