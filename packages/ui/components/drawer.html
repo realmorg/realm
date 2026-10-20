@@ -116,6 +116,8 @@
     }
     dialog[open] {
       display: grid;
+      /* Safari stretches a grid overlay to its max-height unless the rows are packed at the start. */
+      align-content: start;
       gap: calc(var(--spacing) * 4);
       animation: slide 0.25s ease-out;
     }

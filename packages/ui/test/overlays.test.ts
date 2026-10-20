@@ -134,6 +134,26 @@ describe("ui-dialog", () => {
 });
 
 describe("popover and tooltip", () => {
+  test("grid overlays pack their rows at the start, so Safari does not stretch them", async () => {
+    const host = await render(`
+      <ui-dialog id="d"><ui-dialog-title>Dialog</ui-dialog-title></ui-dialog>
+      <ui-alert-dialog id="a"><ui-alert-dialog-title>Alert</ui-alert-dialog-title></ui-alert-dialog>
+      <ui-drawer id="r"><ui-drawer-title>Drawer</ui-drawer-title></ui-drawer>
+      <ui-popover><ui-popover-trigger><ui-button>Open</ui-button></ui-popover-trigger><ui-popover-content id="p">Popover</ui-popover-content></ui-popover>`);
+    for (const id of ["d", "a", "r"]) {
+      const overlay = host.querySelector(`#${id}`) as Dialog;
+      overlay.showModal();
+      await tick();
+      expect(getComputedStyle(part(overlay, "dialog")).alignContent, id).toBe("start");
+      overlay.close();
+      await tick();
+    }
+    const popover = host.querySelector("#p") as HTMLElement;
+    popover.showPopover();
+    expect(getComputedStyle(popover).alignContent).toBe("start");
+    popover.hidePopover();
+  });
+
   test("anchored popovers fit their content and never grow past the screen", async () => {
     const host = await render(
       `<ui-popover><ui-popover-trigger><ui-button>Open</ui-button></ui-popover-trigger><ui-popover-content>Short</ui-popover-content></ui-popover>`,

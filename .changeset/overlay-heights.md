@@ -11,3 +11,5 @@ Overlays keep a steady size on phones:
 - On touch screens the theme sets `cursor: pointer` on the page, so in iOS Safari a tap outside an open popover or menu closes it.
 - Text fields (`ui-input`, `ui-textarea`, `ui-select`, `ui-command`, `ui-combobox`, `ui-input-otp`, `ui-input-group`) use 16px text on touch screens, so iOS Safari no longer zooms in when one is focused.
 - Every component sets `touch-action: manipulation` inside its shadow root, so tapping a button quickly does not zoom the page in iOS Safari.
+- Dialogs, alert dialogs, drawers and popovers pack their grid rows at the start. Mobile Safari otherwise stretches them to their maximum height, even with `height: fit-content`.
+- `ui-slider` sets `touch-action: none` on its control, so iOS never turns a drag into a page pan, and its thumb is 24px on touch screens.

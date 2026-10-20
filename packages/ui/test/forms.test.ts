@@ -179,6 +179,12 @@ describe("choices", () => {
     expect(field.value).toBe("");
   });
 
+  test("ui-slider keeps touch drags to itself", async () => {
+    const host = await render(`<ui-slider value="10"></ui-slider>`);
+    const input = part(host.querySelector("ui-slider"), "control");
+    expect(getComputedStyle(input).touchAction).toBe("none");
+  });
+
   test("ui-slider reports its value and fill percentage", async () => {
     const host = await render(
       `<form><ui-slider name="volume" value="25" min="0" max="50" step="5"></ui-slider></form>`,

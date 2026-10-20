@@ -81,6 +81,8 @@
     }
     :host(:popover-open) {
       display: grid;
+      /* Safari stretches a grid overlay to its max-height unless the rows are packed at the start. */
+      align-content: start;
       gap: calc(var(--spacing) * 4);
     }
     :host(:state(attr-width)) {
