@@ -1,5 +1,11 @@
 <custom-element name="ui-empty">
   <style>
+    /* A double tap must not zoom the page. Set inside the shadow root, because a page-level
+       touch-action does not reach shadow content in iOS Safari. */
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: flex;
       flex-direction: column;
@@ -20,6 +26,10 @@
 
 <custom-element name="ui-empty-header">
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: flex;
       flex-direction: column;
@@ -34,6 +44,10 @@
 
 <custom-element name="ui-empty-media">
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: flex;
       flex-shrink: 0;
@@ -63,6 +77,10 @@
   </script>
 
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: block;
     }
@@ -79,6 +97,10 @@
 
 <custom-element name="ui-empty-description">
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: block;
       font-size: var(--text-sm);
@@ -91,6 +113,10 @@
 
 <custom-element name="ui-empty-content">
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: flex;
       flex-direction: column;

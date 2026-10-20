@@ -38,6 +38,12 @@
   </script>
 
   <style>
+    /* A double tap must not zoom the page. Set inside the shadow root, because a page-level
+       touch-action does not reach shadow content in iOS Safari. */
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: contents;
     }
@@ -48,6 +54,10 @@
 
 <custom-element name="ui-tooltip-trigger">
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: inline-block;
       vertical-align: middle;
@@ -67,6 +77,10 @@
   </script>
 
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       margin: 0 0 calc(var(--spacing) * 1);
       padding: calc(var(--spacing) * 1.5) calc(var(--spacing) * 3);
@@ -76,6 +90,9 @@
       color: var(--background);
       font-size: var(--text-xs);
       inset: auto;
+      height: fit-content;
+      max-height: calc(100svh - calc(var(--spacing) * 8));
+      overflow-y: auto;
       position-area: top;
       position-try-fallbacks: flip-block;
     }

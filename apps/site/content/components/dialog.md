@@ -262,7 +262,7 @@ dialog body, in source order.
 | Element | Part | Description |
 | --- | --- | --- |
 | `ui-dialog` | `dialog` | The native `<dialog>` element. Style the backdrop with `ui-dialog::part(dialog)::backdrop`. |
-| `ui-dialog` | `body` | Wrapper around the default slot. |
+| `ui-dialog` | `body` | Wrapper around the default slot. In a centred dialog it adds no box of its own (`display: contents`), so empty content leaves no gap. In a left or right sheet it fills the remaining height. |
 | `ui-dialog` | `close` | The close button in the top corner. |
 | `ui-dialog-title` | `title` | The `<h2>`. |
 | `ui-dialog-description` | `description` | The `<p>`. |

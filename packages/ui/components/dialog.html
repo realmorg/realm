@@ -83,6 +83,12 @@
   </script>
 
   <style>
+    /* A double tap must not zoom the page. Set inside the shadow root, because a page-level
+       touch-action does not reach shadow content in iOS Safari. */
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: contents;
     }
@@ -90,7 +96,10 @@
       box-sizing: border-box;
       width: 100%;
       max-width: min(calc(var(--spacing) * 128), calc(100% - calc(var(--spacing) * 8)));
-      max-height: calc(100% - calc(var(--spacing) * 8));
+      /* Without an explicit height, a dialog pinned to both edges of the screen can stretch to
+         full height. svh stays the same while a phone's address bar shows and hides. */
+      height: fit-content;
+      max-height: calc(100svh - calc(var(--spacing) * 8));
       padding: calc(var(--spacing) * 6);
       border: 1px solid var(--border);
       border-radius: var(--radius-lg);
@@ -122,7 +131,11 @@
       display: flex;
       flex-direction: column;
     }
+    [part="body"] {
+      display: contents;
+    }
     :host(:is(:state(attr-side-is-left), :state(attr-side-is-right))) [part="body"] {
+      display: block;
       flex: 1;
     }
     :host(:state(attr-side-is-right)) dialog {
@@ -209,6 +222,10 @@
 <custom-element name="ui-dialog-trigger" slot="trigger">
   <style>
     :host,
+    * {
+      touch-action: manipulation;
+    }
+    :host,
     span {
       display: contents;
     }
@@ -224,6 +241,10 @@
 
   <style>
     :host,
+    * {
+      touch-action: manipulation;
+    }
+    :host,
     span {
       display: contents;
     }
@@ -234,6 +255,10 @@
 
 <custom-element name="ui-dialog-header" slot="header">
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: grid;
       gap: calc(var(--spacing) * 2);
@@ -245,6 +270,10 @@
 
 <custom-element name="ui-dialog-title">
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: block;
     }
@@ -261,6 +290,10 @@
 
 <custom-element name="ui-dialog-description">
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: block;
     }
@@ -276,6 +309,10 @@
 
 <custom-element name="ui-dialog-footer" slot="footer">
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: flex;
       flex-wrap: wrap;

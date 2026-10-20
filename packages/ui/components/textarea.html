@@ -15,6 +15,12 @@
   </script>
 
   <style>
+    /* A double tap must not zoom the page. Set inside the shadow root, because a page-level
+       touch-action does not reach shadow content in iOS Safari. */
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: block;
     }
@@ -34,6 +40,12 @@
       outline: none;
       field-sizing: content;
       resize: vertical;
+    }
+    /* iOS Safari zooms in on a focused field whose text is under 16px. */
+    @media (pointer: coarse) {
+      textarea {
+        font-size: var(--text-base);
+      }
     }
     textarea::placeholder {
       color: var(--muted-foreground);

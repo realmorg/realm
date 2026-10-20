@@ -6,6 +6,12 @@
   </script>
 
   <style>
+    /* A double tap must not zoom the page. Set inside the shadow root, because a page-level
+       touch-action does not reach shadow content in iOS Safari. */
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       position: relative;
       display: grid;
@@ -44,6 +50,10 @@
 
 <custom-element name="ui-alert-title">
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: block;
       min-height: calc(var(--spacing) * 4);
@@ -57,6 +67,10 @@
 
 <custom-element name="ui-alert-description">
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: grid;
       justify-items: start;

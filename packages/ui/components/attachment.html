@@ -4,6 +4,12 @@
   </script>
 
   <style>
+    /* A double tap must not zoom the page. Set inside the shadow root, because a page-level
+       touch-action does not reach shadow content in iOS Safari. */
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: inline-flex;
       align-items: center;
@@ -48,6 +54,10 @@
 
 <custom-element name="ui-attachment-media" slot="media">
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: grid;
       place-content: center;
@@ -74,6 +84,10 @@
 
 <custom-element name="ui-attachment-actions" slot="actions">
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: flex;
       gap: calc(var(--spacing) * 1);

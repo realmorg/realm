@@ -16,6 +16,26 @@ const key = (target: Element, name: string) =>
   );
 
 describe("ui-dialog", () => {
+  test("a centred dialog fits its content and empty content adds no gap", async () => {
+    const host = await render(`
+      <ui-dialog>
+        <ui-dialog-header><ui-dialog-title>Title</ui-dialog-title></ui-dialog-header>
+        <ui-dialog-footer><ui-button>Close</ui-button></ui-dialog-footer>
+      </ui-dialog>`);
+    const overlay = host.querySelector("ui-dialog") as Dialog;
+    overlay.showModal();
+    await tick();
+    await new Promise((resolve) => setTimeout(resolve, 300));
+    const dialog = part(overlay, "dialog");
+    const header = (host.querySelector("ui-dialog-header") as HTMLElement).getBoundingClientRect();
+    const footer = (host.querySelector("ui-dialog-footer") as HTMLElement).getBoundingClientRect();
+    expect(Math.round(footer.top - header.bottom)).toBe(16);
+    const style = getComputedStyle(dialog);
+    expect(dialog.getBoundingClientRect().height).toBeLessThan(innerHeight / 2);
+    expect(style.maxHeight).toBe(`${innerHeight - 32}px`);
+    overlay.close();
+  });
+
   test("opening focuses the dialog itself unless an element inside has autofocus", async () => {
     const host = await render(`
       <ui-dialog id="plain"><ui-dialog-header><ui-dialog-title>Plain</ui-dialog-title></ui-dialog-header><input aria-label="name" /></ui-dialog>
@@ -114,6 +134,18 @@ describe("ui-dialog", () => {
 });
 
 describe("popover and tooltip", () => {
+  test("anchored popovers fit their content and never grow past the screen", async () => {
+    const host = await render(
+      `<ui-popover><ui-popover-trigger><ui-button>Open</ui-button></ui-popover-trigger><ui-popover-content>Short</ui-popover-content></ui-popover>`,
+    );
+    const content = host.querySelector("ui-popover-content") as HTMLElement;
+    content.showPopover();
+    await tick();
+    expect(content.getBoundingClientRect().height).toBeLessThan(innerHeight / 2);
+    expect(getComputedStyle(content).maxHeight).toBe(`${innerHeight - 32}px`);
+    content.hidePopover();
+  });
+
   test("ui-popover-content becomes a native auto popover", async () => {
     const host = await render(
       `<ui-popover-content id="p" placement="top">Content</ui-popover-content>`,

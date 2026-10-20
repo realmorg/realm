@@ -38,6 +38,12 @@
   </script>
 
   <style>
+    /* A double tap must not zoom the page. Set inside the shadow root, because a page-level
+       touch-action does not reach shadow content in iOS Safari. */
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: flex;
       flex-direction: column;
@@ -55,6 +61,10 @@
 
 <custom-element name="ui-tabs-list">
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: block;
       width: fit-content;
@@ -91,6 +101,10 @@
   </script>
 
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: flex;
       flex: 1;
@@ -150,6 +164,10 @@
 
 <custom-element name="ui-tabs-content" role="tabpanel">
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: block;
       flex: 1;

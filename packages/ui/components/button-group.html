@@ -4,6 +4,12 @@
   </script>
 
   <style>
+    /* A double tap must not zoom the page. Set inside the shadow root, because a page-level
+       touch-action does not reach shadow content in iOS Safari. */
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: inline-flex;
       align-items: stretch;
@@ -33,6 +39,10 @@
 
 <custom-element name="ui-button-group-text">
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: flex;
       align-items: center;
@@ -69,6 +79,10 @@
   </script>
 
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       position: relative;
       z-index: 1;

@@ -73,6 +73,12 @@
   </script>
 
   <style>
+    /* A double tap must not zoom the page. Set inside the shadow root, because a page-level
+       touch-action does not reach shadow content in iOS Safari. */
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: contents;
     }
@@ -83,7 +89,8 @@
       box-sizing: border-box;
       width: 100%;
       max-width: none;
-      max-height: 80dvh;
+      height: fit-content;
+      max-height: 80svh;
       margin: auto 0 0;
       padding: calc(var(--spacing) * 4) calc(var(--spacing) * 6) calc(var(--spacing) * 6);
       border: 1px solid var(--border);
@@ -111,6 +118,9 @@
       display: grid;
       gap: calc(var(--spacing) * 4);
       animation: slide 0.25s ease-out;
+    }
+    [part="body"] {
+      display: contents;
     }
     dialog::backdrop {
       background: rgb(0 0 0 / 0.5);
@@ -159,6 +169,10 @@
 <custom-element name="ui-drawer-trigger" slot="trigger">
   <style>
     :host,
+    * {
+      touch-action: manipulation;
+    }
+    :host,
     span {
       display: contents;
     }
@@ -170,6 +184,10 @@
 <custom-element name="ui-drawer-close">
   <style>
     :host,
+    * {
+      touch-action: manipulation;
+    }
+    :host,
     span {
       display: contents;
     }
@@ -180,6 +198,10 @@
 
 <custom-element name="ui-drawer-header" slot="header">
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: grid;
       gap: calc(var(--spacing) * 1.5);
@@ -191,6 +213,10 @@
 
 <custom-element name="ui-drawer-title">
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: block;
     }
@@ -206,6 +232,10 @@
 
 <custom-element name="ui-drawer-description">
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: block;
     }
@@ -221,6 +251,10 @@
 
 <custom-element name="ui-drawer-footer" slot="footer">
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: grid;
       gap: calc(var(--spacing) * 2);

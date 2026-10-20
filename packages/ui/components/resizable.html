@@ -7,6 +7,12 @@
   </script>
 
   <style>
+    /* A double tap must not zoom the page. Set inside the shadow root, because a page-level
+       touch-action does not reach shadow content in iOS Safari. */
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: flex;
       width: 100%;
@@ -35,6 +41,10 @@
   </script>
 
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: block;
       flex: var(--attr-size) 1 0;
@@ -110,6 +120,10 @@
   </script>
 
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       position: relative;
       display: flex;

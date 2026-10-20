@@ -174,7 +174,7 @@ order.
 | --- | --- | --- |
 | `ui-drawer` | `dialog` | The native `<dialog>` element. |
 | `ui-drawer` | `handle` | The drag handle. Visible only when `side` is `bottom`. |
-| `ui-drawer` | `body` | Wrapper around the default slot. |
+| `ui-drawer` | `body` | Wrapper around the default slot. It adds no box of its own (`display: contents`), so empty content leaves no gap. |
 | `ui-drawer-title` | `title` | The `<h2>`. |
 | `ui-drawer-description` | `description` | The `<p>`. |
 

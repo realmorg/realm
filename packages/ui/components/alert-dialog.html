@@ -61,6 +61,12 @@
   </script>
 
   <style>
+    /* A double tap must not zoom the page. Set inside the shadow root, because a page-level
+       touch-action does not reach shadow content in iOS Safari. */
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: contents;
     }
@@ -68,6 +74,10 @@
       box-sizing: border-box;
       width: 100%;
       max-width: min(calc(var(--spacing) * 128), calc(100% - calc(var(--spacing) * 8)));
+      /* See ui-dialog: an explicit height keeps it from stretching, svh from resizing on scroll. */
+      height: fit-content;
+      max-height: calc(100svh - calc(var(--spacing) * 8));
+      overflow: auto;
       padding: calc(var(--spacing) * 6);
       border: 1px solid var(--border);
       border-radius: var(--radius-lg);
@@ -102,6 +112,10 @@
 <custom-element name="ui-alert-dialog-trigger" slot="trigger">
   <style>
     :host,
+    * {
+      touch-action: manipulation;
+    }
+    :host,
     span {
       display: contents;
     }
@@ -112,6 +126,10 @@
 
 <custom-element name="ui-alert-dialog-header" slot="header">
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: grid;
       gap: calc(var(--spacing) * 2);
@@ -123,6 +141,10 @@
 
 <custom-element name="ui-alert-dialog-title">
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: block;
     }
@@ -138,6 +160,10 @@
 
 <custom-element name="ui-alert-dialog-description">
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: block;
     }
@@ -153,6 +179,10 @@
 
 <custom-element name="ui-alert-dialog-footer" slot="footer">
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: flex;
       flex-wrap: wrap;
@@ -173,6 +203,10 @@
   </script>
 
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: inline-flex;
     }
@@ -187,6 +221,10 @@
   </script>
 
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: inline-flex;
     }

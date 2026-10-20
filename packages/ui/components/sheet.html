@@ -52,6 +52,12 @@
   </script>
 
   <style>
+    /* A double tap must not zoom the page. Set inside the shadow root, because a page-level
+       touch-action does not reach shadow content in iOS Safari. */
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: contents;
     }
@@ -68,6 +74,10 @@
 <custom-element name="ui-sheet-trigger" slot="trigger">
   <style>
     :host,
+    * {
+      touch-action: manipulation;
+    }
+    :host,
     span {
       display: contents;
     }
@@ -79,6 +89,10 @@
 <custom-element name="ui-sheet-close">
   <style>
     :host,
+    * {
+      touch-action: manipulation;
+    }
+    :host,
     span {
       display: contents;
     }
@@ -89,6 +103,10 @@
 
 <custom-element name="ui-sheet-header" slot="header">
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: grid;
       gap: calc(var(--spacing) * 2);
@@ -100,6 +118,10 @@
 
 <custom-element name="ui-sheet-title">
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: block;
     }
@@ -116,6 +138,10 @@
 
 <custom-element name="ui-sheet-description">
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: block;
     }
@@ -131,6 +157,10 @@
 
 <custom-element name="ui-sheet-footer" slot="footer">
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: flex;
       flex-wrap: wrap;

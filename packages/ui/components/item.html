@@ -11,6 +11,12 @@
   </script>
 
   <style>
+    /* A double tap must not zoom the page. Set inside the shadow root, because a page-level
+       touch-action does not reach shadow content in iOS Safari. */
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: flex;
       flex-wrap: wrap;
@@ -39,6 +45,10 @@
 
 <custom-element name="ui-item-group" role="list">
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: flex;
       flex-direction: column;
@@ -50,6 +60,10 @@
 
 <custom-element name="ui-item-media">
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: flex;
       flex-shrink: 0;
@@ -87,6 +101,10 @@
 
 <custom-element name="ui-item-content">
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: flex;
       flex: 1;
@@ -101,6 +119,10 @@
 
 <custom-element name="ui-item-title">
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: flex;
       align-items: center;
@@ -115,6 +137,10 @@
 
 <custom-element name="ui-item-description">
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: -webkit-box;
       overflow: hidden;
@@ -131,6 +157,10 @@
 
 <custom-element name="ui-item-actions">
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: flex;
       align-items: center;
@@ -143,6 +173,10 @@
 
 <custom-element name="ui-item-header">
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: flex;
       flex-basis: 100%;
@@ -157,6 +191,10 @@
 
 <custom-element name="ui-item-footer">
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: flex;
       flex-basis: 100%;

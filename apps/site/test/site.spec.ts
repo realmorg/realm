@@ -230,3 +230,24 @@ test("every link between site pages points at a page that exists", () => {
   }
   expect(broken).toEqual([]);
 });
+
+test.describe("on a touch screen", () => {
+  test.use({ hasTouch: true, viewport: { width: 390, height: 844 } });
+
+  test("tapping outside an open popover closes it", async ({ page, browserName, errors }) => {
+    test.skip(browserName === "firefox", "Firefox cannot emulate a touch screen");
+    await page.goto("components/popover/");
+    expect(await page.evaluate(() => matchMedia("(pointer: coarse)").matches)).toBe(true);
+    expect(await page.evaluate(() => getComputedStyle(document.documentElement).cursor)).toBe(
+      "pointer",
+    );
+    const content = page.locator("ui-popover-content").first();
+    const trigger = page.locator("ui-popover-trigger ui-button").first();
+    await trigger.scrollIntoViewIfNeeded();
+    await trigger.tap();
+    await expect(content).toBeVisible();
+    await page.touchscreen.tap(10, 120);
+    await expect(content).toBeHidden();
+    void errors;
+  });
+});

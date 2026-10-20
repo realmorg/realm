@@ -19,6 +19,12 @@
   </script>
 
   <style>
+    /* A double tap must not zoom the page. Set inside the shadow root, because a page-level
+       touch-action does not reach shadow content in iOS Safari. */
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: contents;
     }
@@ -29,6 +35,10 @@
 
 <custom-element name="ui-dropdown-menu-trigger">
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: inline-block;
       vertical-align: middle;
@@ -62,6 +72,10 @@
   </script>
 
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       box-sizing: border-box;
       min-width: calc(var(--spacing) * 32);
@@ -73,6 +87,9 @@
       color: var(--popover-foreground);
       box-shadow: var(--shadow-md);
       inset: auto;
+      height: fit-content;
+      max-height: calc(100svh - calc(var(--spacing) * 8));
+      overflow-y: auto;
       position-area: bottom span-right;
       position-try-fallbacks: flip-block, flip-inline;
     }
@@ -123,6 +140,10 @@
   </script>
 
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: flex;
       align-items: center;
@@ -190,6 +211,10 @@
   </script>
 
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: flex;
       align-items: center;
@@ -245,6 +270,10 @@
   </script>
 
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: block;
     }
@@ -285,6 +314,10 @@
   </script>
 
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: flex;
       align-items: center;
@@ -326,6 +359,10 @@
 
 <custom-element name="ui-menu-label">
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: block;
       padding: calc(var(--spacing) * 1.5) calc(var(--spacing) * 2);
@@ -339,6 +376,10 @@
 
 <custom-element name="ui-menu-group" role="group">
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: block;
     }
@@ -349,6 +390,10 @@
 
 <custom-element name="ui-menu-separator" role="separator">
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: block;
       height: 1px;
@@ -360,6 +405,10 @@
 
 <custom-element name="ui-menu-shortcut">
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       margin-inline-start: auto;
       font-size: var(--text-xs);

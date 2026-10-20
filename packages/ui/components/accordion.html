@@ -14,6 +14,12 @@
   </script>
 
   <style>
+    /* A double tap must not zoom the page. Set inside the shadow root, because a page-level
+       touch-action does not reach shadow content in iOS Safari. */
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: block;
     }
@@ -41,6 +47,10 @@
   </script>
 
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: block;
       border-bottom: 1px solid var(--border);
@@ -97,6 +107,10 @@
 
 <custom-element name="ui-accordion-trigger" slot="trigger">
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: flex;
       flex: 1;
@@ -110,6 +124,10 @@
 
 <custom-element name="ui-accordion-content">
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: block;
       padding-bottom: calc(var(--spacing) * 4);

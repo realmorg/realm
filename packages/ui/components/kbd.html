@@ -1,5 +1,11 @@
 <custom-element name="ui-kbd">
   <style>
+    /* A double tap must not zoom the page. Set inside the shadow root, because a page-level
+       touch-action does not reach shadow content in iOS Safari. */
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: inline-flex;
       align-items: center;
@@ -24,6 +30,10 @@
 
 <custom-element name="ui-kbd-group">
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: inline-flex;
       align-items: center;

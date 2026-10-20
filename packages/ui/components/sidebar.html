@@ -39,11 +39,17 @@
   </script>
 
   <style>
+    /* A double tap must not zoom the page. Set inside the shadow root, because a page-level
+       touch-action does not reach shadow content in iOS Safari. */
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       --ui-sidebar-width: calc(var(--spacing) * 64);
       --ui-sidebar-label: block;
       display: flex;
-      min-height: 100dvh;
+      min-height: 100svh;
       background: var(--sidebar);
     }
     :host(:state(attr-collapsed)) {
@@ -54,7 +60,7 @@
       position: sticky;
       top: 0;
       width: var(--ui-sidebar-width);
-      height: 100dvh;
+      height: 100svh;
       flex-shrink: 0;
       transition: width 0.2s ease;
     }
@@ -93,6 +99,10 @@
 
 <custom-element name="ui-sidebar" slot="sidebar">
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: flex;
       flex-direction: column;
@@ -111,6 +121,10 @@
 
 <custom-element name="ui-sidebar-header" slot="header">
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: flex;
       flex-direction: column;
@@ -124,6 +138,10 @@
 
 <custom-element name="ui-sidebar-footer" slot="footer">
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: flex;
       flex-direction: column;
@@ -137,6 +155,10 @@
 
 <custom-element name="ui-sidebar-content">
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: block;
       flex: 1;
@@ -163,6 +185,10 @@
   </script>
 
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: flex;
       flex-direction: column;
@@ -175,6 +201,10 @@
 
 <custom-element name="ui-sidebar-group-label">
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: var(--ui-sidebar-label, block);
       height: calc(var(--spacing) * 8);
@@ -192,6 +222,10 @@
 
 <custom-element name="ui-sidebar-menu">
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: block;
     }
@@ -210,6 +244,10 @@
 
 <custom-element name="ui-sidebar-menu-item" role="listitem">
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       position: relative;
       display: block;
@@ -250,6 +288,10 @@
   </script>
 
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: block;
     }
@@ -291,6 +333,10 @@
 
 <custom-element name="ui-sidebar-menu-badge">
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: var(--ui-sidebar-label, block);
       position: absolute;
@@ -322,6 +368,10 @@
 
 <custom-element name="ui-sidebar-inset">
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: flex;
       flex: 1;

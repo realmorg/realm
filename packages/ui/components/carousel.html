@@ -65,6 +65,12 @@
   </script>
 
   <style>
+    /* A double tap must not zoom the page. Set inside the shadow root, because a page-level
+       touch-action does not reach shadow content in iOS Safari. */
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       --carousel-direction: row;
       --carousel-axis: x;
@@ -120,6 +126,10 @@
 
 <custom-element name="ui-carousel-content">
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: flex;
       min-width: 0;
@@ -152,6 +162,10 @@
   </script>
 
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: block;
       box-sizing: border-box;
@@ -167,6 +181,10 @@
 
 <custom-element name="ui-carousel-previous">
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: inline-flex;
     }
@@ -177,6 +195,10 @@
 
 <custom-element name="ui-carousel-next">
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: inline-flex;
     }

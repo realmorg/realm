@@ -4,6 +4,12 @@
   </script>
 
   <style>
+    /* A double tap must not zoom the page. Set inside the shadow root, because a page-level
+       touch-action does not reach shadow content in iOS Safari. */
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: block;
     }
@@ -14,6 +20,10 @@
 
 <custom-element name="ui-breadcrumb-list">
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: block;
     }
@@ -36,6 +46,10 @@
 
 <custom-element name="ui-breadcrumb-item" role="listitem">
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: inline-flex;
       align-items: center;
@@ -52,6 +66,10 @@
   </script>
 
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     a {
       color: inherit;
       text-decoration: none;
@@ -72,6 +90,10 @@
 
 <custom-element name="ui-breadcrumb-page">
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     span {
       font-weight: var(--font-weight-normal);
       color: var(--foreground);
@@ -87,6 +109,10 @@
   </script>
 
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: inline-flex;
       align-items: center;
@@ -103,6 +129,10 @@
 
 <custom-element name="ui-breadcrumb-ellipsis">
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: inline-flex;
       align-items: center;

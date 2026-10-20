@@ -4,6 +4,12 @@
   </script>
 
   <style>
+    /* A double tap must not zoom the page. Set inside the shadow root, because a page-level
+       touch-action does not reach shadow content in iOS Safari. */
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       --logo-size: calc(var(--attr-size) * 1px);
       --orb-radius: 400;
@@ -111,6 +117,10 @@
   </script>
 
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     u-icon {
       width: calc(var(--spacing) * 4);
       height: calc(var(--spacing) * 4);
@@ -159,6 +169,10 @@
   </script>
 
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: inline-flex;
     }
@@ -257,6 +271,10 @@
   </script>
 
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       position: sticky;
       top: 0;
@@ -403,6 +421,10 @@
   </script>
 
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: grid;
       grid-template-columns: calc(var(--spacing) * 64) minmax(0, 1fr) calc(var(--spacing) * 56);
@@ -414,7 +436,7 @@
     .nav {
       position: sticky;
       top: calc(var(--spacing) * 14);
-      height: calc(100dvh - calc(var(--spacing) * 14));
+      height: calc(100svh - calc(var(--spacing) * 14));
       overflow-y: auto;
       padding: calc(var(--spacing) * 6) 0;
     }
@@ -493,6 +515,10 @@
   </script>
 
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       position: relative;
       display: block;
@@ -556,6 +582,10 @@
   </script>
 
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: block;
       margin: calc(var(--spacing) * 6) 0;
@@ -604,6 +634,10 @@
   </script>
 
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: block;
       border-top: 1px solid var(--border);

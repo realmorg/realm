@@ -59,7 +59,7 @@ html-code:not(:defined) {
 }
 icon-catalog:not(:defined) {
   display: block;
-  min-height: 100dvh;
+  min-height: 100svh;
 }
 
 .masthead {

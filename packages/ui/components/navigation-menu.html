@@ -4,6 +4,12 @@
   </script>
 
   <style>
+    /* A double tap must not zoom the page. Set inside the shadow root, because a page-level
+       touch-action does not reach shadow content in iOS Safari. */
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: block;
     }
@@ -14,6 +20,10 @@
 
 <custom-element name="ui-navigation-menu-list">
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: block;
     }
@@ -57,6 +67,10 @@
   </script>
 
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       position: relative;
       display: block;
@@ -77,6 +91,9 @@
       box-shadow: var(--shadow-md);
       inset: auto;
       position-anchor: --navigation-trigger;
+      height: fit-content;
+      max-height: calc(100svh - calc(var(--spacing) * 8));
+      overflow-y: auto;
       position-area: bottom span-right;
     }
   </style>
@@ -87,6 +104,10 @@
 
 <custom-element name="ui-navigation-menu-trigger" delegates-focus>
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: inline-flex;
     }
@@ -129,6 +150,10 @@
 
 <custom-element name="ui-navigation-menu-content" slot="content">
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: grid;
       gap: calc(var(--spacing) * 1);
@@ -161,6 +186,10 @@
   </script>
 
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: var(--ui-navigation-link-display, inline-flex);
     }

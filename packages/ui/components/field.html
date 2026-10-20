@@ -8,6 +8,12 @@
   </script>
 
   <style>
+    /* A double tap must not zoom the page. Set inside the shadow root, because a page-level
+       touch-action does not reach shadow content in iOS Safari. */
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: flex;
       flex-direction: column;
@@ -41,6 +47,10 @@
 
 <custom-element name="ui-field-content">
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: flex;
       flex: 1;
@@ -55,6 +65,10 @@
 
 <custom-element name="ui-field-description">
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: block;
       font-size: var(--text-sm);
@@ -68,6 +82,10 @@
 
 <custom-element name="ui-field-group">
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: flex;
       flex-direction: column;
@@ -87,6 +105,10 @@
   </script>
 
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: flex;
       flex-direction: column;
@@ -103,6 +125,10 @@
 
 <custom-element name="ui-field-legend" slot="legend">
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: block;
       font-size: var(--text-base);

@@ -19,6 +19,12 @@
   </script>
 
   <style>
+    /* A double tap must not zoom the page. Set inside the shadow root, because a page-level
+       touch-action does not reach shadow content in iOS Safari. */
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: contents;
     }
@@ -29,6 +35,10 @@
 
 <custom-element name="ui-popover-trigger">
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: inline-block;
       vertical-align: middle;
@@ -48,6 +58,10 @@
   </script>
 
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       box-sizing: border-box;
       width: calc(var(--spacing) * 72);
@@ -59,6 +73,9 @@
       color: var(--popover-foreground);
       box-shadow: var(--shadow-md);
       inset: auto;
+      height: fit-content;
+      max-height: calc(100svh - calc(var(--spacing) * 8));
+      overflow-y: auto;
       position-area: bottom;
       position-try-fallbacks: flip-block, flip-inline;
     }
@@ -92,6 +109,10 @@
 
 <custom-element name="ui-popover-header">
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: grid;
       gap: calc(var(--spacing) * 1);
@@ -103,6 +124,10 @@
 
 <custom-element name="ui-popover-title">
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: block;
     }
@@ -119,6 +144,10 @@
 
 <custom-element name="ui-popover-description">
   <style>
+    :host,
+    * {
+      touch-action: manipulation;
+    }
     :host {
       display: block;
     }
