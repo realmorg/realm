@@ -43,7 +43,7 @@ The work is split into ten phases, from archiving v1 to the 2.0 release. Each ph
 | 0. Archive v1 | Done locally (tags `v1-final`, `unicons-v1-final`, tarballs). Pushing waits for the new GitHub remote |
 | 1. Foundation and spikes | Done. Spike results in [section 23](#23-roadmap) |
 | 2–6. Runtime | Done. 137 OpenSpec scenarios, each with a test; 100% coverage; Chromium, Firefox and WebKit |
-| 7. Website and docs | Done. 94 pages (docs, reference, one page per component, examples, blog), built in CI by `.github/workflows/pages.yml`. Every page is tested in three browsers |
+| 7. Website and docs | Done. 94 pages (docs, reference, one page per component, examples, blog), built in CI and served at https://realmui.github.io/ by the `realmui/realmui.github.io` repository, which rebuilds when `main` changes. Every page is tested in three browsers |
 | 8. Unicons v2 | Done in `realmui/unicons` (branch `feat/v2`): one `<u-icon>`, 50,939 icons in 31 sets, per-chunk lazy loading |
 | 9. Release | Not started |
 | After 2.0: REALM UI | Pulled forward. `@realmorg/ui` ports shadcn/ui to about 60 native components |
@@ -81,7 +81,7 @@ Specs: `styling`, `component-api`, `forms-a11y`, `bindings` in `openspec/specs`.
 | Turing complete, complex apps | Done: todo, kanban (Trello-like), chess (with an engine), dashboard, weather (Open-Meteo), contacts (CRUD over a service-worker API), login/signup/OTP blocks |
 | Reactive styling | Done (reactive CSS above) |
 | Real imports, no embedded copies | Done. Examples and docs load components through `<import-element>` |
-| Website built purely with REALM, in CI, not committed | Done: `apps/site`, `.github/workflows/pages.yml` |
+| Website built purely with REALM, in CI, not committed | Done: `apps/site`, built and deployed by `realmui/realmui.github.io` (triggered from `.github/workflows/website.yml`) |
 | `llms.txt` | Done: `llms.txt`, `llms-full.txt` and a Markdown copy of every page |
 | shadcn/ui ported to native HTML with `:host` styling | Done: `@realmorg/ui`, Tailwind-style tokens in `theme.css`. Compound parts (`ui-card-header`, `ui-dialog-trigger`, …) instead of `slot=` attributes, and no `style=` needed in usage |
 | Test coverage | 100% everywhere: runtime and Vite plugin (V8 via Vitest), and every component script in the UI library, examples and site (V8 block coverage mapped to each component's script and handlers, `scripts/component-coverage.mjs`) |
