@@ -8,82 +8,148 @@
   </a>
 </p>
 
-<p align="center">Native web components, written in plain HTML. No compiler, no build step.</p>
+<p align="center">Write web components in plain HTML. Load one script from a CDN and open the file.</p>
 
-## Install
+<p align="center">
+  <a href="https://www.npmjs.com/package/@realmorg/realm"><img alt="npm" src="https://img.shields.io/npm/v/@realmorg/realm/alpha?label=%40realmorg%2Frealm"></a>
+  <a href="https://github.com/realmorg/realm/blob/main/LICENSE"><img alt="MIT license" src="https://img.shields.io/badge/license-MIT-blue"></a>
+</p>
 
-Add two tags from the CDN to any HTML page:
+REALM turns a `<custom-element>` tag into a native web component. You write its script, style and markup in one place, in plain HTML, and the browser runs exactly what you wrote. There is no compiler, no bundler and no config file, so View Source shows your code and there is nothing to install before you start.
+
+> REALM v2 is in alpha. The API is settling, so pin an exact version in production and read the changelog when you update.
+
+## Try it
+
+Save this as `index.html` and open it in a browser:
 
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/realm.css">
-<script type="module" src="https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/realm.js"></script>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/realm.css">
+  <script type="module" src="https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/realm.js"></script>
+</head>
+<body>
+  <custom-element name="click-counter">
+    <script type="realm">
+      const props = defineProps({ step: prop.number().default(1) });
+      const counter = useState({ count: 0 });
+
+      function add() {
+        counter.count += props.step;
+      }
+    </script>
+
+    <style type="realm">
+      button {
+        font: inherit;
+      }
+    </style>
+
+    <button onclick="add()">Clicked <slot name="#counter.count">0</slot> times</button>
+  </custom-element>
+
+  <click-counter step="2"></click-counter>
+</body>
+</html>
 ```
 
-For the ready-made `ui-*` components, add the REALM UI theme and bundle:
+What each part does:
+
+- `defineProps` declares the attributes the component accepts, with types and defaults. `step="2"` arrives as the number `2`.
+- `useState` holds reactive state. Changing `counter.count` updates every place that shows it, and nothing else.
+- `<slot name="#counter.count">` shows a value. Markup holds references like this, never expressions, so logic stays in the script where you can read and debug it.
+- `onclick="add()"` is a normal event handler attribute that can call the component's functions.
+- The `<style>` applies inside the component only, through shadow DOM.
+
+## Building an app
+
+**Put each component in its own file.** In a file, the script and style are plain `<script>` and `<style>`, and a page loads the file with one tag:
+
+```html
+<import-element from="./todo-list.html"></import-element>
+<todo-list></todo-list>
+```
+
+A component file imports the files it depends on, every file is fetched once, and `loading="lazy"` waits until the tag appears in the page.
+
+**Use ready-made components.** [REALM UI](https://realm.js.org/components/) has about 60 accessible components (buttons, dialogs, forms, tables, menus, charts) and a theme with dark mode. Load all of them, or one file per component:
 
 ```html
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/dist/theme.css">
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/dist/ui.html"></import-element>
+<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/button.html"></import-element>
+
+<ui-button variant="outline">Save draft</ui-button>
 ```
 
-Pin an exact version (for example `@realmorg/realm@2.0.0-alpha.1`) in production.
+**Load data without writing fetch code.** `fetch`, `into`, `render` and `busy` attributes send requests and put the response into state or markup. They abort when the component is removed.
 
-## A component
+**Build forms.** Components can be real form fields: they submit with their `name`, reset, validate and follow `<fieldset disabled>`.
 
-A REALM component is one `<custom-element>` tag holding a `<script>`, a `<style>` and markup:
+**Share state.** `defineStore("cart", { items: [] }, { persist: "local" })` gives every component the same store, saved to `localStorage` if you ask for it.
 
-```html
+**Add icons.** [Unicons](https://realm.js.org/unicons/) is one `<u-icon>` element for 50,939 icons from 31 sets, loaded in small chunks as the page uses them.
 
-<custom-element name="click-counter">
-  <script type="realm">
-    const props = defineProps({ step: prop.number().default(1) });
-    const counter = useState({ count: 0 });
+**Render on your server.** PHP, Rails, Django, Go or a static site generator can write the tags. The HTML that search engines receive already contains your content, and REALM upgrades the tags in the browser.
 
-    function add() {
-      counter.count += props.step;
-    }
-  </script>
+## When something goes wrong
 
-  <style>
-    button { font: inherit; }
-  </style>
+REALM checks your markup as it runs and logs a `[realm]` warning that names the component and the problem, for example:
 
-  <button onclick="add()">Clicked <slot name="#counter.count">0</slot> times</button>
-</custom-element>
-
-<click-counter step="2"></click-counter>
+```
+[realm] <todo-list> _hidden="#todo.items.length === 0" must be a reference like "#state.path" or "@prop".
 ```
 
-- Values show through native `<slot name="#state.path">`. Attributes bind with `_href="#link.url"`. Events use native `onclick`.
-- `fetch`, `into`, `render` and `busy` attributes make requests without code.
-- Components can act as form fields, stop their listeners and requests when removed, and style themselves from reactive CSS states.
-- About 16 KB gzipped. Works in current Chrome, Edge, Firefox and Safari.
+Every message is listed with its cause in the [console reference](https://realm.js.org/reference/console/).
+
+Everything a component starts (listeners, timers, observers, requests) stops when it is removed from the page.
+
+## Using a coding assistant
+
+REALM ships an agent skill that teaches assistants such as Claude Code, Codex and Cursor its rules, the REALM UI components and the common mistakes:
+
+```shell
+npx skills add realmorg/realm
+```
+
+The docs are also available as Markdown for assistants at [realm.js.org/llms.txt](https://realm.js.org/llms.txt).
+
+## Shipping
+
+- **Pin versions.** `@alpha` always points at the newest alpha, and jsDelivr can cache it for up to 12 hours. In production, use an exact version such as `@realmorg/realm@2.0.0-alpha.2`.
+- **Content Security Policy.** REALM never uses `eval`, `new Function` or `blob:` URLs. It works under a nonce policy with `'strict-dynamic'`. For a policy of only `script-src 'self'`, the optional [Vite plugin](https://github.com/realmorg/realm/tree/main/packages/vite-plugin) assembles component scripts into files at build time.
+- **Size and browsers.** The runtime is about 16 KB gzipped and works in current Chrome, Edge, Firefox and Safari.
 
 ## Packages
 
-REALM and REALM UI load from the CDN. The Vite plugin is an optional dev tool installed from npm.
+| Package | What it is | Load it from |
+| --- | --- | --- |
+| [`@realmorg/realm`](https://github.com/realmorg/realm/tree/main/packages/realm) | The runtime | CDN or npm |
+| [`@realmorg/ui`](https://github.com/realmorg/realm/tree/main/packages/ui) | About 60 components and the theme | CDN or npm |
+| [`@realmorg/unicons`](https://github.com/realmorg/realm/tree/main/packages/unicons) | The `<u-icon>` element and 50,939 icons | CDN or npm |
+| [`@realmorg/vite-plugin`](https://github.com/realmorg/realm/tree/main/packages/vite-plugin) | Optional build step for a strict CSP, and a `custom-elements.json` manifest | npm |
 
-| Package | |
-| --- | --- |
-| `@realmorg/realm` | The runtime |
-| `@realmorg/ui` | About 60 accessible components, built with REALM |
-| `@realmorg/vite-plugin` | Optional, for projects that already use Vite: pre-assembles components for strict Content Security Policies and writes `custom-elements.json` |
+## Learn more
 
-Docs, a tutorial and live examples are at [realm.js.org](https://realm.js.org). [llms.txt](https://realm.js.org/llms.txt) lists the same docs in Markdown for code assistants.
+- [Docs](https://realm.js.org/docs/): a quick start, a tutorial and guides for state, events, forms, fetching, styling and security
+- [Reference](https://realm.js.org/reference/): every element, attribute and script helper
+- [Examples](https://realm.js.org/examples/): complete apps (a todo list, a kanban board, chess, a dashboard, a shop, chat, notes and more), each with a button that shows its source
+- [Migrating from v1](https://realm.js.org/docs/migrating-from-v1/). v1 is archived under the `v1-final` tag.
 
-## Development
+## Contributing
 
-The repository holds the runtime, the UI library, the Vite plugin, the website and example apps (a todo list, a kanban board, chess, a dashboard, a weather app and a contacts app). See `AGENTS.md` for the rules and commands, `PLAN.md` for the design, and `openspec/specs` for the specification. Every scenario in the specification has a test, and the runtime keeps 100% test coverage in Chromium, Firefox and WebKit.
+We use AI coding assistants to build REALM, and you are welcome to use one too. [CONTRIBUTING.md](https://github.com/realmorg/realm/blob/main/.github/CONTRIBUTING.md) covers the setup, how changes are proposed and the checks to run. To get started:
 
-```bash
+```shell
 pnpm install
 pnpm build
 pnpm --filter @realmorg/realm coverage
-pnpm --filter site test
 ```
 
-REALM v1 is archived under the `v1-final` tag.
+The behaviour of REALM is specified in `openspec/specs`, and every scenario there has a test. The runtime keeps 100% test coverage in Chromium, Firefox and WebKit.
 
 ## License
 
-MIT
+[MIT](https://github.com/realmorg/realm/blob/main/LICENSE)
