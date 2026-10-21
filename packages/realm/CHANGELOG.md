@@ -1,5 +1,12 @@
 # @realmorg/realm
 
+## 2.0.0-alpha.3
+
+### Patch Changes
+
+- e4f8d9b: Recursive components (issue #57): a component can render itself as deep as its data goes. Nesting past 32 levels in one pass finishes in a microtask instead of overflowing the call stack, which used to stop trees at about 45 levels. A component nested more than 1000 deep is not set up, and REALM warns that its recursion needs a condition that stops it.
+- 3b98631: An explicit `lookup()` call in a component script no longer logs `<child> reads "name" from <parent>.`. Handler names and `#` references that a component reads from a parent without declaring them still log it.
+
 ## 2.0.0-alpha.2
 
 ### Patch Changes

@@ -1,5 +1,16 @@
 # @realmorg/unicons
 
+## 2.0.0-alpha.2
+
+### Patch Changes
+
+- 97a757e: The catalog's "copied" notice now hides after three seconds, or ten when the clipboard refuses and the markup has to be copied by hand. On phones it spans the screen with even margins instead of being squeezed to half the width.
+- 1f199c4: The catalog's size slider no longer snaps back while dragging. The catalog now passes the slider a number instead of a string.
+- db1f8bd: `<u-icon>` sets `touch-action: manipulation` inside its shadow root, so quickly tapping an icon button does not zoom the page in iOS Safari.
+- Updated dependencies [e4f8d9b]
+- Updated dependencies [3b98631]
+  - @realmorg/realm@2.0.0-alpha.3
+
 ## 2.0.0-alpha.1
 
 ### Major Changes
