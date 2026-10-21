@@ -29,7 +29,8 @@ describe("ui-dialog", () => {
     const dialog = part(overlay, "dialog");
     const header = (host.querySelector("ui-dialog-header") as HTMLElement).getBoundingClientRect();
     const footer = (host.querySelector("ui-dialog-footer") as HTMLElement).getBoundingClientRect();
-    expect(Math.round(footer.top - header.bottom)).toBe(16);
+    // A centred dialog can sit on a half pixel, so WebKit may measure the 16px gap as 15.5.
+    expect(Math.abs(footer.top - header.bottom - 16)).toBeLessThanOrEqual(1);
     const style = getComputedStyle(dialog);
     expect(dialog.getBoundingClientRect().height).toBeLessThan(innerHeight / 2);
     expect(style.maxHeight).toBe(`${innerHeight - 32}px`);
