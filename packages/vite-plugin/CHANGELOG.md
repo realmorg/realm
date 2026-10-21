@@ -1,5 +1,12 @@
 # @realmorg/vite-plugin
 
+## 2.0.0-alpha.4
+
+### Patch Changes
+
+- Updated dependencies [41bc927]
+  - @realmorg/realm@2.0.0-alpha.4
+
 ## 2.0.0-alpha.3
 
 ### Patch Changes
