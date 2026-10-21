@@ -42,4 +42,6 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
       - if: steps.changesets.outputs.published == 'true'
         name: Refresh the jsDelivr cache for the published packages
-        run: node scripts/purge-cdn.mjs '${{ steps.changesets.outputs.publishedPackages }}'
+        env:
+          PUBLISHED: ${{ steps.changesets.outputs.published-packages }}
+        run: node scripts/purge-cdn.mjs "$PUBLISHED"

@@ -37,7 +37,7 @@ const filesOf = (dir) =>
   )[0].files.map((file) => file.path);
 
 const main = async () => {
-  const published = JSON.parse(process.argv[2] ?? "[]");
+  const published = JSON.parse(process.argv[2] || "[]");
   const pre = JSON.parse(readFileSync(join(repo, ".changeset/pre.json"), "utf8"));
   const dirs = packageDirs();
   const paths = published.flatMap(({ name }) =>
