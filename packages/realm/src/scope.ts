@@ -49,12 +49,12 @@ const readRoot = (reference: Reference, scope: Scope) => {
   const local = scope.vars.findLast(([name]) => name === root);
   if (local) return local[1].value;
   if (instance.has(root)) return instance.get(root);
-  const found = instance.findInParents(root, true);
-  if (!found)
+  const owner = instance.findInParents(root, true);
+  if (!owner)
     warn(
       `<${instance.host.localName}> "${reference.text}" is not defined in this component or its parents.`,
     );
-  return found?.value;
+  return owner?.get(root);
 };
 
 export const readReference = (reference: Reference, scope: Scope): unknown => {

@@ -16,8 +16,11 @@ const EMPTY_SCOPE: SetupResult = { get: () => undefined, handlers: [] };
 
 export const instances = new WeakMap<Node, Instance>();
 
+// The flat tree: slotted content continues from its slot, so components wrapping that slot are
+// parents too.
 const parentOf = (node: Node): Node | null =>
-  node.parentNode instanceof ShadowRoot ? node.parentNode.host : node.parentNode;
+  (node as Element).assignedSlot ??
+  (node.parentNode instanceof ShadowRoot ? node.parentNode.host : node.parentNode);
 
 // Setting up a component connects the components in its markup synchronously, so each nesting
 // level grows the call stack. Every 32nd level finishes setting up in a microtask, on a fresh stack.
@@ -69,13 +72,13 @@ export class Instance {
     return this.scope.get(name);
   }
 
-  findInParents(name: string, report?: boolean): { value: unknown } | undefined {
+  findInParents(name: string, report?: boolean): Instance | undefined {
     for (let node = parentOf(this.host); node; node = parentOf(node)) {
       const owner = instances.get(node);
       if (owner?.has(name)) {
         if (report && !owner.host.contains(this.host))
           warn(`<${this.host.localName}> reads "${name}" from <${owner.host.localName}>.`);
-        return { value: owner.get(name) };
+        return owner;
       }
     }
     return undefined;
@@ -216,12 +219,10 @@ const createContext = (instance: Instance): Context => ({
   onFormDisabled: (fn) => instance.formDisabled.push(fn),
   onFormStateRestore: (fn) => instance.formStateRestore.push(fn),
   defineStore,
-  lookup: (name, report) =>
-    (
-      instance.findInParents(name, report) ?? {
-        value: (globalThis as Record<string, unknown>)[name],
-      }
-    ).value,
+  lookup: (name, report) => {
+    const owner = instance.findInParents(name, report);
+    return owner ? owner.get(name) : (globalThis as Record<string, unknown>)[name];
+  },
   prop,
   host: instance.host,
   refs: instance.refs,

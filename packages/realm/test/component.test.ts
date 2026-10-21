@@ -504,6 +504,30 @@ describe("scope", () => {
     el.remove();
   });
 
+  test("slotted content reads from a component that wraps its slot", async () => {
+    const game = tag("game");
+    const scene = tag("scene");
+    const floater = tag("floater");
+    const sprite = tag("sprite");
+    await define(`
+      <custom-element name="${sprite}">
+        <script>const world = lookup("world");</script>
+        <p><slot name="#world.name"></slot></p>
+      </custom-element>
+      <custom-element name="${scene}">
+        <script>const world = { name: "floater scene" };</script>
+        <slot></slot>
+      </custom-element>
+      <custom-element name="${floater}"><${scene}><slot></slot></${scene}></custom-element>
+      <custom-element name="${game}">
+        <script>const world = { name: "game" };</script>
+        <${floater}><${sprite}></${sprite}></${floater}>
+      </custom-element>`);
+    const el = mount(game);
+    const spriteEl = root(el).querySelector(sprite) as HTMLElement;
+    expect(text(root(spriteEl).querySelector("p"))).toBe("floater scene");
+  });
+
   test("a handler that reads an undeclared name from a parent still warns", async () => {
     const shell = tag("shell");
     const child = tag("child");

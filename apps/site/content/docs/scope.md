@@ -87,7 +87,7 @@ Rules:
 
 - A component's own names always win over a parent's.
 - A name that no component defines logs a warning and shows the slot's fallback content.
-- The lookup follows the composed tree, so it works through shadow roots and slots.
+- The lookup follows the flat tree, so it works through shadow roots and slots. Slotted content looks up from its slot first, so a component that wraps the slot in the host's markup is a parent of that content, before the host.
 
 ## Pass data explicitly for reusable components
 
