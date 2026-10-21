@@ -70,6 +70,8 @@
     <custom-element name="icon-catalog">
       <script type="realm">
         const PAGE = 240;
+        const COPIED_DELAY = 3000;
+        const REFUSED_DELAY = 10000;
         const COUNT = new Intl.NumberFormat("en");
         const SWATCHES = { text: "", muted: "var(--muted-foreground)", pink: "var(--primary)" };
 
@@ -144,6 +146,15 @@
           catalog.limit += PAGE;
         }
 
+        let hideTimer;
+
+        function hideCopiedAfter(delay) {
+          clearTimeout(hideTimer);
+          hideTimer = setTimeout(() => {
+            catalog.copied = "";
+          }, delay);
+        }
+
         function copy(name) {
           const token = catalog.color.match(/^var\((--[\w-]+)\)$/)?.[1];
           const color = token ? getComputedStyle(host).getPropertyValue(token).trim() : catalog.color;
@@ -151,8 +162,10 @@
           const markup = `<u-icon set="${catalog.shown.set}" name="${name}" size="${catalog.size}"${colorAttribute}></u-icon>`;
           catalog.copied = markup;
           catalog.refused = false;
+          hideCopiedAfter(COPIED_DELAY);
           navigator.clipboard?.writeText(markup).catch(() => {
             catalog.refused = true;
+            hideCopiedAfter(REFUSED_DELAY);
           });
         }
 
@@ -522,8 +535,10 @@
         }
         .copied {
           position: fixed;
-          left: 50%;
+          inset-inline: 0;
           bottom: calc(var(--spacing) * 6);
+          width: fit-content;
+          margin-inline: auto;
           z-index: 2;
           display: none;
           align-items: center;
@@ -537,7 +552,6 @@
           color: var(--popover-foreground);
           box-shadow: var(--shadow-lg);
           font-size: var(--text-sm);
-          transform: translateX(-50%);
         }
         .copied u-icon {
           color: var(--primary);
@@ -556,13 +570,19 @@
         @keyframes toast-in {
           from {
             opacity: 0;
-            transform: translate(-50%, calc(var(--spacing) * 2));
+            translate: 0 calc(var(--spacing) * 2);
           }
         }
         @media (max-width: 860px) {
           :host {
             grid-template-columns: minmax(0, 1fr);
             gap: 0;
+          }
+          .copied {
+            width: auto;
+            max-width: none;
+            margin-inline: calc(var(--spacing) * 4);
+            bottom: calc(var(--spacing) * 4);
           }
           aside {
             position: static;

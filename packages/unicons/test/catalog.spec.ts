@@ -85,6 +85,54 @@ test.describe("catalog", () => {
     await expect(page.getByRole("status").getByRole("img", { name: "Copied" })).toBeHidden();
   });
 
+  test("the copied notice hides itself after a few seconds", async ({ page }) => {
+    await page.addInitScript(() => {
+      Object.defineProperty(navigator, "clipboard", {
+        value: { writeText: () => Promise.resolve() },
+      });
+    });
+    await page.clock.install();
+    await page.goto(CATALOG);
+    await page.getByPlaceholder("Search icons").fill("house-plus");
+    const notice = page.locator("icon-catalog .copied");
+    await page.getByRole("button", { name: "house-plus" }).click();
+    await expect(notice).toBeVisible();
+    await page.clock.runFor(2000);
+    await page.getByRole("button", { name: "house-plus" }).click();
+    await page.clock.runFor(2000);
+    await expect(notice).toBeVisible();
+    await page.clock.runFor(1500);
+    await expect(notice).toBeHidden();
+  });
+
+  test("a refused copy stays up long enough to copy by hand", async ({ page }) => {
+    await page.addInitScript(() => {
+      Object.defineProperty(navigator, "clipboard", {
+        value: { writeText: () => Promise.reject(new DOMException("Denied", "NotAllowedError")) },
+      });
+    });
+    await page.clock.install();
+    await page.goto(CATALOG);
+    await page.getByPlaceholder("Search icons").fill("house-plus");
+    const notice = page.locator("icon-catalog .copied");
+    await page.getByRole("button", { name: "house-plus" }).click();
+    await expect(notice.getByRole("img", { name: "Copied" })).toBeHidden();
+    await page.clock.runFor(5000);
+    await expect(notice).toBeVisible();
+    await page.clock.runFor(6000);
+    await expect(notice).toBeHidden();
+  });
+
+  test("the copied notice spans a phone screen with even margins", async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto(CATALOG);
+    await page.getByPlaceholder("Search icons").fill("house-plus");
+    await page.getByRole("button", { name: "house-plus" }).click();
+    const box = await page.locator("icon-catalog .copied").boundingBox();
+    expect(box?.x).toBeCloseTo(16, 0);
+    expect((box?.x ?? 0) + (box?.width ?? 0)).toBeCloseTo(390 - 16, 0);
+  });
+
   test("highlights the install snippet and the copied markup", async ({ page }) => {
     await page.goto(CATALOG);
     const snippet = page.locator(".intro html-code");
