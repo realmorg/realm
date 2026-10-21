@@ -528,6 +528,34 @@ describe("scope", () => {
     expect(text(root(spriteEl).querySelector("p"))).toBe("floater scene");
   });
 
+  test("handlers in slotted content resolve from the component they are placed in", async () => {
+    const sheet = tag("sheet");
+    const dialog = tag("dialog");
+    const close = tag("close");
+    await define(`
+      <custom-element name="${close}"><button onclick="close()">x</button></custom-element>
+      <custom-element name="${dialog}">
+        <script>const state = useState({ closed: false }); function close() { state.closed = true; }</script>
+        <slot></slot>
+      </custom-element>
+      <custom-element name="${sheet}">
+        <script>const state = useState({ closed: false }); function close() { state.closed = true; }</script>
+        <${dialog}><slot></slot></${dialog}>
+      </custom-element>`);
+    const el = document.createElement(sheet);
+    el.innerHTML = `<${close}></${close}>`;
+    document.body.append(el);
+    await tick();
+    (
+      root(el.querySelector(close) as HTMLElement).querySelector("button") as HTMLButtonElement
+    ).click();
+    const states = [el, root(el).querySelector(dialog) as HTMLElement].map(
+      (host) => (instances.get(host)?.get("state") as { closed: boolean } | undefined)?.closed,
+    );
+    expect(states).toEqual([true, false]);
+    el.remove();
+  });
+
   test("a handler that reads an undeclared name from a parent still warns", async () => {
     const shell = tag("shell");
     const child = tag("child");

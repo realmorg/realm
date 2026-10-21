@@ -22,7 +22,7 @@ const session = lookup("session");
 
 | Step | Source |
 | --- | --- |
-| 1 | Parent components, nearest first, walking up the flat tree: slotted content continues from its slot, and a shadow root continues from its host. A component "defines" a name when it is a top-level name of its script |
+| 1 | Parent components, nearest first, walking up the flat tree: slotted content continues from its slot (so components wrapping the slot come before the host), and a shadow root continues from its host. Handler names skip slots and resolve from the component the content is placed in. A component "defines" a name when it is a top-level name of its script |
 | 2 | `globalThis[name]` |
 
 A `lookup` call is a dependency you chose, so it logs nothing. Handlers also look up names the script does not define, at call time. Those reads are implicit, so REALM logs `<child> reads "name" from <parent>.` once when the name comes from a parent through a shadow root (not for [compound parts](/reference/elements/custom-element/#slot)).

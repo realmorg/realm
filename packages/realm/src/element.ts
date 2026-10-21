@@ -16,19 +16,18 @@ const EMPTY_SCOPE: SetupResult = { get: () => undefined, handlers: [] };
 
 export const instances = new WeakMap<Node, Instance>();
 
-// The flat tree: slotted content continues from its slot, so components wrapping that slot are
-// parents too.
-const parentOf = (node: Node): Node | null =>
-  (node as Element).assignedSlot ??
+// Walks the flat tree: slotted content continues from its slot, so components wrapping that slot
+// are parents too. Reported (implicit) reads skip slots, so a library's shadow markup never
+// captures the names in its users' content.
+const parentOf = (node: Node, report?: boolean): Node | null =>
+  (!report && (node as Element).assignedSlot) ||
   (node.parentNode instanceof ShadowRoot ? node.parentNode.host : node.parentNode);
 
 // Setting up a component connects the components in its markup synchronously, so each nesting
 // level grows the call stack. Every 32nd level finishes setting up in a microtask, on a fresh stack.
-const depthOf = (el: Element) => {
-  let depth = 0;
-  for (let root = el.getRootNode(); root instanceof ShadowRoot; root = root.host.getRootNode())
-    depth++;
-  return depth;
+const depthOf = (el: Element): number => {
+  const root = el.getRootNode();
+  return root instanceof ShadowRoot ? 1 + depthOf(root.host) : 0;
 };
 
 const ancestorSettingUp = (el: Element) => {
@@ -73,7 +72,7 @@ export class Instance {
   }
 
   findInParents(name: string, report?: boolean): Instance | undefined {
-    for (let node = parentOf(this.host); node; node = parentOf(node)) {
+    for (let node = parentOf(this.host, report); node; node = parentOf(node, report)) {
       const owner = instances.get(node);
       if (owner?.has(name)) {
         if (report && !owner.host.contains(this.host))
