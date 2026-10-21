@@ -77,6 +77,10 @@ test("radius and font change the preview", async ({ page, errors }) => {
   const radius = builder.getByRole("slider", { name: "Radius" });
   await radius.focus();
   await radius.press("End");
+  await expect
+    .poll(() => radius.evaluate((el) => (el.getRootNode() as ShadowRoot).host))
+    .toBeTruthy();
+  await expect(builder.locator("ui-slider").first()).toHaveJSProperty("value", 1.5);
   await expect(builder.locator(".setting .value")).toHaveText("1.5rem");
   await expect(builder.locator(".preview")).toHaveAttribute("style", /--radius: 1.5rem/);
   const button = builder.locator(".preview ui-button").first().locator("button");

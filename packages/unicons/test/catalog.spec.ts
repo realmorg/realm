@@ -147,6 +147,11 @@ test.describe("catalog", () => {
     await expect(icon).toHaveAttribute("size", "32");
     await page.locator('input[type="range"]').fill("48");
     await expect(icon).toHaveAttribute("size", "48");
+    const slider = page.locator("icon-catalog ui-slider");
+    await expect
+      .poll(() => slider.evaluate((el) => (el as HTMLElement & { value: number }).value))
+      .toBe(48);
+    await expect(page.locator('input[type="range"]')).toHaveValue("48");
     await expect.poll(async () => (await icon.boundingBox())?.width).toBe(48);
     await page.locator('input[type="color"]').fill("#ff0000");
     await expect(icon).toHaveAttribute("color", "#ff0000");
@@ -155,6 +160,34 @@ test.describe("catalog", () => {
       .toBe("rgb(255, 0, 0)");
     await expect(page.locator(".custom .dot")).toBeVisible();
     await expect(page.locator(".custom u-icon")).toBeHidden();
+  });
+
+  test("dragging the size slider moves smoothly through its range", async ({ page }) => {
+    await page.goto(CATALOG);
+    const range = page.locator('input[type="range"]');
+    await expect(range).toHaveValue("32");
+    const box = (await range.boundingBox()) as {
+      x: number;
+      y: number;
+      width: number;
+      height: number;
+    };
+    const y = box.y + box.height / 2;
+    const start = box.x + (box.width * (32 - 16)) / 48;
+    await page.mouse.move(start, y);
+    await page.mouse.down();
+    const values: number[] = [];
+    for (let step = 1; step <= 6; step++) {
+      await page.mouse.move(start + step * 10, y);
+      values.push(Number(await range.inputValue()));
+    }
+    await page.mouse.up();
+    expect(
+      values.every(
+        (value, index) => value >= 16 && (index === 0 || value >= (values[index - 1] as number)),
+      ),
+    ).toBe(true);
+    expect(values.at(-1)).toBeGreaterThan(32);
   });
 
   test("colour swatches follow the theme and start on the text colour", async ({ page }) => {

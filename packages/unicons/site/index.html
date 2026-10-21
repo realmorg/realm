@@ -79,7 +79,7 @@
           shown: { set: "lu", names: [] },
           query: "",
           limit: PAGE,
-          size: "32",
+          size: 32,
           color: "",
           copied: "",
           refused: false,
@@ -90,6 +90,9 @@
               option: `${set.name} (${set.id}), ${COUNT.format(set.count)}`,
               selected: set.id === this.set,
             }));
+          },
+          get iconSize() {
+            return String(this.size);
           },
           get swatch() {
             return Object.keys(SWATCHES).find((key) => SWATCHES[key] === this.color) ?? "";
@@ -126,7 +129,7 @@
         }
 
         function resize(value) {
-          catalog.size = String(value);
+          catalog.size = Number(value);
         }
 
         function tint(value) {
@@ -654,7 +657,7 @@
         <ul class="grid">
           <li repeat="#catalog.visible" as="name">
             <button type="button" onclick="copy(name)" _title="#name">
-              <u-icon _set="#catalog.shown.set" _name="#name" _size="#catalog.size" _color="#catalog.color"></u-icon>
+              <u-icon _set="#catalog.shown.set" _name="#name" _size="#catalog.iconSize" _color="#catalog.color"></u-icon>
               <span><slot name="#name"></slot></span>
             </button>
           </li>
