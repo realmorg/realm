@@ -478,6 +478,47 @@ describe("scope", () => {
     expect(text(root(navEl).querySelector("p"))).toBe("Guest nav");
   });
 
+  test("an explicit lookup through a shadow root reads the parent without a warning", async () => {
+    const game = tag("game");
+    const hero = tag("hero");
+    const sprite = tag("sprite");
+    await define(`
+      <custom-element name="${sprite}">
+        <script>const world = lookup("world");</script>
+        <p><slot name="#world.name"></slot></p>
+      </custom-element>
+      <custom-element name="${hero}"><${sprite}></${sprite}></custom-element>
+      <custom-element name="${game}">
+        <script>const world = { name: "kaplay" };</script>
+        <slot></slot>
+      </custom-element>`);
+    const el = document.createElement(game);
+    el.innerHTML = `<${hero}></${hero}>`;
+    document.body.append(el);
+    await tick();
+    const spriteEl = root(el.querySelector(hero) as HTMLElement).querySelector(
+      sprite,
+    ) as HTMLElement;
+    expect(text(root(spriteEl).querySelector("p"))).toBe("kaplay");
+    expect(warned(`<${sprite}> reads "world"`)).toBe(false);
+    el.remove();
+  });
+
+  test("a handler that reads an undeclared name from a parent still warns", async () => {
+    const shell = tag("shell");
+    const child = tag("child");
+    await define(`
+      <custom-element name="${child}"><button onclick="save()">save</button></custom-element>
+      <custom-element name="${shell}">
+        <script>const saved = useState({ count: 0 }); function save() { saved.count++; }</script>
+        <${child}></${child}>
+      </custom-element>`);
+    const el = mount(shell);
+    const childEl = root(el).querySelector(child) as HTMLElement;
+    (root(childEl).querySelector("button") as HTMLButtonElement).click();
+    expect(warned(`<${child}> reads "save" from <${shell}>`)).toBe(true);
+  });
+
   test("handler names that no component defines fall back to globals", async () => {
     const name = tag("globals");
     (window as unknown as { realmGlobalFn: () => void }).realmGlobalFn = vi.fn();

@@ -43,7 +43,7 @@ const handlerSource = (vars: string[], code: string, names: Set<string>) => {
   const lookups = [...freeNames(code)].filter((name) => !skip.has(name));
   const params = ["event", ...vars].join(", ");
   const resolved = lookups
-    .map((name) => `const ${name} = lookup(${JSON.stringify(name)});`)
+    .map((name) => `const ${name} = lookup(${JSON.stringify(name)}, true);`)
     .join("\n");
   return `function (${params}) {\n${resolved}\n{\n${code}\n}\n}`;
 };

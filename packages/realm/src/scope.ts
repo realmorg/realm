@@ -49,7 +49,7 @@ const readRoot = (reference: Reference, scope: Scope) => {
   const local = scope.vars.findLast(([name]) => name === root);
   if (local) return local[1].value;
   if (instance.has(root)) return instance.get(root);
-  const found = instance.findInParents(root);
+  const found = instance.findInParents(root, true);
   if (!found)
     warn(
       `<${instance.host.localName}> "${reference.text}" is not defined in this component or its parents.`,

@@ -81,7 +81,7 @@ When the owner does not define a name, REALM looks in the component that contain
 <app-shell></app-shell>
 ```
 
-`nav-bar` has no `session` and no `signOut`, so both resolve to `app-shell`. REALM logs a one-time console warning for each name read from a parent (`<nav-bar> reads "session" from <app-shell>.`), so you can see where implicit sharing happens.
+`nav-bar` has no `session` and no `signOut`, so both resolve to `app-shell`. REALM logs a one-time console warning for each name read from a parent (`<nav-bar> reads "session" from <app-shell>.`), so you can see where implicit sharing happens. An explicit `lookup("session")` in the script logs nothing, because you asked for it.
 
 Rules:
 

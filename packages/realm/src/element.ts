@@ -69,21 +69,16 @@ export class Instance {
     return this.scope.get(name);
   }
 
-  findInParents(name: string): { value: unknown } | undefined {
+  findInParents(name: string, report?: boolean): { value: unknown } | undefined {
     for (let node = parentOf(this.host); node; node = parentOf(node)) {
       const owner = instances.get(node);
       if (owner?.has(name)) {
-        if (!owner.host.contains(this.host))
+        if (report && !owner.host.contains(this.host))
           warn(`<${this.host.localName}> reads "${name}" from <${owner.host.localName}>.`);
         return { value: owner.get(name) };
       }
     }
     return undefined;
-  }
-
-  lookup(name: string) {
-    const found = this.findInParents(name);
-    return found ? found.value : (globalThis as Record<string, unknown>)[name];
   }
 
   setLoading(delta: number) {
@@ -221,7 +216,12 @@ const createContext = (instance: Instance): Context => ({
   onFormDisabled: (fn) => instance.formDisabled.push(fn),
   onFormStateRestore: (fn) => instance.formStateRestore.push(fn),
   defineStore,
-  lookup: (name) => instance.lookup(name),
+  lookup: (name, report) =>
+    (
+      instance.findInParents(name, report) ?? {
+        value: (globalThis as Record<string, unknown>)[name],
+      }
+    ).value,
   prop,
   host: instance.host,
   refs: instance.refs,

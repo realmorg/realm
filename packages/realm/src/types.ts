@@ -33,7 +33,8 @@ export interface Context {
   onFormDisabled(fn: (disabled: boolean) => void): void;
   onFormStateRestore(fn: (state: unknown, mode: string) => void): void;
   defineStore<T extends object>(name: string, initial: T, options?: StoreOptions): T;
-  lookup(name: string): unknown;
+  /** `report` is set only by generated handler code, for names the script never declared. */
+  lookup(name: string, report?: boolean): unknown;
   prop: typeof prop;
   host: HTMLElement;
   refs: Record<string, Element>;

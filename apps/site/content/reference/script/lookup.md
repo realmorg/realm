@@ -25,7 +25,7 @@ const session = lookup("session");
 | 1 | Parent components, nearest first, walking up through shadow roots. A component "defines" a name when it is a top-level name of its script |
 | 2 | `globalThis[name]` |
 
-When a parent provides the name, REALM logs `<child> reads "name" from <parent>.` once (not for [compound parts](/reference/elements/custom-element/#slot)). Handlers use the same lookup, at call time, for names the script does not define.
+A `lookup` call is a dependency you chose, so it logs nothing. Handlers also look up names the script does not define, at call time. Those reads are implicit, so REALM logs `<child> reads "name" from <parent>.` once when the name comes from a parent through a shadow root (not for [compound parts](/reference/elements/custom-element/#slot)).
 
 Use props for data a reusable component depends on. Use `lookup` for small parts that always live inside one parent.
 
