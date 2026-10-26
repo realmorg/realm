@@ -6,6 +6,7 @@
 // It writes the request bodies to indexnow.json, which the deploy job posts once the pages are
 // live. When nothing changed, it writes no file.
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
+import { basename, dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 export const KEY = "18971ba2931eb81880ee5d96af8dd1d4";
@@ -18,6 +19,15 @@ export const entriesOf = (xml) =>
       ([, loc, lastmod]) => [loc.trim(), lastmod?.trim() ?? ""],
     ),
   );
+
+// A sitemap index lists other sitemaps; their pages are joined into one urlset text.
+export const expand = async (xml, load) => {
+  if (!xml.includes("<sitemapindex")) return xml;
+  const children = [...xml.matchAll(/<sitemap>\s*<loc>([^<]+)<\/loc>/g)].map(([, loc]) =>
+    loc.trim(),
+  );
+  return (await Promise.all(children.map((loc) => load(loc).catch(() => "")))).join("\n");
+};
 
 export const changedUrls = (previousXml, nextXml) => {
   const previous = entriesOf(previousXml);
@@ -41,11 +51,14 @@ export const payloads = (urls) => {
 };
 
 const main = async ([sitemap, out]) => {
-  const next = readFileSync(sitemap, "utf8");
+  const local = async (loc) =>
+    readFileSync(join(dirname(sitemap), basename(new URL(loc).pathname)), "utf8");
+  const remote = (loc) => fetch(loc).then((response) => (response.ok ? response.text() : ""));
+  const next = await expand(readFileSync(sitemap, "utf8"), local);
   const first = entriesOf(next).keys().next().value;
   if (!first) return console.log("IndexNow: the sitemap lists no pages.");
-  const live = await fetch(new URL("/sitemap.xml", first))
-    .then((response) => (response.ok ? response.text() : ""))
+  const live = await remote(new URL("/sitemap.xml", first).href)
+    .then((xml) => expand(xml, remote))
     .catch(() => "");
   const batches = payloads(changedUrls(live, next));
   if (!batches.length) return console.log("IndexNow: no new or changed pages.");

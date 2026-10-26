@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { test } from "node:test";
-import { changedUrls, KEY, payloads } from "./indexnow.mjs";
+import { changedUrls, expand, KEY, payloads } from "./indexnow.mjs";
 
 const sitemap = (urls) =>
   `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls
@@ -46,4 +46,21 @@ test("requests carry the key file and stay within 10,000 URLs each", () => {
 test("the key file the site serves matches the key", () => {
   const file = new URL(`../apps/site/public/${KEY}.txt`, import.meta.url);
   assert.equal(readFileSync(file, "utf8").trim(), KEY);
+});
+
+test("a sitemap index is expanded into the pages of its sitemaps", async () => {
+  const index = `<sitemapindex><sitemap><loc>https://realm.js.org/sitemap-docs.xml</loc></sitemap><sitemap><loc>https://realm.js.org/sitemap-blog.xml</loc></sitemap></sitemapindex>`;
+  const files = {
+    "https://realm.js.org/sitemap-docs.xml": sitemap([
+      ["https://realm.js.org/docs/", "2026-10-01"],
+    ]),
+    "https://realm.js.org/sitemap-blog.xml": sitemap([["https://realm.js.org/blog/", ""]]),
+  };
+  const xml = await expand(index, async (loc) => files[loc]);
+  assert.deepEqual(changedUrls("", xml), [
+    "https://realm.js.org/docs/",
+    "https://realm.js.org/blog/",
+  ]);
+  const plain = sitemap([["https://realm.js.org/", ""]]);
+  assert.equal(await expand(plain, async () => ""), plain);
 });

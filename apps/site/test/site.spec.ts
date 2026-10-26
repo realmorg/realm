@@ -212,6 +212,22 @@ test("llms.txt lists every section and links Markdown copies", async ({ request 
   expect(markdown.ok()).toBe(true);
 });
 
+test("the sitemap index lists one sitemap per section, and every page is in one", async ({
+  request,
+}) => {
+  const index = await (await request.get("sitemap.xml")).text();
+  const sitemaps = [...index.matchAll(/<sitemap><loc>[^<]*\/(sitemap-[a-z]+\.xml)<\/loc>/g)].map(
+    ([, name]) => name,
+  );
+  expect(sitemaps).toEqual(expect.arrayContaining(["sitemap-docs.xml", "sitemap-components.xml"]));
+  const urls = new Set<string>();
+  for (const name of sitemaps)
+    for (const [, loc] of (await (await request.get(name)).text()).matchAll(/<loc>([^<]+)<\/loc>/g))
+      urls.add(new URL(loc).pathname);
+  for (const page of pages.slice(0, 40))
+    expect(urls).toContain(new URL(page.url, "https://x/").pathname);
+});
+
 test("every link between site pages points at a page that exists", () => {
   const dist = fileURLToPath(new URL("../dist/", import.meta.url));
   const broken: string[] = [];

@@ -133,6 +133,15 @@ const SECTIONS = [
   { id: "components", label: "Components" },
   { id: "examples", label: "Examples" },
   { id: "blog", label: "Blog" },
+  { id: "integrations", label: "Integrations" },
+  { id: "compare", label: "Comparisons" },
+  { id: "alternatives", label: "Alternatives" },
+  { id: "html", label: "HTML patterns" },
+  { id: "tutorials", label: "Tutorials" },
+  { id: "recipes", label: "Recipes" },
+  { id: "learn", label: "Learn" },
+  { id: "blocks", label: "Blocks" },
+  { id: "pro", label: "REALM Pro" },
 ];
 
 const sorted = (list) =>
@@ -141,6 +150,31 @@ const sorted = (list) =>
       (a.meta.order ?? 999) - (b.meta.order ?? 999) ||
       String(b.meta.date ?? "").localeCompare(String(a.meta.date ?? "")) ||
       a.meta.title.localeCompare(b.meta.title),
+  );
+
+// A hub page lists the pages below it where its body says <!-- pages -->: title, link and
+// description, so a new page appears in its hub on the day it is published. A hub nested deeper
+// (pro/blocks/index.md) lists only the pages under its own folder.
+const HUB_MARKER = "<!-- pages -->";
+const childrenOf = (hub) =>
+  sorted(
+    pages.filter(
+      (p) =>
+        p !== hub &&
+        p.meta.title &&
+        !p.meta.hidden &&
+        (hub.slug ? p.slug.startsWith(`${hub.slug}/`) : false),
+    ),
+  );
+for (const hub of pages.filter((p) => p.body.includes(HUB_MARKER)))
+  hub.body = hub.body.replace(
+    HUB_MARKER,
+    childrenOf(hub)
+      .map(
+        (p) =>
+          `- [${p.meta.title}](/${p.slug}/)${p.meta.description ? `: ${p.meta.description}` : ""}`,
+      )
+      .join("\n"),
   );
 
 const internalLink = (href, prefix) => {
@@ -791,14 +825,34 @@ writeFileSync(
     .map((p) => `${markdownFor(p).replace(/\n\n/, `\n\nSource: ${SITE_URL}${p.url}\n\n`)}`)
     .join("\n\n---\n\n"),
 );
-writeFileSync(
-  join(out, "sitemap.xml"),
-  `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${listed
+// One sitemap per section, under a sitemap index, so Search Console reports indexing per page type.
+const sitemapOf = (list) =>
+  `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${list
     .map(
       (p) =>
         `  <url><loc>${SITE_URL}${p.url}</loc>${p.updated ? `<lastmod>${p.updated}</lastmod>` : ""}</url>`,
     )
-    .join("\n")}\n</urlset>\n`,
+    .join("\n")}\n</urlset>\n`;
+const sitemaps = Map.groupBy(listed, (p) =>
+  SECTIONS.some((section) => section.id === p.section) ? p.section : "pages",
+);
+for (const [name, list] of sitemaps)
+  writeFileSync(join(out, `sitemap-${name}.xml`), sitemapOf(list));
+const latest = (list) =>
+  list
+    .map((p) => p.updated ?? "")
+    .sort()
+    .pop();
+writeFileSync(
+  join(out, "sitemap.xml"),
+  `<?xml version="1.0" encoding="UTF-8"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${[
+    ...sitemaps,
+  ]
+    .map(
+      ([name, list]) =>
+        `  <sitemap><loc>${SITE_URL}${BASE}sitemap-${name}.xml</loc>${latest(list) ? `<lastmod>${latest(list)}</lastmod>` : ""}</sitemap>`,
+    )
+    .join("\n")}\n</sitemapindex>\n`,
 );
 writeFileSync(
   join(out, "robots.txt"),
