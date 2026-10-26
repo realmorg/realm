@@ -28,6 +28,12 @@ jobs:
   check:
     runs-on: ubuntu-latest
     timeout-minutes: 40
+    # Microsoft's Playwright image has every browser and its system packages preinstalled, so no
+    # job downloads browsers or runs apt-get, which both hang on the runners now and then. The
+    # image version must match the playwright package; the check job compares them.
+    container:
+      image: mcr.microsoft.com/playwright:v1.64.1-noble
+      options: --user 1001
     steps:
       - uses: actions/checkout@v5
       - uses: ./.github/actions/setup
@@ -37,19 +43,12 @@ jobs:
       - run: pnpm build
       - run: pnpm size
       - run: pnpm skill:check
-      - uses: actions/cache@v4
-        with:
-          path: ~/.cache/ms-playwright
-          key: playwright-${{ runner.os }}-chromium-${{ hashFiles('pnpm-lock.yaml') }}
-      # Playwright's download server sometimes hangs, so the download is retried. System packages
-      # install in their own step: killing a timed-out apt-get would leave the dpkg lock held.
-      - run: pnpm --filter @realmorg/realm exec playwright install-deps chromium
-      - run: |
-          for attempt in 1 2 3; do
-            timeout 5m pnpm --filter @realmorg/realm exec playwright install chromium && exit 0
-            echo "::warning::Browser install attempt $attempt failed, retrying"
-          done
-          exit 1
+      - name: The Playwright image matches the playwright package
+        run: |
+          installed=$(pnpm --filter @realmorg/realm exec node -p "require('playwright/package.json').version")
+          image=$(grep -o 'mcr.microsoft.com/playwright:v[0-9][0-9.]*' .github/workflows/ci.yml | sort -u)
+          echo "playwright $installed, $image"
+          test "$image" = "mcr.microsoft.com/playwright:v$installed"
       - run: pnpm skill:test
       - run: pnpm scripts:test
 
@@ -58,6 +57,12 @@ jobs:
     name: ${{ matrix.package }} (${{ matrix.browsers }})
     runs-on: ubuntu-latest
     timeout-minutes: 40
+    # Microsoft's Playwright image has every browser and its system packages preinstalled, so no
+    # job downloads browsers or runs apt-get, which both hang on the runners now and then. The
+    # image version must match the playwright package; the check job compares them.
+    container:
+      image: mcr.microsoft.com/playwright:v1.64.1-noble
+      options: --user 1001
     strategy:
       fail-fast: false
       matrix:
@@ -72,19 +77,6 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - uses: ./.github/actions/setup
-      - uses: actions/cache@v4
-        with:
-          path: ~/.cache/ms-playwright
-          key: playwright-${{ runner.os }}-${{ matrix.browsers }}-${{ hashFiles('pnpm-lock.yaml') }}
-      # Playwright's download server sometimes hangs, so the download is retried. System packages
-      # install in their own step: killing a timed-out apt-get would leave the dpkg lock held.
-      - run: pnpm --filter "${{ matrix.package }}" exec playwright install-deps ${{ matrix.browsers }}
-      - run: |
-          for attempt in 1 2 3; do
-            timeout 5m pnpm --filter "${{ matrix.package }}" exec playwright install ${{ matrix.browsers }} && exit 0
-            echo "::warning::Browser install attempt $attempt failed, retrying"
-          done
-          exit 1
       - run: pnpm turbo run build --filter="${{ matrix.package }}..."
       - run: pnpm --filter "${{ matrix.package }}" ${{ matrix.run }}
 
@@ -92,6 +84,12 @@ jobs:
     name: site (${{ matrix.browser }}${{ matrix.shard && format(' {0}', matrix.shard) || '' }})
     runs-on: ubuntu-latest
     timeout-minutes: 40
+    # Microsoft's Playwright image has every browser and its system packages preinstalled, so no
+    # job downloads browsers or runs apt-get, which both hang on the runners now and then. The
+    # image version must match the playwright package; the check job compares them.
+    container:
+      image: mcr.microsoft.com/playwright:v1.64.1-noble
+      options: --user 1001
     strategy:
       fail-fast: false
       matrix:
@@ -104,19 +102,6 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - uses: ./.github/actions/setup
-      - uses: actions/cache@v4
-        with:
-          path: ~/.cache/ms-playwright
-          key: playwright-${{ runner.os }}-${{ matrix.browser }}-${{ hashFiles('pnpm-lock.yaml') }}
-      # Playwright's download server sometimes hangs, so the download is retried. System packages
-      # install in their own step: killing a timed-out apt-get would leave the dpkg lock held.
-      - run: pnpm --filter site exec playwright install-deps ${{ matrix.browser }}
-      - run: |
-          for attempt in 1 2 3; do
-            timeout 5m pnpm --filter site exec playwright install ${{ matrix.browser }} && exit 0
-            echo "::warning::Browser install attempt $attempt failed, retrying"
-          done
-          exit 1
       # The tests build the site themselves. They need the packages it is made from.
       - run: pnpm turbo run build --filter="site^..." --filter="@realmorg/unicons"
       - if: matrix.run == 'coverage'
