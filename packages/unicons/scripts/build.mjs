@@ -70,7 +70,7 @@ const readRemix = () => {
         [...attrs.matchAll(SVG_ATTRIBUTE)].map(([, key, value]) => [key, value]),
       );
       // Named the way react-icons names them (RiHtml5Fill is html-5-fill), so existing names keep working.
-      const component = `Ri${file.replace(/\.svg$/, "").replace(/(^|-)(\w)/g, (_, dash, letter) => letter.toUpperCase())}`;
+      const component = `Ri${file.replace(/\.svg$/, "").replace(/(?:^|-)(\w)/g, (_, letter) => letter.toUpperCase())}`;
       icons.set(iconName(component, "Ri"), {
         root: attributes({ ...ROOT_DEFAULTS, ...attr }, DROPPED_ON_ROOT),
         body,
