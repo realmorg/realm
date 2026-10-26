@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!-- Publishes the day's scheduled pSEO pages at 09:00. Install with:
+     cp scripts/launchd/org.realmjs.pseo-publish.plist ~/Library/LaunchAgents/
+     launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/org.realmjs.pseo-publish.plist -->
+<plist version="1.0">
+  <dict>
+    <key>Label</key>
+    <string>org.realmjs.pseo-publish</string>
+
+    <key>ProgramArguments</key>
+    <array>
+      <string>/opt/homebrew/bin/pnpm</string>
+      <string>pseo:publish</string>
+    </array>
+
+    <key>WorkingDirectory</key>
+    <string>/Users/oknoorap/codes/playground/realm</string>
+
+    <key>EnvironmentVariables</key>
+    <dict>
+      <key>PATH</key>
+      <string>/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin</string>
+    </dict>
+
+    <key>StartCalendarInterval</key>
+    <dict>
+      <key>Hour</key>
+      <integer>9</integer>
+      <key>Minute</key>
+      <integer>0</integer>
+    </dict>
+
+    <key>RunAtLoad</key>
+    <true/>
+
+    <key>StandardOutPath</key>
+    <string>/Users/oknoorap/Library/Logs/REALM/pseo-publish.log</string>
+
+    <key>StandardErrorPath</key>
+    <string>/Users/oknoorap/Library/Logs/REALM/pseo-publish.error.log</string>
+  </dict>
+</plist>

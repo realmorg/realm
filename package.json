@@ -19,7 +19,8 @@
     "version-packages": "changeset version && node scripts/build-skill.mjs",
     "skill:check": "node scripts/build-skill.mjs --check",
     "skill:test": "node --test scripts/skill.test.mjs",
-    "scripts:test": "node --test scripts/purge-cdn.test.mjs scripts/indexnow.test.mjs"
+    "scripts:test": "node --test scripts/purge-cdn.test.mjs scripts/indexnow.test.mjs scripts/pseo-publish.test.mjs",
+    "pseo:publish": "node scripts/pseo-publish.mjs"
   },
   "devDependencies": {
     "@biomejs/biome": "2.5.15",
