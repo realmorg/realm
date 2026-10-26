@@ -531,6 +531,11 @@ const titleOf = (page) => {
   return titled ? titled(page.meta.title) : `${page.meta.title} · ${brand}`;
 };
 
+// Google Tag Manager loads GA4 and Microsoft Clarity. It runs only on realm.js.org, so local
+// development, previews and tests send nothing.
+const GTM_ID = "GTM-WFLNL7RF";
+const GTM_HEAD = `<script>if(location.hostname==="realm.js.org"){(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({"gtm.start":new Date().getTime(),event:"gtm.js"});var f=d.getElementsByTagName(s)[0],j=d.createElement(s);j.async=true;j.src="https://www.googletagmanager.com/gtm.js?id="+i;f.parentNode.insertBefore(j,f)})(window,document,"script","dataLayer","${GTM_ID}")}</script>`;
+
 const OG_IMAGE = `${SITE_URL}${BASE}og.png`;
 const PUBLISHER = {
   "@type": "Organization",
@@ -660,6 +665,7 @@ const template = (page, { html, toc }) => {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+${GTM_HEAD}
 <title>${escapeHtml(title)}</title>
 <meta name="description" content="${description}">
 <link rel="canonical" href="${SITE_URL}${page.url}">
