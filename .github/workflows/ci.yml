@@ -41,11 +41,12 @@ jobs:
         with:
           path: ~/.cache/ms-playwright
           key: playwright-${{ runner.os }}-chromium-${{ hashFiles('pnpm-lock.yaml') }}
-      # Playwright's download server sometimes hangs. A stuck attempt is retried instead of
-      # holding the job until GitHub's six-hour limit.
+      # Playwright's download server sometimes hangs, so the download is retried. System packages
+      # install in their own step: killing a timed-out apt-get would leave the dpkg lock held.
+      - run: pnpm --filter @realmorg/realm exec playwright install-deps chromium
       - run: |
           for attempt in 1 2 3; do
-            timeout 5m pnpm --filter @realmorg/realm exec playwright install --with-deps chromium && exit 0
+            timeout 5m pnpm --filter @realmorg/realm exec playwright install chromium && exit 0
             echo "::warning::Browser install attempt $attempt failed, retrying"
           done
           exit 1
@@ -75,11 +76,12 @@ jobs:
         with:
           path: ~/.cache/ms-playwright
           key: playwright-${{ runner.os }}-${{ matrix.browsers }}-${{ hashFiles('pnpm-lock.yaml') }}
-      # Playwright's download server sometimes hangs. A stuck attempt is retried instead of
-      # holding the job until GitHub's six-hour limit.
+      # Playwright's download server sometimes hangs, so the download is retried. System packages
+      # install in their own step: killing a timed-out apt-get would leave the dpkg lock held.
+      - run: pnpm --filter "${{ matrix.package }}" exec playwright install-deps ${{ matrix.browsers }}
       - run: |
           for attempt in 1 2 3; do
-            timeout 5m pnpm --filter "${{ matrix.package }}" exec playwright install --with-deps ${{ matrix.browsers }} && exit 0
+            timeout 5m pnpm --filter "${{ matrix.package }}" exec playwright install ${{ matrix.browsers }} && exit 0
             echo "::warning::Browser install attempt $attempt failed, retrying"
           done
           exit 1
@@ -106,11 +108,12 @@ jobs:
         with:
           path: ~/.cache/ms-playwright
           key: playwright-${{ runner.os }}-${{ matrix.browser }}-${{ hashFiles('pnpm-lock.yaml') }}
-      # Playwright's download server sometimes hangs. A stuck attempt is retried instead of
-      # holding the job until GitHub's six-hour limit.
+      # Playwright's download server sometimes hangs, so the download is retried. System packages
+      # install in their own step: killing a timed-out apt-get would leave the dpkg lock held.
+      - run: pnpm --filter site exec playwright install-deps ${{ matrix.browser }}
       - run: |
           for attempt in 1 2 3; do
-            timeout 5m pnpm --filter site exec playwright install --with-deps ${{ matrix.browser }} && exit 0
+            timeout 5m pnpm --filter site exec playwright install ${{ matrix.browser }} && exit 0
             echo "::warning::Browser install attempt $attempt failed, retrying"
           done
           exit 1
