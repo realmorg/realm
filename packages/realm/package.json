@@ -1,6 +1,6 @@
 {
   "name": "@realmorg/realm",
-  "version": "2.0.0-alpha.4",
+  "version": "2.0.0-alpha.5",
   "description": "Write native web components in plain HTML. No compiler or build step.",
   "type": "module",
   "license": "MIT",

@@ -1,6 +1,6 @@
 {
   "name": "@realmorg/ui",
-  "version": "2.0.0-alpha.3",
+  "version": "2.0.0-alpha.4",
   "description": "About 60 accessible UI components built with REALM.",
   "type": "module",
   "license": "MIT",
