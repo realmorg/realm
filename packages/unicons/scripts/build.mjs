@@ -1,4 +1,4 @@
-import { copyFileSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { copyFileSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { createRequire } from "node:module";
 import { dirname, join } from "node:path";
 import { chunkOf } from "../src/unicons.js";
@@ -9,6 +9,17 @@ const DIST = join(PACKAGE, "dist");
 const SOURCE = dirname(createRequire(import.meta.url).resolve("react-icons"));
 const ICON = /export function (\w+) \(props\) \{\s*return GenIcon\((.*)\)\(props\);\s*\};/g;
 const SETS_LINE = "export const sets = {};";
+
+// Remix Icon changed its licence on 25 January 2026 (v4.9.0) to one that forbids competing icon
+// libraries. react-icons bundles a later commit, so the ri set is built from remixicon 4.8.0, the
+// last release under Apache 2.0, straight from its SVG files.
+const REMIX = dirname(createRequire(import.meta.url).resolve("remixicon/package.json"));
+const REMIX_LICENCE = {
+  license: "Apache License Version 2.0 (Remix Icon 4.8.0)",
+  licenseUrl: "https://github.com/Remix-Design/RemixIcon/blob/v4.8.0/License",
+};
+const SVG = /^<svg([^>]*)>([\s\S]*)<\/svg>\s*$/;
+const SVG_ATTRIBUTE = /([\w:-]+)="([^"]*)"/g;
 
 const DROPPED = new Set(["t", "role", "aria-hidden", "version", "baseProfile", "enableBackground"]);
 const DROPPED_ON_ROOT = new Set([...DROPPED, "id", "x", "y", "style", "xmlns"]);
@@ -50,7 +61,26 @@ const mostCommon = (values) => {
   return [...counts].sort((a, b) => b[1] - a[1])[0][0];
 };
 
+const readRemix = () => {
+  const icons = new Map();
+  for (const category of readdirSync(join(REMIX, "icons")))
+    for (const file of readdirSync(join(REMIX, "icons", category))) {
+      const [, attrs, body] = readFileSync(join(REMIX, "icons", category, file), "utf8").match(SVG);
+      const attr = Object.fromEntries(
+        [...attrs.matchAll(SVG_ATTRIBUTE)].map(([, key, value]) => [key, value]),
+      );
+      // Named the way react-icons names them (RiHtml5Fill is html-5-fill), so existing names keep working.
+      const component = `Ri${file.replace(/\.svg$/, "").replace(/(^|-)(\w)/g, (_, dash, letter) => letter.toUpperCase())}`;
+      icons.set(iconName(component, "Ri"), {
+        root: attributes({ ...ROOT_DEFAULTS, ...attr }, DROPPED_ON_ROOT),
+        body,
+      });
+    }
+  return new Map([...icons].sort(([a], [b]) => a.localeCompare(b)));
+};
+
 const readSet = (id) => {
+  if (id === "ri") return readRemix();
   const prefix = id.replace(/\d+$/, "").replace(/^./, (letter) => letter.toUpperCase());
   const source = readFileSync(join(SOURCE, id, "index.mjs"), "utf8");
   const icons = new Map();
@@ -75,6 +105,7 @@ const catalog = JSON.parse(manifest.slice(manifest.indexOf("["), manifest.lastIn
     projectUrl,
     license,
     licenseUrl,
+    ...(id === "ri" ? REMIX_LICENCE : {}),
   }))
   .sort((a, b) => a.id.localeCompare(b.id));
 

@@ -47,6 +47,7 @@
     "@realmorg/realm": "workspace:*",
     "@types/node": "26.6.5",
     "react-icons": "5.7.0",
+    "remixicon": "4.8.0",
     "tsconfig": "workspace:*",
     "typescript": "7.0.2"
   },

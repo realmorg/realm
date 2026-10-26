@@ -116,6 +116,9 @@ importers:
       react-icons:
         specifier: 5.7.0
         version: 5.7.0(react@19.3.1)
+      remixicon:
+        specifier: 4.8.0
+        version: 4.8.0
       tsconfig:
         specifier: workspace:*
         version: link:../tsconfig
@@ -1277,6 +1280,9 @@ packages:
 
   regex@6.1.0:
     resolution: {integrity: sha512-6VwtthbV4o/7+OaAF9I5L5V3llLEsoPyq9P1JVXkedTP33c7MfCG0/5NOPcSJn0TzXcG9YUrR0gQSWioew3LDg==}
+
+  remixicon@4.8.0:
+    resolution: {integrity: sha512-8qTM/bWkmsAWitvcL9XrVPVdqHRrdmnNp4zCFBdmIHBygxfHWwoK6NzitbiMyRzjcXKBMlS/ab5M65/ZlxJTVA==}
 
   restore-cursor@5.1.0:
     resolution: {integrity: sha512-oMA2dcrw6u0YfxJQXm342bFKX/E4sG9rbTzO9ptUcR/e8A33cHuvStiYOwH7fszkZlZ1z/ta9AAoPk2F4qIOHA==}
@@ -2528,6 +2534,8 @@ snapshots:
   regex@6.1.0:
     dependencies:
       regex-utilities: 2.3.0
+
+  remixicon@4.8.0: {}
 
   restore-cursor@5.1.0:
     dependencies:
