@@ -191,7 +191,10 @@ test("side-by-side demos open their code at the body", async ({ page, errors }) 
   await page.goto("");
   await ready(page, "live-demo");
   const code = page.locator("live-demo[layout=split] .shiki").first();
-  await expect.poll(() => code.evaluate((el) => el.scrollTop)).toBeGreaterThan(0);
+  // When the whole file fits (Firefox's font wraps fewer lines), there is nothing to scroll.
+  await expect
+    .poll(() => code.evaluate((el) => el.scrollTop > 0 || el.scrollHeight <= el.clientHeight))
+    .toBe(true);
   const { offset, end } = await code.evaluate((pre) => {
     const body = [...pre.querySelectorAll(".line")].find(
       (line) => line.textContent?.trim() === "<body>",
