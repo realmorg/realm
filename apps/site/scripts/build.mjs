@@ -17,7 +17,11 @@ import { zipDirectory } from "../../../scripts/zip.mjs";
 const root = fileURLToPath(new URL("..", import.meta.url));
 const repo = join(root, "../..");
 const out = process.env.SITE_OUT ?? join(root, "dist");
-const SITE_URL = (process.env.SITE_URL ?? "https://realm.js.org").replace(/\/$/, "");
+// GitHub Pages reports the origin as http:// because js.org's proxy, not Pages, serves HTTPS.
+// Pages that load from an http:// URL are blocked as mixed content on any HTTPS site.
+const SITE_URL = (process.env.SITE_URL ?? "https://realm.js.org")
+  .replace(/\/$/, "")
+  .replace(/^http:\/\/(?!localhost|127\.0\.0\.1)/, "https://");
 const BASE = `/${(process.env.SITE_BASE ?? "/").replace(/^\/|\/$/g, "")}/`.replace("//", "/");
 
 const highlighter = await createHighlighter({
