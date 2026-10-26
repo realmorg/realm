@@ -89,10 +89,31 @@
       width: calc(var(--spacing) * 4);
       height: calc(var(--spacing) * 4);
       color: var(--muted-foreground);
-      transition: rotate 0.2s;
+      transition: rotate var(--default-transition-duration) var(--default-transition-timing-function);
     }
     details[open] svg {
       rotate: 180deg;
+    }
+    details::details-content {
+      display: grid;
+      grid-template-rows: 0fr;
+      transition:
+        grid-template-rows var(--default-transition-duration) var(--default-transition-timing-function),
+        content-visibility var(--default-transition-duration) allow-discrete;
+    }
+    details[open]::details-content {
+      grid-template-rows: 1fr;
+    }
+    slot:not([name]) {
+      display: block;
+      min-height: 0;
+      overflow: hidden;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      svg,
+      details::details-content {
+        transition: none;
+      }
     }
   </style>
 

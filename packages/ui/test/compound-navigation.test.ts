@@ -1,5 +1,5 @@
 import { describe, expect, test, vi } from "vitest";
-import { userEvent } from "vitest/browser";
+import { commands, server, userEvent } from "vitest/browser";
 import { part, render, shadow, tick } from "./setup";
 
 const key = (target: Element, name: string) =>
@@ -167,6 +167,62 @@ describe("ui-accordion parts", () => {
     await tick();
     expect(both.map((item) => item.open)).toEqual([true, true]);
     expect(getComputedStyle(single as Element).display).toBe("block");
+  });
+});
+
+describe("ui-accordion motion", () => {
+  const accordion = async () => {
+    const host = await render(`
+      <ui-accordion>
+        <ui-accordion-item>
+          <ui-accordion-trigger>One</ui-accordion-trigger>
+          <ui-accordion-content><div style="height: 200px">First</div></ui-accordion-content>
+        </ui-accordion-item>
+      </ui-accordion>`);
+    const item = host.querySelector("ui-accordion-item") as HTMLElement & { open: boolean };
+    const details = shadow(item).querySelector("details") as HTMLDetailsElement;
+    const content = item.querySelector("ui-accordion-content") as HTMLElement;
+    const body = shadow(item).querySelector("slot:not([name])") as HTMLSlotElement;
+    const height = () => body.getBoundingClientRect().height;
+    return { item, details, content, height, summary: part<HTMLElement>(item, "summary") };
+  };
+
+  test("accordion items animate their height when they open and close", async () => {
+    const { item, details, content, height, summary } = await accordion();
+    expect(getComputedStyle(details, "::details-content").transitionProperty).toBe(
+      "grid-template-rows, content-visibility",
+    );
+    summary.click();
+    expect(details.open).toBe(true);
+    expect(height()).toBeLessThan(100);
+    await vi.waitFor(() => expect(height()).toBeGreaterThan(200));
+    expect(item.open).toBe(true);
+    summary.click();
+    expect(details.open).toBe(false);
+    expect(height()).toBeGreaterThan(100);
+    // WebKit hides the content at once, ignoring the content-visibility transition.
+    if (server.browser !== "webkit") expect(content.checkVisibility()).toBe(true);
+    await vi.waitFor(() => expect(content.checkVisibility()).toBe(false));
+    await vi.waitFor(() => expect(item.open).toBe(false));
+  });
+
+  test("accordion items open and close instantly when the user prefers reduced motion", async ({
+    skip,
+  }) => {
+    // Playwright's WebKit keeps the motion styles of components it has already rendered after
+    // emulating reduced motion.
+    skip(server.browser === "webkit");
+    await commands.reduceMotion(true);
+    try {
+      const { details, content, height, summary } = await accordion();
+      expect(getComputedStyle(details, "::details-content").transitionProperty).toBe("none");
+      summary.click();
+      expect(height()).toBeGreaterThan(200);
+      summary.click();
+      expect(content.checkVisibility()).toBe(false);
+    } finally {
+      await commands.reduceMotion(false);
+    }
   });
 });
 

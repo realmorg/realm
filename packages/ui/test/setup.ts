@@ -17,6 +17,7 @@ declare module "vitest/browser" {
   interface BrowserCommands {
     startComponentCoverage(): Promise<void>;
     takeComponentCoverage(): Promise<void>;
+    reduceMotion(reduce: boolean): Promise<void>;
   }
 }
 

@@ -16,6 +16,10 @@ content shows when the item is open. In the default `single` mode, opening one i
 
 The accordion fills the width of its container.
 
+Opening or closing an item slides its content open or shut over `--default-transition-duration`, and the chevron
+turns with it. In Safari a closing item's content disappears at once while its space still slides shut, because
+Safari does not yet animate the hidden state of `<details>`. With `prefers-reduced-motion: reduce`, items open and close without animation.
+
 ```html live
 <div class="demo-narrow">
   <ui-accordion>
@@ -33,7 +37,7 @@ The accordion fills the width of its container.
     </ui-accordion-item>
     <ui-accordion-item>
       <ui-accordion-trigger>Is it animated?</ui-accordion-trigger>
-      <ui-accordion-content>The chevron rotates when an item opens.</ui-accordion-content>
+      <ui-accordion-content>The content slides open and shut, and the chevron turns with it.</ui-accordion-content>
     </ui-accordion-item>
   </ui-accordion>
 </div>
