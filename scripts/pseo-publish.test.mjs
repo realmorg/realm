@@ -61,3 +61,26 @@ test("a blog post must be dated for the day it is published", () => {
   const problems = problemsOf({ date: "2026-11-02", batch, existing: [] });
   assert.ok(problems.some((p) => p.includes("date is 2026-11-03, expected 2026-11-02")));
 });
+
+test("a page may only show images that exist in the site or in its batch", () => {
+  const body = `${words(MIN_WORDS)} <img src="/pro/blocks/x/light.png"> <source srcset="/pro/blocks/x/dark.png">`;
+  const batch = [page("pro/blocks/x.md", {}, body)];
+  assert.deepEqual(
+    problemsOf({
+      date: "2026-11-02",
+      batch,
+      existing: [],
+      assets: new Set(["/pro/blocks/x/light.png", "/pro/blocks/x/dark.png"]),
+    }),
+    [],
+  );
+  const problems = problemsOf({
+    date: "2026-11-02",
+    batch,
+    existing: [],
+    assets: new Set(["/pro/blocks/x/light.png"]),
+  });
+  assert.deepEqual(problems, [
+    "pro/blocks/x.md: shows /pro/blocks/x/dark.png, which does not exist",
+  ]);
+});

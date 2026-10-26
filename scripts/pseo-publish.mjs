@@ -7,8 +7,9 @@
 // Drafts wait in the private pro repository, in pro/seo/drafts/YYYY-MM-DD/, laid out like
 // apps/site/content (pro/seo/drafts/2026-11-02/docs/integrations/django.md becomes
 // apps/site/content/docs/integrations/django.md). Nothing reaches the public repository before
-// its day. Publishing moves the batch into the site, builds it, commits both repositories and
-// pushes. The site deploy then publishes the pages and submits them to IndexNow.
+// its day. Images and other files a page needs go in the day's public/ folder, laid out like
+// apps/site/public. Publishing moves the batch into the site, builds it, commits both repositories
+// and pushes. The site deploy then publishes the pages and submits them to IndexNow.
 //
 // A launchd agent runs this every morning (see scripts/launchd/org.realmjs.pseo-publish.plist).
 // Publishing a few pages a day keeps the site from looking like a mass of generated pages to
@@ -20,18 +21,28 @@ import { fileURLToPath } from "node:url";
 
 const repo = join(fileURLToPath(import.meta.url), "../..");
 const content = join(repo, "apps/site/content");
+const sitePublic = join(repo, "apps/site/public");
 const drafts = join(repo, "pro/seo/drafts");
 
 export const MAX_PAGES_PER_DAY = 4;
 export const MIN_WORDS = 300;
 export const MAX_DESCRIPTION = 160;
 
-const markdownFiles = (dir) =>
+const filesIn = (dir) =>
   existsSync(dir)
     ? readdirSync(dir, { recursive: true })
         .map((name) => join(dir, String(name)))
-        .filter((file) => file.endsWith(".md") && statSync(file).isFile())
+        .filter((file) => statSync(file).isFile())
     : [];
+
+const markdownFiles = (dir) =>
+  filesIn(dir).filter(
+    (file) => file.endsWith(".md") && !relative(dir, file).startsWith(`public${sep}`),
+  );
+
+// The URL paths of the files in a public folder: public/pro/a.png is /pro/a.png.
+const assetsIn = (dir) =>
+  filesIn(dir).map((file) => `/${relative(dir, file).split(sep).join("/")}`);
 
 export const frontmatter = (text) => {
   const match = text.match(/^---\n([\s\S]*?)\n---\n?([\s\S]*)$/);
@@ -68,8 +79,11 @@ const internalLinks = (body) =>
     href.endsWith("/") ? href : `${href}/`,
   );
 
+const imageSources = (body) =>
+  [...body.matchAll(/\b(?:src|srcset)="(\/[^"\s]+)/g)].map(([, src]) => src);
+
 // Every problem with a batch. An empty list means it can be published.
-export const problemsOf = ({ date, batch, existing }) => {
+export const problemsOf = ({ date, batch, existing, assets = new Set() }) => {
   const problems = [];
   if (batch.length > MAX_PAGES_PER_DAY)
     problems.push(
@@ -98,6 +112,8 @@ export const problemsOf = ({ date, batch, existing }) => {
     for (const href of internalLinks(body))
       if (!urls.has(href) && !href.startsWith("/dist/"))
         problems.push(`${path}: links to ${href}, which does not exist`);
+    for (const src of imageSources(body))
+      if (!assets.has(src)) problems.push(`${path}: shows ${src}, which does not exist`);
   }
   return problems;
 };
@@ -132,7 +148,9 @@ const main = (args) => {
   const batch = markdownFiles(dayDir).map((file) => read(dayDir, file));
   if (!batch.length) return console.log(`[pseo] Nothing scheduled for ${date}.`);
   const existing = markdownFiles(content).map((file) => read(content, file));
-  const problems = problemsOf({ date, batch, existing });
+  const dayPublic = join(dayDir, "public");
+  const assets = new Set([...assetsIn(sitePublic), ...assetsIn(dayPublic)]);
+  const problems = problemsOf({ date, batch, existing, assets });
   if (problems.length) {
     console.error(`[pseo] ${date}: not published.\n- ${problems.join("\n- ")}`);
     process.exitCode = 1;
@@ -147,11 +165,14 @@ const main = (args) => {
     run("git", ["pull", "--ff-only", "--quiet"], dir);
   }
 
-  cpSync(dayDir, content, { recursive: true });
+  const published = assetsIn(dayPublic).map((path) => join("apps/site/public", path));
+  cpSync(dayDir, content, { recursive: true, filter: (path) => path !== dayPublic });
+  if (existsSync(dayPublic)) cpSync(dayPublic, sitePublic, { recursive: true });
   try {
     run("pnpm", ["--filter", "site", "build"]);
   } catch (error) {
     for (const page of batch) rmSync(join(content, page.path));
+    for (const path of published) rmSync(join(repo, path));
     throw new Error(
       `[pseo] The site does not build with the ${date} pages, so nothing was published.`,
       {
@@ -165,7 +186,7 @@ const main = (args) => {
   run("git", ["commit", "--quiet", "-m", `seo: publish the ${date} pages`], join(repo, "pro"));
   run("git", ["push", "--quiet"], join(repo, "pro"));
 
-  const paths = batch.map((page) => join("apps/site/content", page.path));
+  const paths = [...batch.map((page) => join("apps/site/content", page.path)), ...published];
   run("git", ["add", ...paths, "pro"]);
   run("git", [
     "commit",
