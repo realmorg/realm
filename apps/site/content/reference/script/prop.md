@@ -1,6 +1,6 @@
 ---
 title: prop
-description: Reference for the prop type builder, every type (string, number, boolean, enum, date, array, object) and every rule (default, required, optional, reflect, attribute, min, max, int, pattern, email, url).
+description: Reference for prop, REALM's typed prop builder: string, number, boolean, enum, date, array and object types, with default, required, min, max and more.
 group: Script
 order: 42
 nav: prop

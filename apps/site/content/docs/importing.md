@@ -1,6 +1,6 @@
 ---
 title: Importing components
-description: Load component files with import-element, bundle many components in one file, lazy-load with loading=lazy and for, handle load and error, and import JavaScript modules from component scripts.
+description: Load REALM component files with import-element, bundle several components in one file, lazy-load them, handle load errors and import JavaScript modules.
 group: Data
 order: 21
 nav: Importing components

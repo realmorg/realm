@@ -1,6 +1,6 @@
 ---
 title: Modern framework problems
-description: A checklist of common front-end framework problems, such as FOUC, hydration, memory leaks, XSS, stale closures, fetch races, CSP and SEO, and how REALM handles each one, including its gaps.
+description: How REALM handles common front-end problems, such as FOUC, hydration, memory leaks, XSS, fetch races, CSP and SEO, including the gaps it still has.
 group: Guides
 order: 53
 nav: Framework problems

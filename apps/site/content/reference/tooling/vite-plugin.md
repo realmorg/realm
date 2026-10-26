@@ -1,6 +1,6 @@
 ---
 title: Vite plugin
-description: Reference for @realmorg/vite-plugin, which pre-assembles REALM components at build time for a strict Content Security Policy, writes a custom-elements.json manifest and serves component files untransformed in dev.
+description: Reference for @realmorg/vite-plugin: pre-assemble REALM components for a strict CSP, write custom-elements.json and serve component files in dev.
 group: Tooling
 order: 110
 nav: Vite plugin

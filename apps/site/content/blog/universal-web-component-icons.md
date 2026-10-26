@@ -1,6 +1,6 @@
 ---
 title: Introducing Unicons by Realm
-description: Universal Web Component Icons (Unicons) is a collection of icons ported from React Icons to be used as web components. It's designed to be used accross the web, so you can use icons from any website not limited to framework or library.
+description: Unicons brings icons from React Icons to the web as one web component, so any website can use them without a framework or library.
 date: 2023-09-29
 author: Ribhararnus Pracutian
 nav: Introducing Unicons

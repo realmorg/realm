@@ -1,6 +1,6 @@
 ---
 title: Values and bindings
-description: Show values with native slots, bind attributes and properties with the _ prefix, and understand references, negation, fallback content and how values are applied.
+description: Show values with native slots and bind attributes and properties with the _ prefix: references, negation, fallback content and how values are applied.
 group: Core concepts
 order: 13
 nav: Values and bindings

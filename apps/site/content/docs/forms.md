@@ -1,6 +1,6 @@
 ---
 title: Forms
-description: Build form-associated components that submit, reset, validate, disable and restore like native fields, with automatic value syncing and ref="control" delegation.
+description: Build form-associated web components that submit, reset, validate, disable and restore like native fields, with automatic value syncing.
 group: Forms and accessibility
 order: 40
 nav: Forms

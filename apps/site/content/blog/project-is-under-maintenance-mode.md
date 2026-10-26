@@ -1,6 +1,6 @@
 ---
 title: Project is under maintenance mode
-description: Realm Framework has entered maintenance mode. This decision is due to instability in the Shadow DOM and Web Component API, ecosystem shifts, and diminished active usage.
+description: Realm entered maintenance mode because of instability in Shadow DOM and Web Component APIs, shifts in the ecosystem, and less active use.
 date: 2025-06-05
 author: Ribhararnus Pracutian
 nav: Maintenance mode

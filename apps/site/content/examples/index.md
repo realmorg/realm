@@ -1,6 +1,6 @@
 ---
 title: Examples
-description: Apps and page blocks built with REALM and REALM UI, including a todo list, kanban board, chess, a dashboard, a weather app, a contacts manager, a chat, a shop, notes, an expense tracker, a GitHub explorer, Minesweeper and sign-in forms.
+description: Apps built with REALM and REALM UI: todo list, kanban board, chess, dashboard, chat, shop, notes, weather, Minesweeper, sign-in forms and page blocks.
 order: 1
 nav: All examples
 ---

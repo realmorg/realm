@@ -41,6 +41,7 @@ The repository is a monorepo:
 | `apps/examples` | Example apps, served by the website |
 | `skills/realm` | The REALM agent skill |
 | `openspec/specs` | The specification of REALM's behaviour |
+| `pro` | REALM Pro, a private submodule. It stays empty unless you have access, and nothing else needs it |
 
 To work on the website, the docs or the examples, run `pnpm --filter site dev` and open http://localhost:5173/.
 

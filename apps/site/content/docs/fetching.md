@@ -1,6 +1,6 @@
 ---
 title: Fetching data
-description: Make requests with attributes on the triggering element, load JSON into state, render server HTML, submit forms, and handle loadstart, load, error, abort, timeout and loadend.
+description: Fetch data with HTML attributes: load JSON into state, render server HTML, submit forms, and handle loading, errors, timeouts and aborted requests.
 group: Data
 order: 20
 nav: Fetching data

@@ -1,6 +1,6 @@
 ---
 title: Compiler
-description: Reference for @realmorg/realm/compiler, the build-time module that turns a custom-element definition into a setup module (compileDefinition) and tokenizes scripts.
+description: Reference for @realmorg/realm/compiler, the build-time module that turns a custom-element definition into a setup module and tokenizes scripts.
 group: JavaScript API
 order: 107
 nav: Compiler

@@ -1,3 +1,4 @@
+import { execFileSync } from "node:child_process";
 import {
   cpSync,
   existsSync,
@@ -28,6 +29,37 @@ const highlighter = await createHighlighter({
   themes: ["github-light-high-contrast", "github-dark-high-contrast"],
   langs: ["html", "css", "js", "ts", "json", "bash", "diff"],
 });
+
+// The date a page last changed, from git. A shallow clone has a single commit, which would give
+// every page the same date, so pages there have none.
+const gitHistory = (() => {
+  try {
+    return (
+      execFileSync("git", ["rev-parse", "--is-shallow-repository"], {
+        cwd: repo,
+        encoding: "utf8",
+      }).trim() === "false"
+    );
+  } catch {
+    return false;
+  }
+})();
+
+const updatedOn = (file) =>
+  gitHistory
+    ? execFileSync("git", ["log", "-1", "--format=%cs", "--", file], {
+        cwd: repo,
+        encoding: "utf8",
+      }).trim() || undefined
+    : undefined;
+
+const longDate = (date) =>
+  new Date(`${date}T00:00:00Z`).toLocaleDateString("en-GB", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+    timeZone: "UTC",
+  });
 
 const escapeHtml = (text) =>
   String(text).replace(
@@ -79,6 +111,7 @@ const pages = walk(join(root, "content"))
   .filter((file) => file.endsWith(".md"))
   .map((file) => {
     const { meta, body } = frontmatter(withVersions(readFileSync(file, "utf8")));
+    const updated = updatedOn(file);
     const path = relative(join(root, "content"), file).replace(/\.md$/, "");
     const slug = path === "index" ? "" : path.replace(/\/index$/, "");
     const depth = slug ? slug.split("/").length : 0;
@@ -90,6 +123,7 @@ const pages = walk(join(root, "content"))
       prefix: depth ? "../".repeat(depth) : "./",
       section: slug.split("/")[0] || "home",
       url: `${BASE}${slug ? `${slug}/` : ""}`,
+      updated,
     };
   });
 
@@ -479,10 +513,132 @@ const preloads = (html, p) =>
     ].map((path) => `<link rel="modulepreload" href="${p}${path}">`),
   ].join("\n");
 
+// A search result shows the title alone, so it says what kind of page it is.
+const TITLES = {
+  docs: (title) => `${title} · REALM docs`,
+  reference: (title) => `${title} · REALM API reference`,
+  components: (title) => `${title} web component · REALM UI`,
+  blog: (title) => `${title} · REALM blog`,
+};
+
+const titleOf = (page) => {
+  if (!page.slug) return "REALM: the HTML framework for shipping MVPs";
+  if (page.meta.seoTitle) return page.meta.seoTitle;
+  const sectionIndex = page.slug === page.section;
+  const overview = page.section === "components" && page.meta.group === "Overview";
+  const titled = !sectionIndex && !overview && TITLES[page.section];
+  const brand = page.section === "components" ? "REALM UI" : "REALM";
+  return titled ? titled(page.meta.title) : `${page.meta.title} · ${brand}`;
+};
+
+const OG_IMAGE = `${SITE_URL}${BASE}og.png`;
+const PUBLISHER = {
+  "@type": "Organization",
+  name: "REALM",
+  url: `${SITE_URL}${BASE}`,
+  logo: `${SITE_URL}${BASE}favicons/android-chrome-512x512.png`,
+  sameAs: ["https://github.com/realmorg/realm", "https://www.npmjs.com/package/@realmorg/realm"],
+};
+
+// Questions and answers from a page's FAQ accordion, for FAQPage structured data.
+const faqOf = (html) => {
+  const faq = html.match(/<ui-accordion[^>]*class="faq"[^>]*>([\s\S]*?)<\/ui-accordion>/);
+  if (!faq) return [];
+  const text = (part) =>
+    part
+      .replace(/<[^>]+>/g, "")
+      .replaceAll("&lt;", "<")
+      .replaceAll("&gt;", ">")
+      .replaceAll("&quot;", '"')
+      .replaceAll("&amp;", "&")
+      .replace(/\s+/g, " ")
+      .trim();
+  return [
+    ...faq[1].matchAll(
+      /<ui-accordion-trigger>([\s\S]*?)<\/ui-accordion-trigger>\s*<ui-accordion-content>([\s\S]*?)<\/ui-accordion-content>/g,
+    ),
+  ].map(([, question, answer]) => ({
+    "@type": "Question",
+    name: text(question),
+    acceptedAnswer: { "@type": "Answer", text: text(answer) },
+  }));
+};
+
+// Breadcrumbs for every page, and the page itself as a WebSite, BlogPosting or TechArticle.
+const structuredData = (page, description, html) => {
+  const url = `${SITE_URL}${page.url}`;
+  const home = `${SITE_URL}${BASE}`;
+  if (!page.slug)
+    return [
+      { "@context": "https://schema.org", ...PUBLISHER },
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        name: "REALM",
+        url: home,
+        description,
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareSourceCode",
+        name: "REALM",
+        description,
+        url: home,
+        codeRepository: "https://github.com/realmorg/realm",
+        programmingLanguage: ["HTML", "JavaScript"],
+        license: "https://opensource.org/licenses/MIT",
+      },
+    ];
+  const section = SECTIONS.find((s) => s.id === page.section);
+  const crumbs = [
+    { name: "REALM", item: home },
+    ...(section && page.slug !== page.section
+      ? [{ name: section.label, item: `${home}${section.id}/` }]
+      : []),
+    { name: page.meta.title, item: url },
+  ];
+  const blog = page.section === "blog" && page.meta.date;
+  return [
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: crumbs.map((crumb, index) => ({
+        "@type": "ListItem",
+        position: index + 1,
+        ...crumb,
+      })),
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": blog ? "BlogPosting" : "TechArticle",
+      headline: page.meta.title,
+      description,
+      url,
+      image: OG_IMAGE,
+      inLanguage: "en",
+      publisher: PUBLISHER,
+      ...(page.updated && { dateModified: page.updated }),
+      ...(blog && {
+        datePublished: String(page.meta.date).slice(0, 10),
+        author: { "@type": "Person", name: page.meta.author ?? "REALM" },
+      }),
+    },
+    ...(faqOf(html).length
+      ? [{ "@context": "https://schema.org", "@type": "FAQPage", mainEntity: faqOf(html) }]
+      : []),
+  ];
+};
+
+const jsonLd = (data) =>
+  data
+    .map(
+      (item) =>
+        `<script type="application/ld+json">${JSON.stringify(item).replaceAll("<", "\\u003c")}</script>`,
+    )
+    .join("\n");
+
 const template = (page, { html, toc }) => {
-  const title = page.slug
-    ? `${page.meta.title} · REALM`
-    : "REALM: the HTML framework for shipping MVPs";
+  const title = titleOf(page);
   const description = escapeHtml(
     page.meta.description ??
       "Build native web components with one HTML tag. No compiler, no build step.",
@@ -496,7 +652,7 @@ const template = (page, { html, toc }) => {
     ? `<main id="main" class="home">${html}</main>`
     : `<site-layout${wide ? " wide" : ""} label="${escapeHtml(sectionLabel)}">
   <nav slot="nav" class="sidebar" aria-label="${escapeHtml(sectionLabel)}">${navFor(page)}</nav>
-  <article id="main" class="prose${wide ? " wide" : ""}">${html}${pager(page)}<p class="edit"><a href="${editUrl}" rel="noopener" target="_blank">Edit this page on GitHub</a> · <a href="${p}${page.slug}.md">View as Markdown</a></p></article>
+  <article id="main" class="prose${wide ? " wide" : ""}">${html}${pager(page)}<p class="edit">${page.updated ? `Updated <time datetime="${page.updated}">${longDate(page.updated)}</time> · ` : ""}<a href="${editUrl}" rel="noopener" target="_blank">Edit this page on GitHub</a> · <a href="${p}${page.slug}.md">View as Markdown</a></p></article>
   <nav slot="toc" class="toc" aria-label="On this page">${tocFor(toc)}</nav>
 </site-layout>`;
   return `<!doctype html>
@@ -508,10 +664,17 @@ const template = (page, { html, toc }) => {
 <meta name="description" content="${description}">
 <link rel="canonical" href="${SITE_URL}${page.url}">
 <link rel="alternate" type="text/markdown" href="${p}${page.slug || "index"}.md">
+<meta property="og:site_name" content="REALM">
 <meta property="og:title" content="${escapeHtml(title)}">
 <meta property="og:description" content="${description}">
-<meta property="og:type" content="website">
+<meta property="og:type" content="${page.section === "blog" && page.meta.date ? "article" : "website"}">
 <meta property="og:url" content="${SITE_URL}${page.url}">
+<meta property="og:image" content="${OG_IMAGE}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="REALM: web components in plain HTML">
+${page.section === "blog" && page.meta.date ? `<meta property="article:published_time" content="${String(page.meta.date).slice(0, 10)}">\n` : ""}<meta name="twitter:card" content="summary_large_image">
+${jsonLd(structuredData(page, page.meta.description ?? "", html))}
 <meta name="color-scheme" content="light dark">
 <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)">
@@ -625,7 +788,10 @@ writeFileSync(
 writeFileSync(
   join(out, "sitemap.xml"),
   `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${listed
-    .map((p) => `  <url><loc>${SITE_URL}${p.url}</loc></url>`)
+    .map(
+      (p) =>
+        `  <url><loc>${SITE_URL}${p.url}</loc>${p.updated ? `<lastmod>${p.updated}</lastmod>` : ""}</url>`,
+    )
     .join("\n")}\n</urlset>\n`,
 );
 writeFileSync(

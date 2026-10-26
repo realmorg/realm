@@ -1,6 +1,6 @@
 ---
 title: Events
-description: Handle events with native on* attributes that call script functions, emit events with dispatchEvent or dispatch, handle custom events on pages, and expose methods with defineMethods.
+description: Handle events with native on* attributes that call script functions, emit events with dispatch, listen on pages, and expose methods with defineMethods.
 group: Core concepts
 order: 14
 nav: Events
