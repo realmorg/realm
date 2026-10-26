@@ -27,6 +27,7 @@ concurrency:
 jobs:
   check:
     runs-on: ubuntu-latest
+    timeout-minutes: 40
     steps:
       - uses: actions/checkout@v5
       - uses: ./.github/actions/setup
@@ -36,7 +37,18 @@ jobs:
       - run: pnpm build
       - run: pnpm size
       - run: pnpm skill:check
-      - run: pnpm --filter @realmorg/realm exec playwright install --with-deps chromium
+      - uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-chromium-${{ hashFiles('pnpm-lock.yaml') }}
+      # Playwright's download server sometimes hangs. A stuck attempt is retried instead of
+      # holding the job until GitHub's six-hour limit.
+      - run: |
+          for attempt in 1 2 3; do
+            timeout 5m pnpm --filter @realmorg/realm exec playwright install --with-deps chromium && exit 0
+            echo "::warning::Browser install attempt $attempt failed, retrying"
+          done
+          exit 1
       - run: pnpm skill:test
       - run: pnpm scripts:test
 
@@ -44,6 +56,7 @@ jobs:
   packages:
     name: ${{ matrix.package }} (${{ matrix.browsers }})
     runs-on: ubuntu-latest
+    timeout-minutes: 40
     strategy:
       fail-fast: false
       matrix:
@@ -58,13 +71,25 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - uses: ./.github/actions/setup
-      - run: pnpm --filter "${{ matrix.package }}" exec playwright install --with-deps ${{ matrix.browsers }}
+      - uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ matrix.browsers }}-${{ hashFiles('pnpm-lock.yaml') }}
+      # Playwright's download server sometimes hangs. A stuck attempt is retried instead of
+      # holding the job until GitHub's six-hour limit.
+      - run: |
+          for attempt in 1 2 3; do
+            timeout 5m pnpm --filter "${{ matrix.package }}" exec playwright install --with-deps ${{ matrix.browsers }} && exit 0
+            echo "::warning::Browser install attempt $attempt failed, retrying"
+          done
+          exit 1
       - run: pnpm turbo run build --filter="${{ matrix.package }}..."
       - run: pnpm --filter "${{ matrix.package }}" ${{ matrix.run }}
 
   site:
     name: site (${{ matrix.browser }}${{ matrix.shard && format(' {0}', matrix.shard) || '' }})
     runs-on: ubuntu-latest
+    timeout-minutes: 40
     strategy:
       fail-fast: false
       matrix:
@@ -77,7 +102,18 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - uses: ./.github/actions/setup
-      - run: pnpm --filter site exec playwright install --with-deps ${{ matrix.browser }}
+      - uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ matrix.browser }}-${{ hashFiles('pnpm-lock.yaml') }}
+      # Playwright's download server sometimes hangs. A stuck attempt is retried instead of
+      # holding the job until GitHub's six-hour limit.
+      - run: |
+          for attempt in 1 2 3; do
+            timeout 5m pnpm --filter site exec playwright install --with-deps ${{ matrix.browser }} && exit 0
+            echo "::warning::Browser install attempt $attempt failed, retrying"
+          done
+          exit 1
       # The tests build the site themselves. They need the packages it is made from.
       - run: pnpm turbo run build --filter="site^..." --filter="@realmorg/unicons"
       - if: matrix.run == 'coverage'
