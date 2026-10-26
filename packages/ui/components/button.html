@@ -11,6 +11,9 @@
       popovertargetaction: prop.enum(["toggle", "show", "hide"]),
       commandfor: prop.string(),
       command: prop.string(),
+      href: prop.string(),
+      target: prop.string(),
+      rel: prop.string(),
     });
 
     const NATIVE_COMMANDS = "commandForElement" in HTMLButtonElement.prototype;
@@ -75,7 +78,11 @@
     :host([hidden]) {
       display: none;
     }
-    button {
+    is-visible,
+    is-hidden {
+      display: contents;
+    }
+    .control {
       all: unset;
       box-sizing: border-box;
       display: inline-flex;
@@ -103,14 +110,15 @@
     }
     /* Mixing toward the text colour darkens a light-mode fill and lightens a dark-mode one, so
        hover never lowers the text contrast. */
-    button:hover {
+    .control:hover {
       background: color-mix(in oklab, var(--primary) 88%, var(--foreground));
     }
-    button:focus-visible {
+    .control:focus-visible {
       border-color: var(--ring);
       box-shadow: var(--focus-ring);
     }
-    button:disabled {
+    .control:disabled,
+    :host([disabled]) a.control {
       pointer-events: none;
       opacity: 0.5;
     }
@@ -120,75 +128,80 @@
       flex-shrink: 0;
       pointer-events: none;
     }
-    :host(:state(attr-variant-is-destructive)) button {
+    :host(:state(attr-variant-is-destructive)) .control {
       background: var(--destructive);
       color: var(--destructive-foreground);
     }
-    :host(:state(attr-variant-is-destructive)) button:hover {
+    :host(:state(attr-variant-is-destructive)) .control:hover {
       background: color-mix(in oklab, var(--destructive) 88%, var(--foreground));
     }
-    :host(:state(attr-variant-is-outline)) button {
+    :host(:state(attr-variant-is-outline)) .control {
       border-color: var(--border);
       background: var(--background);
       color: var(--foreground);
       box-shadow: var(--shadow-xs);
     }
-    :host(:state(attr-variant-is-outline)) button:hover,
-    :host(:state(attr-variant-is-ghost)) button:hover {
+    :host(:state(attr-variant-is-outline)) .control:hover,
+    :host(:state(attr-variant-is-ghost)) .control:hover {
       background: var(--accent);
       color: var(--accent-foreground);
     }
-    :host(:state(attr-variant-is-secondary)) button {
+    :host(:state(attr-variant-is-secondary)) .control {
       background: var(--secondary);
       color: var(--secondary-foreground);
     }
-    :host(:state(attr-variant-is-secondary)) button:hover {
+    :host(:state(attr-variant-is-secondary)) .control:hover {
       background: color-mix(in oklab, var(--secondary) 80%, transparent);
     }
-    :host(:state(attr-variant-is-ghost)) button {
+    :host(:state(attr-variant-is-ghost)) .control {
       background: transparent;
       color: var(--foreground);
     }
-    :host(:state(attr-variant-is-link)) button {
+    :host(:state(attr-variant-is-link)) .control {
       background: transparent;
       color: var(--primary);
       text-underline-offset: 4px;
     }
-    :host(:state(attr-variant-is-link)) button:hover {
+    :host(:state(attr-variant-is-link)) .control:hover {
       text-decoration: underline;
     }
-    :host(:state(attr-size-is-xs)) button {
+    :host(:state(attr-size-is-xs)) .control {
       height: calc(var(--spacing) * 6);
       gap: calc(var(--spacing) * 1);
       padding: 0 calc(var(--spacing) * 2);
       font-size: var(--text-xs);
     }
-    :host(:state(attr-size-is-sm)) button {
+    :host(:state(attr-size-is-sm)) .control {
       height: calc(var(--spacing) * 8);
       gap: calc(var(--spacing) * 1.5);
       padding: 0 calc(var(--spacing) * 3);
     }
-    :host(:state(attr-size-is-lg)) button {
+    :host(:state(attr-size-is-lg)) .control {
       height: calc(var(--spacing) * 10);
       padding: 0 calc(var(--spacing) * 6);
     }
-    :host(:is(:state(attr-size-is-icon), :state(attr-size-is-icon-xs), :state(attr-size-is-icon-sm), :state(attr-size-is-icon-lg))) button {
+    :host(:is(:state(attr-size-is-icon), :state(attr-size-is-icon-xs), :state(attr-size-is-icon-sm), :state(attr-size-is-icon-lg))) .control {
       padding: 0;
       width: calc(var(--spacing) * 9);
     }
-    :host(:state(attr-size-is-icon-xs)) button {
+    :host(:state(attr-size-is-icon-xs)) .control {
       width: calc(var(--spacing) * 6);
       height: calc(var(--spacing) * 6);
     }
-    :host(:state(attr-size-is-icon-sm)) button {
+    :host(:state(attr-size-is-icon-sm)) .control {
       width: calc(var(--spacing) * 8);
       height: calc(var(--spacing) * 8);
     }
-    :host(:state(attr-size-is-icon-lg)) button {
+    :host(:state(attr-size-is-icon-lg)) .control {
       width: calc(var(--spacing) * 10);
       height: calc(var(--spacing) * 10);
     }
   </style>
 
-  <button type="button" ref="button" part="button" _aria-label="@label" _aria-description="@description" _disabled="@disabled" onclick="activate()"><slot></slot></button>
+  <is-visible when="@href">
+    <a class="control" ref="link" part="button" _href="@href" _target="@target" _rel="@rel" _aria-label="@label" _aria-description="@description"><slot></slot></a>
+  </is-visible>
+  <is-hidden when="@href">
+    <button class="control" type="button" ref="button" part="button" _aria-label="@label" _aria-description="@description" _disabled="@disabled" onclick="activate()"><slot></slot></button>
+  </is-hidden>
 </custom-element>

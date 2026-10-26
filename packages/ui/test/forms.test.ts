@@ -59,6 +59,29 @@ describe("ui-button", () => {
     dialog.close();
     await tick();
   });
+
+  test("with href it is a link that looks like a button", async () => {
+    const host = await render(`
+      <ui-button id="link" href="/docs/" target="_blank" rel="noopener" variant="outline">Docs</ui-button>
+      <ui-button id="plain">Plain</ui-button>`);
+    const link = host.querySelector("#link") as HTMLElement & { href: string };
+    const anchor = part<HTMLAnchorElement>(link, "button");
+    expect(anchor.localName).toBe("a");
+    expect(anchor.getAttribute("href")).toBe("/docs/");
+    expect(anchor.target).toBe("_blank");
+    expect(anchor.rel).toBe("noopener");
+    expect(shadow(link).querySelector("button")).toBeNull();
+    expect(getComputedStyle(anchor).display).toBe(
+      getComputedStyle(part(host.querySelector("#plain"), "button")).display,
+    );
+    expect(getComputedStyle(anchor).textDecorationLine).toBe("none");
+    expect(anchor.getBoundingClientRect().height).toBe(
+      part(host.querySelector("#plain"), "button").getBoundingClientRect().height,
+    );
+    link.href = "";
+    await tick();
+    expect(part(link, "button").localName).toBe("button");
+  });
 });
 
 describe("text fields", () => {

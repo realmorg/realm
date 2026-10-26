@@ -81,6 +81,15 @@ Put an `<svg>` before or after the label. The button adds a gap between them.
 </ui-button>
 ```
 
+### As a link
+
+Give it an `href` and the button becomes a link that looks the same: the inner element is an `<a>`, so it opens in a new tab with a middle click, shows the URL on hover and is announced as a link. Use it for navigation; keep the plain button for actions.
+
+```html live
+<ui-button href="#get-started">Get started</ui-button>
+<ui-button href="https://github.com/realmorg/realm" target="_blank" rel="noopener" variant="outline">GitHub</ui-button>
+```
+
 ### Loading
 
 Combine `disabled` with a `ui-spinner` while work is in progress.
@@ -197,6 +206,9 @@ behaviour. The button dispatches a cancelable `command` event on the target and 
 | `aria-description` | string | | Accessible description, passed to the inner button. `ui-tooltip` sets it from its content. Property name: `description`. |
 | `popovertarget` | string | | Id of a popover element to toggle. |
 | `popovertargetaction` | `"toggle"` \| `"show"` \| `"hide"` | | Action taken on the popover target. |
+| `href` | string | | Makes the button a link to this URL. The inner element is an `<a>` instead of a `<button>`, and `type` and the invoker attributes do not apply. `disabled` dims it and stops clicks. |
+| `target` | string | | Where a link opens, as on `<a>`. |
+| `rel` | string | | Link relation, as on `<a>`. |
 | `commandfor` | string | | Id of the element that receives `command`. |
 | `command` | string | | Command to invoke, such as `show-modal`, `close`, `request-close`, `toggle-popover`, `show-popover`, `hide-popover` or a custom `--command`. |
 
@@ -216,7 +228,7 @@ not supported, the button dispatches a cancelable `command` event on the `comman
 
 | Part | Description |
 | --- | --- |
-| `button` | The inner native `<button>`. |
+| `button` | The inner native `<button>`, or the `<a>` when `href` is set. |
 
 ### CSS states and custom properties
 
