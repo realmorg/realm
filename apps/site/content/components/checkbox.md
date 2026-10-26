@@ -149,6 +149,7 @@ value. `required` blocks submission until the box is checked, and `form.reset()`
 
 | Attribute | Type | Default | Description |
 | --- | --- | --- | --- |
+| `name` | string | | Form field name the value is submitted under. Also the `name` property, which reflects to the attribute like a native control's. |
 | `checked` | boolean | `false` | Whether the box is checked. The attribute is the initial and reset state. The property follows the user. |
 | `value` | string | | Value submitted when checked. Without it the form submits `on`. |
 | `indeterminate` | boolean | `false` | Shows the mixed state. Visual only. Cleared when the user toggles the box. |

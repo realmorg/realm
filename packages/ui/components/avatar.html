@@ -95,7 +95,10 @@
       height: 100%;
       align-items: center;
       justify-content: center;
+      box-sizing: border-box;
+      padding-inline-end: var(--ui-avatar-covered, 0);
       background: var(--muted);
+      color: var(--muted-foreground);
     }
   </style>
 
@@ -115,10 +118,22 @@
       align-items: center;
     }
     ::slotted(*) {
-      box-shadow: 0 0 0 calc(var(--spacing) * 0.5) var(--background);
+      --ui-avatar-ring: calc(var(--spacing) * 0.5);
+      --ui-avatar-overlap: calc(var(--spacing) * 1.5);
+      box-shadow: 0 0 0 var(--ui-avatar-ring) var(--background);
+    }
+    ::slotted([size="sm"]) {
+      --ui-avatar-overlap: calc(var(--spacing) * 0.75);
+    }
+    ::slotted([size="lg"]) {
+      --ui-avatar-overlap: calc(var(--spacing) * 2);
     }
     ::slotted(:not(:first-child)) {
-      margin-inline-start: calc(var(--spacing) * -2);
+      margin-inline-start: calc(var(--ui-avatar-overlap) * -1);
+    }
+    /* The next avatar and its ring cover the end of this one, so the initials centre in what stays visible. */
+    ::slotted(:not(:last-child)) {
+      --ui-avatar-covered: calc(var(--ui-avatar-overlap) + var(--ui-avatar-ring));
     }
   </style>
 
@@ -126,6 +141,10 @@
 </custom-element>
 
 <custom-element name="ui-avatar-group-count">
+  <script>
+    defineProps({ size: prop.enum(["sm", "default", "lg"]).default("default") });
+  </script>
+
   <style>
     :host,
     * {
@@ -136,12 +155,25 @@
       flex-shrink: 0;
       align-items: center;
       justify-content: center;
-      width: calc(var(--spacing) * 8);
+      box-sizing: border-box;
+      min-width: calc(var(--spacing) * 8);
       height: calc(var(--spacing) * 8);
+      padding-inline: calc(var(--spacing) * 1.5);
       border-radius: var(--radius-full);
       background: var(--muted);
       color: var(--muted-foreground);
       font-size: var(--text-sm);
+      white-space: nowrap;
+    }
+    :host(:state(attr-size-is-sm)) {
+      min-width: calc(var(--spacing) * 6);
+      height: calc(var(--spacing) * 6);
+      padding-inline: var(--spacing);
+      font-size: var(--text-xs);
+    }
+    :host(:state(attr-size-is-lg)) {
+      min-width: calc(var(--spacing) * 10);
+      height: calc(var(--spacing) * 10);
     }
   </style>
 

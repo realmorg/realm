@@ -14,7 +14,9 @@ the top corner. The copy button writes the block's text content to the clipboard
 highlighted markup if you need colours.
 
 Whitespace is preserved, so put the code in a `<pre>` (or start it right after the opening tag) and escape `<` as
-`&lt;`. A slotted `<pre>` gets no margin. The block is as wide as its container, so size it with a wrapper.
+`&lt;`. A slotted `<pre>` gets no margin. The block is as wide as its container, so size it with a wrapper. When the
+block is narrower than `40rem`, the code starts below the language label and copy button so they never cover the
+first line.
 
 ```html live
 <div class="demo-medium">
@@ -70,7 +72,7 @@ what the copy button copies.
 | Part | Description |
 | --- | --- |
 | `code` | The scrolling area around the code (`white-space: pre`). |
-| `bar` | The corner bar with the language label and the copy button. |
+| `bar` | The corner bar with the language label and the copy button. Below a block width of `40rem`, the code area leaves room above the first line for it. |
 
 ### Accessibility
 

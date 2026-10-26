@@ -69,6 +69,12 @@
       display: block;
       width: fit-content;
     }
+    :host([stretch]) {
+      width: auto;
+    }
+    :host([stretch]) [role="tablist"] {
+      display: flex;
+    }
     [role="tablist"] {
       display: inline-flex;
       flex-direction: var(--ui-tabs-list-direction, row);

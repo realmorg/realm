@@ -1,6 +1,7 @@
 <custom-element name="ui-checkbox" form-associated delegates-focus>
   <script>
     const props = defineProps({
+      name: prop.string().reflect(),
       checked: prop.boolean(),
       value: prop.string(),
       indeterminate: prop.boolean(),

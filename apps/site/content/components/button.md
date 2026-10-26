@@ -198,6 +198,7 @@ behaviour. The button dispatches a cancelable `command` event on the target and 
 
 | Attribute | Type | Default | Description |
 | --- | --- | --- | --- |
+| `name` | string | | Name of the button, readable from script. Unlike a native button it does not add an entry to the submitted form data. Also the `name` property, which reflects to the attribute like a native control's. |
 | `variant` | `"default"` \| `"destructive"` \| `"outline"` \| `"secondary"` \| `"ghost"` \| `"link"` | `"default"` | Visual style. |
 | `size` | `"default"` \| `"xs"` \| `"sm"` \| `"lg"` \| `"icon"` \| `"icon-xs"` \| `"icon-sm"` \| `"icon-lg"` | `"default"` | Height and padding. The `icon` sizes make a square button. |
 | `type` | `"button"` \| `"submit"` \| `"reset"` | `"button"` | What the button does in its form. |
@@ -211,6 +212,12 @@ behaviour. The button dispatches a cancelable `command` event on the target and 
 | `rel` | string | | Link relation, as on `<a>`. |
 | `commandfor` | string | | Id of the element that receives `command`. |
 | `command` | string | | Command to invoke, such as `show-modal`, `close`, `request-close`, `toggle-popover`, `show-popover`, `hide-popover` or a custom `--command`. |
+
+### Methods
+
+| Method | Description |
+| --- | --- |
+| `click()` | Clicks the inner button or link, so it submits, resets, invokes its command or follows its link like a user click. Does nothing while disabled. |
 
 ### Events
 
@@ -244,6 +251,13 @@ not supported, the button dispatches a cancelable `command` event on the `comman
 `type="submit"` calls `requestSubmit()` on the form, which runs constraint validation and fires `submit`.
 `type="reset"` calls `reset()`. The button itself adds no name or value to the submitted data, and the `submit`
 event's `submitter` is `null`.
+
+Calling `click()` on the `ui-button` from script activates it like a user click, as on a native button: a submit
+button submits its form, a link follows its `href`, and a disabled button does nothing.
+
+```js
+document.querySelector("ui-button[type=submit]").click();
+```
 
 ### Accessibility
 

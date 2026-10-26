@@ -1,12 +1,31 @@
 <custom-element name="ui-input-group" form-associated delegates-focus>
   <script>
     defineProps({
+      name: prop.string().reflect(),
       value: prop.string().default(""),
       type: prop.enum(["text", "email", "password", "number", "search", "tel", "url"]).default("text"),
       placeholder: prop.string(),
+      autocomplete: prop.string(),
+      inputmode: prop.string(),
+      pattern: prop.string(),
+      min: prop.string(),
+      max: prop.string(),
+      step: prop.string(),
+      minlength: prop.number(),
+      maxlength: prop.number(),
       disabled: prop.boolean(),
+      readonly: prop.boolean(),
       required: prop.boolean(),
+      invalid: prop.boolean(),
       label: prop.string().attribute("aria-label"),
+      title: prop.string(),
+    });
+
+    defineMethods({
+      setCustomValidity(message) {
+        refs.control.setCustomValidity(message);
+        internals.setValidity(refs.control.validity, refs.control.validationMessage, refs.control);
+      },
     });
   </script>
 
@@ -32,6 +51,10 @@
       border-color: var(--ring);
       box-shadow: var(--focus-ring);
     }
+    :host(:state(attr-invalid)) {
+      border-color: var(--destructive);
+      box-shadow: 0 0 0 3px color-mix(in oklab, var(--destructive) 20%, transparent);
+    }
     input {
       flex: 1;
       min-width: 0;
@@ -56,7 +79,27 @@
   </style>
 
   <slot></slot>
-  <input ref="control" part="input" _type="@type" _value="@value" _placeholder="@placeholder" _disabled="@disabled" _required="@required" _aria-label="@label">
+  <input
+    ref="control"
+    part="input"
+    _type="@type"
+    _value="@value"
+    _placeholder="@placeholder"
+    _autocomplete="@autocomplete"
+    _inputmode="@inputmode"
+    _pattern="@pattern"
+    _min="@min"
+    _max="@max"
+    _step="@step"
+    _minlength="@minlength"
+    _maxlength="@maxlength"
+    _disabled="@disabled"
+    _readonly="@readonly"
+    _required="@required"
+    _aria-invalid="@invalid"
+    _aria-label="@label"
+    _title="@title"
+>
 </custom-element>
 
 <custom-element name="ui-input-group-addon">

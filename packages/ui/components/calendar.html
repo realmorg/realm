@@ -3,6 +3,7 @@
 <custom-element name="ui-calendar" form-associated>
   <script>
     const props = defineProps({
+      name: prop.string().reflect(),
       value: prop.string().default(""),
       month: prop.string(),
       min: prop.string(),

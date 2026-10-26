@@ -10,8 +10,9 @@ nav: Chart
 
 `ui-chart` draws a responsive SVG chart from `data`, a list of plain objects. `x` names the field used for the
 category labels along the bottom, and `y` names one or more numeric fields to plot. It supports bars, lines and
-filled areas, a value grid with five ticks, and a legend when there is more than one series. Series colours come
-from the theme tokens `--chart-1` to `--chart-5`. The chart is as wide as its container.
+filled areas, a value grid on rounded steps (such as 0, 10K, 20K, 30K), and a legend when there is more than one
+series. Series colours come from the theme tokens `--chart-1` to `--chart-5`. The chart is as wide as its container
+and redraws when that width changes, so labels and lines keep the same size on a phone and on a wide screen.
 
 ```html live
 <ui-chart x="month" y="desktop" label="Desktop visitors per month"
@@ -52,8 +53,7 @@ chart.
 
 ### Height
 
-`height` sets the height of the drawing in SVG units (the width is always 600 units). The chart scales to the
-width of its container and keeps that ratio, so a smaller `height` gives a flatter chart.
+`height` sets the height of the chart in pixels. The width always follows the container.
 
 ```html live
 <ui-chart height="120" label="Weekly sales"
@@ -62,6 +62,25 @@ width of its container and keeps that ratio, so a smaller `height` gives a flatt
 ```
 
 The last example also relies on the defaults `x="label"` and `y="value"`.
+
+### Sparkline
+
+`variant="sparkline"` draws only the series, edge to edge, with no axes, grid, labels, legend or padding. Use it
+with a small `height` inside a stat card.
+
+```html live
+<ui-card>
+  <ui-card-header>
+    <ui-card-description>Revenue</ui-card-description>
+    <ui-card-title>$45,231</ui-card-title>
+  </ui-card-header>
+  <ui-card-content>
+    <ui-chart variant="sparkline" type="area" height="48" y="revenue" label="Revenue over the last 7 days"
+      data='[{"revenue":3200},{"revenue":4100},{"revenue":3800},{"revenue":5200},{"revenue":4900},{"revenue":6100},{"revenue":6800}]'>
+    </ui-chart>
+  </ui-card-content>
+</ui-card>
+```
 
 ### Data from component state
 
@@ -160,7 +179,8 @@ wrapping element to recolour the chart.
 | `data` | array of objects | `[]` | The data points, one object per category. Accepts JSON in the attribute, or an array through the `data` property or a `_data` binding. |
 | `x` | string | `"label"` | Field used for the category labels on the horizontal axis. |
 | `y` | string | `"value"` | Field, or comma-separated fields, plotted as series. Non-numeric values count as `0`. |
-| `height` | number | `240` | Height of the drawing in SVG units, minimum `80`. The width is 600 units and the chart scales to its container. |
+| `variant` | `"default"` \| `"sparkline"` | `"default"` | `sparkline` hides the axes, grid, labels and legend and drops the padding. Lines and areas then run edge to edge. |
+| `height` | number | `240` | Height of the chart in pixels, minimum `16`. The width follows the container. |
 | `label` | string | `"Chart"` | Accessible name of the chart image. |
 
 ### Parts
@@ -181,6 +201,7 @@ wrapping element to recolour the chart.
 | `--chart-1` … `--chart-5` | Series colours, in order. Defined in `theme.css`. Override them on an ancestor, such as a wrapping `<div>`. |
 
 The axis labels use the element's `color` (muted foreground by default) and the grid lines use `var(--border)`.
+Value labels are shortened with the browser's compact number format, so 20000 reads as "20K".
 
 ### Accessibility
 

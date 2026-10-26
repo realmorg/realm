@@ -224,6 +224,7 @@ handling and mobile UI keep working.
 
 | Attribute | Type | Default | Description |
 | --- | --- | --- | --- |
+| `name` | string | | Form field name the value is submitted under. Also the `name` property, which reflects to the attribute like a native control's. |
 | `value` | string | `""` | The `value` of the chosen option. |
 | `placeholder` | string | | Text of an empty, unselectable first entry. Without it, the first or `selected` option is chosen automatically. |
 | `size` | `"default"` \| `"sm"` | `"default"` | Height of the select. |

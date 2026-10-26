@@ -1,6 +1,7 @@
 <custom-element name="ui-switch" form-associated delegates-focus>
   <script>
     defineProps({
+      name: prop.string().reflect(),
       checked: prop.boolean(),
       value: prop.string(),
       size: prop.enum(["default", "sm"]).default("default"),

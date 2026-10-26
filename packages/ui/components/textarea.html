@@ -1,6 +1,7 @@
 <custom-element name="ui-textarea" form-associated delegates-focus>
   <script>
     defineProps({
+      name: prop.string().reflect(),
       value: prop.string().default(""),
       placeholder: prop.string(),
       rows: prop.number().int().min(1).default(3),
@@ -11,6 +12,14 @@
       required: prop.boolean(),
       invalid: prop.boolean(),
       label: prop.string().attribute("aria-label"),
+      title: prop.string(),
+    });
+
+    defineMethods({
+      setCustomValidity(message) {
+        refs.control.setCustomValidity(message);
+        internals.setValidity(refs.control.validity, refs.control.validationMessage, refs.control);
+      },
     });
   </script>
 
@@ -76,5 +85,6 @@
     _readonly="@readonly"
     _required="@required"
     _aria-invalid="@invalid"
+    _title="@title"
 ></textarea>
 </custom-element>

@@ -3,6 +3,7 @@
 <custom-element name="ui-toggle-group" role="group" form-associated>
   <script>
     const props = defineProps({
+      name: prop.string().reflect(),
       type: prop.enum(["single", "multiple"]).default("single"),
       value: prop.string().default(""),
       orientation: prop.enum(["horizontal", "vertical"]).default("horizontal"),
@@ -26,10 +27,10 @@
       const selected = props.type === "single" ? new Set(toggle.pressed ? [value] : []) : new Set(group.selected);
       if (props.type === "multiple") selected[toggle.pressed ? "add" : "delete"](value);
       props.value = [...selected].join(",");
-      dispatch("change");
+      dispatch("change", undefined, { composed: false });
     }
 
-    listen("change", changed);
+    listen("change", changed, host.shadowRoot);
 
     observe(() => {
       for (const toggle of toggles) toggle.pressed = group.selected.has(toggle.value);

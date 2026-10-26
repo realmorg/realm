@@ -62,6 +62,31 @@ Use `ui-label for` (or a native `<label>` around the element) to name the input.
 `invalid` sets `aria-invalid` on the inner input and draws a destructive border. Use it for errors you detect
 yourself, such as a taken username. Native constraint errors are reported through validity instead.
 
+To block the form as well, call `setCustomValidity(message)`, as on a native input, and clear it with an empty
+string. `title` describes the format expected by `pattern` in the browser's own message.
+
+```html live
+<custom-element name="input-username-demo">
+  <script type="realm">
+    const TAKEN = new Set(["admin", "root"]);
+
+    function check(field) {
+      field.setCustomValidity(TAKEN.has(field.value) ? "That username is taken." : "");
+    }
+
+    function stay(event) {
+      event.preventDefault();
+    }
+  </script>
+  <form class="demo-narrow" onsubmit="stay(event)">
+    <ui-input name="username" aria-label="Username" value="admin" pattern="[a-z]+" title="Lowercase letters only"
+      oninput="check(this)"></ui-input>
+    <ui-button type="submit">Check</ui-button>
+  </form>
+</custom-element>
+<input-username-demo></input-username-demo>
+```
+
 ```html live
 <div class="demo-narrow">
   <ui-input aria-label="Username" value="admin" invalid></ui-input>
@@ -149,7 +174,7 @@ browser's own messages. Enter inside a field submits the form. Reset returns eac
     }
   </style>
 
-  <form onsubmit="submit(event)" onreset="reset()">
+  <form onsubmit="stay(event)" onreset="reset()">
     <ui-input name="email" type="email" aria-label="Email" placeholder="Email" required></ui-input>
     <ui-input name="handle" aria-label="Handle" value="realm" minlength="3" pattern="[a-z0-9_]+"></ui-input>
     <ui-input name="seats" type="number" aria-label="Seats" value="5" min="1" max="50"></ui-input>
@@ -169,6 +194,7 @@ browser's own messages. Enter inside a field submits the form. Reset returns eac
 
 | Attribute | Type | Default | Description |
 | --- | --- | --- | --- |
+| `name` | string | | Form field name the value is submitted under. Also the `name` property, which reflects to the attribute like a native control's. |
 | `value` | string | `""` | Current value. The attribute is the initial and reset value. |
 | `type` | `"text"` \| `"email"` \| `"password"` \| `"number"` \| `"search"` \| `"tel"` \| `"url"` \| `"date"` \| `"time"` \| `"datetime-local"` \| `"month"` \| `"week"` \| `"color"` | `"text"` | Native input type. |
 | `placeholder` | string | | Placeholder text. |
@@ -185,6 +211,7 @@ browser's own messages. Enter inside a field submits the form. Reset returns eac
 | `required` | boolean | `false` | The form is invalid while the value is empty. |
 | `invalid` | boolean | `false` | Sets `aria-invalid="true"` and the error style. Does not affect validity. |
 | `aria-label` | string | | Accessible name, passed to the inner input. Property name: `label`. |
+| `title` | string | | Passed to the inner input. Browsers add it to the message shown when `pattern` does not match, so use it to describe the expected format. |
 
 ### Properties
 
@@ -193,6 +220,12 @@ browser's own messages. Enter inside a field submits the form. Reset returns eac
 | `value` | string | Current value. Updated as the user types. Setting it updates the field and the submitted value. |
 
 Every attribute above is also a property with the same name in camelCase (`label` for `aria-label`).
+
+### Methods
+
+| Method | Description |
+| --- | --- |
+| `setCustomValidity(message)` | Like the native method: a non-empty `message` makes the field and its form invalid with that message, and an empty string clears it. The message stays until you clear it. |
 
 ### Events
 
@@ -211,7 +244,8 @@ Every attribute above is also a property with the same name in camelCase (`label
 
 `ui-input` is form-associated. It submits `value` under its `name`. Validity is mirrored from the inner input, so
 `required`, `type`, `pattern`, `minlength`, `maxlength`, `min`, `max` and `step` all take part in `checkValidity()`
-and `reportValidity()`, and the validation bubble points at the inner field. Enter submits the form for the
+and `reportValidity()`, and the validation bubble points at the inner field. `setCustomValidity(message)` adds a
+custom error on top. Enter submits the form for the
 text-like types. `form.reset()` restores the `value` attribute, and a disabled `<fieldset>` disables the input.
 
 ### Accessibility

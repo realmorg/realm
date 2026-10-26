@@ -153,6 +153,7 @@ The calendar submits its `value` under its `name`. Resetting the form returns it
 
 | Attribute | Type | Default | Description |
 | --- | --- | --- | --- |
+| `name` | string | | Form field name the value is submitted under. Also the `name` property, which reflects to the attribute like a native control's. |
 | `value` | string | `""` | Selected date as `YYYY-MM-DD`. Empty means no selection. |
 | `month` | string | | Month shown first, as `YYYY-MM`. Used when the calendar is created. Defaults to the month of `value`, or the current month. |
 | `min` | string | | Earliest selectable date, `YYYY-MM-DD`. |

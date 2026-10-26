@@ -31,91 +31,91 @@ Conventions shared by every component:
 
 | Component | Lines | File | Tags |
 | --- | --- | --- | --- |
-| [Button](#button) | 120-184 | `button.html` | `ui-button` |
-| [Button Group](#button-group) | 186-241 | `button-group.html` | `ui-button-group`, `ui-button-group-text`, `ui-button-group-separator` |
-| [Calendar](#calendar) | 243-296 | `calendar.html` | `ui-calendar` |
-| [Checkbox](#checkbox) | 298-363 | `checkbox.html` | `ui-checkbox` |
-| [Combobox](#combobox) | 365-438 | `combobox.html` | `ui-combobox`, `ui-combobox-empty` |
-| [Field](#field) | 440-502 | `field.html` | `ui-field`, `ui-field-content`, `ui-field-description`, `ui-field-group`, `ui-field-set`, `ui-field-legend` |
-| [Input](#input) | 504-566 | `input.html` | `ui-input` |
-| [Input Group](#input-group) | 568-637 | `input-group.html` | `ui-input-group`, `ui-input-group-addon` |
-| [Input OTP](#input-otp) | 639-692 | `input-otp.html` | `ui-input-otp` |
-| [Label](#label) | 694-735 | `label.html` | `ui-label` |
-| [Radio Group](#radio-group) | 737-800 | `radio-group.html` | `ui-radio-group` |
-| [Select](#select) | 802-880 | `select.html` | `ui-select` |
-| [Slider](#slider) | 882-936 | `slider.html` | `ui-slider` |
-| [Switch](#switch) | 938-999 | `switch.html` | `ui-switch` |
-| [Textarea](#textarea) | 1001-1054 | `textarea.html` | `ui-textarea` |
-| [Toggle](#toggle) | 1056-1114 | `toggle.html` | `ui-toggle` |
-| [Toggle Group](#toggle-group) | 1116-1191 | `toggle-group.html` | `ui-toggle-group` |
+| [Button](#button) | 120-198 | `button.html` | `ui-button` |
+| [Button Group](#button-group) | 200-255 | `button-group.html` | `ui-button-group`, `ui-button-group-text`, `ui-button-group-separator` |
+| [Calendar](#calendar) | 257-311 | `calendar.html` | `ui-calendar` |
+| [Checkbox](#checkbox) | 313-379 | `checkbox.html` | `ui-checkbox` |
+| [Combobox](#combobox) | 381-455 | `combobox.html` | `ui-combobox`, `ui-combobox-empty` |
+| [Field](#field) | 457-519 | `field.html` | `ui-field`, `ui-field-content`, `ui-field-description`, `ui-field-group`, `ui-field-set`, `ui-field-legend` |
+| [Input](#input) | 521-592 | `input.html` | `ui-input` |
+| [Input Group](#input-group) | 594-679 | `input-group.html` | `ui-input-group`, `ui-input-group-addon` |
+| [Input OTP](#input-otp) | 681-735 | `input-otp.html` | `ui-input-otp` |
+| [Label](#label) | 737-778 | `label.html` | `ui-label` |
+| [Radio Group](#radio-group) | 780-844 | `radio-group.html` | `ui-radio-group` |
+| [Select](#select) | 846-925 | `select.html` | `ui-select` |
+| [Slider](#slider) | 927-982 | `slider.html` | `ui-slider` |
+| [Switch](#switch) | 984-1046 | `switch.html` | `ui-switch` |
+| [Textarea](#textarea) | 1048-1109 | `textarea.html` | `ui-textarea` |
+| [Toggle](#toggle) | 1111-1169 | `toggle.html` | `ui-toggle` |
+| [Toggle Group](#toggle-group) | 1171-1247 | `toggle-group.html` | `ui-toggle-group` |
 
 ### Display
 
 | Component | Lines | File | Tags |
 | --- | --- | --- | --- |
-| [Alert](#alert) | 1193-1227 | `alert.html` | `ui-alert`, `ui-alert-title`, `ui-alert-description` |
-| [Avatar](#avatar) | 1229-1283 | `avatar.html` | `ui-avatar`, `ui-avatar-image`, `ui-avatar-fallback`, `ui-avatar-group`, `ui-avatar-group-count` |
-| [Badge](#badge) | 1285-1318 | `badge.html` | `ui-badge` |
-| [Card](#card) | 1320-1387 | `card.html` | `ui-card`, `ui-card-header`, `ui-card-title`, `ui-card-description`, `ui-card-action`, `ui-card-content`, `ui-card-footer` |
-| [Chart](#chart) | 1389-1434 | `chart.html` | `ui-chart` |
-| [Empty](#empty) | 1436-1499 | `empty.html` | `ui-empty`, `ui-empty-header`, `ui-empty-media`, `ui-empty-title`, `ui-empty-description`, `ui-empty-content` |
-| [Item](#item) | 1501-1555 | `item.html` | `ui-item`, `ui-item-group`, `ui-item-media`, `ui-item-content`, `ui-item-title`, `ui-item-description`, `ui-item-actions`, `ui-item-header`, `ui-item-footer` |
-| [Kbd](#kbd) | 1557-1595 | `kbd.html` | `ui-kbd`, `ui-kbd-group` |
-| [Progress](#progress) | 1597-1629 | `progress.html` | `ui-progress` |
-| [Separator](#separator) | 1631-1671 | `separator.html` | `ui-separator` |
-| [Skeleton](#skeleton) | 1673-1708 | `skeleton.html` | `ui-skeleton` |
-| [Spinner](#spinner) | 1710-1741 | `spinner.html` | `ui-spinner` |
-| [Table](#table) | 1743-1798 | `table.html` | `ui-table` |
+| [Alert](#alert) | 1249-1283 | `alert.html` | `ui-alert`, `ui-alert-title`, `ui-alert-description` |
+| [Avatar](#avatar) | 1285-1345 | `avatar.html` | `ui-avatar`, `ui-avatar-image`, `ui-avatar-fallback`, `ui-avatar-group`, `ui-avatar-group-count` |
+| [Badge](#badge) | 1347-1380 | `badge.html` | `ui-badge` |
+| [Card](#card) | 1382-1449 | `card.html` | `ui-card`, `ui-card-header`, `ui-card-title`, `ui-card-description`, `ui-card-action`, `ui-card-content`, `ui-card-footer` |
+| [Chart](#chart) | 1451-1498 | `chart.html` | `ui-chart` |
+| [Empty](#empty) | 1500-1563 | `empty.html` | `ui-empty`, `ui-empty-header`, `ui-empty-media`, `ui-empty-title`, `ui-empty-description`, `ui-empty-content` |
+| [Item](#item) | 1565-1619 | `item.html` | `ui-item`, `ui-item-group`, `ui-item-media`, `ui-item-content`, `ui-item-title`, `ui-item-description`, `ui-item-actions`, `ui-item-header`, `ui-item-footer` |
+| [Kbd](#kbd) | 1621-1659 | `kbd.html` | `ui-kbd`, `ui-kbd-group` |
+| [Progress](#progress) | 1661-1693 | `progress.html` | `ui-progress` |
+| [Separator](#separator) | 1695-1735 | `separator.html` | `ui-separator` |
+| [Skeleton](#skeleton) | 1737-1772 | `skeleton.html` | `ui-skeleton` |
+| [Spinner](#spinner) | 1774-1805 | `spinner.html` | `ui-spinner` |
+| [Table](#table) | 1807-1862 | `table.html` | `ui-table` |
 
 ### Overlays
 
 | Component | Lines | File | Tags |
 | --- | --- | --- | --- |
-| [Alert Dialog](#alert-dialog) | 1800-1896 | `alert-dialog.html` | `ui-alert-dialog`, `ui-alert-dialog-trigger`, `ui-alert-dialog-header`, `ui-alert-dialog-title`, `ui-alert-dialog-description`, `ui-alert-dialog-footer`, `ui-alert-dialog-action`, `ui-alert-dialog-cancel` |
-| [Command](#command) | 1898-1967 | `command.html` | `ui-command`, `ui-command-empty` |
-| [Context Menu](#context-menu) | 1969-2026 | `context-menu.html` | `ui-context-menu`, `ui-context-menu-trigger`, `ui-context-menu-content` |
-| [Dialog](#dialog) | 2028-2131 | `dialog.html` | `ui-dialog`, `ui-dialog-trigger`, `ui-dialog-close`, `ui-dialog-header`, `ui-dialog-title`, `ui-dialog-description`, `ui-dialog-footer` |
-| [Drawer](#drawer) | 2133-2216 | `drawer.html` | `ui-drawer`, `ui-drawer-trigger`, `ui-drawer-close`, `ui-drawer-header`, `ui-drawer-title`, `ui-drawer-description`, `ui-drawer-footer` |
-| [Dropdown Menu](#dropdown-menu) | 2218-2318 | `dropdown-menu.html` | `ui-dropdown-menu`, `ui-dropdown-menu-trigger`, `ui-dropdown-menu-content`, `ui-menu-item`, `ui-menu-checkbox-item`, `ui-menu-radio-group`, `ui-menu-radio-item`, `ui-menu-label`, `ui-menu-group`, `ui-menu-separator`, `ui-menu-shortcut` |
-| [Hover Card](#hover-card) | 2320-2376 | `hover-card.html` | `ui-hover-card`, `ui-hover-card-trigger`, `ui-hover-card-content` |
-| [Popover](#popover) | 2378-2456 | `popover.html` | `ui-popover`, `ui-popover-trigger`, `ui-popover-content`, `ui-popover-header`, `ui-popover-title`, `ui-popover-description` |
-| [Sheet](#sheet) | 2458-2549 | `sheet.html` | `ui-sheet`, `ui-sheet-trigger`, `ui-sheet-close`, `ui-sheet-header`, `ui-sheet-title`, `ui-sheet-description`, `ui-sheet-footer` |
-| [Toaster](#toaster) | 2551-2610 | `toaster.html` | `ui-toaster` |
-| [Tooltip](#tooltip) | 2612-2661 | `tooltip.html` | `ui-tooltip`, `ui-tooltip-trigger`, `ui-tooltip-content` |
+| [Alert Dialog](#alert-dialog) | 1864-1961 | `alert-dialog.html` | `ui-alert-dialog`, `ui-alert-dialog-trigger`, `ui-alert-dialog-header`, `ui-alert-dialog-title`, `ui-alert-dialog-description`, `ui-alert-dialog-footer`, `ui-alert-dialog-action`, `ui-alert-dialog-cancel` |
+| [Command](#command) | 1963-2032 | `command.html` | `ui-command`, `ui-command-empty` |
+| [Context Menu](#context-menu) | 2034-2091 | `context-menu.html` | `ui-context-menu`, `ui-context-menu-trigger`, `ui-context-menu-content` |
+| [Dialog](#dialog) | 2093-2196 | `dialog.html` | `ui-dialog`, `ui-dialog-trigger`, `ui-dialog-close`, `ui-dialog-header`, `ui-dialog-title`, `ui-dialog-description`, `ui-dialog-footer` |
+| [Drawer](#drawer) | 2198-2281 | `drawer.html` | `ui-drawer`, `ui-drawer-trigger`, `ui-drawer-close`, `ui-drawer-header`, `ui-drawer-title`, `ui-drawer-description`, `ui-drawer-footer` |
+| [Dropdown Menu](#dropdown-menu) | 2283-2383 | `dropdown-menu.html` | `ui-dropdown-menu`, `ui-dropdown-menu-trigger`, `ui-dropdown-menu-content`, `ui-menu-item`, `ui-menu-checkbox-item`, `ui-menu-radio-group`, `ui-menu-radio-item`, `ui-menu-label`, `ui-menu-group`, `ui-menu-separator`, `ui-menu-shortcut` |
+| [Hover Card](#hover-card) | 2385-2441 | `hover-card.html` | `ui-hover-card`, `ui-hover-card-trigger`, `ui-hover-card-content` |
+| [Popover](#popover) | 2443-2521 | `popover.html` | `ui-popover`, `ui-popover-trigger`, `ui-popover-content`, `ui-popover-header`, `ui-popover-title`, `ui-popover-description` |
+| [Sheet](#sheet) | 2523-2614 | `sheet.html` | `ui-sheet`, `ui-sheet-trigger`, `ui-sheet-close`, `ui-sheet-header`, `ui-sheet-title`, `ui-sheet-description`, `ui-sheet-footer` |
+| [Toaster](#toaster) | 2616-2675 | `toaster.html` | `ui-toaster` |
+| [Tooltip](#tooltip) | 2677-2726 | `tooltip.html` | `ui-tooltip`, `ui-tooltip-trigger`, `ui-tooltip-content` |
 
 ### Navigation
 
 | Component | Lines | File | Tags |
 | --- | --- | --- | --- |
-| [Accordion](#accordion) | 2663-2731 | `accordion.html` | `ui-accordion`, `ui-accordion-item`, `ui-accordion-trigger`, `ui-accordion-content` |
-| [Breadcrumb](#breadcrumb) | 2733-2798 | `breadcrumb.html` | `ui-breadcrumb`, `ui-breadcrumb-list`, `ui-breadcrumb-item`, `ui-breadcrumb-link`, `ui-breadcrumb-page`, `ui-breadcrumb-separator`, `ui-breadcrumb-ellipsis` |
-| [Collapsible](#collapsible) | 2800-2855 | `collapsible.html` | `ui-collapsible`, `ui-collapsible-trigger`, `ui-collapsible-content` |
-| [Menubar](#menubar) | 2857-2922 | `menubar.html` | `ui-menubar`, `ui-menubar-menu`, `ui-menubar-trigger`, `ui-menubar-content` |
-| [Navigation Menu](#navigation-menu) | 2924-3009 | `navigation-menu.html` | `ui-navigation-menu`, `ui-navigation-menu-list`, `ui-navigation-menu-item`, `ui-navigation-menu-trigger`, `ui-navigation-menu-content`, `ui-navigation-menu-link` |
-| [Pagination](#pagination) | 3011-3049 | `pagination.html` | `ui-pagination` |
-| [Sidebar](#sidebar) | 3051-3256 | `sidebar.html` | `ui-sidebar-layout`, `ui-sidebar`, `ui-sidebar-header`, `ui-sidebar-footer`, `ui-sidebar-content`, `ui-sidebar-group`, `ui-sidebar-group-label`, `ui-sidebar-menu`, `ui-sidebar-menu-item`, `ui-sidebar-menu-button`, `ui-sidebar-menu-badge`, `ui-sidebar-trigger`, `ui-sidebar-inset` |
-| [Tabs](#tabs) | 3258-3353 | `tabs.html` | `ui-tabs`, `ui-tabs-list`, `ui-tabs-trigger`, `ui-tabs-content` |
+| [Accordion](#accordion) | 2728-2796 | `accordion.html` | `ui-accordion`, `ui-accordion-item`, `ui-accordion-trigger`, `ui-accordion-content` |
+| [Breadcrumb](#breadcrumb) | 2798-2863 | `breadcrumb.html` | `ui-breadcrumb`, `ui-breadcrumb-list`, `ui-breadcrumb-item`, `ui-breadcrumb-link`, `ui-breadcrumb-page`, `ui-breadcrumb-separator`, `ui-breadcrumb-ellipsis` |
+| [Collapsible](#collapsible) | 2865-2920 | `collapsible.html` | `ui-collapsible`, `ui-collapsible-trigger`, `ui-collapsible-content` |
+| [Menubar](#menubar) | 2922-2987 | `menubar.html` | `ui-menubar`, `ui-menubar-menu`, `ui-menubar-trigger`, `ui-menubar-content` |
+| [Navigation Menu](#navigation-menu) | 2989-3074 | `navigation-menu.html` | `ui-navigation-menu`, `ui-navigation-menu-list`, `ui-navigation-menu-item`, `ui-navigation-menu-trigger`, `ui-navigation-menu-content`, `ui-navigation-menu-link` |
+| [Pagination](#pagination) | 3076-3114 | `pagination.html` | `ui-pagination` |
+| [Sidebar](#sidebar) | 3116-3321 | `sidebar.html` | `ui-sidebar-layout`, `ui-sidebar`, `ui-sidebar-header`, `ui-sidebar-footer`, `ui-sidebar-content`, `ui-sidebar-group`, `ui-sidebar-group-label`, `ui-sidebar-menu`, `ui-sidebar-menu-item`, `ui-sidebar-menu-button`, `ui-sidebar-menu-badge`, `ui-sidebar-trigger`, `ui-sidebar-inset` |
+| [Tabs](#tabs) | 3323-3422 | `tabs.html` | `ui-tabs`, `ui-tabs-list`, `ui-tabs-trigger`, `ui-tabs-content` |
 
 ### Layout
 
 | Component | Lines | File | Tags |
 | --- | --- | --- | --- |
-| [Aspect Ratio](#aspect-ratio) | 3355-3390 | `aspect-ratio.html` | `ui-aspect-ratio` |
-| [Carousel](#carousel) | 3392-3484 | `carousel.html` | `ui-carousel`, `ui-carousel-content`, `ui-carousel-item`, `ui-carousel-previous`, `ui-carousel-next` |
-| [Direction](#direction) | 3486-3531 | `direction.html` | `ui-direction` |
-| [Resizable](#resizable) | 3533-3603 | `resizable.html` | `ui-resizable`, `ui-resizable-panel`, `ui-resizable-handle` |
-| [Scroll Area](#scroll-area) | 3605-3667 | `scroll-area.html` | `ui-scroll-area` |
+| [Aspect Ratio](#aspect-ratio) | 3424-3459 | `aspect-ratio.html` | `ui-aspect-ratio` |
+| [Carousel](#carousel) | 3461-3553 | `carousel.html` | `ui-carousel`, `ui-carousel-content`, `ui-carousel-item`, `ui-carousel-previous`, `ui-carousel-next` |
+| [Direction](#direction) | 3555-3600 | `direction.html` | `ui-direction` |
+| [Resizable](#resizable) | 3602-3672 | `resizable.html` | `ui-resizable`, `ui-resizable-panel`, `ui-resizable-handle` |
+| [Scroll Area](#scroll-area) | 3674-3736 | `scroll-area.html` | `ui-scroll-area` |
 
 ### Chat and content
 
 | Component | Lines | File | Tags |
 | --- | --- | --- | --- |
-| [Attachment](#attachment) | 3669-3712 | `attachment.html` | `ui-attachment`, `ui-attachment-media`, `ui-attachment-actions` |
-| [Bubble](#bubble) | 3714-3756 | `bubble.html` | `ui-bubble`, `ui-bubble-reactions` |
-| [Code Block](#code-block) | 3758-3790 | `code-block.html` | `ui-code-block` |
-| [Marker](#marker) | 3792-3827 | `marker.html` | `ui-marker` |
-| [Message](#message) | 3829-3882 | `message.html` | `ui-message`, `ui-message-avatar`, `ui-message-header`, `ui-message-footer` |
-| [Message Scroller](#message-scroller) | 3884-3979 | `message-scroller.html` | `ui-message-scroller` |
+| [Attachment](#attachment) | 3738-3781 | `attachment.html` | `ui-attachment`, `ui-attachment-media`, `ui-attachment-actions` |
+| [Bubble](#bubble) | 3783-3825 | `bubble.html` | `ui-bubble`, `ui-bubble-reactions` |
+| [Code Block](#code-block) | 3827-3859 | `code-block.html` | `ui-code-block` |
+| [Marker](#marker) | 3861-3896 | `marker.html` | `ui-marker` |
+| [Message](#message) | 3898-3951 | `message.html` | `ui-message`, `ui-message-avatar`, `ui-message-header`, `ui-message-footer` |
+| [Message Scroller](#message-scroller) | 3953-4048 | `message-scroller.html` | `ui-message-scroller` |
 
 <a id="button"></a>
 
@@ -136,6 +136,7 @@ A form-associated button with variants and sizes that can submit or reset a form
 
 | Attribute | Type | Default | Description |
 | --- | --- | --- | --- |
+| `name` | string | | Name of the button, readable from script. Unlike a native button it does not add an entry to the submitted form data. Also the `name` property, which reflects to the attribute like a native control's. |
 | `variant` | `"default"` \| `"destructive"` \| `"outline"` \| `"secondary"` \| `"ghost"` \| `"link"` | `"default"` | Visual style. |
 | `size` | `"default"` \| `"xs"` \| `"sm"` \| `"lg"` \| `"icon"` \| `"icon-xs"` \| `"icon-sm"` \| `"icon-lg"` | `"default"` | Height and padding. The `icon` sizes make a square button. |
 | `type` | `"button"` \| `"submit"` \| `"reset"` | `"button"` | What the button does in its form. |
@@ -149,6 +150,12 @@ A form-associated button with variants and sizes that can submit or reset a form
 | `rel` | string | | Link relation, as on `<a>`. |
 | `commandfor` | string | | Id of the element that receives `command`. |
 | `command` | string | | Command to invoke, such as `show-modal`, `close`, `request-close`, `toggle-popover`, `show-popover`, `hide-popover` or a custom `--command`. |
+
+### Methods
+
+| Method | Description |
+| --- | --- |
+| `click()` | Clicks the inner button or link, so it submits, resets, invokes its command or follows its link like a user click. Does nothing while disabled. |
 
 ### Events
 
@@ -182,6 +189,13 @@ not supported, the button dispatches a cancelable `command` event on the `comman
 `type="submit"` calls `requestSubmit()` on the form, which runs constraint validation and fires `submit`.
 `type="reset"` calls `reset()`. The button itself adds no name or value to the submitted data, and the `submit`
 event's `submitter` is `null`.
+
+Calling `click()` on the `ui-button` from script activates it like a user click, as on a native button: a submit
+button submits its form, a link follows its `href`, and a disabled button does nothing.
+
+```js
+document.querySelector("ui-button[type=submit]").click();
+```
 
 <a id="button-group"></a>
 
@@ -260,6 +274,7 @@ A month grid date picker that submits an ISO date with its form, with min and ma
 
 | Attribute | Type | Default | Description |
 | --- | --- | --- | --- |
+| `name` | string | | Form field name the value is submitted under. Also the `name` property, which reflects to the attribute like a native control's. |
 | `value` | string | `""` | Selected date as `YYYY-MM-DD`. Empty means no selection. |
 | `month` | string | | Month shown first, as `YYYY-MM`. Used when the calendar is created. Defaults to the month of `value`, or the current month. |
 | `min` | string | | Earliest selectable date, `YYYY-MM-DD`. |
@@ -314,6 +329,7 @@ A form-associated checkbox with a built-in label, indeterminate state and native
 
 | Attribute | Type | Default | Description |
 | --- | --- | --- | --- |
+| `name` | string | | Form field name the value is submitted under. Also the `name` property, which reflects to the attribute like a native control's. |
 | `checked` | boolean | `false` | Whether the box is checked. The attribute is the initial and reset state. The property follows the user. |
 | `value` | string | | Value submitted when checked. Without it the form submits `on`. |
 | `indeterminate` | boolean | `false` | Shows the mixed state. Visual only. Cleared when the user toggles the box. |
@@ -395,6 +411,7 @@ A searchable, form-associated select that filters native option children as you 
 
 | Attribute | Type | Default | Description |
 | --- | --- | --- | --- |
+| `name` | string | | Form field name the value is submitted under. Also the `name` property, which reflects to the attribute like a native control's. |
 | `value` | string | `""` | The `value` of the chosen option. |
 | `placeholder` | string | `"Select…"` | Placeholder of the text input. |
 | `width` | number | | Fixed width in spacing units, where `n` means `calc(var(--spacing) * n)`. Without it the combobox fills its container. |
@@ -520,6 +537,7 @@ A form-associated single-line text input that wraps a native input, with native 
 
 | Attribute | Type | Default | Description |
 | --- | --- | --- | --- |
+| `name` | string | | Form field name the value is submitted under. Also the `name` property, which reflects to the attribute like a native control's. |
 | `value` | string | `""` | Current value. The attribute is the initial and reset value. |
 | `type` | `"text"` \| `"email"` \| `"password"` \| `"number"` \| `"search"` \| `"tel"` \| `"url"` \| `"date"` \| `"time"` \| `"datetime-local"` \| `"month"` \| `"week"` \| `"color"` | `"text"` | Native input type. |
 | `placeholder` | string | | Placeholder text. |
@@ -536,6 +554,7 @@ A form-associated single-line text input that wraps a native input, with native 
 | `required` | boolean | `false` | The form is invalid while the value is empty. |
 | `invalid` | boolean | `false` | Sets `aria-invalid="true"` and the error style. Does not affect validity. |
 | `aria-label` | string | | Accessible name, passed to the inner input. Property name: `label`. |
+| `title` | string | | Passed to the inner input. Browsers add it to the message shown when `pattern` does not match, so use it to describe the expected format. |
 
 ### Properties
 
@@ -544,6 +563,12 @@ A form-associated single-line text input that wraps a native input, with native 
 | `value` | string | Current value. Updated as the user types. Setting it updates the field and the submitted value. |
 
 Every attribute above is also a property with the same name in camelCase (`label` for `aria-label`).
+
+### Methods
+
+| Method | Description |
+| --- | --- |
+| `setCustomValidity(message)` | Like the native method: a non-empty `message` makes the field and its form invalid with that message, and an empty string clears it. The message stays until you clear it. |
 
 ### Events
 
@@ -562,7 +587,8 @@ Every attribute above is also a property with the same name in camelCase (`label
 
 `ui-input` is form-associated. It submits `value` under its `name`. Validity is mirrored from the inner input, so
 `required`, `type`, `pattern`, `minlength`, `maxlength`, `min`, `max` and `step` all take part in `checkValidity()`
-and `reportValidity()`, and the validation bubble points at the inner field. Enter submits the form for the
+and `reportValidity()`, and the validation bubble points at the inner field. `setCustomValidity(message)` adds a
+custom error on top. Enter submits the form for the
 text-like types. `form.reset()` restores the `value` attribute, and a disabled `<fieldset>` disables the input.
 
 <a id="input-group"></a>
@@ -600,9 +626,18 @@ The default slot of each part takes any content.
 | `value` | string | `""` | Current value. The attribute is the initial and reset value. |
 | `type` | `"text"` \| `"email"` \| `"password"` \| `"number"` \| `"search"` \| `"tel"` \| `"url"` | `"text"` | Native input type. |
 | `placeholder` | string | | Placeholder text. |
+| `autocomplete` | string | | Autofill hint, passed to the inner input. |
+| `inputmode` | string | | Virtual keyboard hint, passed to the inner input. |
+| `pattern` | string | | Regular expression the value must match. |
+| `min`, `max`, `step` | string | | Range and step for `type="number"`. |
+| `minlength` | number | | Minimum length. |
+| `maxlength` | number | | Maximum length. |
 | `disabled` | boolean | `false` | Disables the input. Also true inside a disabled `<fieldset>`. |
+| `readonly` | boolean | `false` | Makes the value read-only. |
 | `required` | boolean | `false` | The form is invalid while the value is empty. |
-| `name` | string | | Form field name the value is submitted under. |
+| `invalid` | boolean | `false` | Sets `aria-invalid="true"` on the input and draws the error style on the group. Does not affect validity. |
+| `title` | string | | Passed to the inner input. Browsers add it to the message shown when `pattern` does not match. |
+| `name` | string | | Form field name the value is submitted under. Also the `name` property, which reflects to the attribute like a native control's. |
 | `aria-label` | string | | Accessible name, passed to the inner input. Property name: `label`. |
 
 #### ui-input-group-addon
@@ -616,6 +651,12 @@ The default slot of each part takes any content.
 | Property | Type | Description |
 | --- | --- | --- |
 | `value` | string | Current value. Updated as the user types. Setting it updates the field. |
+
+### Methods
+
+| Method | Description |
+| --- | --- |
+| `setCustomValidity(message)` | Like the native method: a non-empty `message` makes the field and its form invalid with that message, and an empty string clears it. |
 
 ### Events
 
@@ -633,7 +674,8 @@ The default slot of each part takes any content.
 ### Forms
 
 `ui-input-group` is form-associated. It submits the input's `value` under its `name`. Addon content is never
-submitted. Validity comes from the inner input (`required` and `type`), Enter submits the form, `form.reset()`
+submitted. Validity comes from the inner input (`required`, `type`, `pattern`, `minlength`, `maxlength`, `min`, `max` and
+`step`), plus any message set with `setCustomValidity(message)`, which works like the native method. Enter submits the form, `form.reset()`
 restores the `value` attribute, and a disabled `<fieldset>` disables the input.
 
 <a id="input-otp"></a>
@@ -655,10 +697,11 @@ A one-time code input with one box per character, paste support and a complete e
 
 | Attribute | Type | Default | Description |
 | --- | --- | --- | --- |
+| `name` | string | | Form field name the value is submitted under. Also the `name` property, which reflects to the attribute like a native control's. |
 | `value` | string | `""` | The code entered so far. The attribute is the initial and reset value. |
 | `length` | number | `6` | Number of boxes. An integer from 1 to 12. |
 | `pattern` | string | `"[0-9]"` | Regular expression that a single character must match. |
-| `separator` | number | `0` | Adds a gap before every box whose index is a multiple of this number. `0` means no gaps. |
+| `separator` | number | `0` | Adds a gap before every box whose index is a multiple of this number. `0` means no gaps. Each group of boxes has its own rounded outer corners. |
 | `disabled` | boolean | `false` | Disables every box. Also true inside a disabled `<fieldset>`. |
 | `required` | boolean | `false` | The form is invalid until all boxes are filled. |
 
@@ -673,7 +716,7 @@ A one-time code input with one box per character, paste support and a complete e
 | Event | Detail | Description |
 | --- | --- | --- |
 | `change` | none | Fired after each typed, pasted or deleted character. |
-| `complete` | `{ value: string }` | Fired when the code reaches `length` characters. |
+| `complete` | `{ value: string }` | Fired when the code reaches `length` characters, after the form value and validity are updated. |
 
 `complete` is a custom event name. Handle it with `oncomplete` inside a component's markup, as in the example above,
 or with `addEventListener("complete", …)`.
@@ -757,6 +800,7 @@ A form-associated set of radio buttons built from native option children, for ch
 
 | Attribute | Type | Default | Description |
 | --- | --- | --- | --- |
+| `name` | string | | Form field name the value is submitted under. Also the `name` property, which reflects to the attribute like a native control's. |
 | `value` | string | | The `value` of the chosen option. |
 | `orientation` | `"vertical"` \| `"horizontal"` | `"vertical"` | Lays the radios out in a column or a row. |
 | `disabled` | boolean | `false` | Disables every radio. Also true inside a disabled `<fieldset>`. |
@@ -833,6 +877,7 @@ handling and mobile UI keep working.
 
 | Attribute | Type | Default | Description |
 | --- | --- | --- | --- |
+| `name` | string | | Form field name the value is submitted under. Also the `name` property, which reflects to the attribute like a native control's. |
 | `value` | string | `""` | The `value` of the chosen option. |
 | `placeholder` | string | | Text of an empty, unselectable first entry. Without it, the first or `selected` option is chosen automatically. |
 | `size` | `"default"` \| `"sm"` | `"default"` | Height of the select. |
@@ -898,6 +943,7 @@ A form-associated range slider built on a native range input, with a filled trac
 
 | Attribute | Type | Default | Description |
 | --- | --- | --- | --- |
+| `name` | string | | Form field name the value is submitted under. Also the `name` property, which reflects to the attribute like a native control's. |
 | `value` | number | `0` | Current value. The attribute is the initial and reset value. |
 | `min` | number | `0` | Lowest value. |
 | `max` | number | `100` | Highest value. |
@@ -954,6 +1000,7 @@ A form-associated on/off switch built on a native checkbox with the switch role,
 
 | Attribute | Type | Default | Description |
 | --- | --- | --- | --- |
+| `name` | string | | Form field name the value is submitted under. Also the `name` property, which reflects to the attribute like a native control's. |
 | `checked` | boolean | `false` | Whether the switch is on. The attribute is the initial and reset state. |
 | `value` | string | | Value submitted when on. Without it the form submits `on`. |
 | `size` | `"default"` \| `"sm"` | `"default"` | Track and thumb size. |
@@ -1017,6 +1064,7 @@ A form-associated multi-line text field that wraps a native textarea and grows w
 
 | Attribute | Type | Default | Description |
 | --- | --- | --- | --- |
+| `name` | string | | Form field name the value is submitted under. Also the `name` property, which reflects to the attribute like a native control's. |
 | `value` | string | `""` | Current text. The attribute is the initial and reset value. |
 | `placeholder` | string | | Placeholder text. |
 | `rows` | number | `3` | Visible lines before the field grows. An integer of at least 1. |
@@ -1027,12 +1075,19 @@ A form-associated multi-line text field that wraps a native textarea and grows w
 | `required` | boolean | `false` | The form is invalid while the text is empty. |
 | `invalid` | boolean | `false` | Sets `aria-invalid="true"` and the error style. Does not affect validity. |
 | `aria-label` | string | | Accessible name, passed to the inner textarea. Property name: `label`. |
+| `title` | string | | Passed to the inner textarea, where it shows as a tooltip. |
 
 ### Properties
 
 | Property | Type | Description |
 | --- | --- | --- |
 | `value` | string | Current text. Updated as the user types. Setting it updates the field. |
+
+### Methods
+
+| Method | Description |
+| --- | --- |
+| `setCustomValidity(message)` | Like the native method: a non-empty `message` makes the textarea and its form invalid with that message, and an empty string clears it. The message stays until you clear it. |
 
 ### Events
 
@@ -1091,7 +1146,7 @@ A two-state button that stays pressed or unpressed, for options such as bold tex
 
 | Event | Detail | Description |
 | --- | --- | --- |
-| `change` | none | Fired after each click, once `pressed` has flipped. Inside a `ui-toggle-group`, the group stops it and fires its own `change`. |
+| `change` | none | Fired after each click, once `pressed` has flipped. It bubbles but, like a native `change`, does not leave the shadow root that contains the toggle. Inside a `ui-toggle-group`, the group stops it before it reaches listeners on the group and fires its own `change`. |
 
 ### Slots
 
@@ -1144,6 +1199,7 @@ A form-associated set of toggles where one or several can be pressed, submitting
 
 | Attribute | Type | Default | Description |
 | --- | --- | --- | --- |
+| `name` | string | | Form field name the value is submitted under. Also the `name` property, which reflects to the attribute like a native control's. |
 | `type` | `"single"` \| `"multiple"` | `"single"` | Whether one or several toggles can be pressed. |
 | `value` | string | `""` | Pressed toggle values, separated by commas. The attribute is the initial and reset value. |
 | `orientation` | `"horizontal"` \| `"vertical"` | `"horizontal"` | Layout direction, and which arrow keys move focus. |
@@ -1158,7 +1214,7 @@ A form-associated set of toggles where one or several can be pressed, submitting
 
 | Event | Detail | Description |
 | --- | --- | --- |
-| `change` | none | Fired after a toggle in the group is clicked and `value` is updated. |
+| `change` | none | Fired once after a toggle in the group is clicked and `value` is updated. Like a native `change`, it bubbles but does not leave the shadow root that contains the group. |
 
 ### Slots
 
@@ -1253,9 +1309,9 @@ A round image of a user or entity, with a text fallback while the image loads or
 | --- | --- | --- |
 | `ui-avatar` | (root) | The circle (or rounded square) that clips its content. |
 | `ui-avatar-image` | (default) | The `<img>`, hidden until it has loaded and removed when loading fails. |
-| `ui-avatar-fallback` | (default) | Initials or an icon on a muted background, shown until the image loads and when it fails. |
+| `ui-avatar-fallback` | (default) | Initials or an icon in `var(--muted-foreground)` on `var(--muted)`, shown until the image loads and when it fails. It keeps these colours on any background, such as a `--primary` panel. |
 | `ui-avatar-group` | (root) | A row that overlaps its avatars, each with a ring in the background colour. |
-| `ui-avatar-group-count` | (default) | A muted 32px circle for a count such as "+3", inside `ui-avatar-group`. |
+| `ui-avatar-group-count` | (default) | A muted circle for a count such as "+3", inside `ui-avatar-group`. It is as tall as an avatar of the same `size` and widens into a pill for longer counts. |
 
 The default slot of each part takes any content.
 
@@ -1267,6 +1323,12 @@ The default slot of each part takes any content.
 | --- | --- | --- | --- |
 | `size` | `"sm"` \| `"default"` \| `"lg"` | `"default"` | 24px, 32px or 40px square. |
 | `shape` | `"circle"` \| `"square"` | `"circle"` | `square` uses `var(--radius-md)` corners. |
+
+#### ui-avatar-group-count
+
+| Attribute | Type | Default | Description |
+| --- | --- | --- | --- |
+| `size` | `"sm"` \| `"default"` \| `"lg"` | `"default"` | Matches the height and text size of `ui-avatar` at the same size. |
 
 #### ui-avatar-image
 
@@ -1411,7 +1473,8 @@ A small SVG bar, line or area chart drawn from a list of data objects, with one 
 | `data` | array of objects | `[]` | The data points, one object per category. Accepts JSON in the attribute, or an array through the `data` property or a `_data` binding. |
 | `x` | string | `"label"` | Field used for the category labels on the horizontal axis. |
 | `y` | string | `"value"` | Field, or comma-separated fields, plotted as series. Non-numeric values count as `0`. |
-| `height` | number | `240` | Height of the drawing in SVG units, minimum `80`. The width is 600 units and the chart scales to its container. |
+| `variant` | `"default"` \| `"sparkline"` | `"default"` | `sparkline` hides the axes, grid, labels and legend and drops the padding. Lines and areas then run edge to edge. |
+| `height` | number | `240` | Height of the chart in pixels, minimum `16`. The width follows the container. |
 | `label` | string | `"Chart"` | Accessible name of the chart image. |
 
 ### Parts
@@ -1432,6 +1495,7 @@ A small SVG bar, line or area chart drawn from a list of data objects, with one 
 | `--chart-1` … `--chart-5` | Series colours, in order. Defined in `theme.css`. Override them on an ancestor, such as a wrapping `<div>`. |
 
 The axis labels use the element's `color` (muted foreground by default) and the grid lines use `var(--border)`.
+Value labels are shortened with the browser's compact number format, so 20000 reads as "20K".
 
 <a id="empty"></a>
 
@@ -1852,6 +1916,7 @@ footer.
 | --- | --- | --- | --- |
 | `value` | string | `"action"` | Stored in `returnValue` when the action closes the dialog. |
 | `variant` | `"default"` \| `"destructive"` | `"default"` | The button variant. |
+| `disabled` | boolean | `false` | Disables the button, so the action cannot close the dialog. |
 
 ### ui-alert-dialog-cancel attributes
 
@@ -3332,7 +3397,11 @@ A set of panels shown one at a time, switched with a row or column of tab button
 | --- | --- | --- | --- |
 | `value` | string | | The `value` of the trigger that shows this panel. |
 
-`ui-tabs-list` has no attributes.
+#### ui-tabs-list
+
+| Attribute | Type | Default | Description |
+| --- | --- | --- | --- |
+| `stretch` | boolean | `false` | Makes the list fill its container and gives every trigger an equal share of the width. |
 
 ### Events
 
@@ -3787,7 +3856,7 @@ what the copy button copies.
 | Part | Description |
 | --- | --- |
 | `code` | The scrolling area around the code (`white-space: pre`). |
-| `bar` | The corner bar with the language label and the copy button. |
+| `bar` | The corner bar with the language label and the copy button. Below a block width of `40rem`, the code area leaves room above the first line for it. |
 
 <a id="marker"></a>
 

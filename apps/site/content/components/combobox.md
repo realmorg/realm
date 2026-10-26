@@ -229,6 +229,7 @@ chosen, and `form.reset()` returns to the `value` attribute.
 
 | Attribute | Type | Default | Description |
 | --- | --- | --- | --- |
+| `name` | string | | Form field name the value is submitted under. Also the `name` property, which reflects to the attribute like a native control's. |
 | `value` | string | `""` | The `value` of the chosen option. |
 | `placeholder` | string | `"Select…"` | Placeholder of the text input. |
 | `width` | number | | Fixed width in spacing units, where `n` means `calc(var(--spacing) * n)`. Without it the combobox fills its container. |

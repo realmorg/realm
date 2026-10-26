@@ -75,6 +75,42 @@ The `close` event fires after the dialog closes. Read `returnValue` to find out 
 <alert-dialog-result-demo></alert-dialog-result-demo>
 ```
 
+### Confirm by typing
+
+`disabled` on `ui-alert-dialog-action` keeps the action off until a condition holds, such as typing the name of
+what is about to be deleted.
+
+```html live
+<custom-element name="alert-dialog-confirm-demo">
+  <script type="realm">
+    const confirm = useState({
+      typed: "",
+      get blocked() {
+        return this.typed !== "acme-site";
+      },
+    });
+
+    function type(field) {
+      confirm.typed = field.value;
+    }
+  </script>
+
+  <ui-alert-dialog>
+    <ui-alert-dialog-trigger><ui-button variant="destructive">Delete project</ui-button></ui-alert-dialog-trigger>
+    <ui-alert-dialog-header>
+      <ui-alert-dialog-title>Delete acme-site?</ui-alert-dialog-title>
+      <ui-alert-dialog-description>Type acme-site to confirm. This cannot be undone.</ui-alert-dialog-description>
+    </ui-alert-dialog-header>
+    <ui-input aria-label="Project name" oninput="type(this)"></ui-input>
+    <ui-alert-dialog-footer>
+      <ui-alert-dialog-cancel>Cancel</ui-alert-dialog-cancel>
+      <ui-alert-dialog-action value="delete" variant="destructive" _disabled="#confirm.blocked">Delete</ui-alert-dialog-action>
+    </ui-alert-dialog-footer>
+  </ui-alert-dialog>
+</custom-element>
+<alert-dialog-confirm-demo></alert-dialog-confirm-demo>
+```
+
 ### Open with a command
 
 A button outside the dialog can open it with `commandfor` and `command="--show-modal"`. The `--close` command closes
@@ -124,6 +160,7 @@ footer.
 | --- | --- | --- | --- |
 | `value` | string | `"action"` | Stored in `returnValue` when the action closes the dialog. |
 | `variant` | `"default"` \| `"destructive"` | `"default"` | The button variant. |
+| `disabled` | boolean | `false` | Disables the button, so the action cannot close the dialog. |
 
 ### ui-alert-dialog-cancel attributes
 

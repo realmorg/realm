@@ -531,7 +531,7 @@ describe("empty and missing values", () => {
     const zero = shadow(line as Element)
       .querySelectorAll(".line")[1]
       ?.getAttribute("d");
-    expect(zero).toBe(`M${44 + (600 - 56) / 2},${240 - 28}`);
+    expect(zero).toBe(`M${44 + ((line as HTMLElement).clientWidth - 56) / 2},${240 - 28}`);
   });
 
   test("label without for does nothing, and a label for a native checkbox toggles it", async () => {

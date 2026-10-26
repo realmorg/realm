@@ -13,7 +13,7 @@ and a panel belong together when they share a `value`. Only the selected panel i
 `hidden` attribute. The tabs follow the ARIA tabs pattern with automatic activation, so moving focus with the arrow
 keys also selects the tab.
 
-The tabs fill the width of their container. The list itself is as wide as its triggers.
+The tabs fill the width of their container. The list itself is as wide as its triggers, unless it has `stretch`.
 
 ```html live
 <div class="demo-narrow">
@@ -70,6 +70,24 @@ A `disabled` trigger is dimmed, cannot be selected and is skipped by the arrow k
 ```
 
 If `value` is missing, unknown or names a disabled trigger, the first enabled trigger is selected.
+
+### Full width
+
+`stretch` on `ui-tabs-list` makes the list as wide as its container and shares the width equally between the
+triggers.
+
+```html live
+<div class="demo-narrow">
+  <ui-tabs value="monthly">
+    <ui-tabs-list stretch>
+      <ui-tabs-trigger value="monthly">Monthly</ui-tabs-trigger>
+      <ui-tabs-trigger value="yearly">Yearly</ui-tabs-trigger>
+    </ui-tabs-list>
+    <ui-tabs-content value="monthly"><p class="demo-text">$12 per month.</p></ui-tabs-content>
+    <ui-tabs-content value="yearly"><p class="demo-text">$120 per year.</p></ui-tabs-content>
+  </ui-tabs>
+</div>
+```
 
 ### Vertical
 
@@ -180,7 +198,11 @@ dashboard example uses this to switch the data of a chart.
 | --- | --- | --- | --- |
 | `value` | string | | The `value` of the trigger that shows this panel. |
 
-`ui-tabs-list` has no attributes.
+#### ui-tabs-list
+
+| Attribute | Type | Default | Description |
+| --- | --- | --- | --- |
+| `stretch` | boolean | `false` | Makes the list fill its container and gives every trigger an equal share of the width. |
 
 ### Events
 

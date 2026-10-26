@@ -47,6 +47,14 @@ digits, for a recovery code.
 ### Complete event
 
 `complete` fires once every box is filled, with the code in `event.detail.value`. `change` fires after every edit.
+By the time either fires, the form value and validity already hold the new code, so a `complete` handler can call
+`form.requestSubmit()` to send the code without a submit button.
+
+```html
+<form action="/verify" method="post">
+  <ui-input-otp name="code" length="6" required oncomplete="this.closest('form').requestSubmit()"></ui-input-otp>
+</form>
+```
 
 ```html live
 <custom-element name="input-otp-verify-demo">
@@ -142,10 +150,11 @@ restores the `value` attribute.
 
 | Attribute | Type | Default | Description |
 | --- | --- | --- | --- |
+| `name` | string | | Form field name the value is submitted under. Also the `name` property, which reflects to the attribute like a native control's. |
 | `value` | string | `""` | The code entered so far. The attribute is the initial and reset value. |
 | `length` | number | `6` | Number of boxes. An integer from 1 to 12. |
 | `pattern` | string | `"[0-9]"` | Regular expression that a single character must match. |
-| `separator` | number | `0` | Adds a gap before every box whose index is a multiple of this number. `0` means no gaps. |
+| `separator` | number | `0` | Adds a gap before every box whose index is a multiple of this number. `0` means no gaps. Each group of boxes has its own rounded outer corners. |
 | `disabled` | boolean | `false` | Disables every box. Also true inside a disabled `<fieldset>`. |
 | `required` | boolean | `false` | The form is invalid until all boxes are filled. |
 
@@ -160,7 +169,7 @@ restores the `value` attribute.
 | Event | Detail | Description |
 | --- | --- | --- |
 | `change` | none | Fired after each typed, pasted or deleted character. |
-| `complete` | `{ value: string }` | Fired when the code reaches `length` characters. |
+| `complete` | `{ value: string }` | Fired when the code reaches `length` characters, after the form value and validity are updated. |
 
 `complete` is a custom event name. Handle it with `oncomplete` inside a component's markup, as in the example above,
 or with `addEventListener("complete", …)`.

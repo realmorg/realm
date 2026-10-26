@@ -169,7 +169,7 @@ each toggle a `value`.
 
 | Event | Detail | Description |
 | --- | --- | --- |
-| `change` | none | Fired after each click, once `pressed` has flipped. Inside a `ui-toggle-group`, the group stops it and fires its own `change`. |
+| `change` | none | Fired after each click, once `pressed` has flipped. It bubbles but, like a native `change`, does not leave the shadow root that contains the toggle. Inside a `ui-toggle-group`, the group stops it before it reaches listeners on the group and fires its own `change`. |
 
 ### Slots
 

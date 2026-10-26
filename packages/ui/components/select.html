@@ -1,6 +1,7 @@
 <custom-element name="ui-select" form-associated delegates-focus>
   <script>
     const props = defineProps({
+      name: prop.string().reflect(),
       value: prop.string().default(""),
       placeholder: prop.string(),
       size: prop.enum(["default", "sm"]).default("default"),

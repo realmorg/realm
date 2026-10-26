@@ -11,7 +11,7 @@
 
     function toggle() {
       props.pressed = !props.pressed;
-      dispatch("change");
+      dispatch("change", undefined, { composed: false });
     }
   </script>
 

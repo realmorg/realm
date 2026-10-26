@@ -94,6 +94,20 @@ icon-only button and give it an `aria-label`.
 </div>
 ```
 
+### Constraints
+
+`ui-input-group` forwards the same input attributes as `ui-input`, such as `pattern`, `minlength`, `maxlength`
+and `autocomplete`.
+
+```html live
+<div class="demo-narrow">
+  <ui-input-group aria-label="Handle" pattern="[a-z0-9-]+" minlength="3" maxlength="20" autocomplete="username"
+    title="Lowercase letters, digits and dashes">
+    <ui-input-group-addon>@</ui-input-group-addon>
+  </ui-input-group>
+</div>
+```
+
 ### In a form
 
 The input's value is submitted under the element's `name`, but the addons are not. `required` takes part in validation,
@@ -178,9 +192,18 @@ The default slot of each part takes any content.
 | `value` | string | `""` | Current value. The attribute is the initial and reset value. |
 | `type` | `"text"` \| `"email"` \| `"password"` \| `"number"` \| `"search"` \| `"tel"` \| `"url"` | `"text"` | Native input type. |
 | `placeholder` | string | | Placeholder text. |
+| `autocomplete` | string | | Autofill hint, passed to the inner input. |
+| `inputmode` | string | | Virtual keyboard hint, passed to the inner input. |
+| `pattern` | string | | Regular expression the value must match. |
+| `min`, `max`, `step` | string | | Range and step for `type="number"`. |
+| `minlength` | number | | Minimum length. |
+| `maxlength` | number | | Maximum length. |
 | `disabled` | boolean | `false` | Disables the input. Also true inside a disabled `<fieldset>`. |
+| `readonly` | boolean | `false` | Makes the value read-only. |
 | `required` | boolean | `false` | The form is invalid while the value is empty. |
-| `name` | string | | Form field name the value is submitted under. |
+| `invalid` | boolean | `false` | Sets `aria-invalid="true"` on the input and draws the error style on the group. Does not affect validity. |
+| `title` | string | | Passed to the inner input. Browsers add it to the message shown when `pattern` does not match. |
+| `name` | string | | Form field name the value is submitted under. Also the `name` property, which reflects to the attribute like a native control's. |
 | `aria-label` | string | | Accessible name, passed to the inner input. Property name: `label`. |
 
 #### ui-input-group-addon
@@ -194,6 +217,12 @@ The default slot of each part takes any content.
 | Property | Type | Description |
 | --- | --- | --- |
 | `value` | string | Current value. Updated as the user types. Setting it updates the field. |
+
+### Methods
+
+| Method | Description |
+| --- | --- |
+| `setCustomValidity(message)` | Like the native method: a non-empty `message` makes the field and its form invalid with that message, and an empty string clears it. |
 
 ### Events
 
@@ -211,7 +240,8 @@ The default slot of each part takes any content.
 ### Forms
 
 `ui-input-group` is form-associated. It submits the input's `value` under its `name`. Addon content is never
-submitted. Validity comes from the inner input (`required` and `type`), Enter submits the form, `form.reset()`
+submitted. Validity comes from the inner input (`required`, `type`, `pattern`, `minlength`, `maxlength`, `min`, `max` and
+`step`), plus any message set with `setCustomValidity(message)`, which works like the native method. Enter submits the form, `form.reset()`
 restores the `value` attribute, and a disabled `<fieldset>` disables the input.
 
 ### Accessibility

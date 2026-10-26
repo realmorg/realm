@@ -60,8 +60,10 @@ keep it to one or two letters.
 
 ### Group
 
-`ui-avatar-group` overlaps its children and draws a ring in the background colour around each one.
-`ui-avatar-group-count` is a muted circle for the number of people not shown.
+`ui-avatar-group` overlaps its children and draws a ring in the background colour around each one. The overlap
+grows with the avatar `size`, and the initials of a covered avatar are centred in the part that stays visible.
+`ui-avatar-group-count` is a muted pill for the number of people not shown. Give it the same `size` as the avatars;
+it widens to fit longer counts.
 
 ```html live
 <ui-avatar-group aria-label="Reviewers">
@@ -69,6 +71,15 @@ keep it to one or two letters.
   <ui-avatar><ui-avatar-fallback>GH</ui-avatar-fallback></ui-avatar>
   <ui-avatar><ui-avatar-fallback>KJ</ui-avatar-fallback></ui-avatar>
   <ui-avatar-group-count>+3</ui-avatar-group-count>
+</ui-avatar-group>
+```
+
+```html live
+<ui-avatar-group aria-label="Customers">
+  <ui-avatar size="lg"><ui-avatar-fallback>MR</ui-avatar-fallback></ui-avatar>
+  <ui-avatar size="lg"><ui-avatar-fallback>WK</ui-avatar-fallback></ui-avatar>
+  <ui-avatar size="lg"><ui-avatar-fallback>JD</ui-avatar-fallback></ui-avatar>
+  <ui-avatar-group-count size="lg">+24k</ui-avatar-group-count>
 </ui-avatar-group>
 ```
 
@@ -101,9 +112,9 @@ keep it to one or two letters.
 | --- | --- | --- |
 | `ui-avatar` | (root) | The circle (or rounded square) that clips its content. |
 | `ui-avatar-image` | (default) | The `<img>`, hidden until it has loaded and removed when loading fails. |
-| `ui-avatar-fallback` | (default) | Initials or an icon on a muted background, shown until the image loads and when it fails. |
+| `ui-avatar-fallback` | (default) | Initials or an icon in `var(--muted-foreground)` on `var(--muted)`, shown until the image loads and when it fails. It keeps these colours on any background, such as a `--primary` panel. |
 | `ui-avatar-group` | (root) | A row that overlaps its avatars, each with a ring in the background colour. |
-| `ui-avatar-group-count` | (default) | A muted 32px circle for a count such as "+3", inside `ui-avatar-group`. |
+| `ui-avatar-group-count` | (default) | A muted circle for a count such as "+3", inside `ui-avatar-group`. It is as tall as an avatar of the same `size` and widens into a pill for longer counts. |
 
 The default slot of each part takes any content.
 
@@ -115,6 +126,12 @@ The default slot of each part takes any content.
 | --- | --- | --- | --- |
 | `size` | `"sm"` \| `"default"` \| `"lg"` | `"default"` | 24px, 32px or 40px square. |
 | `shape` | `"circle"` \| `"square"` | `"circle"` | `square` uses `var(--radius-md)` corners. |
+
+#### ui-avatar-group-count
+
+| Attribute | Type | Default | Description |
+| --- | --- | --- | --- |
+| `size` | `"sm"` \| `"default"` \| `"lg"` | `"default"` | Matches the height and text size of `ui-avatar` at the same size. |
 
 #### ui-avatar-image
 

@@ -1,6 +1,7 @@
 <custom-element name="ui-combobox" form-associated delegates-focus>
   <script>
     const props = defineProps({
+      name: prop.string().reflect(),
       value: prop.string().default(""),
       placeholder: prop.string().default("Select…"),
       disabled: prop.boolean(),

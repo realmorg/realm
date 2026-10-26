@@ -5,6 +5,7 @@
       length: prop.number().int().min(1).max(12).default(6),
       pattern: prop.string().default("[0-9]"),
       separator: prop.number().int().min(0).default(0),
+      name: prop.string().reflect(),
       disabled: prop.boolean(),
       required: prop.boolean(),
     });
@@ -40,9 +41,9 @@
         chars[start + offset] = char;
       });
       props.value = chars.join("").slice(0, props.length).trimEnd();
+      await tick();
       dispatch("change");
       if (otp.complete) dispatch("complete", { value: props.value });
-      await tick();
       boxes()[Math.min(start + accept(text).length, props.length - 1)]?.focus();
     }
 
@@ -115,7 +116,8 @@
       border-start-start-radius: var(--radius-md);
       border-end-start-radius: var(--radius-md);
     }
-    input:last-child {
+    input:last-child,
+    input:has(+ input[data-gap]) {
       border-start-end-radius: var(--radius-md);
       border-end-end-radius: var(--radius-md);
     }

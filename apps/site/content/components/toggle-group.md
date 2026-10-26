@@ -64,8 +64,8 @@ and the value becomes empty.
 
 ### Listening for changes
 
-The group fires `change` after every click. Read the new `value` from the group. The toggles' own `change` events
-stop at the group.
+The group fires one `change` after every click. Read the new `value` from the group. The toggles' own `change`
+events stop inside the group, so a listener on the group never sees the old value.
 
 ```html live
 <custom-element name="toggle-group-change-demo">
@@ -176,6 +176,7 @@ empty string when nothing is pressed. Reset returns to the `value` attribute.
 
 | Attribute | Type | Default | Description |
 | --- | --- | --- | --- |
+| `name` | string | | Form field name the value is submitted under. Also the `name` property, which reflects to the attribute like a native control's. |
 | `type` | `"single"` \| `"multiple"` | `"single"` | Whether one or several toggles can be pressed. |
 | `value` | string | `""` | Pressed toggle values, separated by commas. The attribute is the initial and reset value. |
 | `orientation` | `"horizontal"` \| `"vertical"` | `"horizontal"` | Layout direction, and which arrow keys move focus. |
@@ -190,7 +191,7 @@ empty string when nothing is pressed. Reset returns to the `value` attribute.
 
 | Event | Detail | Description |
 | --- | --- | --- |
-| `change` | none | Fired after a toggle in the group is clicked and `value` is updated. |
+| `change` | none | Fired once after a toggle in the group is clicked and `value` is updated. Like a native `change`, it bubbles but does not leave the shadow root that contains the group. |
 
 ### Slots
 

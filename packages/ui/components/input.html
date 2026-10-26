@@ -1,6 +1,7 @@
 <custom-element name="ui-input" form-associated delegates-focus>
   <script>
     defineProps({
+      name: prop.string().reflect(),
       value: prop.string().default(""),
       type: prop
         .enum(["text", "email", "password", "number", "search", "tel", "url", "date", "time", "datetime-local", "month", "week", "color"])
@@ -19,6 +20,14 @@
       required: prop.boolean(),
       invalid: prop.boolean(),
       label: prop.string().attribute("aria-label"),
+      title: prop.string(),
+    });
+
+    defineMethods({
+      setCustomValidity(message) {
+        refs.control.setCustomValidity(message);
+        internals.setValidity(refs.control.validity, refs.control.validationMessage, refs.control);
+      },
     });
   </script>
 
@@ -90,5 +99,6 @@
     _readonly="@readonly"
     _required="@required"
     _aria-invalid="@invalid"
+    _title="@title"
 >
 </custom-element>

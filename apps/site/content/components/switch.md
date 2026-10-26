@@ -141,6 +141,7 @@ Only switches that are on are submitted. Reset restores the `checked` attribute.
 
 | Attribute | Type | Default | Description |
 | --- | --- | --- | --- |
+| `name` | string | | Form field name the value is submitted under. Also the `name` property, which reflects to the attribute like a native control's. |
 | `checked` | boolean | `false` | Whether the switch is on. The attribute is the initial and reset state. |
 | `value` | string | | Value submitted when on. Without it the form submits `on`. |
 | `size` | `"default"` \| `"sm"` | `"default"` | Track and thumb size. |

@@ -150,6 +150,7 @@ browser's messages, and reset returns to the `value` attribute. Enter adds a new
 
 | Attribute | Type | Default | Description |
 | --- | --- | --- | --- |
+| `name` | string | | Form field name the value is submitted under. Also the `name` property, which reflects to the attribute like a native control's. |
 | `value` | string | `""` | Current text. The attribute is the initial and reset value. |
 | `placeholder` | string | | Placeholder text. |
 | `rows` | number | `3` | Visible lines before the field grows. An integer of at least 1. |
@@ -160,12 +161,19 @@ browser's messages, and reset returns to the `value` attribute. Enter adds a new
 | `required` | boolean | `false` | The form is invalid while the text is empty. |
 | `invalid` | boolean | `false` | Sets `aria-invalid="true"` and the error style. Does not affect validity. |
 | `aria-label` | string | | Accessible name, passed to the inner textarea. Property name: `label`. |
+| `title` | string | | Passed to the inner textarea, where it shows as a tooltip. |
 
 ### Properties
 
 | Property | Type | Description |
 | --- | --- | --- |
 | `value` | string | Current text. Updated as the user types. Setting it updates the field. |
+
+### Methods
+
+| Method | Description |
+| --- | --- |
+| `setCustomValidity(message)` | Like the native method: a non-empty `message` makes the textarea and its form invalid with that message, and an empty string clears it. The message stays until you clear it. |
 
 ### Events
 

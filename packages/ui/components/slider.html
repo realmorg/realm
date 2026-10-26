@@ -1,6 +1,7 @@
 <custom-element name="ui-slider" form-associated delegates-focus>
   <script>
     const props = defineProps({
+      name: prop.string().reflect(),
       value: prop.number().default(0),
       min: prop.number().default(0),
       max: prop.number().default(100),

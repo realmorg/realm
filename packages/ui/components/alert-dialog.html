@@ -201,6 +201,7 @@
     const props = defineProps({
       value: prop.string().default("action"),
       variant: prop.enum(["default", "destructive"]).default("default"),
+      disabled: prop.boolean(),
     });
   </script>
 
@@ -214,7 +215,7 @@
     }
   </style>
 
-  <ui-button part="button" _variant="@variant" onclick="close(props.value)"><slot></slot></ui-button>
+  <ui-button part="button" _variant="@variant" _disabled="@disabled" onclick="close(props.value)"><slot></slot></ui-button>
 </custom-element>
 
 <custom-element name="ui-alert-dialog-cancel">

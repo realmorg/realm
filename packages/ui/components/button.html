@@ -1,6 +1,7 @@
 <custom-element name="ui-button" form-associated delegates-focus>
   <script>
     const props = defineProps({
+      name: prop.string().reflect(),
       variant: prop.enum(["default", "destructive", "outline", "secondary", "ghost", "link"]).default("default"),
       size: prop.enum(["default", "xs", "sm", "lg", "icon", "icon-xs", "icon-sm", "icon-lg"]).default("default"),
       type: prop.enum(["button", "submit", "reset"]).default("button"),
@@ -52,6 +53,12 @@
       if (internals.form && action) HTMLFormElement.prototype[action].call(internals.form);
     }
 
+    defineMethods({
+      click() {
+        (props.href ? refs.link : refs.button).click();
+      },
+    });
+
     observe(() => {
       const button = refs.button;
       if (!button) return;
@@ -77,6 +84,9 @@
     }
     :host([hidden]) {
       display: none;
+    }
+    :host(:disabled) {
+      pointer-events: none;
     }
     is-visible,
     is-hidden {

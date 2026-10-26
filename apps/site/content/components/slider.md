@@ -159,6 +159,7 @@ The value is submitted as a number string under `name`. Reset returns to the `va
 
 | Attribute | Type | Default | Description |
 | --- | --- | --- | --- |
+| `name` | string | | Form field name the value is submitted under. Also the `name` property, which reflects to the attribute like a native control's. |
 | `value` | number | `0` | Current value. The attribute is the initial and reset value. |
 | `min` | number | `0` | Lowest value. |
 | `max` | number | `100` | Highest value. |

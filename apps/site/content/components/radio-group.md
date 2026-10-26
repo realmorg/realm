@@ -169,6 +169,7 @@ returns the group to its `value` attribute.
 
 | Attribute | Type | Default | Description |
 | --- | --- | --- | --- |
+| `name` | string | | Form field name the value is submitted under. Also the `name` property, which reflects to the attribute like a native control's. |
 | `value` | string | | The `value` of the chosen option. |
 | `orientation` | `"vertical"` \| `"horizontal"` | `"vertical"` | Lays the radios out in a column or a row. |
 | `disabled` | boolean | `false` | Disables every radio. Also true inside a disabled `<fieldset>`. |

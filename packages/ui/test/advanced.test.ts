@@ -440,7 +440,7 @@ describe("data display", () => {
     (area as HTMLElement & { data: unknown }).data = data;
     await tick();
     const svg = shadow(bar as Element).querySelector("svg") as SVGSVGElement;
-    expect(svg.getAttribute("viewBox")).toBe("0 0 600 240");
+    expect(svg.getAttribute("viewBox")).toBe(`0 0 ${(bar as HTMLElement).clientWidth} 240`);
     expect(shadow(bar as Element).querySelectorAll(".bars rect")).toHaveLength(4);
     expect(shadow(bar as Element).querySelectorAll(".legend span")).toHaveLength(2);
     expect(shadow(bar as Element).querySelector(".label")?.textContent).toBe("Jan");

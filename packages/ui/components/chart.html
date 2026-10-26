@@ -2,60 +2,83 @@
   <script>
     const props = defineProps({
       type: prop.enum(["bar", "line", "area"]).default("bar"),
+      variant: prop.enum(["default", "sparkline"]).default("default"),
       data: prop.array(prop.object()).default([]),
       x: prop.string().default("label"),
       y: prop.string().default("value"),
-      height: prop.number().min(80).default(240),
+      height: prop.number().min(16).default(240),
       label: prop.string().default("Chart"),
     });
 
-    const WIDTH = 600;
-    const PAD = { top: 12, right: 12, bottom: 28, left: 44 };
+    const PADDING = {
+      default: { top: 12, right: 12, bottom: 28, left: 44 },
+      sparkline: { top: 2, right: 2, bottom: 2, left: 2 },
+    };
+    const NICE_STEPS = [1, 2, 2.5, 5, 10];
+    const compact = new Intl.NumberFormat(undefined, { notation: "compact" });
 
     const chart = useState({
+      width: 600,
+      get pad() {
+        return PADDING[props.variant];
+      },
+      get right() {
+        return this.width - this.pad.right;
+      },
       get series() {
         return props.y.split(",").map((key, index) => ({ key: key.trim(), color: `var(--chart-${(index % 5) + 1})` }));
       },
       get values() {
         return props.data.flatMap((row) => this.series.map((series) => Number(row[series.key]) || 0));
       },
+      get step() {
+        const rough = (Math.max(1, ...this.values) - Math.min(0, ...this.values)) / 4;
+        const magnitude = 10 ** Math.floor(Math.log10(rough));
+        return magnitude * NICE_STEPS.find((step) => step * magnitude >= rough);
+      },
       get max() {
-        return Math.max(1, ...this.values);
+        return Math.ceil(Math.max(1, ...this.values) / this.step) * this.step;
       },
       get min() {
-        return Math.min(0, ...this.values);
+        return Math.floor(Math.min(0, ...this.values) / this.step) * this.step;
       },
       get plotHeight() {
-        return props.height - PAD.top - PAD.bottom;
+        return props.height - this.pad.top - this.pad.bottom;
       },
       y(value) {
-        return PAD.top + this.plotHeight * ((this.max - value) / (this.max - this.min));
+        return this.pad.top + this.plotHeight * ((this.max - value) / (this.max - this.min));
       },
-      get step() {
-        return (WIDTH - PAD.left - PAD.right) / Math.max(1, props.data.length);
+      get band() {
+        return (this.right - this.pad.left) / Math.max(1, props.data.length);
+      },
+      pointX(index) {
+        const edgeToEdge = props.variant === "sparkline" && props.data.length > 1;
+        return edgeToEdge
+          ? this.pad.left + ((this.right - this.pad.left) * index) / (props.data.length - 1)
+          : this.pad.left + this.band * (index + 0.5);
       },
       get viewBox() {
-        return `0 0 ${WIDTH} ${props.height}`;
+        return `0 0 ${this.width} ${props.height}`;
       },
       get ticks() {
-        return [0, 0.25, 0.5, 0.75, 1].map((ratio) => ({
-          key: ratio,
-          y: PAD.top + this.plotHeight * (1 - ratio),
-          label: Math.round(this.min + (this.max - this.min) * ratio).toLocaleString(),
-        }));
+        const count = Math.round((this.max - this.min) / this.step);
+        return Array.from({ length: count + 1 }, (_, index) => {
+          const value = this.min + this.step * index;
+          return { key: index, y: this.y(value), label: compact.format(value) };
+        });
       },
       get labels() {
-        return props.data.map((row, index) => ({ key: index, x: PAD.left + this.step * (index + 0.5), text: String(row[props.x] ?? "") }));
+        return props.data.map((row, index) => ({ key: index, x: this.pad.left + this.band * (index + 0.5), text: String(row[props.x] ?? "") }));
       },
       get bars() {
-        const width = (this.step * 0.7) / this.series.length;
+        const width = (this.band * 0.7) / this.series.length;
         return props.data.flatMap((row, index) =>
           this.series.map((series, s) => {
             const value = Number(row[series.key]) || 0;
             const top = this.y(Math.max(value, 0));
             return {
               key: `${index}-${series.key}`,
-              x: PAD.left + this.step * index + this.step * 0.15 + width * s,
+              x: this.pad.left + this.band * index + this.band * 0.15 + width * s,
               y: top,
               width,
               height: this.y(Math.min(value, 0)) - top,
@@ -68,7 +91,7 @@
       get lines() {
         return this.series.map((series) => {
           const points = props.data.map((row, index) => [
-            PAD.left + this.step * (index + 0.5),
+            this.pointX(index),
             this.y(Number(row[series.key]) || 0),
           ]);
           const line = points.map(([x, y], index) => `${index ? "L" : "M"}${x},${y}`).join(" ");
@@ -80,6 +103,16 @@
       get legend() {
         return this.series.length > 1 ? this.series : [];
       },
+    });
+
+    const resize = new ResizeObserver(([entry]) => {
+      if (entry.contentRect.width) chart.width = entry.contentRect.width;
+    });
+
+    onConnected(() => {
+      if (host.clientWidth) chart.width = host.clientWidth;
+      resize.observe(host);
+      return () => resize.disconnect();
     });
   </script>
 
@@ -100,7 +133,6 @@
     svg {
       display: block;
       width: 100%;
-      height: auto;
       overflow: visible;
     }
     .grid {
@@ -126,6 +158,9 @@
     .area {
       opacity: 0.2;
     }
+    :host(:state(attr-variant-is-sparkline)) :is(.axes, .label, .legend) {
+      display: none;
+    }
     :host(:not(:state(attr-type-is-bar))) .bars,
     :host(:state(attr-type-is-bar)) .lines,
     :host(:not(:state(attr-type-is-area))) .area {
@@ -148,10 +183,10 @@
     }
   </style>
 
-  <svg _viewBox="#chart.viewBox" role="img" _aria-label="@label" part="svg">
-    <g repeat="#chart.ticks" as="tick" key="key">
-      <line class="grid" x1="44" x2="588" _y1="#tick.y" _y2="#tick.y"></line>
-      <text class="tick" x="38" _y="#tick.y"><slot name="#tick.label"></slot></text>
+  <svg _viewBox="#chart.viewBox" _height="@height" role="img" _aria-label="@label" part="svg">
+    <g class="axes" repeat="#chart.ticks" as="tick" key="key">
+      <line class="grid" _x1="#chart.pad.left" _x2="#chart.right" _y1="#tick.y" _y2="#tick.y"></line>
+      <text class="tick" _x="#chart.pad.left" dx="-6" _y="#tick.y"><slot name="#tick.label"></slot></text>
     </g>
     <text repeat="#chart.labels" as="label" key="key" class="label" _x="#label.x" _y="@height" dy="-8"><slot name="#label.text"></slot></text>
     <g class="bars">
