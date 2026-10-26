@@ -1195,3 +1195,29 @@ theme-builder:not(:defined) {
 .prose .action.primary {
   color: var(--primary-foreground);
 }
+
+/* Screenshots on REALM Pro showcase pages: desktop pictures one per row, phone pictures side by side. */
+.pro-shots {
+  display: grid;
+  gap: calc(var(--spacing) * 4);
+  margin-block: calc(var(--spacing) * 6);
+}
+.pro-shots.phone {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, calc(var(--spacing) * 56)), 1fr));
+  max-inline-size: calc(var(--spacing) * 160);
+}
+.pro-shots figure {
+  display: grid;
+  gap: calc(var(--spacing) * 2);
+  margin: 0;
+}
+.pro-shots img {
+  inline-size: 100%;
+  block-size: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+}
+.pro-shots figcaption {
+  color: var(--muted-foreground);
+  font-size: var(--text-sm);
+}
