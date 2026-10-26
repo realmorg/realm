@@ -58,11 +58,12 @@
 
     // Once open, the menu keeps the side it opened on. Re-deciding while the page scrolls makes it
     // jump, because iOS Safari's toolbar changes the viewport height mid-scroll.
+    // Firefox holds a box that does not fit against the screen edge, so touching it counts too.
     function opened(event) {
       if (event.newState !== "open") return;
       internals.states.delete("flipped");
       const box = host.getBoundingClientRect();
-      if (box.bottom > innerHeight || box.top < 0) internals.states.add("flipped");
+      if (box.bottom >= innerHeight || box.top <= 0) internals.states.add("flipped");
       host.querySelector(ITEMS)?.focus({ preventScroll: true });
     }
 
