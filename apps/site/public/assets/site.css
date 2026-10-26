@@ -410,7 +410,7 @@ theme-builder:not(:defined) {
   gap: calc(var(--spacing) * 3);
   margin-top: calc(var(--spacing) * 2);
 }
-.home .action {
+.action {
   display: inline-flex;
   align-items: center;
   gap: calc(var(--spacing) * 2);
@@ -423,21 +423,21 @@ theme-builder:not(:defined) {
   text-decoration: none;
   transition: background-color var(--default-transition-duration);
 }
-.home .action.primary {
+.action.primary {
   background: var(--primary);
   color: var(--primary-foreground);
 }
-.home .action.primary:hover {
+.action.primary:hover {
   background: color-mix(in oklab, var(--primary) 88%, var(--foreground));
 }
-.home .action.outline {
+.action.outline {
   border-color: var(--border);
   background: var(--background);
 }
-.home .action.outline:hover {
+.action.outline:hover {
   background: var(--accent);
 }
-.home .action:focus-visible,
+.action:focus-visible,
 .link-card:focus-visible {
   outline: none;
   box-shadow: var(--focus-ring);
@@ -1166,4 +1166,32 @@ theme-builder:not(:defined) {
   display: flex;
   align-items: flex-start;
   gap: calc(var(--spacing) * 4);
+}
+
+/* REALM Pro: two pricing cards side by side, stacked on phones. */
+.pro-pricing {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(calc(var(--spacing) * 64), 1fr));
+  gap: calc(var(--spacing) * 6);
+  margin: calc(var(--spacing) * 8) 0;
+}
+.pro-pricing .price {
+  margin: 0;
+  font-size: var(--text-4xl);
+  font-weight: var(--font-weight-semibold);
+}
+.pro-pricing .was {
+  margin: 0;
+  color: var(--muted-foreground);
+  font-size: var(--text-sm);
+}
+.pro-pricing ul {
+  margin: calc(var(--spacing) * 4) 0 0;
+}
+.prose .action {
+  margin-top: calc(var(--spacing) * 2);
+  color: inherit;
+}
+.prose .action.primary {
+  color: var(--primary-foreground);
 }
