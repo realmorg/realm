@@ -1,5 +1,13 @@
 # @realmorg/realm
 
+## 2.0.0-alpha.5
+
+### Patch Changes
+
+- 0205693: Frozen objects and arrays in state or props are read as they are instead of throwing. A `repeat` loop variable named `event` no longer breaks the handlers in its loop; inside them, `event` is the item.
+- 42e8119: The READMEs load REALM, REALM UI and Unicons from `https://realm.js.org/dist/`, which serves the latest build. Pin an exact version from npm (or jsDelivr) in production.
+- 7c712c3: A parent component now always sets up before its children. On a slow connection, a child could set up while its parent was still waiting for an ancestor to load, and then miss the parent's state: a `ui-tabs-list` lost its orientation and arrow-key navigation, for example.
+
 ## 2.0.0-alpha.4
 
 ### Patch Changes

@@ -1,5 +1,21 @@
 # @realmorg/ui
 
+## 2.0.0-alpha.4
+
+### Minor Changes
+
+- 999e223: `ui-button` takes `href`, `target` and `rel`. With `href` it renders a link that looks like a button, for navigation such as "Get started" or "View pricing".
+
+### Patch Changes
+
+- a2e91c9: Accordion items now slide open and closed instead of jumping, using the theme's `--default-transition-duration` and `--default-transition-timing-function`. In Safari a closing item's content disappears at once while the space it took still slides shut. With `prefers-reduced-motion: reduce`, items open and close without animation.
+- 7c712c3: Dropdown menus, menubar menus, popovers, hover cards, tooltips and the combobox list keep the side they opened on. Before, scrolling on a phone could flip them above and below their trigger, because iOS Safari's toolbar changes the viewport height mid-scroll. They still flip sideways when needed. Opening a menu no longer scrolls the page to its first item.
+- 42e8119: The READMEs load REALM, REALM UI and Unicons from `https://realm.js.org/dist/`, which serves the latest build. Pin an exact version from npm (or jsDelivr) in production.
+- Updated dependencies [0205693]
+- Updated dependencies [42e8119]
+- Updated dependencies [7c712c3]
+  - @realmorg/realm@2.0.0-alpha.5
+
 ## 2.0.0-alpha.3
 
 ### Patch Changes
