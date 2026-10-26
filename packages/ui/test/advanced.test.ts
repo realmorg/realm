@@ -104,7 +104,8 @@ describe("overlays", () => {
 
   test("hover card opens after a delay and closes when the pointer leaves", async () => {
     const host = await render(
-      `<ui-hover-card open-delay="0" close-delay="0"><ui-hover-card-trigger><a href="#">@realm</a></ui-hover-card-trigger><ui-hover-card-content placement="top">Profile card</ui-hover-card-content></ui-hover-card>`,
+      // Room above the trigger, so the card does not flip under wherever the test's pointer was left.
+      `<div style="padding-top: 200px"><ui-hover-card open-delay="0" close-delay="0"><ui-hover-card-trigger><a href="#">@realm</a></ui-hover-card-trigger><ui-hover-card-content placement="top">Profile card</ui-hover-card-content></ui-hover-card></div>`,
     );
     const trigger = part(host.querySelector("ui-hover-card-trigger"), "trigger");
     const card = host.querySelector("ui-hover-card-content") as Element;

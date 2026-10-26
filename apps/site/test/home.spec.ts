@@ -328,13 +328,25 @@ test("a side-by-side demo that starts hidden opens its code at the body once sho
     await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
     const before = pre.scrollTop;
     holder.hidden = false;
-    await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+    const shown = performance.now();
+    while (
+      pre.scrollTop === 0 &&
+      pre.scrollHeight > pre.clientHeight &&
+      performance.now() - shown < 2000
+    )
+      await new Promise((resolve) => requestAnimationFrame(resolve));
     const after = pre.scrollTop;
+    const body = [...pre.querySelectorAll(".line")].find(
+      (line) => line.textContent?.trim() === "<body>",
+    ) as Element;
+    const wanted = body.getBoundingClientRect().top - pre.getBoundingClientRect().top + after - 16;
+    const most = pre.scrollHeight - pre.clientHeight;
     holder.remove();
     await new Promise((resolve) => setTimeout(resolve));
-    return { before, after };
+    return { before, after, expected: Math.max(0, Math.min(wanted, most)) };
   });
   expect(scrolled.before).toBe(0);
-  expect(scrolled.after).toBeGreaterThan(0);
+  // When the whole file fits (Firefox's font wraps fewer lines), there is nothing to scroll.
+  expect(Math.abs(scrolled.after - scrolled.expected)).toBeLessThanOrEqual(1);
   void errors;
 });
