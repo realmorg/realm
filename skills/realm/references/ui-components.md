@@ -31,91 +31,91 @@ Conventions shared by every component:
 
 | Component | Lines | File | Tags |
 | --- | --- | --- | --- |
-| [Button](#button) | 120-181 | `button.html` | `ui-button` |
-| [Button Group](#button-group) | 183-238 | `button-group.html` | `ui-button-group`, `ui-button-group-text`, `ui-button-group-separator` |
-| [Calendar](#calendar) | 240-293 | `calendar.html` | `ui-calendar` |
-| [Checkbox](#checkbox) | 295-360 | `checkbox.html` | `ui-checkbox` |
-| [Combobox](#combobox) | 362-435 | `combobox.html` | `ui-combobox`, `ui-combobox-empty` |
-| [Field](#field) | 437-499 | `field.html` | `ui-field`, `ui-field-content`, `ui-field-description`, `ui-field-group`, `ui-field-set`, `ui-field-legend` |
-| [Input](#input) | 501-563 | `input.html` | `ui-input` |
-| [Input Group](#input-group) | 565-634 | `input-group.html` | `ui-input-group`, `ui-input-group-addon` |
-| [Input OTP](#input-otp) | 636-689 | `input-otp.html` | `ui-input-otp` |
-| [Label](#label) | 691-732 | `label.html` | `ui-label` |
-| [Radio Group](#radio-group) | 734-797 | `radio-group.html` | `ui-radio-group` |
-| [Select](#select) | 799-877 | `select.html` | `ui-select` |
-| [Slider](#slider) | 879-933 | `slider.html` | `ui-slider` |
-| [Switch](#switch) | 935-996 | `switch.html` | `ui-switch` |
-| [Textarea](#textarea) | 998-1051 | `textarea.html` | `ui-textarea` |
-| [Toggle](#toggle) | 1053-1111 | `toggle.html` | `ui-toggle` |
-| [Toggle Group](#toggle-group) | 1113-1188 | `toggle-group.html` | `ui-toggle-group` |
+| [Button](#button) | 120-184 | `button.html` | `ui-button` |
+| [Button Group](#button-group) | 186-241 | `button-group.html` | `ui-button-group`, `ui-button-group-text`, `ui-button-group-separator` |
+| [Calendar](#calendar) | 243-296 | `calendar.html` | `ui-calendar` |
+| [Checkbox](#checkbox) | 298-363 | `checkbox.html` | `ui-checkbox` |
+| [Combobox](#combobox) | 365-438 | `combobox.html` | `ui-combobox`, `ui-combobox-empty` |
+| [Field](#field) | 440-502 | `field.html` | `ui-field`, `ui-field-content`, `ui-field-description`, `ui-field-group`, `ui-field-set`, `ui-field-legend` |
+| [Input](#input) | 504-566 | `input.html` | `ui-input` |
+| [Input Group](#input-group) | 568-637 | `input-group.html` | `ui-input-group`, `ui-input-group-addon` |
+| [Input OTP](#input-otp) | 639-692 | `input-otp.html` | `ui-input-otp` |
+| [Label](#label) | 694-735 | `label.html` | `ui-label` |
+| [Radio Group](#radio-group) | 737-800 | `radio-group.html` | `ui-radio-group` |
+| [Select](#select) | 802-880 | `select.html` | `ui-select` |
+| [Slider](#slider) | 882-936 | `slider.html` | `ui-slider` |
+| [Switch](#switch) | 938-999 | `switch.html` | `ui-switch` |
+| [Textarea](#textarea) | 1001-1054 | `textarea.html` | `ui-textarea` |
+| [Toggle](#toggle) | 1056-1114 | `toggle.html` | `ui-toggle` |
+| [Toggle Group](#toggle-group) | 1116-1191 | `toggle-group.html` | `ui-toggle-group` |
 
 ### Display
 
 | Component | Lines | File | Tags |
 | --- | --- | --- | --- |
-| [Alert](#alert) | 1190-1224 | `alert.html` | `ui-alert`, `ui-alert-title`, `ui-alert-description` |
-| [Avatar](#avatar) | 1226-1280 | `avatar.html` | `ui-avatar`, `ui-avatar-image`, `ui-avatar-fallback`, `ui-avatar-group`, `ui-avatar-group-count` |
-| [Badge](#badge) | 1282-1315 | `badge.html` | `ui-badge` |
-| [Card](#card) | 1317-1384 | `card.html` | `ui-card`, `ui-card-header`, `ui-card-title`, `ui-card-description`, `ui-card-action`, `ui-card-content`, `ui-card-footer` |
-| [Chart](#chart) | 1386-1431 | `chart.html` | `ui-chart` |
-| [Empty](#empty) | 1433-1496 | `empty.html` | `ui-empty`, `ui-empty-header`, `ui-empty-media`, `ui-empty-title`, `ui-empty-description`, `ui-empty-content` |
-| [Item](#item) | 1498-1552 | `item.html` | `ui-item`, `ui-item-group`, `ui-item-media`, `ui-item-content`, `ui-item-title`, `ui-item-description`, `ui-item-actions`, `ui-item-header`, `ui-item-footer` |
-| [Kbd](#kbd) | 1554-1592 | `kbd.html` | `ui-kbd`, `ui-kbd-group` |
-| [Progress](#progress) | 1594-1626 | `progress.html` | `ui-progress` |
-| [Separator](#separator) | 1628-1668 | `separator.html` | `ui-separator` |
-| [Skeleton](#skeleton) | 1670-1705 | `skeleton.html` | `ui-skeleton` |
-| [Spinner](#spinner) | 1707-1738 | `spinner.html` | `ui-spinner` |
-| [Table](#table) | 1740-1795 | `table.html` | `ui-table` |
+| [Alert](#alert) | 1193-1227 | `alert.html` | `ui-alert`, `ui-alert-title`, `ui-alert-description` |
+| [Avatar](#avatar) | 1229-1283 | `avatar.html` | `ui-avatar`, `ui-avatar-image`, `ui-avatar-fallback`, `ui-avatar-group`, `ui-avatar-group-count` |
+| [Badge](#badge) | 1285-1318 | `badge.html` | `ui-badge` |
+| [Card](#card) | 1320-1387 | `card.html` | `ui-card`, `ui-card-header`, `ui-card-title`, `ui-card-description`, `ui-card-action`, `ui-card-content`, `ui-card-footer` |
+| [Chart](#chart) | 1389-1434 | `chart.html` | `ui-chart` |
+| [Empty](#empty) | 1436-1499 | `empty.html` | `ui-empty`, `ui-empty-header`, `ui-empty-media`, `ui-empty-title`, `ui-empty-description`, `ui-empty-content` |
+| [Item](#item) | 1501-1555 | `item.html` | `ui-item`, `ui-item-group`, `ui-item-media`, `ui-item-content`, `ui-item-title`, `ui-item-description`, `ui-item-actions`, `ui-item-header`, `ui-item-footer` |
+| [Kbd](#kbd) | 1557-1595 | `kbd.html` | `ui-kbd`, `ui-kbd-group` |
+| [Progress](#progress) | 1597-1629 | `progress.html` | `ui-progress` |
+| [Separator](#separator) | 1631-1671 | `separator.html` | `ui-separator` |
+| [Skeleton](#skeleton) | 1673-1708 | `skeleton.html` | `ui-skeleton` |
+| [Spinner](#spinner) | 1710-1741 | `spinner.html` | `ui-spinner` |
+| [Table](#table) | 1743-1798 | `table.html` | `ui-table` |
 
 ### Overlays
 
 | Component | Lines | File | Tags |
 | --- | --- | --- | --- |
-| [Alert Dialog](#alert-dialog) | 1797-1893 | `alert-dialog.html` | `ui-alert-dialog`, `ui-alert-dialog-trigger`, `ui-alert-dialog-header`, `ui-alert-dialog-title`, `ui-alert-dialog-description`, `ui-alert-dialog-footer`, `ui-alert-dialog-action`, `ui-alert-dialog-cancel` |
-| [Command](#command) | 1895-1964 | `command.html` | `ui-command`, `ui-command-empty` |
-| [Context Menu](#context-menu) | 1966-2023 | `context-menu.html` | `ui-context-menu`, `ui-context-menu-trigger`, `ui-context-menu-content` |
-| [Dialog](#dialog) | 2025-2128 | `dialog.html` | `ui-dialog`, `ui-dialog-trigger`, `ui-dialog-close`, `ui-dialog-header`, `ui-dialog-title`, `ui-dialog-description`, `ui-dialog-footer` |
-| [Drawer](#drawer) | 2130-2213 | `drawer.html` | `ui-drawer`, `ui-drawer-trigger`, `ui-drawer-close`, `ui-drawer-header`, `ui-drawer-title`, `ui-drawer-description`, `ui-drawer-footer` |
-| [Dropdown Menu](#dropdown-menu) | 2215-2315 | `dropdown-menu.html` | `ui-dropdown-menu`, `ui-dropdown-menu-trigger`, `ui-dropdown-menu-content`, `ui-menu-item`, `ui-menu-checkbox-item`, `ui-menu-radio-group`, `ui-menu-radio-item`, `ui-menu-label`, `ui-menu-group`, `ui-menu-separator`, `ui-menu-shortcut` |
-| [Hover Card](#hover-card) | 2317-2373 | `hover-card.html` | `ui-hover-card`, `ui-hover-card-trigger`, `ui-hover-card-content` |
-| [Popover](#popover) | 2375-2453 | `popover.html` | `ui-popover`, `ui-popover-trigger`, `ui-popover-content`, `ui-popover-header`, `ui-popover-title`, `ui-popover-description` |
-| [Sheet](#sheet) | 2455-2546 | `sheet.html` | `ui-sheet`, `ui-sheet-trigger`, `ui-sheet-close`, `ui-sheet-header`, `ui-sheet-title`, `ui-sheet-description`, `ui-sheet-footer` |
-| [Toaster](#toaster) | 2548-2607 | `toaster.html` | `ui-toaster` |
-| [Tooltip](#tooltip) | 2609-2658 | `tooltip.html` | `ui-tooltip`, `ui-tooltip-trigger`, `ui-tooltip-content` |
+| [Alert Dialog](#alert-dialog) | 1800-1896 | `alert-dialog.html` | `ui-alert-dialog`, `ui-alert-dialog-trigger`, `ui-alert-dialog-header`, `ui-alert-dialog-title`, `ui-alert-dialog-description`, `ui-alert-dialog-footer`, `ui-alert-dialog-action`, `ui-alert-dialog-cancel` |
+| [Command](#command) | 1898-1967 | `command.html` | `ui-command`, `ui-command-empty` |
+| [Context Menu](#context-menu) | 1969-2026 | `context-menu.html` | `ui-context-menu`, `ui-context-menu-trigger`, `ui-context-menu-content` |
+| [Dialog](#dialog) | 2028-2131 | `dialog.html` | `ui-dialog`, `ui-dialog-trigger`, `ui-dialog-close`, `ui-dialog-header`, `ui-dialog-title`, `ui-dialog-description`, `ui-dialog-footer` |
+| [Drawer](#drawer) | 2133-2216 | `drawer.html` | `ui-drawer`, `ui-drawer-trigger`, `ui-drawer-close`, `ui-drawer-header`, `ui-drawer-title`, `ui-drawer-description`, `ui-drawer-footer` |
+| [Dropdown Menu](#dropdown-menu) | 2218-2318 | `dropdown-menu.html` | `ui-dropdown-menu`, `ui-dropdown-menu-trigger`, `ui-dropdown-menu-content`, `ui-menu-item`, `ui-menu-checkbox-item`, `ui-menu-radio-group`, `ui-menu-radio-item`, `ui-menu-label`, `ui-menu-group`, `ui-menu-separator`, `ui-menu-shortcut` |
+| [Hover Card](#hover-card) | 2320-2376 | `hover-card.html` | `ui-hover-card`, `ui-hover-card-trigger`, `ui-hover-card-content` |
+| [Popover](#popover) | 2378-2456 | `popover.html` | `ui-popover`, `ui-popover-trigger`, `ui-popover-content`, `ui-popover-header`, `ui-popover-title`, `ui-popover-description` |
+| [Sheet](#sheet) | 2458-2549 | `sheet.html` | `ui-sheet`, `ui-sheet-trigger`, `ui-sheet-close`, `ui-sheet-header`, `ui-sheet-title`, `ui-sheet-description`, `ui-sheet-footer` |
+| [Toaster](#toaster) | 2551-2610 | `toaster.html` | `ui-toaster` |
+| [Tooltip](#tooltip) | 2612-2661 | `tooltip.html` | `ui-tooltip`, `ui-tooltip-trigger`, `ui-tooltip-content` |
 
 ### Navigation
 
 | Component | Lines | File | Tags |
 | --- | --- | --- | --- |
-| [Accordion](#accordion) | 2660-2728 | `accordion.html` | `ui-accordion`, `ui-accordion-item`, `ui-accordion-trigger`, `ui-accordion-content` |
-| [Breadcrumb](#breadcrumb) | 2730-2795 | `breadcrumb.html` | `ui-breadcrumb`, `ui-breadcrumb-list`, `ui-breadcrumb-item`, `ui-breadcrumb-link`, `ui-breadcrumb-page`, `ui-breadcrumb-separator`, `ui-breadcrumb-ellipsis` |
-| [Collapsible](#collapsible) | 2797-2852 | `collapsible.html` | `ui-collapsible`, `ui-collapsible-trigger`, `ui-collapsible-content` |
-| [Menubar](#menubar) | 2854-2919 | `menubar.html` | `ui-menubar`, `ui-menubar-menu`, `ui-menubar-trigger`, `ui-menubar-content` |
-| [Navigation Menu](#navigation-menu) | 2921-3006 | `navigation-menu.html` | `ui-navigation-menu`, `ui-navigation-menu-list`, `ui-navigation-menu-item`, `ui-navigation-menu-trigger`, `ui-navigation-menu-content`, `ui-navigation-menu-link` |
-| [Pagination](#pagination) | 3008-3046 | `pagination.html` | `ui-pagination` |
-| [Sidebar](#sidebar) | 3048-3253 | `sidebar.html` | `ui-sidebar-layout`, `ui-sidebar`, `ui-sidebar-header`, `ui-sidebar-footer`, `ui-sidebar-content`, `ui-sidebar-group`, `ui-sidebar-group-label`, `ui-sidebar-menu`, `ui-sidebar-menu-item`, `ui-sidebar-menu-button`, `ui-sidebar-menu-badge`, `ui-sidebar-trigger`, `ui-sidebar-inset` |
-| [Tabs](#tabs) | 3255-3350 | `tabs.html` | `ui-tabs`, `ui-tabs-list`, `ui-tabs-trigger`, `ui-tabs-content` |
+| [Accordion](#accordion) | 2663-2731 | `accordion.html` | `ui-accordion`, `ui-accordion-item`, `ui-accordion-trigger`, `ui-accordion-content` |
+| [Breadcrumb](#breadcrumb) | 2733-2798 | `breadcrumb.html` | `ui-breadcrumb`, `ui-breadcrumb-list`, `ui-breadcrumb-item`, `ui-breadcrumb-link`, `ui-breadcrumb-page`, `ui-breadcrumb-separator`, `ui-breadcrumb-ellipsis` |
+| [Collapsible](#collapsible) | 2800-2855 | `collapsible.html` | `ui-collapsible`, `ui-collapsible-trigger`, `ui-collapsible-content` |
+| [Menubar](#menubar) | 2857-2922 | `menubar.html` | `ui-menubar`, `ui-menubar-menu`, `ui-menubar-trigger`, `ui-menubar-content` |
+| [Navigation Menu](#navigation-menu) | 2924-3009 | `navigation-menu.html` | `ui-navigation-menu`, `ui-navigation-menu-list`, `ui-navigation-menu-item`, `ui-navigation-menu-trigger`, `ui-navigation-menu-content`, `ui-navigation-menu-link` |
+| [Pagination](#pagination) | 3011-3049 | `pagination.html` | `ui-pagination` |
+| [Sidebar](#sidebar) | 3051-3256 | `sidebar.html` | `ui-sidebar-layout`, `ui-sidebar`, `ui-sidebar-header`, `ui-sidebar-footer`, `ui-sidebar-content`, `ui-sidebar-group`, `ui-sidebar-group-label`, `ui-sidebar-menu`, `ui-sidebar-menu-item`, `ui-sidebar-menu-button`, `ui-sidebar-menu-badge`, `ui-sidebar-trigger`, `ui-sidebar-inset` |
+| [Tabs](#tabs) | 3258-3353 | `tabs.html` | `ui-tabs`, `ui-tabs-list`, `ui-tabs-trigger`, `ui-tabs-content` |
 
 ### Layout
 
 | Component | Lines | File | Tags |
 | --- | --- | --- | --- |
-| [Aspect Ratio](#aspect-ratio) | 3352-3387 | `aspect-ratio.html` | `ui-aspect-ratio` |
-| [Carousel](#carousel) | 3389-3481 | `carousel.html` | `ui-carousel`, `ui-carousel-content`, `ui-carousel-item`, `ui-carousel-previous`, `ui-carousel-next` |
-| [Direction](#direction) | 3483-3528 | `direction.html` | `ui-direction` |
-| [Resizable](#resizable) | 3530-3600 | `resizable.html` | `ui-resizable`, `ui-resizable-panel`, `ui-resizable-handle` |
-| [Scroll Area](#scroll-area) | 3602-3664 | `scroll-area.html` | `ui-scroll-area` |
+| [Aspect Ratio](#aspect-ratio) | 3355-3390 | `aspect-ratio.html` | `ui-aspect-ratio` |
+| [Carousel](#carousel) | 3392-3484 | `carousel.html` | `ui-carousel`, `ui-carousel-content`, `ui-carousel-item`, `ui-carousel-previous`, `ui-carousel-next` |
+| [Direction](#direction) | 3486-3531 | `direction.html` | `ui-direction` |
+| [Resizable](#resizable) | 3533-3603 | `resizable.html` | `ui-resizable`, `ui-resizable-panel`, `ui-resizable-handle` |
+| [Scroll Area](#scroll-area) | 3605-3667 | `scroll-area.html` | `ui-scroll-area` |
 
 ### Chat and content
 
 | Component | Lines | File | Tags |
 | --- | --- | --- | --- |
-| [Attachment](#attachment) | 3666-3709 | `attachment.html` | `ui-attachment`, `ui-attachment-media`, `ui-attachment-actions` |
-| [Bubble](#bubble) | 3711-3753 | `bubble.html` | `ui-bubble`, `ui-bubble-reactions` |
-| [Code Block](#code-block) | 3755-3787 | `code-block.html` | `ui-code-block` |
-| [Marker](#marker) | 3789-3824 | `marker.html` | `ui-marker` |
-| [Message](#message) | 3826-3879 | `message.html` | `ui-message`, `ui-message-avatar`, `ui-message-header`, `ui-message-footer` |
-| [Message Scroller](#message-scroller) | 3881-3976 | `message-scroller.html` | `ui-message-scroller` |
+| [Attachment](#attachment) | 3669-3712 | `attachment.html` | `ui-attachment`, `ui-attachment-media`, `ui-attachment-actions` |
+| [Bubble](#bubble) | 3714-3756 | `bubble.html` | `ui-bubble`, `ui-bubble-reactions` |
+| [Code Block](#code-block) | 3758-3790 | `code-block.html` | `ui-code-block` |
+| [Marker](#marker) | 3792-3827 | `marker.html` | `ui-marker` |
+| [Message](#message) | 3829-3882 | `message.html` | `ui-message`, `ui-message-avatar`, `ui-message-header`, `ui-message-footer` |
+| [Message Scroller](#message-scroller) | 3884-3979 | `message-scroller.html` | `ui-message-scroller` |
 
 <a id="button"></a>
 
@@ -144,6 +144,9 @@ A form-associated button with variants and sizes that can submit or reset a form
 | `aria-description` | string | | Accessible description, passed to the inner button. `ui-tooltip` sets it from its content. Property name: `description`. |
 | `popovertarget` | string | | Id of a popover element to toggle. |
 | `popovertargetaction` | `"toggle"` \| `"show"` \| `"hide"` | | Action taken on the popover target. |
+| `href` | string | | Makes the button a link to this URL. The inner element is an `<a>` instead of a `<button>`, and `type` and the invoker attributes do not apply. `disabled` dims it and stops clicks. |
+| `target` | string | | Where a link opens, as on `<a>`. |
+| `rel` | string | | Link relation, as on `<a>`. |
 | `commandfor` | string | | Id of the element that receives `command`. |
 | `command` | string | | Command to invoke, such as `show-modal`, `close`, `request-close`, `toggle-popover`, `show-popover`, `hide-popover` or a custom `--command`. |
 
@@ -163,7 +166,7 @@ not supported, the button dispatches a cancelable `command` event on the `comman
 
 | Part | Description |
 | --- | --- |
-| `button` | The inner native `<button>`. |
+| `button` | The inner native `<button>`, or the `<a>` when `href` is set. |
 
 ### CSS states and custom properties
 
