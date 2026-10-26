@@ -103,7 +103,7 @@ An icon shows after REALM, `unicons.html`, `unicons.js` and its chunk have loade
 | `lu` | Lucide | 1541 | ISC |
 | `md` | Material Design icons | 4341 | Apache License Version 2.0 |
 | `pi` | Phosphor Icons | 9072 | MIT |
-| `ri` | Remix Icon | 3229 | Apache License Version 2.0 |
+| `ri` | Remix Icon | 3188 | Apache License Version 2.0 (Remix Icon 4.8.0) |
 | `rx` | Radix Icons | 332 | MIT |
 | `si` | Simple Icons | 3446 | CC0 1.0 Universal |
 | `sl` | Simple Line Icons | 189 | MIT |
