@@ -37,9 +37,7 @@ test("an example page switches between its preview and its source files", async 
   await expect(tabs).toHaveText(["index.html", "todo-app.html", "todos.js"]);
   await expect(tabs.first()).toHaveAttribute("aria-selected", "true");
   const shown = source.getByRole("tabpanel");
-  await expect(shown).toContainText(
-    'src="https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/realm.js"',
-  );
+  await expect(shown).toContainText('src="https://realm.js.org/dist/realm.js"');
   await expect(shown).not.toContainText("defineStore");
 
   await source.getByRole("tab", { name: "todos.js" }).click();

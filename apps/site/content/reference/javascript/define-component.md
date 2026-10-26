@@ -15,7 +15,7 @@ defineComponent(element: Element, base: string, inline: boolean): Promise<void>
 ```
 
 ```js
-import { defineComponent } from "https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/index.js";
+import { defineComponent } from "https://realm.js.org/dist/index.js";
 
 const doc = new DOMParser().parseFromString(html, "text/html");
 for (const definition of doc.querySelectorAll("custom-element")) {

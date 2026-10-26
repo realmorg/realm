@@ -33,21 +33,21 @@ REALM UI (`@realmorg/ui`) is a set of accessible components built with REALM and
 
 ## Installation
 
-REALM UI needs no installation. Load REALM, the theme and the component bundle from the jsDelivr CDN, once per page:
+REALM UI needs no installation. Load REALM, the theme and the component bundle from realm.js.org, once per page:
 
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/realm.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/dist/theme.css">
-<script type="module" src="https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/realm.js"></script>
+<link rel="stylesheet" href="https://realm.js.org/dist/realm.css">
+<link rel="stylesheet" href="https://realm.js.org/dist/ui/theme.css">
+<script type="module" src="https://realm.js.org/dist/realm.js"></script>
 
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/dist/ui.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/ui.html"></import-element>
 ```
 
 To load less, import only the components you use instead of the bundle:
 
 ```html
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/button.html"></import-element>
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/card.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/button.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/card.html"></import-element>
 ```
 
 Each file imports the files it depends on, so `sheet.html` also loads `dialog.html`. A file is fetched once, however many files import it.

@@ -4,7 +4,7 @@
 //
 // Static checks compare names in the skill with the runtime source. The browser checks run
 // every ```html runnable block in Chromium with the local builds of REALM, REALM UI and
-// Unicons standing in for the CDN, and fail on console errors, REALM warnings, failed
+// Unicons standing in for realm.js.org/dist, and fail on console errors, REALM warnings, failed
 // requests and custom elements that never get defined. Run `pnpm build` first.
 
 import assert from "node:assert/strict";
@@ -28,6 +28,18 @@ const doc = (path) => docs.get(path) ?? assert.fail(`${path} is missing`);
 const handWritten = [...docs].filter(([path]) => path !== "references/ui-components.md");
 
 const source = (file) => read(join(src, file));
+
+// The package file behind a path under realm.js.org/dist/.
+const DIST_FOLDERS = [
+  ["ui/components/", "packages/ui/components/"],
+  ["ui/", "packages/ui/dist/"],
+  ["unicons/", "packages/unicons/dist/"],
+  ["", "packages/realm/dist/"],
+];
+const packageFile = (path) => {
+  const [prefix, folder] = DIST_FOLDERS.find(([start]) => path.startsWith(start));
+  return join(repo, folder, path.slice(prefix.length));
+};
 const allSource = readdirSync(src)
   .filter((file) => file.endsWith(".ts"))
   .map(source)
@@ -89,13 +101,11 @@ describe("skill format", () => {
     for (const [path, text] of handWritten) assert.ok(!text.includes("—"), path);
   });
 
-  test("every CDN URL points at a file in the packages", () => {
+  test("every realm.js.org/dist URL points at a file in the packages", () => {
     for (const [path, text] of docs) {
-      for (const [url, pkg, rest] of text.matchAll(
-        /https:\/\/cdn\.jsdelivr\.net\/npm\/@realmorg\/([\w-]+)@alpha\/([\w./-]+[\w])/g,
-      )) {
+      for (const [url, rest] of text.matchAll(/https:\/\/realm\.js\.org\/dist\/([\w./-]+[\w])/g)) {
         if (rest.includes("<")) continue;
-        assert.ok(existsSync(join(repo, "packages", pkg, rest)), `${path}: ${url}`);
+        assert.ok(existsSync(packageFile(rest)), `${path}: ${url}`);
       }
     }
   });
@@ -277,7 +287,7 @@ describe("names match the runtime", () => {
 // --- Runnable blocks in Chromium ------------------------------------------------------------
 
 const ORIGIN = "http://localhost:4188";
-const CDN = "https://cdn.jsdelivr.net/npm/";
+const DIST = "https://realm.js.org/dist/";
 const TYPES = {
   ".html": "text/html",
   ".js": "text/javascript",
@@ -299,20 +309,20 @@ const blocks = [...docs].flatMap(([path, text]) =>
 // Pages without their own <head> get the CDN tags a page needs, like the docs show.
 const page = (code) => {
   if (/^<!doctype/i.test(code.trim())) return code;
-  const ui = /<ui-/.test(code) && !/<import-element\b[^>]*@realmorg\/ui@/.test(code);
-  const icons = /<u-icon\b/.test(code) && !/@realmorg\/unicons@/.test(code);
+  const ui = /<ui-/.test(code) && !/<import-element\b[^>]*\/dist\/ui\//.test(code);
+  const icons = /<u-icon\b/.test(code) && !/\/dist\/unicons\//.test(code);
   return `<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <title>Skill block</title>
-<link rel="stylesheet" href="${CDN}@realmorg/realm@alpha/dist/realm.css">
-<link rel="stylesheet" href="${CDN}@realmorg/ui@alpha/dist/theme.css">
-<script type="module" src="${CDN}@realmorg/realm@alpha/dist/realm.js"></script>
+<link rel="stylesheet" href="${DIST}realm.css">
+<link rel="stylesheet" href="${DIST}ui/theme.css">
+<script type="module" src="${DIST}realm.js"></script>
 </head>
 <body>
-${ui ? `<import-element from="${CDN}@realmorg/ui@alpha/dist/ui.html"></import-element>` : ""}
-${icons ? `<import-element from="${CDN}@realmorg/unicons@alpha/dist/unicons.html"></import-element>` : ""}
+${ui ? `<import-element from="${DIST}ui/ui.html"></import-element>` : ""}
+${icons ? `<import-element from="${DIST}unicons/unicons.html"></import-element>` : ""}
 ${code}
 </body>
 </html>`;
@@ -351,10 +361,9 @@ const fulfil = async (route) => {
       body,
       headers: { "content-type": type, "access-control-allow-origin": "*" },
     });
-  if (url.href.startsWith(CDN)) {
-    const [, pkg, rest] = url.pathname.match(/^\/npm\/@realmorg\/([\w-]+)@alpha\/(.+)$/) ?? [];
-    const file = pkg && join(repo, "packages", pkg, rest);
-    if (!file || !existsSync(file)) return respond(404, "Not found", "text/plain");
+  if (url.href.startsWith(DIST)) {
+    const file = packageFile(url.href.slice(DIST.length));
+    if (!existsSync(file)) return respond(404, "Not found", "text/plain");
     return respond(200, readFileSync(file), TYPES[extname(file)] ?? "application/octet-stream");
   }
   if (url.origin === ORIGIN) {

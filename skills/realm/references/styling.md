@@ -138,7 +138,7 @@ Page stylesheets do not reach into shadow roots, so utility classes from Tailwin
 
 ## Design tokens
 
-Load `https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/dist/theme.css` once per page and use its tokens for every size, space, radius, shadow and colour. Custom properties inherit through shadow roots, so tokens on `:root` reach every component.
+Load `https://realm.js.org/dist/ui/theme.css` once per page and use its tokens for every size, space, radius, shadow and colour. Custom properties inherit through shadow roots, so tokens on `:root` reach every component.
 
 ```css
 :host {

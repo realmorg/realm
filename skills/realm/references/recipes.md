@@ -20,14 +20,14 @@ A store persisted to `localStorage`, a lookup table for filters, a keyed list wi
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Todos</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/realm.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/dist/theme.css">
-  <script type="module" src="https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/realm.js"></script>
+  <link rel="stylesheet" href="https://realm.js.org/dist/realm.css">
+  <link rel="stylesheet" href="https://realm.js.org/dist/ui/theme.css">
+  <script type="module" src="https://realm.js.org/dist/realm.js"></script>
 </head>
 <body>
-  <import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/button.html"></import-element>
-  <import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/checkbox.html"></import-element>
-  <import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/input.html"></import-element>
+  <import-element from="https://realm.js.org/dist/ui/components/button.html"></import-element>
+  <import-element from="https://realm.js.org/dist/ui/components/checkbox.html"></import-element>
+  <import-element from="https://realm.js.org/dist/ui/components/input.html"></import-element>
 
   <custom-element name="todo-app">
     <script type="realm">
@@ -174,17 +174,17 @@ Fetch attributes load the list on connect, again when the search changes (deboun
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Products</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/realm.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/dist/theme.css">
-  <script type="module" src="https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/realm.js"></script>
+  <link rel="stylesheet" href="https://realm.js.org/dist/realm.css">
+  <link rel="stylesheet" href="https://realm.js.org/dist/ui/theme.css">
+  <script type="module" src="https://realm.js.org/dist/realm.js"></script>
 </head>
 <body>
-  <import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/alert.html"></import-element>
-  <import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/badge.html"></import-element>
-  <import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/button.html"></import-element>
-  <import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/empty.html"></import-element>
-  <import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/input.html"></import-element>
-  <import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/spinner.html"></import-element>
+  <import-element from="https://realm.js.org/dist/ui/components/alert.html"></import-element>
+  <import-element from="https://realm.js.org/dist/ui/components/badge.html"></import-element>
+  <import-element from="https://realm.js.org/dist/ui/components/button.html"></import-element>
+  <import-element from="https://realm.js.org/dist/ui/components/empty.html"></import-element>
+  <import-element from="https://realm.js.org/dist/ui/components/input.html"></import-element>
+  <import-element from="https://realm.js.org/dist/ui/components/spinner.html"></import-element>
 
   <custom-element name="product-list">
     <script type="realm">
@@ -292,18 +292,18 @@ Native constraints (`required`, `type="email"`, `minlength`) block the submit. `
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Sign up</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/realm.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/dist/theme.css">
-  <script type="module" src="https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/realm.js"></script>
+  <link rel="stylesheet" href="https://realm.js.org/dist/realm.css">
+  <link rel="stylesheet" href="https://realm.js.org/dist/ui/theme.css">
+  <script type="module" src="https://realm.js.org/dist/realm.js"></script>
 </head>
 <body>
-  <import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/button.html"></import-element>
-  <import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/card.html"></import-element>
-  <import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/checkbox.html"></import-element>
-  <import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/field.html"></import-element>
-  <import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/input.html"></import-element>
-  <import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/label.html"></import-element>
-  <import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/toaster.html"></import-element>
+  <import-element from="https://realm.js.org/dist/ui/components/button.html"></import-element>
+  <import-element from="https://realm.js.org/dist/ui/components/card.html"></import-element>
+  <import-element from="https://realm.js.org/dist/ui/components/checkbox.html"></import-element>
+  <import-element from="https://realm.js.org/dist/ui/components/field.html"></import-element>
+  <import-element from="https://realm.js.org/dist/ui/components/input.html"></import-element>
+  <import-element from="https://realm.js.org/dist/ui/components/label.html"></import-element>
+  <import-element from="https://realm.js.org/dist/ui/components/toaster.html"></import-element>
 
   <custom-element name="signup-form">
     <script type="realm">
@@ -413,18 +413,18 @@ The endpoint answers `201` on success, or `422` with `{ "errors": { "email": "Th
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Project settings</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/realm.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/dist/theme.css">
-  <script type="module" src="https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/realm.js"></script>
+  <link rel="stylesheet" href="https://realm.js.org/dist/realm.css">
+  <link rel="stylesheet" href="https://realm.js.org/dist/ui/theme.css">
+  <script type="module" src="https://realm.js.org/dist/realm.js"></script>
 </head>
 <body>
-  <import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/alert-dialog.html"></import-element>
-  <import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/button.html"></import-element>
-  <import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/dialog.html"></import-element>
-  <import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/field.html"></import-element>
-  <import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/input.html"></import-element>
-  <import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/label.html"></import-element>
-  <import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/toaster.html"></import-element>
+  <import-element from="https://realm.js.org/dist/ui/components/alert-dialog.html"></import-element>
+  <import-element from="https://realm.js.org/dist/ui/components/button.html"></import-element>
+  <import-element from="https://realm.js.org/dist/ui/components/dialog.html"></import-element>
+  <import-element from="https://realm.js.org/dist/ui/components/field.html"></import-element>
+  <import-element from="https://realm.js.org/dist/ui/components/input.html"></import-element>
+  <import-element from="https://realm.js.org/dist/ui/components/label.html"></import-element>
+  <import-element from="https://realm.js.org/dist/ui/components/toaster.html"></import-element>
 
   <custom-element name="project-settings">
     <script type="realm">
@@ -527,9 +527,9 @@ Notes:
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Dashboard</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/realm.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/dist/theme.css">
-  <script type="module" src="https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/realm.js"></script>
+  <link rel="stylesheet" href="https://realm.js.org/dist/realm.css">
+  <link rel="stylesheet" href="https://realm.js.org/dist/ui/theme.css">
+  <script type="module" src="https://realm.js.org/dist/realm.js"></script>
   <style>
     body {
       margin: 0;
@@ -537,11 +537,11 @@ Notes:
   </style>
 </head>
 <body>
-  <import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/badge.html"></import-element>
-  <import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/card.html"></import-element>
-  <import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/separator.html"></import-element>
-  <import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/sidebar.html"></import-element>
-  <import-element from="https://cdn.jsdelivr.net/npm/@realmorg/unicons@alpha/dist/unicons.html"></import-element>
+  <import-element from="https://realm.js.org/dist/ui/components/badge.html"></import-element>
+  <import-element from="https://realm.js.org/dist/ui/components/card.html"></import-element>
+  <import-element from="https://realm.js.org/dist/ui/components/separator.html"></import-element>
+  <import-element from="https://realm.js.org/dist/ui/components/sidebar.html"></import-element>
+  <import-element from="https://realm.js.org/dist/unicons/unicons.html"></import-element>
 
   <custom-element name="sales-dashboard">
     <script type="realm">
@@ -722,7 +722,7 @@ app/
 ```
 
 ```js file=app/state.js
-import { defineStore } from "https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/index.js";
+import { defineStore } from "https://realm.js.org/dist/index.js";
 
 export const PAGES = [
   { id: "overview", label: "Overview", href: "index.html", icon: "house" },
@@ -733,8 +733,8 @@ export const settings = defineStore("app-settings", { name: "Ada Lovelace", comp
 ```
 
 ```html file=app/components/app-shell.html
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/sidebar.html"></import-element>
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/unicons@alpha/dist/unicons.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/sidebar.html"></import-element>
+<import-element from="https://realm.js.org/dist/unicons/unicons.html"></import-element>
 
 <custom-element name="app-shell">
   <script type="module">
@@ -793,11 +793,11 @@ export const settings = defineStore("app-settings", { name: "Ada Lovelace", comp
 ```
 
 ```html file=app/components/pages.html
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/card.html"></import-element>
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/field.html"></import-element>
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/input.html"></import-element>
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/label.html"></import-element>
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/switch.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/card.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/field.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/input.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/label.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/switch.html"></import-element>
 
 <custom-element name="overview-page">
   <script type="module">
@@ -850,9 +850,9 @@ export const settings = defineStore("app-settings", { name: "Ada Lovelace", comp
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Overview</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/realm.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/dist/theme.css">
-  <script type="module" src="https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/realm.js"></script>
+  <link rel="stylesheet" href="https://realm.js.org/dist/realm.css">
+  <link rel="stylesheet" href="https://realm.js.org/dist/ui/theme.css">
+  <script type="module" src="https://realm.js.org/dist/realm.js"></script>
   <style>
     body {
       margin: 0;
@@ -874,9 +874,9 @@ export const settings = defineStore("app-settings", { name: "Ada Lovelace", comp
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Settings</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/realm.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/dist/theme.css">
-  <script type="module" src="https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/realm.js"></script>
+  <link rel="stylesheet" href="https://realm.js.org/dist/realm.css">
+  <link rel="stylesheet" href="https://realm.js.org/dist/ui/theme.css">
+  <script type="module" src="https://realm.js.org/dist/realm.js"></script>
   <style>
     body {
       margin: 0;
@@ -893,7 +893,7 @@ export const settings = defineStore("app-settings", { name: "Ada Lovelace", comp
 
 Notes:
 
-- `state.js` imports `index.js` from the same CDN version as the page's `realm.js`, so both share one runtime and one store.
+- `state.js` imports `index.js` from the same URL as the page's `realm.js`, so both share one runtime and one store.
 - Relative paths in component files (`../state.js`, `<import-element from>`) resolve against the component file.
 - The page component sits in the shell's default slot. Each component imports the store it reads, so neither depends on the other's names.
 - To keep each page small, import only the page components it shows (one file per page works too).

@@ -49,9 +49,9 @@ Common mistakes, what goes wrong, and the fix. Then every console message REALM 
 | `<custom-element name="counter">` | Warning: needs a dash. Nothing is defined | `name="click-counter"` |
 | Opening a page that uses `<import-element>` from `file://` | `Could not import …` (fetch is blocked) | Serve over HTTP: `python3 -m http.server` |
 | A component uses `ui-button` but its file does not import `button.html` | Works only on pages that happen to import it | Import every dependency at the top of the component file |
-| Fetching `@realmorg/realm` in a module from a different version or URL than the page | Two runtimes: stores and definitions are not shared | Import `index.js` from the same CDN version as the page's `realm.js` |
+| Fetching `@realmorg/realm` in a module from a different version or URL than the page | Two runtimes: stores and definitions are not shared | Import `index.js` from the same URL as the page's `realm.js` |
 | Missing `realm.css` | Definitions and undefined elements flash on load | Load it in `<head>` before anything renders |
-| Missing `theme.css` | Tokens such as `var(--spacing)` are undefined, layouts collapse | Load `https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/dist/theme.css` |
+| Missing `theme.css` | Tokens such as `var(--spacing)` are undefined, layouts collapse | Load `https://realm.js.org/dist/ui/theme.css` |
 | `npm install` and a bundler for a REALM page | Not needed, and the runtime must be shared | CDN tags. REALM has no build step |
 
 ## Fetching

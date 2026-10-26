@@ -12,7 +12,7 @@ This page builds a working component in one HTML file, then moves it into its ow
 
 ## 1. One HTML file
 
-Create `index.html`. The two tags in the `<head>` load REALM from the jsDelivr CDN:
+Create `index.html`. The two tags in the `<head>` load REALM from realm.js.org:
 
 ```html
 <!doctype html>
@@ -20,8 +20,8 @@ Create `index.html`. The two tags in the `<head>` load REALM from the jsDelivr C
 <head>
   <meta charset="utf-8">
   <title>My first REALM page</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/realm.css">
-  <script type="module" src="https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/realm.js"></script>
+  <link rel="stylesheet" href="https://realm.js.org/dist/realm.css">
+  <script type="module" src="https://realm.js.org/dist/realm.js"></script>
 </head>
 <body>
   <custom-element name="greeting-form">
@@ -145,8 +145,8 @@ Then load it from the page:
 Add the REALM UI theme and bundle to get buttons, inputs, dialogs and more:
 
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/dist/theme.css">
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/dist/ui.html"></import-element>
+<link rel="stylesheet" href="https://realm.js.org/dist/ui/theme.css">
+<import-element from="https://realm.js.org/dist/ui/ui.html"></import-element>
 
 <ui-button variant="outline">Click me</ui-button>
 ```

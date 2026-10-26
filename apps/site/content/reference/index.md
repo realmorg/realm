@@ -13,8 +13,8 @@ Exact names, types and defaults for everything in REALM. New to REALM? Start wit
 All examples load REALM from the CDN:
 
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/realm.css">
-<script type="module" src="https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/realm.js"></script>
+<link rel="stylesheet" href="https://realm.js.org/dist/realm.css">
+<script type="module" src="https://realm.js.org/dist/realm.js"></script>
 ```
 
 ## Elements

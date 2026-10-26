@@ -59,12 +59,12 @@ Two components that call `defineStore("cart", …)` get the same object. To shar
 
 ```js
 // cart.js
-import { defineStore } from "https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/index.js";
+import { defineStore } from "https://realm.js.org/dist/index.js";
 
 export const cart = defineStore("cart", { items: [] }, { persist: "local" });
 ```
 
-Use the same version for `index.js` (or `realm.js`) as the page uses to start REALM. Both files load the same runtime chunk, so the store is shared.
+Load `index.js` (or `realm.js`) from the same URL and version as the page uses to start REALM. Both files load the same runtime chunk, so the store is shared.
 
 ## Example
 

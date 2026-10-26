@@ -15,7 +15,7 @@ untrack<T>(fn: () => T): T
 ```
 
 ```js
-import { observe, untrack } from "https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/index.js";
+import { observe, untrack } from "https://realm.js.org/dist/index.js";
 
 observe(() => {
   const query = search.query;

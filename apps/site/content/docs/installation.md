@@ -1,6 +1,6 @@
 ---
 title: Installation
-description: Add REALM and REALM UI to an HTML page with tags from the jsDelivr CDN, pin exact versions for production, and host the files yourself.
+description: Add REALM and REALM UI to an HTML page with tags from realm.js.org, pin exact versions for production, and host the files yourself.
 group: Getting started
 order: 2
 nav: Installation
@@ -15,8 +15,8 @@ REALM loads from a CDN, so there is nothing to install or build. You need a text
 Put both tags in the `<head>` of your HTML file:
 
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/realm.css">
-<script type="module" src="https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/realm.js"></script>
+<link rel="stylesheet" href="https://realm.js.org/dist/realm.css">
+<script type="module" src="https://realm.js.org/dist/realm.js"></script>
 ```
 
 `realm.js` starts REALM when it loads. It defines every `<custom-element>` already in the page, watches for new ones, and registers `<import-element>`.
@@ -32,16 +32,16 @@ Put both tags in the `<head>` of your HTML file:
 The `@realmorg/ui` package is a set of ready-made `ui-*` components and a theme. Load the theme once per page, after REALM itself. Then import the whole kit with one line:
 
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/dist/theme.css">
+<link rel="stylesheet" href="https://realm.js.org/dist/ui/theme.css">
 
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/dist/ui.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/ui.html"></import-element>
 ```
 
 Or import only the components you use. Each one is a file in `components/`:
 
 ```html
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/button.html"></import-element>
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/card.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/button.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/card.html"></import-element>
 ```
 
 Each file brings its own dependencies. `sheet.html`, for example, imports `dialog.html` for you. See [Components](/components/).
@@ -54,12 +54,12 @@ Each file brings its own dependencies. `sheet.html`, for example, imports `dialo
 <head>
   <meta charset="utf-8">
   <title>My REALM page</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/realm.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/dist/theme.css">
-  <script type="module" src="https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/realm.js"></script>
+  <link rel="stylesheet" href="https://realm.js.org/dist/realm.css">
+  <link rel="stylesheet" href="https://realm.js.org/dist/ui/theme.css">
+  <script type="module" src="https://realm.js.org/dist/realm.js"></script>
 </head>
 <body>
-  <import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/dist/ui.html"></import-element>
+  <import-element from="https://realm.js.org/dist/ui/ui.html"></import-element>
 
   <ui-button>Hello, REALM</ui-button>
 </body>
@@ -70,9 +70,7 @@ Save it as `index.html` and open it in your browser.
 
 ## Pin a version
 
-`@alpha` is a tag that always points at the newest alpha release. It is the easiest way to try REALM, but jsDelivr caches what a tag points to for up to 12 hours, so a page can keep getting the previous release for a while after a new one comes out.
-
-In production, pin exact versions. An exact version never changes, so a release cannot change your pages, and jsDelivr caches it for a week:
+`https://realm.js.org/dist/` always serves the latest build, so it cannot be pinned. In production, load exact versions of the npm packages, for example from jsDelivr:
 
 ```html
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@realmorg/realm@{{version:realm}}/dist/realm.css">
@@ -87,7 +85,7 @@ These are the current versions. Each release lists its changes in the package's 
 
 ## Hosting the files yourself
 
-`<import-element>` fetches component files with `fetch()`, so a file on another domain needs a CORS header that allows your page. jsDelivr sends `Access-Control-Allow-Origin: *` on every file, which is why the tags above work from any site.
+`<import-element>` fetches component files with `fetch()`, so a file on another domain needs a CORS header that allows your page. realm.js.org and jsDelivr send `Access-Control-Allow-Origin: *` on every file, which is why the tags above work from any site.
 
 To host REALM yourself, install the packages from npm and serve their `dist/` (and, for REALM UI, `components/`) folders from your own domain, or from another domain that sends that header.
 
@@ -113,7 +111,7 @@ To write `import { defineStore } from "@realmorg/realm"` in a module the browser
 
 ```html
 <script type="importmap">
-  { "imports": { "@realmorg/realm": "https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/realm.js" } }
+  { "imports": { "@realmorg/realm": "https://realm.js.org/dist/realm.js" } }
 </script>
 ```
 

@@ -16,7 +16,7 @@ start(): void
 
 ```html
 <script type="module">
-  import { start } from "https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/index.js";
+  import { start } from "https://realm.js.org/dist/index.js";
 
   start();
 </script>

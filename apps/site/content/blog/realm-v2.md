@@ -105,11 +105,11 @@ The script is plain JavaScript with a few named helpers: `defineProps` for typed
 Add two lines to any HTML page:
 
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/realm.css">
-<script type="module" src="https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/realm.js"></script>
+<link rel="stylesheet" href="https://realm.js.org/dist/realm.css">
+<script type="module" src="https://realm.js.org/dist/realm.js"></script>
 ```
 
-Then write a `<custom-element>` in the page, or put components in their own files and load them with `<import-element>`. Pin an exact version in production.
+Then write a `<custom-element>` in the page, or put components in their own files and load them with `<import-element>`. In production, [pin an exact version](/docs/installation/#pin-a-version) from npm.
 
 - [Quick start](/docs/quick-start/)
 - [Tutorial](/docs/tutorial/)

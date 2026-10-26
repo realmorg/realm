@@ -411,14 +411,14 @@ onFormStateRestore((state, mode) => {
 `realm.js` (starts REALM when it loads) and `index.js` (no side effects) export the same names and share one runtime, so a page that loads `realm.js` and a module that imports from `index.js` of the same version share stores and definitions.
 
 ```js
-import { defineStore, toRaw, untrack } from "https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/index.js";
+import { defineStore, toRaw, untrack } from "https://realm.js.org/dist/index.js";
 ```
 
 A component script that writes `import … from "@realmorg/realm"` needs an import map that points at the file the page loads:
 
 ```html
 <script type="importmap">
-  { "imports": { "@realmorg/realm": "https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/realm.js" } }
+  { "imports": { "@realmorg/realm": "https://realm.js.org/dist/realm.js" } }
 </script>
 ```
 

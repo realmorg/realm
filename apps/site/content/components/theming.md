@@ -25,7 +25,7 @@ Pick a preset, then change any colour for light and dark mode. The preview uses 
 Load your theme after `theme.css`, so your values replace the defaults:
 
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/dist/theme.css">
+<link rel="stylesheet" href="https://realm.js.org/dist/ui/theme.css">
 <link rel="stylesheet" href="/my-theme.css">
 ```
 

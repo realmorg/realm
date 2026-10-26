@@ -3,16 +3,18 @@ import { createServer } from "node:http";
 import { createRequire } from "node:module";
 import { dirname, extname, join, normalize } from "node:path";
 
-// Serves the same layout as the website: the catalog and dist/ under /unicons/, REALM under
-// /assets/realm/ and REALM UI under /assets/ui/.
+// Serves the same layout as the website: the catalog under /unicons/, REALM under /dist/, REALM UI
+// under /dist/ui/ and dist/ under /dist/unicons/. Tests of the element itself load it from
+// /unicons/ too.
 const PACKAGE = join(import.meta.dirname, "..");
 const REALM = dirname(createRequire(import.meta.url).resolve("@realmorg/realm"));
 const PORT = Number(process.env.PORT ?? 4317);
 const UI = join(PACKAGE, "../ui");
 const MOUNTS = [
-  ["/assets/realm/", [REALM]],
-  ["/assets/ui/components/", [join(UI, "components")]],
-  ["/assets/ui/", [UI]],
+  ["/dist/ui/components/", [join(UI, "components")]],
+  ["/dist/ui/", [join(UI, "dist"), UI]],
+  ["/dist/unicons/", [join(PACKAGE, "dist")]],
+  ["/dist/", [REALM]],
   ["/unicons/", [join(PACKAGE, "site"), join(PACKAGE, "dist")]],
 ];
 const TYPES = {
@@ -27,7 +29,7 @@ const TYPES = {
 };
 
 const fixture = (url) =>
-  `<!doctype html><html><head><meta charset="utf-8">${url.searchParams.get("head") ?? ""}<script type="module" src="/assets/realm/realm.js"></script></head><body>${url.searchParams.get("body") ?? ""}</body></html>`;
+  `<!doctype html><html><head><meta charset="utf-8">${url.searchParams.get("head") ?? ""}<script type="module" src="/dist/realm.js"></script></head><body>${url.searchParams.get("body") ?? ""}</body></html>`;
 
 const read = async (pathname) => {
   const file = pathname.endsWith("/") ? `${pathname}index.html` : pathname;

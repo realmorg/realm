@@ -1,4 +1,4 @@
-import { defineStore } from "https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/realm.js";
+import { defineStore } from "https://realm.js.org/dist/realm.js";
 
 const clock = new Intl.DateTimeFormat("en", { hour: "numeric", minute: "2-digit" });
 

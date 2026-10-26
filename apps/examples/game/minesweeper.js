@@ -1,4 +1,4 @@
-import { defineStore } from "https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/realm.js";
+import { defineStore } from "https://realm.js.org/dist/realm.js";
 
 export const LEVELS = {
   easy: { id: "easy", label: "Easy", rows: 9, columns: 9, mines: 10 },

@@ -17,7 +17,7 @@
 
 REALM turns a `<custom-element>` tag into a native web component. You write its script, style and markup in one place, in plain HTML, and the browser runs exactly what you wrote. There is no compiler, no bundler and no config file. The runtime is about 16 KB gzipped and works in current Chrome, Edge, Firefox and Safari.
 
-> REALM v2 is in alpha. Pin an exact version in production, such as `@realmorg/realm@2.0.0-alpha.2`.
+> REALM v2 is in alpha. `realm.js.org/dist` always serves the latest build, so in production pin an exact npm version, such as `@realmorg/realm@2.0.0-alpha.2` (on jsDelivr: `https://cdn.jsdelivr.net/npm/@realmorg/realm@2.0.0-alpha.2/dist/realm.js`).
 
 ## Try it
 
@@ -28,8 +28,8 @@ Save this as `index.html` and open it in a browser:
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/realm.css">
-  <script type="module" src="https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/realm.js"></script>
+  <link rel="stylesheet" href="https://realm.js.org/dist/realm.css">
+  <script type="module" src="https://realm.js.org/dist/realm.js"></script>
 </head>
 <body>
   <custom-element name="click-counter">
@@ -78,8 +78,8 @@ A component file can import the files it depends on in the same way.
 **Use ready-made components.** [REALM UI](https://realm.js.org/components/) has about 60 accessible components (buttons, dialogs, forms, tables, menus, charts) and a theme with dark mode. Load all of them, or one file per component:
 
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/dist/theme.css">
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/button.html"></import-element>
+<link rel="stylesheet" href="https://realm.js.org/dist/ui/theme.css">
+<import-element from="https://realm.js.org/dist/ui/components/button.html"></import-element>
 
 <ui-button variant="outline">Save draft</ui-button>
 ```

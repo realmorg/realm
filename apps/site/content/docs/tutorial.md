@@ -13,15 +13,15 @@ In this tutorial you build a reading list: add books, mark them as read, filter 
 You need a text editor, a browser and one HTML file. Load REALM and REALM UI from the CDN in its `<head>`, as in the [Quick start](/docs/quick-start/):
 
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/realm.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/dist/theme.css">
-<script type="module" src="https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/realm.js"></script>
+<link rel="stylesheet" href="https://realm.js.org/dist/realm.css">
+<link rel="stylesheet" href="https://realm.js.org/dist/ui/theme.css">
+<script type="module" src="https://realm.js.org/dist/realm.js"></script>
 ```
 
 Then import the components at the top of the `<body>`:
 
 ```html
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/dist/ui.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/ui.html"></import-element>
 ```
 
 ## Step 1: markup and style

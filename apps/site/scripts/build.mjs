@@ -150,7 +150,16 @@ const highlight = (text, language) => {
 const codeBlock = (text, language) =>
   `<code-block language="${escapeHtml(language)}">${highlight(text, language)}</code-block>`;
 
-const CDN = "https://cdn.jsdelivr.net/npm";
+// REALM, REALM UI and Unicons as the site serves them under /dist/, at the same URLs on every
+// deploy (realm.js.org/dist/realm.js), so any page can load them. The site loads them from there
+// too. The older /assets/ paths keep a copy of REALM and REALM UI.
+const LIBRARIES = [
+  ["dist/ui/components/", "packages/ui/components/", "assets/ui/components/"],
+  ["dist/ui/", "packages/ui/dist/", "assets/ui/"],
+  ["dist/unicons/", "packages/unicons/dist/"],
+  ["dist/", "packages/realm/dist/", "assets/realm/"],
+];
+const DIST = `${SITE_URL}${BASE}dist/`;
 const DEMO_STYLES = new Map(
   [
     ...readFileSync(join(root, "public/assets/site.css"), "utf8").matchAll(
@@ -163,10 +172,7 @@ const DEMO_STYLES = new Map(
 const SOURCES = [
   ["examples/", "apps/examples/"],
   ["components/", "apps/site/components/"],
-  ["assets/ui/components/", "packages/ui/components/"],
-  ["assets/ui/", "packages/ui/dist/"],
-  ["assets/realm/", "packages/realm/dist/"],
-  ["unicons/", "packages/unicons/dist/"],
+  ...LIBRARIES.map(([path, dir]) => [path, dir]),
   ["", "apps/site/public/"],
 ];
 const sourceOf = (path) => {
@@ -183,16 +189,7 @@ const RELATIVE_IMPORTS = [
   /\bimport\b[^"';]*?["'](\.{1,2}\/[\w./-]+)["']/g,
 ];
 
-const LIBRARIES = [
-  ["assets/realm/", `${CDN}/@realmorg/realm@alpha/dist/`],
-  ["assets/ui/components/", `${CDN}/@realmorg/ui@alpha/components/`],
-  ["assets/ui/", `${CDN}/@realmorg/ui@alpha/dist/`],
-  ["unicons/", `${CDN}/@realmorg/unicons@alpha/dist/`],
-];
-const cdnUrl = (path) => {
-  const library = LIBRARIES.find(([prefix]) => path.startsWith(prefix));
-  return library && `${library[1]}${path.slice(library[0].length)}`;
-};
+const distUrl = (path) => path.startsWith("dist/") && `${DIST}${path.slice("dist/".length)}`;
 
 // The REALM UI file that defines each ui-* tag, so a demo imports only the files it uses.
 const UI_COMPONENTS = join(repo, "packages/ui/components");
@@ -212,8 +209,8 @@ const uiFilesOf = (text) =>
 
 // Every local file a page or demo loads, starting from the given files: the files named by
 // <import-element> tags and, inside them, relative imports. Imports of REALM, REALM UI or
-// Unicons point at the CDN instead. Names are relative to the first file's folder, as the
-// page sees them.
+// Unicons point at their public URL under /dist/ instead. Names are relative to the first file's
+// folder, as the page sees them.
 const collectFiles = (roots, patterns = RELATIVE_IMPORTS) => {
   const files = new Map();
   const visit = (path, name) => {
@@ -224,8 +221,8 @@ const collectFiles = (roots, patterns = RELATIVE_IMPORTS) => {
       content = content.replace(pattern, (match, target) => {
         if (/^[a-z]+:|^\/|\{/i.test(target)) return match;
         const resolved = posix.join(posix.dirname(path), target);
-        const cdn = cdnUrl(resolved);
-        if (cdn) return match.replace(target, cdn);
+        const url = distUrl(resolved);
+        if (url) return match.replace(target, url);
         visit(resolved, posix.join(posix.dirname(name), target));
         return match;
       });
@@ -268,11 +265,11 @@ const definitionFiles = (demo) => {
   return { page, files };
 };
 
-// The demo as a complete page: the CDN tags it needs, then the demo itself.
+// The demo as a complete page: the tags it needs to load REALM, then the demo itself.
 const demoPage = (demo, page, files, shown) => {
   const sources = [demo, ...files.values()].join("\n");
   const ui = /<ui-/.test(sources);
-  const unimported = [...files.values()].filter((file) => !file.includes("@realmorg/ui@alpha/"));
+  const unimported = [...files.values()].filter((file) => !file.includes(`${DIST}ui/`));
   const theme = ui || /var\(--/.test(sources);
   const icons = /<u-icon\b/.test(sources);
   const toaster = ui && /\btoast\b/.test(demo) && !/<ui-toaster/.test(demo);
@@ -286,21 +283,19 @@ const demoPage = (demo, page, files, shown) => {
     '<meta charset="utf-8">',
     '<meta name="viewport" content="width=device-width, initial-scale=1">',
     `<title>${(page.meta.title ?? "REALM").replace(/[<>]/g, "")} demo</title>`,
-    `<link rel="stylesheet" href="${CDN}/@realmorg/realm@alpha/dist/realm.css">`,
-    theme && `<link rel="stylesheet" href="${CDN}/@realmorg/ui@alpha/dist/theme.css">`,
-    `<script type="module" src="${CDN}/@realmorg/realm@alpha/dist/realm.js"></script>`,
+    `<link rel="stylesheet" href="${DIST}realm.css">`,
+    theme && `<link rel="stylesheet" href="${DIST}ui/theme.css">`,
+    `<script type="module" src="${DIST}realm.js"></script>`,
     styles.length && `<style>\n${indent(styles.join("\n"), 2)}\n</style>`,
   ].filter(Boolean);
-  const uiFiles = body.includes("@realmorg/ui@alpha/dist/ui.html")
+  const uiFiles = body.includes(`${DIST}ui/ui.html`)
     ? []
     : new Set(uiFilesOf([demo, ...unimported, toaster ? "<ui-toaster>" : ""].join("\n")).sort());
   const imports = [
     ...[...uiFiles].map(
-      (file) =>
-        `<import-element from="${CDN}/@realmorg/ui@alpha/components/${file}"></import-element>`,
+      (file) => `<import-element from="${DIST}ui/components/${file}"></import-element>`,
     ),
-    icons &&
-      `<import-element from="${CDN}/@realmorg/unicons@alpha/dist/unicons.html"></import-element>`,
+    icons && `<import-element from="${DIST}unicons/unicons.html"></import-element>`,
     toaster && "<ui-toaster></ui-toaster>",
   ].filter(Boolean);
   return `<!doctype html>
@@ -448,7 +443,7 @@ const staticImports = (path) => [
 ];
 const REALM_CHUNKS = staticImports("realm.js")
   .slice(1)
-  .map((path) => `assets/realm/${path}`);
+  .map((path) => `dist/${path}`);
 const { chunkPath, sets: iconSets } = await import(
   new URL("../../../packages/unicons/dist/unicons.js", import.meta.url)
 );
@@ -456,7 +451,7 @@ const iconChunks = (html) =>
   [...html.matchAll(/<u-icon\b([^>]*)>/g)].flatMap(([, attributes]) => {
     const name = attributes.match(/\sname="([\w-]+)"/)?.[1];
     const set = attributes.match(/\sset="([\w-]+)"/)?.[1] ?? "lu";
-    return name && Object.hasOwn(iconSets, set) ? [`unicons/${chunkPath(set, name)}`] : [];
+    return name && Object.hasOwn(iconSets, set) ? [`dist/unicons/${chunkPath(set, name)}`] : [];
   });
 // The header menu names some of its icons in script (icon: "book-open").
 const SITE_ICON_CHUNKS = iconChunks(
@@ -467,11 +462,16 @@ const SITE_ICON_CHUNKS = iconChunks(
 );
 const preloads = (html, p) =>
   [
-    ...["assets/ui/ui.html", "components/site.html", "unicons/unicons.html"].map(
+    ...["dist/ui/ui.html", "components/site.html", "dist/unicons/unicons.html"].map(
       (path) => `<link rel="preload" href="${p}${path}" as="fetch" crossorigin>`,
     ),
     ...[
-      ...new Set([...REALM_CHUNKS, "unicons/unicons.js", ...SITE_ICON_CHUNKS, ...iconChunks(html)]),
+      ...new Set([
+        ...REALM_CHUNKS,
+        "dist/unicons/unicons.js",
+        ...SITE_ICON_CHUNKS,
+        ...iconChunks(html),
+      ]),
     ].map((path) => `<link rel="modulepreload" href="${p}${path}">`),
   ].join("\n");
 
@@ -516,18 +516,18 @@ const template = (page, { html, toc }) => {
 <link rel="icon" href="${p}favicons/favicon-16x16.png" sizes="16x16" type="image/png">
 <link rel="apple-touch-icon" href="${p}favicons/apple-touch-icon.png" sizes="180x180">
 <link rel="manifest" href="${p}favicons/site.webmanifest">
-<link rel="stylesheet" href="${p}assets/realm/realm.css">
-<link rel="stylesheet" href="${p}assets/ui/theme.css">
+<link rel="stylesheet" href="${p}dist/realm.css">
+<link rel="stylesheet" href="${p}dist/ui/theme.css">
 <link rel="stylesheet" href="${p}assets/site.css">
 <script>try{const t=localStorage.getItem("theme");if(t){document.documentElement.dataset.theme=t;document.querySelector('meta[name="color-scheme"]').content=t}}catch{}</script>
-<script type="module" src="${p}assets/realm/realm.js"></script>
+<script type="module" src="${p}dist/realm.js"></script>
 ${preloads(html, p)}
 </head>
 <body>
 <nav class="skip-links" aria-label="Skip links"><a class="skip" href="#main">Skip to content</a></nav>
-<import-element from="${p}assets/ui/ui.html"></import-element>
+<import-element from="${p}dist/ui/ui.html"></import-element>
 <import-element from="${p}components/site.html"></import-element>
-<import-element from="${p}unicons/unicons.html"></import-element>
+<import-element from="${p}dist/unicons/unicons.html"></import-element>
 <site-header root="${p}" section="${page.section}"></site-header>
 <ui-toaster></ui-toaster>
 ${body}
@@ -634,13 +634,16 @@ const copy = (from, to) => {
 };
 copy(join(root, "public"), ".");
 copy(join(root, "components"), "components");
-copy(join(repo, "packages/realm/dist"), "assets/realm");
-copy(join(repo, "packages/ui/dist"), "assets/ui");
-copy(join(repo, "packages/ui/components"), "assets/ui/components");
+for (const [path, dir, older] of LIBRARIES) {
+  for (const to of [path, older].filter(Boolean)) {
+    cpSync(join(repo, dir), join(out, to), {
+      recursive: true,
+      filter: (file) => !file.startsWith(join(repo, dir, "types")),
+    });
+  }
+}
 copy(join(repo, "apps/examples"), "examples");
-copy(join(repo, "packages/unicons/dist"), "unicons");
 copy(join(repo, "packages/unicons/site"), "unicons");
-rmSync(join(out, "assets/realm/types"), { recursive: true, force: true });
 for (const extra of ["package.json", "test", "node_modules", "playwright.config.ts"]) {
   rmSync(join(out, "examples", extra), { recursive: true, force: true });
 }
@@ -663,12 +666,11 @@ const exampleSource = (files) =>
     "</example-source>",
   ].join("\n");
 const examples = join(repo, "apps/examples");
-// Example sources load REALM, REALM UI and Unicons from jsDelivr. The site serves its own copies
-// instead, so its examples always run the code it ships. LIVE_CDN=1 keeps the jsDelivr URLs.
+// Example sources load REALM, REALM UI and Unicons from realm.js.org/dist/. The site points them
+// at the files of the same build instead, so a preview or a fork runs the code it ships.
+// LIVE_CDN=1 keeps the realm.js.org URLs.
 const toSiteCopies = (text) =>
-  process.env.LIVE_CDN
-    ? text
-    : LIBRARIES.reduce((result, [local, cdn]) => result.replaceAll(cdn, `${BASE}${local}`), text);
+  process.env.LIVE_CDN ? text : text.replaceAll("https://realm.js.org/dist/", `${BASE}dist/`);
 for (const file of readdirSync(examples, { recursive: true })) {
   if (!/\.(html|js)$/.test(file)) continue;
   const source = readFileSync(join(examples, file), "utf8");

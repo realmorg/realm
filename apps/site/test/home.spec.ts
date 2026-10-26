@@ -231,14 +231,12 @@ test("a live demo shows the full page and each imported file", async ({ page, er
   await expect(demo.locator("ui-tabs-trigger")).toHaveText(["index.html", "profile-card.html"]);
   const source = demo.locator("ui-tabs-content:not([hidden]) pre");
   await expect(source).toContainText("<!doctype html>");
-  await expect(source).toContainText(
-    'href="https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/realm.css"',
-  );
+  await expect(source).toContainText('href="https://realm.js.org/dist/realm.css"');
   for (const file of ["avatar", "button", "card"])
     await expect(source).toContainText(
-      `<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/${file}.html">`,
+      `<import-element from="https://realm.js.org/dist/ui/components/${file}.html">`,
     );
-  await expect(source).not.toContainText("@realmorg/ui@alpha/dist/ui.html");
+  await expect(source).not.toContainText("https://realm.js.org/dist/ui/ui.html");
   await expect(source).toContainText('<import-element from="./profile-card.html">');
   await demo.getByRole("tab", { name: "profile-card.html" }).click();
   await expect(source).toContainText('<custom-element name="profile-card">');
@@ -271,7 +269,7 @@ test("docs demos open on the preview and list their source files", async ({ page
   await expect(demo.getByRole("button", { name: "Show a todo-app" })).toBeVisible();
   await demo.getByRole("tab", { name: "todos.js" }).click();
   await expect(demo.locator("ui-tabs-content:not([hidden]) pre")).toContainText(
-    'from "https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/realm.js"',
+    'from "https://realm.js.org/dist/realm.js"',
   );
   void errors;
 });

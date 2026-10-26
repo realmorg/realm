@@ -3,8 +3,8 @@
 One `<u-icon>` element for about 50,000 icons from 31 open source sets. Icons load on demand in small per-set chunks.
 
 ```html
-<script type="module" src="https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/realm.js"></script>
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/unicons@alpha/dist/unicons.html"></import-element>
+<script type="module" src="https://realm.js.org/dist/realm.js"></script>
+<import-element from="https://realm.js.org/dist/unicons/unicons.html"></import-element>
 ```
 
 ```html runnable
@@ -40,7 +40,7 @@ Icons inherit the colour and font size of their surroundings, so they fit inside
 ## Finding icon names
 
 - Browse and copy markup from the catalog: https://realm.js.org/unicons/
-- Every set has a name list: `https://cdn.jsdelivr.net/npm/@realmorg/unicons@alpha/dist/meta/<set>.json` (for example `meta/lu.json`). Check a name there before using it. Lucide (`lu`, the default) covers most UI needs: `house`, `search`, `settings`, `user`, `bell`, `plus`, `x`, `check`, `trash-2`, `pencil`, `chevron-down`, `chevron-right`, `arrow-left`, `log-out`, `calendar`, `mail`, `menu`, `ellipsis`.
+- Every set has a name list: `https://realm.js.org/dist/unicons/meta/<set>.json` (for example `meta/lu.json`). Check a name there before using it. Lucide (`lu`, the default) covers most UI needs: `house`, `search`, `settings`, `user`, `bell`, `plus`, `x`, `check`, `trash-2`, `pencil`, `chevron-down`, `chevron-right`, `arrow-left`, `log-out`, `calendar`, `mail`, `menu`, `ellipsis`.
 - Names are the react-icons names without the set prefix, in kebab case (`FaHeart` in `fa` is `<u-icon set="fa" name="heart">`).
 
 ## Styling
@@ -64,14 +64,14 @@ Parts: `icon` (the wrapper) and `svg`.
 Lazy, only once a `<u-icon>` appears:
 
 ```html
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/unicons@alpha/dist/unicons.html" loading="lazy" for="u-icon"></import-element>
+<import-element from="https://realm.js.org/dist/unicons/unicons.html" loading="lazy" for="u-icon"></import-element>
 ```
 
 An icon shows after REALM, `unicons.html`, `unicons.js` and its chunk have loaded, one after another. Preload them on pages where icons are above the fold:
 
 ```html
-<link rel="preload" href="https://cdn.jsdelivr.net/npm/@realmorg/unicons@alpha/dist/unicons.html" as="fetch" crossorigin>
-<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/@realmorg/unicons@alpha/dist/unicons.js">
+<link rel="preload" href="https://realm.js.org/dist/unicons/unicons.html" as="fetch" crossorigin>
+<link rel="modulepreload" href="https://realm.js.org/dist/unicons/unicons.js">
 ```
 
 `chunkPath(set, name)` from `unicons.js` returns an icon's chunk (`icons/lu/62.js`) if a build step wants to preload chunks too. Chunk numbers change between versions, so generate them.

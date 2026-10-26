@@ -11,7 +11,7 @@ nav: realm.css
 A small page stylesheet. Load it in the `<head>`, before anything renders:
 
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/realm.css">
+<link rel="stylesheet" href="https://realm.js.org/dist/realm.css">
 ```
 
 ## Contents

@@ -15,7 +15,7 @@ importDefinitions(url: string): Promise<void>
 ```
 
 ```js
-import { importDefinitions } from "https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/index.js";
+import { importDefinitions } from "https://realm.js.org/dist/index.js";
 
 await importDefinitions(new URL("components/chart.html", document.baseURI).href);
 document.body.append(document.createElement("sales-chart"));

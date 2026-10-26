@@ -25,11 +25,11 @@ test.describe("unicons catalog", () => {
     await expect(page.getByText("5 of 1541 icons")).toBeVisible();
   });
 
-  test("the published component loads from the site", async ({ page }) => {
-    const response = await page.request.get("/unicons/unicons.html");
+  test("the published component loads from the site under /dist/unicons/", async ({ page }) => {
+    const response = await page.request.get("/dist/unicons/unicons.html");
     expect(response.ok()).toBe(true);
     expect(await response.text()).toContain('<custom-element name="u-icon">');
-    const sets = await (await page.request.get("/unicons/sets.json")).json();
+    const sets = await (await page.request.get("/dist/unicons/sets.json")).json();
     expect(sets).toHaveLength(31);
   });
 
@@ -37,7 +37,7 @@ test.describe("unicons catalog", () => {
     const chunks: string[] = [];
     page.on("request", (request) => {
       const path = new URL(request.url()).pathname;
-      if (path.startsWith("/unicons/icons/")) chunks.push(path);
+      if (path.startsWith("/dist/unicons/icons/")) chunks.push(path);
     });
     await page.goto("/");
     await page.waitForFunction(() =>
@@ -50,8 +50,8 @@ test.describe("unicons catalog", () => {
       .evaluateAll((links) =>
         links.map((link) => new URL((link as HTMLLinkElement).href).pathname),
       );
-    expect(preloaded).toContain("/unicons/unicons.js");
-    expect(preloaded.some((path) => path.startsWith("/assets/realm/chunks/"))).toBe(true);
+    expect(preloaded).toContain("/dist/unicons/unicons.js");
+    expect(preloaded.some((path) => path.startsWith("/dist/chunks/"))).toBe(true);
     expect(chunks.length).toBeGreaterThan(0);
     expect(new Set(chunks).size).toBe(chunks.length);
     expect(chunks.filter((path) => !preloaded.includes(path))).toEqual([]);

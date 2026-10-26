@@ -11,7 +11,7 @@ nav: Compiler
 `compiler.js` holds REALM's build-time code. The [Vite plugin](/reference/tooling/vite-plugin/) uses it. You need it only to build your own tooling.
 
 ```js
-import { compileDefinition, tokenize } from "https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/compiler.js";
+import { compileDefinition, tokenize } from "https://realm.js.org/dist/compiler.js";
 ```
 
 ## compileDefinition

@@ -15,7 +15,7 @@ flush(): void
 ```
 
 ```js
-import { flush } from "https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/index.js";
+import { flush } from "https://realm.js.org/dist/index.js";
 
 state.items.push(item);
 flush();

@@ -18,7 +18,7 @@ Whitespace is preserved, so put the code in a `<pre>` (or start it right after t
 
 ```html live
 <div class="demo-medium">
-  <ui-code-block language="html"><pre>&lt;script type="module" src="https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/realm.js"&gt;&lt;/script&gt;</pre></ui-code-block>
+  <ui-code-block language="html"><pre>&lt;script type="module" src="https://realm.js.org/dist/realm.js"&gt;&lt;/script&gt;</pre></ui-code-block>
 </div>
 ```
 

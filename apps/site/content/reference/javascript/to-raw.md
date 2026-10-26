@@ -15,7 +15,7 @@ toRaw<T>(value: T): T
 ```
 
 ```js
-import { toRaw } from "https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/index.js";
+import { toRaw } from "https://realm.js.org/dist/index.js";
 
 const snapshot = structuredClone(toRaw(todo.items));
 worker.postMessage(toRaw(settings));

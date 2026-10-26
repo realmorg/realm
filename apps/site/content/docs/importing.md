@@ -35,7 +35,7 @@ nav: Importing components
 Group components that are used together in one file. REALM UI ships every component in one `ui.html`:
 
 ```html
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/dist/ui.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/ui.html"></import-element>
 ```
 
 Smaller bundles load faster, but one file per component makes more requests. A file per feature area is a good default.
@@ -114,4 +114,4 @@ document.body.append(document.createElement("rich-editor"));
 
 ## Trust
 
-A component file is code, like a `<script src>`. Importing a component from another origin runs that origin's code in your page. Only import from sources you trust, and pin versions on CDNs.
+A component file is code, like a `<script src>`. Importing a component from another origin runs that origin's code in your page. Only import from sources you trust, and pin exact versions in production (see [Pin a version](/docs/installation/#pin-a-version)).

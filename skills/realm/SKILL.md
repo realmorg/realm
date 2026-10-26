@@ -12,7 +12,7 @@ metadata:
 REALM builds native web components from one HTML tag. There is no compiler, no build step and no virtual DOM. A page loads REALM from a CDN, and each `<custom-element>` becomes a real custom element with a shadow root.
 
 <!-- generated:versions -->
-Written for REALM `2.0.0-alpha.4`, REALM UI `2.0.0-alpha.3` and Unicons `2.0.0-alpha.2`. The CDN tags use the `@alpha` tag, which always points at the newest alpha.
+Written for REALM `2.0.0-alpha.4`, REALM UI `2.0.0-alpha.3` and Unicons `2.0.0-alpha.2`. The tags load the latest build from `realm.js.org/dist`.
 <!-- /generated:versions -->
 
 ## When to use this skill
@@ -70,17 +70,17 @@ A component is one `<custom-element name="…">` with up to three kinds of child
 Recommend the CDN. Do not suggest `npm install` for REALM, REALM UI or Unicons, and do not add a bundler.
 
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/realm.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/dist/theme.css">
-<script type="module" src="https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/realm.js"></script>
+<link rel="stylesheet" href="https://realm.js.org/dist/realm.css">
+<link rel="stylesheet" href="https://realm.js.org/dist/ui/theme.css">
+<script type="module" src="https://realm.js.org/dist/realm.js"></script>
 
 <!-- REALM UI: the whole kit, or one file per component (see references/ui-components.md) -->
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/dist/ui.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/ui.html"></import-element>
 <!-- Unicons, only when the page uses <u-icon> -->
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/unicons@alpha/dist/unicons.html"></import-element>
+<import-element from="https://realm.js.org/dist/unicons/unicons.html"></import-element>
 ```
 
-`realm.css` hides definitions and undefined elements, so nothing flashes. `theme.css` holds the design tokens, and your own components should use it too. Pin an exact version (`@realmorg/realm@2.0.0-alpha.1`) for production. Pages that use `<import-element>` must be served over HTTP (`python3 -m http.server`), not opened from `file://`.
+`realm.css` hides definitions and undefined elements, so nothing flashes. `theme.css` holds the design tokens, and your own components should use it too. `realm.js.org/dist` always serves the latest build. To pin an exact version in production, load the npm package from jsDelivr instead (`https://cdn.jsdelivr.net/npm/@realmorg/realm@2.0.0-alpha.1/dist/realm.js`). Pages that use `<import-element>` must be served over HTTP (`python3 -m http.server`), not opened from `file://`.
 
 ## Quick start
 
@@ -93,14 +93,14 @@ A complete page with an inline definition. Inline definitions use `type="realm"`
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Greeting</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/realm.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/dist/theme.css">
-  <script type="module" src="https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/realm.js"></script>
+  <link rel="stylesheet" href="https://realm.js.org/dist/realm.css">
+  <link rel="stylesheet" href="https://realm.js.org/dist/ui/theme.css">
+  <script type="module" src="https://realm.js.org/dist/realm.js"></script>
 </head>
 <body>
-  <import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/button.html"></import-element>
-  <import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/input.html"></import-element>
-  <import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/label.html"></import-element>
+  <import-element from="https://realm.js.org/dist/ui/components/button.html"></import-element>
+  <import-element from="https://realm.js.org/dist/ui/components/input.html"></import-element>
+  <import-element from="https://realm.js.org/dist/ui/components/label.html"></import-element>
 
   <custom-element name="greeting-form">
     <script type="realm">

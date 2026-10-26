@@ -7,14 +7,14 @@ Every `ui-*` component in `@realmorg/ui` 2.0.0-alpha.3: its file, tags, a usage 
 Load the theme once per page, then either the whole bundle or one file per component. Each file imports the files it depends on, and every file is fetched once.
 
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/dist/theme.css">
+<link rel="stylesheet" href="https://realm.js.org/dist/ui/theme.css">
 
 <!-- everything -->
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/dist/ui.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/ui.html"></import-element>
 
 <!-- or only what the page uses -->
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/button.html"></import-element>
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/dialog.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/button.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/dialog.html"></import-element>
 ```
 
 Conventions shared by every component:
@@ -123,11 +123,11 @@ Conventions shared by every component:
 
 A form-associated button with variants and sizes that can submit or reset a form, open popovers and invoke commands on dialogs. [Docs and demos](https://realm.js.org/components/button/).
 
-- File: `button.html`, import with `<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/button.html"></import-element>`
+- File: `button.html`, import with `<import-element from="https://realm.js.org/dist/ui/components/button.html"></import-element>`
 - Tags: `ui-button`
 
 ```html runnable
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/button.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/button.html"></import-element>
 
 <ui-button>Button</ui-button>
 ```
@@ -186,12 +186,12 @@ event's `submitter` is `null`.
 
 Joins adjacent buttons or toggles into one connected control, such as a toolbar or a split button. [Docs and demos](https://realm.js.org/components/button-group/).
 
-- File: `button-group.html`, import with `<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/button-group.html"></import-element>`
+- File: `button-group.html`, import with `<import-element from="https://realm.js.org/dist/ui/components/button-group.html"></import-element>`
 - Tags: `ui-button-group`, `ui-button-group-text`, `ui-button-group-separator`
 
 ```html runnable
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/button-group.html"></import-element>
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/button.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/button-group.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/button.html"></import-element>
 
 <ui-button-group aria-label="Text alignment">
   <ui-button variant="outline">Left</ui-button>
@@ -243,12 +243,12 @@ The group sets `--ui-radius-start` and `--ui-radius-end` on its children. `ui-bu
 
 A month grid date picker that submits an ISO date with its form, with min and max limits, locale formatting and keyboard navigation. [Docs and demos](https://realm.js.org/components/calendar/).
 
-- File: `calendar.html`, import with `<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/calendar.html"></import-element>`
+- File: `calendar.html`, import with `<import-element from="https://realm.js.org/dist/ui/components/calendar.html"></import-element>`
 - Tags: `ui-calendar`
 - Imports for you: `button.html`
 
 ```html runnable
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/calendar.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/calendar.html"></import-element>
 
 <ui-calendar></ui-calendar>
 ```
@@ -298,11 +298,11 @@ selected date after navigation.
 
 A form-associated checkbox with a built-in label, indeterminate state and native validation. [Docs and demos](https://realm.js.org/components/checkbox/).
 
-- File: `checkbox.html`, import with `<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/checkbox.html"></import-element>`
+- File: `checkbox.html`, import with `<import-element from="https://realm.js.org/dist/ui/components/checkbox.html"></import-element>`
 - Tags: `ui-checkbox`
 
 ```html runnable
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/checkbox.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/checkbox.html"></import-element>
 
 <ui-checkbox>Accept terms and conditions</ui-checkbox>
 ```
@@ -365,11 +365,11 @@ nothing. Validity is mirrored from the inner checkbox, so `required` takes part 
 
 A searchable, form-associated select that filters native option children as you type and submits the chosen value. [Docs and demos](https://realm.js.org/components/combobox/).
 
-- File: `combobox.html`, import with `<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/combobox.html"></import-element>`
+- File: `combobox.html`, import with `<import-element from="https://realm.js.org/dist/ui/components/combobox.html"></import-element>`
 - Tags: `ui-combobox`, `ui-combobox-empty`
 
 ```html runnable
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/combobox.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/combobox.html"></import-element>
 
 <ui-combobox aria-label="Framework" placeholder="Select a framework…" width="60">
   <option value="realm">REALM</option>
@@ -440,13 +440,13 @@ bubble points at the input. `form.reset()` restores the `value` attribute.
 
 Layout wrappers that pair a form control with its label, description and error message, and group related fields under a legend. [Docs and demos](https://realm.js.org/components/field/).
 
-- File: `field.html`, import with `<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/field.html"></import-element>`
+- File: `field.html`, import with `<import-element from="https://realm.js.org/dist/ui/components/field.html"></import-element>`
 - Tags: `ui-field`, `ui-field-content`, `ui-field-description`, `ui-field-group`, `ui-field-set`, `ui-field-legend`
 
 ```html runnable
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/field.html"></import-element>
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/input.html"></import-element>
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/label.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/field.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/input.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/label.html"></import-element>
 
 <ui-field>
   <ui-label for="field-email">Email</ui-label>
@@ -504,11 +504,11 @@ The other parts have no attributes.
 
 A form-associated single-line text input that wraps a native input, with native types, constraints and validation. [Docs and demos](https://realm.js.org/components/input/).
 
-- File: `input.html`, import with `<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/input.html"></import-element>`
+- File: `input.html`, import with `<import-element from="https://realm.js.org/dist/ui/components/input.html"></import-element>`
 - Tags: `ui-input`
 
 ```html runnable
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/input.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/input.html"></import-element>
 
 <ui-input aria-label="Email" type="email" placeholder="Email"></ui-input>
 ```
@@ -568,11 +568,11 @@ text-like types. `form.reset()` restores the `value` attribute, and a disabled `
 
 A form-associated text input with start and end addons inside one border, for prefixes, suffixes, icons and inline buttons. [Docs and demos](https://realm.js.org/components/input-group/).
 
-- File: `input-group.html`, import with `<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/input-group.html"></import-element>`
+- File: `input-group.html`, import with `<import-element from="https://realm.js.org/dist/ui/components/input-group.html"></import-element>`
 - Tags: `ui-input-group`, `ui-input-group-addon`
 
 ```html runnable
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/input-group.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/input-group.html"></import-element>
 
 <ui-input-group aria-label="Website" placeholder="example.com">
   <ui-input-group-addon>https://</ui-input-group-addon>
@@ -639,11 +639,11 @@ restores the `value` attribute, and a disabled `<fieldset>` disables the input.
 
 A one-time code input with one box per character, paste support and a complete event, that submits the whole code with its form. [Docs and demos](https://realm.js.org/components/input-otp/).
 
-- File: `input-otp.html`, import with `<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/input-otp.html"></import-element>`
+- File: `input-otp.html`, import with `<import-element from="https://realm.js.org/dist/ui/components/input-otp.html"></import-element>`
 - Tags: `ui-input-otp`
 
 ```html runnable
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/input-otp.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/input-otp.html"></import-element>
 
 <ui-input-otp></ui-input-otp>
 ```
@@ -694,12 +694,12 @@ points at the first empty box, which takes focus. `form.reset()` restores the `v
 
 A text label that names a form control by id, focuses it on click and toggles checkboxes and switches. [Docs and demos](https://realm.js.org/components/label/).
 
-- File: `label.html`, import with `<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/label.html"></import-element>`
+- File: `label.html`, import with `<import-element from="https://realm.js.org/dist/ui/components/label.html"></import-element>`
 - Tags: `ui-label`
 
 ```html runnable
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/input.html"></import-element>
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/label.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/input.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/label.html"></import-element>
 
 <ui-label for="label-email">Email</ui-label>
 <ui-input id="label-email" type="email" placeholder="m@example.com"></ui-input>
@@ -737,11 +737,11 @@ The default slot takes any content.
 
 A form-associated set of radio buttons built from native option children, for choosing exactly one value. [Docs and demos](https://realm.js.org/components/radio-group/).
 
-- File: `radio-group.html`, import with `<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/radio-group.html"></import-element>`
+- File: `radio-group.html`, import with `<import-element from="https://realm.js.org/dist/ui/components/radio-group.html"></import-element>`
 - Tags: `ui-radio-group`
 
 ```html runnable
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/radio-group.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/radio-group.html"></import-element>
 
 <ui-radio-group aria-label="Plan" value="pro">
   <option value="free">Free</option>
@@ -802,11 +802,11 @@ bubble points at the first enabled radio, which takes focus. `form.reset()` rest
 
 A styled, form-associated native select that mirrors its option children, with an optional placeholder and validation. [Docs and demos](https://realm.js.org/components/select/).
 
-- File: `select.html`, import with `<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/select.html"></import-element>`
+- File: `select.html`, import with `<import-element from="https://realm.js.org/dist/ui/components/select.html"></import-element>`
 - Tags: `ui-select`
 
 ```html runnable
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/select.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/select.html"></import-element>
 
 <ui-select aria-label="Fruit" width="48">
   <option value="apple">Apple</option>
@@ -882,11 +882,11 @@ back to the placeholder, or to the first or `selected` option.
 
 A form-associated range slider built on a native range input, with a filled track and numeric value. [Docs and demos](https://realm.js.org/components/slider/).
 
-- File: `slider.html`, import with `<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/slider.html"></import-element>`
+- File: `slider.html`, import with `<import-element from="https://realm.js.org/dist/ui/components/slider.html"></import-element>`
 - Tags: `ui-slider`
 
 ```html runnable
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/slider.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/slider.html"></import-element>
 
 <ui-slider aria-label="Volume" value="50"></ui-slider>
 ```
@@ -938,11 +938,11 @@ and a disabled `<fieldset>` disables it.
 
 A form-associated on/off switch built on a native checkbox with the switch role, for settings that apply immediately. [Docs and demos](https://realm.js.org/components/switch/).
 
-- File: `switch.html`, import with `<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/switch.html"></import-element>`
+- File: `switch.html`, import with `<import-element from="https://realm.js.org/dist/ui/components/switch.html"></import-element>`
 - Tags: `ui-switch`
 
 ```html runnable
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/switch.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/switch.html"></import-element>
 
 <ui-switch>Airplane mode</ui-switch>
 ```
@@ -1001,11 +1001,11 @@ A form-associated on/off switch built on a native checkbox with the switch role,
 
 A form-associated multi-line text field that wraps a native textarea and grows with its content. [Docs and demos](https://realm.js.org/components/textarea/).
 
-- File: `textarea.html`, import with `<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/textarea.html"></import-element>`
+- File: `textarea.html`, import with `<import-element from="https://realm.js.org/dist/ui/components/textarea.html"></import-element>`
 - Tags: `ui-textarea`
 
 ```html runnable
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/textarea.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/textarea.html"></import-element>
 
 <ui-textarea aria-label="Message" placeholder="Type your message here."></ui-textarea>
 ```
@@ -1056,11 +1056,11 @@ textarea, so `required`, `minlength` and `maxlength` take part in `checkValidity
 
 A two-state button that stays pressed or unpressed, for options such as bold text or a pinned item. [Docs and demos](https://realm.js.org/components/toggle/).
 
-- File: `toggle.html`, import with `<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/toggle.html"></import-element>`
+- File: `toggle.html`, import with `<import-element from="https://realm.js.org/dist/ui/components/toggle.html"></import-element>`
 - Tags: `ui-toggle`
 
 ```html runnable
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/toggle.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/toggle.html"></import-element>
 
 <ui-toggle aria-label="Bold">
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 12h9a4 4 0 0 1 0 8H6V4h8a4 4 0 0 1 0 8" /></svg>
@@ -1116,13 +1116,13 @@ A two-state button that stays pressed or unpressed, for options such as bold tex
 
 A form-associated set of toggles where one or several can be pressed, submitting the pressed values as one field. [Docs and demos](https://realm.js.org/components/toggle-group/).
 
-- File: `toggle-group.html`, import with `<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/toggle-group.html"></import-element>`
+- File: `toggle-group.html`, import with `<import-element from="https://realm.js.org/dist/ui/components/toggle-group.html"></import-element>`
 - Tags: `ui-toggle-group`
 - Imports for you: `toggle.html`
 
 ```html runnable
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/toggle-group.html"></import-element>
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/toggle.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/toggle-group.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/toggle.html"></import-element>
 
 <ui-toggle-group value="left" aria-label="Text alignment">
   <ui-toggle value="left" aria-label="Align left">
@@ -1193,11 +1193,11 @@ is pressed. `form.reset()` restores the `value` attribute and the pressed toggle
 
 A callout box with an optional icon, a title and a description, for messages that need the reader's attention. [Docs and demos](https://realm.js.org/components/alert/).
 
-- File: `alert.html`, import with `<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/alert.html"></import-element>`
+- File: `alert.html`, import with `<import-element from="https://realm.js.org/dist/ui/components/alert.html"></import-element>`
 - Tags: `ui-alert`, `ui-alert-title`, `ui-alert-description`
 
 ```html runnable
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/alert.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/alert.html"></import-element>
 
 <ui-alert>
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
@@ -1229,11 +1229,11 @@ Each part has a single default slot that takes any content.
 
 A round image of a user or entity, with a text fallback while the image loads or when it fails. [Docs and demos](https://realm.js.org/components/avatar/).
 
-- File: `avatar.html`, import with `<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/avatar.html"></import-element>`
+- File: `avatar.html`, import with `<import-element from="https://realm.js.org/dist/ui/components/avatar.html"></import-element>`
 - Tags: `ui-avatar`, `ui-avatar-image`, `ui-avatar-fallback`, `ui-avatar-group`, `ui-avatar-group-count`
 
 ```html runnable
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/avatar.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/avatar.html"></import-element>
 
 <ui-avatar>
   <ui-avatar-image src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%236366f1'/%3E%3Ccircle cx='32' cy='26' r='12' fill='%23e0e7ff'/%3E%3Cpath d='M10 60c4-14 14-20 22-20s18 6 22 20' fill='%23e0e7ff'/%3E%3C/svg%3E" alt="Ada Lovelace"></ui-avatar-image>
@@ -1285,11 +1285,11 @@ The default slot of each part takes any content.
 
 A small inline label for a status, a count or a category. [Docs and demos](https://realm.js.org/components/badge/).
 
-- File: `badge.html`, import with `<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/badge.html"></import-element>`
+- File: `badge.html`, import with `<import-element from="https://realm.js.org/dist/ui/components/badge.html"></import-element>`
 - Tags: `ui-badge`
 
 ```html runnable
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/badge.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/badge.html"></import-element>
 
 <ui-badge>Badge</ui-badge>
 <ui-badge variant="secondary">Secondary</ui-badge>
@@ -1320,15 +1320,15 @@ None. The badge renders only a slot, so style the element itself.
 
 A bordered container with a header, body and footer for grouping related content and actions. [Docs and demos](https://realm.js.org/components/card/).
 
-- File: `card.html`, import with `<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/card.html"></import-element>`
+- File: `card.html`, import with `<import-element from="https://realm.js.org/dist/ui/components/card.html"></import-element>`
 - Tags: `ui-card`, `ui-card-header`, `ui-card-title`, `ui-card-description`, `ui-card-action`, `ui-card-content`, `ui-card-footer`
 
 ```html runnable
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/button.html"></import-element>
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/card.html"></import-element>
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/field.html"></import-element>
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/input.html"></import-element>
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/label.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/button.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/card.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/field.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/input.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/label.html"></import-element>
 
 <ui-card>
   <ui-card-header>
@@ -1389,11 +1389,11 @@ The other parts have no attributes.
 
 A small SVG bar, line or area chart drawn from a list of data objects, with one or more series. [Docs and demos](https://realm.js.org/components/chart/).
 
-- File: `chart.html`, import with `<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/chart.html"></import-element>`
+- File: `chart.html`, import with `<import-element from="https://realm.js.org/dist/ui/components/chart.html"></import-element>`
 - Tags: `ui-chart`
 
 ```html runnable
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/chart.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/chart.html"></import-element>
 
 <ui-chart x="month" y="desktop" label="Desktop visitors per month"
   data='[{"month":"Jan","desktop":186},{"month":"Feb","desktop":305},{"month":"Mar","desktop":237},{"month":"Apr","desktop":73},{"month":"May","desktop":209},{"month":"Jun","desktop":214}]'>
@@ -1436,12 +1436,12 @@ The axis labels use the element's `color` (muted foreground by default) and the 
 
 A placeholder for an empty list, search result or section, with an icon, a message and actions. [Docs and demos](https://realm.js.org/components/empty/).
 
-- File: `empty.html`, import with `<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/empty.html"></import-element>`
+- File: `empty.html`, import with `<import-element from="https://realm.js.org/dist/ui/components/empty.html"></import-element>`
 - Tags: `ui-empty`, `ui-empty-header`, `ui-empty-media`, `ui-empty-title`, `ui-empty-description`, `ui-empty-content`
 
 ```html runnable
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/button.html"></import-element>
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/empty.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/button.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/empty.html"></import-element>
 
 <ui-empty>
   <ui-empty-header>
@@ -1501,12 +1501,12 @@ The other parts have no attributes.
 
 A row with media, a title, a description and actions, for lists of people, files, settings or notifications. [Docs and demos](https://realm.js.org/components/item/).
 
-- File: `item.html`, import with `<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/item.html"></import-element>`
+- File: `item.html`, import with `<import-element from="https://realm.js.org/dist/ui/components/item.html"></import-element>`
 - Tags: `ui-item`, `ui-item-group`, `ui-item-media`, `ui-item-content`, `ui-item-title`, `ui-item-description`, `ui-item-actions`, `ui-item-header`, `ui-item-footer`
 
 ```html runnable
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/button.html"></import-element>
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/item.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/button.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/item.html"></import-element>
 
 <ui-item variant="outline">
   <ui-item-content>
@@ -1557,11 +1557,11 @@ The other parts have no attributes.
 
 Styled keyboard keys and key combinations for shortcuts in menus, buttons, tooltips and help text. [Docs and demos](https://realm.js.org/components/kbd/).
 
-- File: `kbd.html`, import with `<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/kbd.html"></import-element>`
+- File: `kbd.html`, import with `<import-element from="https://realm.js.org/dist/ui/components/kbd.html"></import-element>`
 - Tags: `ui-kbd`, `ui-kbd-group`
 
 ```html runnable
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/kbd.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/kbd.html"></import-element>
 
 <ui-kbd-group>
   <ui-kbd>⌘</ui-kbd>
@@ -1597,11 +1597,11 @@ None. Both elements render only a slot.
 
 A horizontal bar showing how far a task has got, built on the native progress element. [Docs and demos](https://realm.js.org/components/progress/).
 
-- File: `progress.html`, import with `<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/progress.html"></import-element>`
+- File: `progress.html`, import with `<import-element from="https://realm.js.org/dist/ui/components/progress.html"></import-element>`
 - Tags: `ui-progress`
 
 ```html runnable
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/progress.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/progress.html"></import-element>
 
 <ui-progress value="60" aria-label="Progress"></ui-progress>
 ```
@@ -1631,11 +1631,11 @@ A horizontal bar showing how far a task has got, built on the native progress el
 
 A thin horizontal or vertical line that divides content, with the ARIA separator role. [Docs and demos](https://realm.js.org/components/separator/).
 
-- File: `separator.html`, import with `<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/separator.html"></import-element>`
+- File: `separator.html`, import with `<import-element from="https://realm.js.org/dist/ui/components/separator.html"></import-element>`
 - Tags: `ui-separator`
 
 ```html runnable
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/separator.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/separator.html"></import-element>
 
 <div>
   <strong>REALM UI</strong>
@@ -1673,11 +1673,11 @@ None. The separator renders no shadow content. Style the element itself.
 
 A pulsing placeholder block that shows the shape of content while it loads. [Docs and demos](https://realm.js.org/components/skeleton/).
 
-- File: `skeleton.html`, import with `<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/skeleton.html"></import-element>`
+- File: `skeleton.html`, import with `<import-element from="https://realm.js.org/dist/ui/components/skeleton.html"></import-element>`
 - Tags: `ui-skeleton`
 
 ```html runnable
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/skeleton.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/skeleton.html"></import-element>
 
 <ui-skeleton shape="circle" width="12" height="12"></ui-skeleton>
 <div>
@@ -1710,11 +1710,11 @@ None. The skeleton renders no shadow content.
 
 A rotating loading indicator with the status role and an accessible label. [Docs and demos](https://realm.js.org/components/spinner/).
 
-- File: `spinner.html`, import with `<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/spinner.html"></import-element>`
+- File: `spinner.html`, import with `<import-element from="https://realm.js.org/dist/ui/components/spinner.html"></import-element>`
 - Tags: `ui-spinner`
 
 ```html runnable
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/spinner.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/spinner.html"></import-element>
 
 <ui-spinner></ui-spinner>
 ```
@@ -1743,11 +1743,11 @@ None. Set `color` on the element to use a colour outside the variants.
 
 A data table rendered from a list of columns and rows, plus the pattern for building a custom table from component state. [Docs and demos](https://realm.js.org/components/table/).
 
-- File: `table.html`, import with `<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/table.html"></import-element>`
+- File: `table.html`, import with `<import-element from="https://realm.js.org/dist/ui/components/table.html"></import-element>`
 - Tags: `ui-table`
 
 ```html runnable
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/table.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/table.html"></import-element>
 
 <ui-table
   caption="A list of your recent invoices."
@@ -1800,13 +1800,13 @@ inside the element.
 
 A modal dialog with the alertdialog role that interrupts the user with a decision and only closes when an action is chosen. [Docs and demos](https://realm.js.org/components/alert-dialog/).
 
-- File: `alert-dialog.html`, import with `<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/alert-dialog.html"></import-element>`
+- File: `alert-dialog.html`, import with `<import-element from="https://realm.js.org/dist/ui/components/alert-dialog.html"></import-element>`
 - Tags: `ui-alert-dialog`, `ui-alert-dialog-trigger`, `ui-alert-dialog-header`, `ui-alert-dialog-title`, `ui-alert-dialog-description`, `ui-alert-dialog-footer`, `ui-alert-dialog-action`, `ui-alert-dialog-cancel`
 - Imports for you: `button.html`
 
 ```html runnable
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/alert-dialog.html"></import-element>
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/button.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/alert-dialog.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/button.html"></import-element>
 
 <ui-alert-dialog>
   <ui-alert-dialog-trigger><ui-button variant="outline">Delete account</ui-button></ui-alert-dialog-trigger>
@@ -1898,12 +1898,12 @@ footer.
 
 A searchable list of commands with groups, shortcuts, an empty state and keyboard navigation, used inline or as a command palette inside a dialog. [Docs and demos](https://realm.js.org/components/command/).
 
-- File: `command.html`, import with `<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/command.html"></import-element>`
+- File: `command.html`, import with `<import-element from="https://realm.js.org/dist/ui/components/command.html"></import-element>`
 - Tags: `ui-command`, `ui-command-empty`
 
 ```html runnable
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/command.html"></import-element>
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/toaster.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/command.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/toaster.html"></import-element>
 
 <ui-command onselect="document.dispatchEvent(new CustomEvent('toast', { detail: { title: event.detail.label } }))">
   <optgroup label="Suggestions">
@@ -1969,13 +1969,13 @@ outside a group are listed without a heading.
 
 A menu of actions that opens at the pointer when the user right-clicks an area, sharing its items with the dropdown menu. [Docs and demos](https://realm.js.org/components/context-menu/).
 
-- File: `context-menu.html`, import with `<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/context-menu.html"></import-element>`
+- File: `context-menu.html`, import with `<import-element from="https://realm.js.org/dist/ui/components/context-menu.html"></import-element>`
 - Tags: `ui-context-menu`, `ui-context-menu-trigger`, `ui-context-menu-content`
 
 ```html runnable
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/context-menu.html"></import-element>
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/dropdown-menu.html"></import-element>
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/toaster.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/context-menu.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/dropdown-menu.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/toaster.html"></import-element>
 
 <ui-context-menu onselect="document.dispatchEvent(new CustomEvent('toast', { detail: { title: 'Chose ' + event.detail.value } }))">
   <ui-context-menu-trigger><div>Right click here</div></ui-context-menu-trigger>
@@ -2028,15 +2028,15 @@ None of the parts has attributes of its own. See [Dropdown Menu](https://realm.j
 
 A modal dialog built on the native dialog element, with a trigger, header, title, description, footer, close parts and optional side placement. [Docs and demos](https://realm.js.org/components/dialog/).
 
-- File: `dialog.html`, import with `<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/dialog.html"></import-element>`
+- File: `dialog.html`, import with `<import-element from="https://realm.js.org/dist/ui/components/dialog.html"></import-element>`
 - Tags: `ui-dialog`, `ui-dialog-trigger`, `ui-dialog-close`, `ui-dialog-header`, `ui-dialog-title`, `ui-dialog-description`, `ui-dialog-footer`
 
 ```html runnable
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/button.html"></import-element>
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/dialog.html"></import-element>
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/field.html"></import-element>
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/input.html"></import-element>
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/label.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/button.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/dialog.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/field.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/input.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/label.html"></import-element>
 
 <ui-dialog>
   <ui-dialog-trigger><ui-button variant="outline">Edit profile</ui-button></ui-dialog-trigger>
@@ -2133,13 +2133,13 @@ dialog body, in source order.
 
 A modal panel that slides up from the bottom edge with a drag handle, or in from another edge, for mobile-friendly menus and forms. [Docs and demos](https://realm.js.org/components/drawer/).
 
-- File: `drawer.html`, import with `<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/drawer.html"></import-element>`
+- File: `drawer.html`, import with `<import-element from="https://realm.js.org/dist/ui/components/drawer.html"></import-element>`
 - Tags: `ui-drawer`, `ui-drawer-trigger`, `ui-drawer-close`, `ui-drawer-header`, `ui-drawer-title`, `ui-drawer-description`, `ui-drawer-footer`
 
 ```html runnable
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/button.html"></import-element>
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/drawer.html"></import-element>
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/slider.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/button.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/drawer.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/slider.html"></import-element>
 
 <ui-drawer>
   <ui-drawer-trigger><ui-button variant="outline">Set daily goal</ui-button></ui-drawer-trigger>
@@ -2218,13 +2218,13 @@ order.
 
 A menu of actions that opens from a trigger, with labels, groups, separators, shortcuts, checkbox and radio items, keyboard navigation and a select event. [Docs and demos](https://realm.js.org/components/dropdown-menu/).
 
-- File: `dropdown-menu.html`, import with `<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/dropdown-menu.html"></import-element>`
+- File: `dropdown-menu.html`, import with `<import-element from="https://realm.js.org/dist/ui/components/dropdown-menu.html"></import-element>`
 - Tags: `ui-dropdown-menu`, `ui-dropdown-menu-trigger`, `ui-dropdown-menu-content`, `ui-menu-item`, `ui-menu-checkbox-item`, `ui-menu-radio-group`, `ui-menu-radio-item`, `ui-menu-label`, `ui-menu-group`, `ui-menu-separator`, `ui-menu-shortcut`
 
 ```html runnable
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/button.html"></import-element>
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/dropdown-menu.html"></import-element>
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/toaster.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/button.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/dropdown-menu.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/toaster.html"></import-element>
 
 <ui-dropdown-menu onselect="document.dispatchEvent(new CustomEvent('toast', { detail: { title: 'Selected ' + event.detail.value } }))">
   <ui-dropdown-menu-trigger><ui-button variant="outline">Open menu</ui-button></ui-dropdown-menu-trigger>
@@ -2320,13 +2320,13 @@ The `ui-menu-*` parts work the same in `ui-context-menu-content` and `ui-menubar
 
 A card that previews the content behind a link when the pointer rests on it or it receives keyboard focus. [Docs and demos](https://realm.js.org/components/hover-card/).
 
-- File: `hover-card.html`, import with `<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/hover-card.html"></import-element>`
+- File: `hover-card.html`, import with `<import-element from="https://realm.js.org/dist/ui/components/hover-card.html"></import-element>`
 - Tags: `ui-hover-card`, `ui-hover-card-trigger`, `ui-hover-card-content`
 
 ```html runnable
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/avatar.html"></import-element>
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/button.html"></import-element>
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/hover-card.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/avatar.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/button.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/hover-card.html"></import-element>
 
 <ui-hover-card>
   <ui-hover-card-trigger><ui-button variant="link">@realmorg</ui-button></ui-hover-card-trigger>
@@ -2378,15 +2378,15 @@ A card that previews the content behind a link when the pointer rests on it or i
 
 Floating content anchored to a trigger, built on the native popover attribute with light dismiss and placement. [Docs and demos](https://realm.js.org/components/popover/).
 
-- File: `popover.html`, import with `<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/popover.html"></import-element>`
+- File: `popover.html`, import with `<import-element from="https://realm.js.org/dist/ui/components/popover.html"></import-element>`
 - Tags: `ui-popover`, `ui-popover-trigger`, `ui-popover-content`, `ui-popover-header`, `ui-popover-title`, `ui-popover-description`
 
 ```html runnable
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/button.html"></import-element>
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/field.html"></import-element>
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/input.html"></import-element>
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/label.html"></import-element>
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/popover.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/button.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/field.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/input.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/label.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/popover.html"></import-element>
 
 <ui-popover>
   <ui-popover-trigger><ui-button variant="outline">Open popover</ui-button></ui-popover-trigger>
@@ -2458,16 +2458,16 @@ Floating content anchored to a trigger, built on the native popover attribute wi
 
 A modal panel that slides in from an edge of the screen, for navigation, filters or secondary forms. [Docs and demos](https://realm.js.org/components/sheet/).
 
-- File: `sheet.html`, import with `<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/sheet.html"></import-element>`
+- File: `sheet.html`, import with `<import-element from="https://realm.js.org/dist/ui/components/sheet.html"></import-element>`
 - Tags: `ui-sheet`, `ui-sheet-trigger`, `ui-sheet-close`, `ui-sheet-header`, `ui-sheet-title`, `ui-sheet-description`, `ui-sheet-footer`
 - Imports for you: `dialog.html`
 
 ```html runnable
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/button.html"></import-element>
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/field.html"></import-element>
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/input.html"></import-element>
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/label.html"></import-element>
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/sheet.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/button.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/field.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/input.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/label.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/sheet.html"></import-element>
 
 <ui-sheet>
   <ui-sheet-trigger><ui-button variant="outline">Open sheet</ui-button></ui-sheet-trigger>
@@ -2551,12 +2551,12 @@ order.
 
 A live region that shows short, auto-dismissing notifications triggered by a document event or a method call. [Docs and demos](https://realm.js.org/components/toaster/).
 
-- File: `toaster.html`, import with `<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/toaster.html"></import-element>`
+- File: `toaster.html`, import with `<import-element from="https://realm.js.org/dist/ui/components/toaster.html"></import-element>`
 - Tags: `ui-toaster`
 
 ```html runnable
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/button.html"></import-element>
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/toaster.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/button.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/toaster.html"></import-element>
 
 <ui-button variant="outline" onclick="document.dispatchEvent(new CustomEvent('toast', { detail: { title: 'Event created', description: 'Sunday, December 3 at 9:00 AM' } }))">Show toast</ui-button>
 <ui-toaster></ui-toaster>
@@ -2612,12 +2612,12 @@ The `detail` of a `toast` event and the argument of `toast()` take the same fiel
 
 A short text label that appears next to an element on hover or keyboard focus, built on a manual popover with anchor positioning. [Docs and demos](https://realm.js.org/components/tooltip/).
 
-- File: `tooltip.html`, import with `<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/tooltip.html"></import-element>`
+- File: `tooltip.html`, import with `<import-element from="https://realm.js.org/dist/ui/components/tooltip.html"></import-element>`
 - Tags: `ui-tooltip`, `ui-tooltip-trigger`, `ui-tooltip-content`
 
 ```html runnable
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/button.html"></import-element>
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/tooltip.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/button.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/tooltip.html"></import-element>
 
 <ui-tooltip>
   <ui-tooltip-trigger><ui-button variant="outline">Hover me</ui-button></ui-tooltip-trigger>
@@ -2663,11 +2663,11 @@ A short text label that appears next to an element on hover or keyboard focus, b
 
 A vertically stacked set of collapsible sections built on native details and summary, with one or several sections open at a time. [Docs and demos](https://realm.js.org/components/accordion/).
 
-- File: `accordion.html`, import with `<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/accordion.html"></import-element>`
+- File: `accordion.html`, import with `<import-element from="https://realm.js.org/dist/ui/components/accordion.html"></import-element>`
 - Tags: `ui-accordion`, `ui-accordion-item`, `ui-accordion-trigger`, `ui-accordion-content`
 
 ```html runnable
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/accordion.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/accordion.html"></import-element>
 
 <ui-accordion>
   <ui-accordion-item open>
@@ -2684,7 +2684,7 @@ A vertically stacked set of collapsible sections built on native details and sum
   </ui-accordion-item>
   <ui-accordion-item>
     <ui-accordion-trigger>Is it animated?</ui-accordion-trigger>
-    <ui-accordion-content>The chevron rotates when an item opens.</ui-accordion-content>
+    <ui-accordion-content>The content slides open and shut, and the chevron turns with it.</ui-accordion-content>
   </ui-accordion-item>
 </ui-accordion>
 ```
@@ -2733,11 +2733,11 @@ A vertically stacked set of collapsible sections built on native details and sum
 
 A trail of links showing where the current page sits in the site hierarchy. [Docs and demos](https://realm.js.org/components/breadcrumb/).
 
-- File: `breadcrumb.html`, import with `<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/breadcrumb.html"></import-element>`
+- File: `breadcrumb.html`, import with `<import-element from="https://realm.js.org/dist/ui/components/breadcrumb.html"></import-element>`
 - Tags: `ui-breadcrumb`, `ui-breadcrumb-list`, `ui-breadcrumb-item`, `ui-breadcrumb-link`, `ui-breadcrumb-page`, `ui-breadcrumb-separator`, `ui-breadcrumb-ellipsis`
 
 ```html runnable
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/breadcrumb.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/breadcrumb.html"></import-element>
 
 <ui-breadcrumb>
   <ui-breadcrumb-list>
@@ -2800,12 +2800,12 @@ The other parts have no attributes.
 
 A single section that shows and hides its content when its trigger is activated, built on native details and summary. [Docs and demos](https://realm.js.org/components/collapsible/).
 
-- File: `collapsible.html`, import with `<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/collapsible.html"></import-element>`
+- File: `collapsible.html`, import with `<import-element from="https://realm.js.org/dist/ui/components/collapsible.html"></import-element>`
 - Tags: `ui-collapsible`, `ui-collapsible-trigger`, `ui-collapsible-content`
 
 ```html runnable
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/collapsible.html"></import-element>
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/item.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/collapsible.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/item.html"></import-element>
 
 <ui-collapsible>
   <ui-collapsible-trigger>
@@ -2857,12 +2857,12 @@ A single section that shows and hides its content when its trigger is activated,
 
 A horizontal bar of menus, like the File and Edit menus of a desktop application, with triggers, menus and shared menu items. [Docs and demos](https://realm.js.org/components/menubar/).
 
-- File: `menubar.html`, import with `<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/menubar.html"></import-element>`
+- File: `menubar.html`, import with `<import-element from="https://realm.js.org/dist/ui/components/menubar.html"></import-element>`
 - Tags: `ui-menubar`, `ui-menubar-menu`, `ui-menubar-trigger`, `ui-menubar-content`
 
 ```html runnable
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/dropdown-menu.html"></import-element>
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/menubar.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/dropdown-menu.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/menubar.html"></import-element>
 
 <ui-menubar>
   <ui-menubar-menu>
@@ -2924,11 +2924,11 @@ attributes and the `select` event.
 
 A site navigation bar of links and triggers that open popover panels of further links on hover or click. [Docs and demos](https://realm.js.org/components/navigation-menu/).
 
-- File: `navigation-menu.html`, import with `<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/navigation-menu.html"></import-element>`
+- File: `navigation-menu.html`, import with `<import-element from="https://realm.js.org/dist/ui/components/navigation-menu.html"></import-element>`
 - Tags: `ui-navigation-menu`, `ui-navigation-menu-list`, `ui-navigation-menu-item`, `ui-navigation-menu-trigger`, `ui-navigation-menu-content`, `ui-navigation-menu-link`
 
 ```html runnable
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/navigation-menu.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/navigation-menu.html"></import-element>
 
 <ui-navigation-menu>
   <ui-navigation-menu-list>
@@ -3011,11 +3011,11 @@ A site navigation bar of links and triggers that open popover panels of further 
 
 Page navigation with previous and next controls, numbered pages and ellipses, driven by a page number and a page count. [Docs and demos](https://realm.js.org/components/pagination/).
 
-- File: `pagination.html`, import with `<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/pagination.html"></import-element>`
+- File: `pagination.html`, import with `<import-element from="https://realm.js.org/dist/ui/components/pagination.html"></import-element>`
 - Tags: `ui-pagination`
 
 ```html runnable
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/pagination.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/pagination.html"></import-element>
 
 <ui-pagination page="5" total="10"></ui-pagination>
 ```
@@ -3051,15 +3051,15 @@ Page navigation with previous and next controls, numbered pages and ellipses, dr
 
 An application shell with a collapsible side navigation, grouped menus, a toggle button, a keyboard shortcut and an off-canvas mode on small screens. [Docs and demos](https://realm.js.org/components/sidebar/).
 
-- File: `sidebar.html`, import with `<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/sidebar.html"></import-element>`
+- File: `sidebar.html`, import with `<import-element from="https://realm.js.org/dist/ui/components/sidebar.html"></import-element>`
 - Tags: `ui-sidebar-layout`, `ui-sidebar`, `ui-sidebar-header`, `ui-sidebar-footer`, `ui-sidebar-content`, `ui-sidebar-group`, `ui-sidebar-group-label`, `ui-sidebar-menu`, `ui-sidebar-menu-item`, `ui-sidebar-menu-button`, `ui-sidebar-menu-badge`, `ui-sidebar-trigger`, `ui-sidebar-inset`
 - Imports for you: `button.html`
 
 ```html runnable
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/avatar.html"></import-element>
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/button.html"></import-element>
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/dropdown-menu.html"></import-element>
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/sidebar.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/avatar.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/button.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/dropdown-menu.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/sidebar.html"></import-element>
 
 <style>
   .sidebar-demo {
@@ -3258,15 +3258,15 @@ The other parts have no attributes.
 
 A set of panels shown one at a time, switched with a row or column of tab buttons. [Docs and demos](https://realm.js.org/components/tabs/).
 
-- File: `tabs.html`, import with `<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/tabs.html"></import-element>`
+- File: `tabs.html`, import with `<import-element from="https://realm.js.org/dist/ui/components/tabs.html"></import-element>`
 - Tags: `ui-tabs`, `ui-tabs-list`, `ui-tabs-trigger`, `ui-tabs-content`
 
 ```html runnable
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/card.html"></import-element>
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/field.html"></import-element>
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/input.html"></import-element>
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/label.html"></import-element>
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/tabs.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/card.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/field.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/input.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/label.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/tabs.html"></import-element>
 
 <ui-tabs value="account">
   <ui-tabs-list>
@@ -3355,11 +3355,11 @@ the triggers and panels, so tabs can be added, removed or renamed at any time.
 
 A box that keeps its content at a fixed width-to-height ratio, for images, video and embeds. [Docs and demos](https://realm.js.org/components/aspect-ratio/).
 
-- File: `aspect-ratio.html`, import with `<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/aspect-ratio.html"></import-element>`
+- File: `aspect-ratio.html`, import with `<import-element from="https://realm.js.org/dist/ui/components/aspect-ratio.html"></import-element>`
 - Tags: `ui-aspect-ratio`
 
 ```html runnable
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/aspect-ratio.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/aspect-ratio.html"></import-element>
 
 <ui-aspect-ratio ratio="16 / 9">
   <div>16 / 9</div>
@@ -3392,14 +3392,14 @@ The ratio is applied through the reactive custom property `--attr-ratio`, which 
 
 A scroll-snapping slideshow with previous and next buttons, arrow-key navigation and swipe support. [Docs and demos](https://realm.js.org/components/carousel/).
 
-- File: `carousel.html`, import with `<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/carousel.html"></import-element>`
+- File: `carousel.html`, import with `<import-element from="https://realm.js.org/dist/ui/components/carousel.html"></import-element>`
 - Tags: `ui-carousel`, `ui-carousel-content`, `ui-carousel-item`, `ui-carousel-previous`, `ui-carousel-next`
 - Imports for you: `button.html`
 
 ```html runnable
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/aspect-ratio.html"></import-element>
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/card.html"></import-element>
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/carousel.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/aspect-ratio.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/card.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/carousel.html"></import-element>
 
 <ui-carousel>
   <ui-carousel-content>
@@ -3486,14 +3486,14 @@ The parts place themselves in the carousel's grid, so their source order does no
 
 A wrapper that sets left-to-right or right-to-left text direction for everything inside it. [Docs and demos](https://realm.js.org/components/direction/).
 
-- File: `direction.html`, import with `<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/direction.html"></import-element>`
+- File: `direction.html`, import with `<import-element from="https://realm.js.org/dist/ui/components/direction.html"></import-element>`
 - Tags: `ui-direction`
 
 ```html runnable
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/breadcrumb.html"></import-element>
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/button.html"></import-element>
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/direction.html"></import-element>
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/input.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/breadcrumb.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/button.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/direction.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/input.html"></import-element>
 
 <ui-direction dir="rtl">
   <div>
@@ -3533,11 +3533,11 @@ A wrapper that sets left-to-right or right-to-left text direction for everything
 
 Panel groups split by draggable handles that users resize with the pointer or the arrow keys. [Docs and demos](https://realm.js.org/components/resizable/).
 
-- File: `resizable.html`, import with `<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/resizable.html"></import-element>`
+- File: `resizable.html`, import with `<import-element from="https://realm.js.org/dist/ui/components/resizable.html"></import-element>`
 - Tags: `ui-resizable`, `ui-resizable-panel`, `ui-resizable-handle`
 
 ```html runnable
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/resizable.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/resizable.html"></import-element>
 
 <ui-resizable variant="outline" height="48">
   <ui-resizable-panel size="50">
@@ -3605,13 +3605,13 @@ including another `ui-resizable`.
 
 A box with its own thin, themed scrollbar for content that is taller or wider than the space it is given. [Docs and demos](https://realm.js.org/components/scroll-area/).
 
-- File: `scroll-area.html`, import with `<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/scroll-area.html"></import-element>`
+- File: `scroll-area.html`, import with `<import-element from="https://realm.js.org/dist/ui/components/scroll-area.html"></import-element>`
 - Tags: `ui-scroll-area`
 
 ```html runnable
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/item.html"></import-element>
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/scroll-area.html"></import-element>
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/separator.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/item.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/scroll-area.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/separator.html"></import-element>
 
 <ui-scroll-area variant="outline" width="48" height="72">
   <ui-item-group aria-label="Tags">
@@ -3669,11 +3669,11 @@ A box with its own thin, themed scrollbar for content that is taller or wider th
 
 A compact file chip with a preview area, a downloadable file name, its size and optional actions. [Docs and demos](https://realm.js.org/components/attachment/).
 
-- File: `attachment.html`, import with `<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/attachment.html"></import-element>`
+- File: `attachment.html`, import with `<import-element from="https://realm.js.org/dist/ui/components/attachment.html"></import-element>`
 - Tags: `ui-attachment`, `ui-attachment-media`, `ui-attachment-actions`
 
 ```html runnable
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/attachment.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/attachment.html"></import-element>
 
 <ui-attachment name="quarterly-report.pdf" size="1.2 MB" href="data:text/plain,Quarterly%20report">
   <ui-attachment-media>
@@ -3714,12 +3714,12 @@ each part takes any content.
 
 A rounded chat bubble for message text, with colour variants, start or end alignment and a reactions row. [Docs and demos](https://realm.js.org/components/bubble/).
 
-- File: `bubble.html`, import with `<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/bubble.html"></import-element>`
+- File: `bubble.html`, import with `<import-element from="https://realm.js.org/dist/ui/components/bubble.html"></import-element>`
 - Tags: `ui-bubble`, `ui-bubble-reactions`
 
 ```html runnable
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/bubble.html"></import-element>
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/message.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/bubble.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/message.html"></import-element>
 
 <ui-message>
   <ui-bubble variant="muted">Did the deploy go out?</ui-bubble>
@@ -3758,14 +3758,14 @@ else in `ui-bubble` is the message content. The default slot of each part takes 
 
 A monospaced block for code with a language label and a copy-to-clipboard button. [Docs and demos](https://realm.js.org/components/code-block/).
 
-- File: `code-block.html`, import with `<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/code-block.html"></import-element>`
+- File: `code-block.html`, import with `<import-element from="https://realm.js.org/dist/ui/components/code-block.html"></import-element>`
 - Tags: `ui-code-block`
 - Imports for you: `button.html`
 
 ```html runnable
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/code-block.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/code-block.html"></import-element>
 
-<ui-code-block language="html"><pre>&lt;script type="module" src="https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/realm.js"&gt;&lt;/script&gt;</pre></ui-code-block>
+<ui-code-block language="html"><pre>&lt;script type="module" src="https://realm.js.org/dist/realm.js"&gt;&lt;/script&gt;</pre></ui-code-block>
 ```
 
 ### Attributes
@@ -3792,11 +3792,11 @@ what the copy button copies.
 
 A small muted line of text with an optional icon, for day separators, system notices and section labels in a conversation. [Docs and demos](https://realm.js.org/components/marker/).
 
-- File: `marker.html`, import with `<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/marker.html"></import-element>`
+- File: `marker.html`, import with `<import-element from="https://realm.js.org/dist/ui/components/marker.html"></import-element>`
 - Tags: `ui-marker`
 
 ```html runnable
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/marker.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/marker.html"></import-element>
 
 <ui-marker variant="separator">Today</ui-marker>
 <ui-marker>
@@ -3829,13 +3829,13 @@ None. The shadow root is a single slot. Style the host.
 
 A chat message row that lays out an avatar, header, content and footer, aligned to the start or end. [Docs and demos](https://realm.js.org/components/message/).
 
-- File: `message.html`, import with `<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/message.html"></import-element>`
+- File: `message.html`, import with `<import-element from="https://realm.js.org/dist/ui/components/message.html"></import-element>`
 - Tags: `ui-message`, `ui-message-avatar`, `ui-message-header`, `ui-message-footer`
 
 ```html runnable
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/avatar.html"></import-element>
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/bubble.html"></import-element>
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/message.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/avatar.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/bubble.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/message.html"></import-element>
 
 <ui-message>
   <ui-message-avatar>
@@ -3884,14 +3884,14 @@ attachments, code blocks) is the message content. The default slot of each part 
 
 A scrolling chat log that sticks to the newest message and offers a jump-to-latest button when the user scrolls up. [Docs and demos](https://realm.js.org/components/message-scroller/).
 
-- File: `message-scroller.html`, import with `<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/message-scroller.html"></import-element>`
+- File: `message-scroller.html`, import with `<import-element from="https://realm.js.org/dist/ui/components/message-scroller.html"></import-element>`
 - Tags: `ui-message-scroller`
 - Imports for you: `button.html`
 
 ```html runnable
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/bubble.html"></import-element>
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/button.html"></import-element>
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/message-scroller.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/bubble.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/button.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/message-scroller.html"></import-element>
 
 <custom-element name="message-scroller-demo">
   <script type="realm">

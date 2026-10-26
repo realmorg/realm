@@ -41,7 +41,7 @@ A file holds one or more definitions. Its scripts are plain `<script>` (or `type
 
 ```html
 <!-- components/user-badge.html -->
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/avatar.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/avatar.html"></import-element>
 
 <custom-element name="user-badge">
   <script>
@@ -98,11 +98,11 @@ A component script can import modules. Put the imports first. Relative specifier
 
 Imported names are top-level names, so markup can reference them (`<slot name="#cart.count">`).
 
-A store shared by several components lives in a module. Import REALM from the same CDN version the page loads (`index.js` and `realm.js` share one runtime):
+A store shared by several components lives in a module. Import REALM from the same URL the page loads (`index.js` and `realm.js` share one runtime):
 
 ```js
 // state/cart.js
-import { defineStore } from "https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/index.js";
+import { defineStore } from "https://realm.js.org/dist/index.js";
 
 export const cart = defineStore(
   "cart",
@@ -120,7 +120,7 @@ To write `import { defineStore } from "@realmorg/realm"` instead, add an import 
 
 ```html
 <script type="importmap">
-  { "imports": { "@realmorg/realm": "https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/realm.js" } }
+  { "imports": { "@realmorg/realm": "https://realm.js.org/dist/realm.js" } }
 </script>
 ```
 
@@ -129,7 +129,7 @@ For a small app, calling `defineStore("cart", …)` with the same name in two co
 ## From JavaScript
 
 ```js
-import { importDefinitions } from "https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/index.js";
+import { importDefinitions } from "https://realm.js.org/dist/index.js";
 
 await importDefinitions(new URL("components/editor.html", document.baseURI).href);
 document.body.append(document.createElement("rich-editor"));
@@ -139,7 +139,7 @@ It rejects on failure without logging, so handle the error.
 
 ## Trust
 
-A component file is code, like `<script src>`. Import only from origins you trust, and pin versions on CDNs in production (`@realmorg/ui@2.0.0-alpha.1`).
+A component file is code, like `<script src>`. Import only from origins you trust, and in production pin exact npm versions (`https://cdn.jsdelivr.net/npm/@realmorg/ui@2.0.0-alpha.1/components/button.html`), since `realm.js.org/dist` always serves the latest build.
 
 ## Optional tooling
 

@@ -11,7 +11,7 @@ nav: Design tokens
 The `@realmorg/ui` theme defines colour, spacing, type, radius, shadow and motion tokens as custom properties on `:root`. REALM UI components use them. Use them in your own components too, so sizes and colours match and theming works.
 
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/dist/theme.css">
+<link rel="stylesheet" href="https://realm.js.org/dist/ui/theme.css">
 ```
 
 Custom properties inherit through shadow roots, so a token on `:root` reaches every component.

@@ -11,7 +11,7 @@ import { fileURLToPath } from "node:url";
 
 const repo = fileURLToPath(new URL("..", import.meta.url));
 const skill = join(repo, "skills/realm");
-const CDN = "https://cdn.jsdelivr.net/npm";
+const DIST = "https://realm.js.org/dist";
 const SITE = "https://realm.js.org";
 const UI_DIR = join(repo, "packages/ui/components");
 const UI_DOCS = join(repo, "apps/site/content/components");
@@ -58,9 +58,8 @@ const uiFiles = readdirSync(UI_DIR)
   });
 const fileOfTag = new Map(uiFiles.flatMap(({ file, tags }) => tags.map((tag) => [tag, file])));
 
-const uiImport = (file) =>
-  `<import-element from="${CDN}/@realmorg/ui@alpha/components/${file}"></import-element>`;
-const UNICONS_IMPORT = `<import-element from="${CDN}/@realmorg/unicons@alpha/dist/unicons.html"></import-element>`;
+const uiImport = (file) => `<import-element from="${DIST}/ui/components/${file}"></import-element>`;
+const UNICONS_IMPORT = `<import-element from="${DIST}/unicons/unicons.html"></import-element>`;
 
 // The REALM UI files a piece of markup needs, so a snippet imports only those.
 const filesUsedBy = (markup) =>
@@ -174,10 +173,10 @@ const uiComponents = () => {
     "Load the theme once per page, then either the whole bundle or one file per component. Each file imports the files it depends on, and every file is fetched once.",
     "",
     "```html",
-    `<link rel="stylesheet" href="${CDN}/@realmorg/ui@alpha/dist/theme.css">`,
+    `<link rel="stylesheet" href="${DIST}/ui/theme.css">`,
     "",
     "<!-- everything -->",
-    `<import-element from="${CDN}/@realmorg/ui@alpha/dist/ui.html"></import-element>`,
+    `<import-element from="${DIST}/ui/ui.html"></import-element>`,
     "",
     "<!-- or only what the page uses -->",
     uiImport("button.html"),
@@ -261,7 +260,7 @@ const iconSets = () => {
 };
 
 const versions = () =>
-  `Written for REALM \`${version("realm")}\`, REALM UI \`${version("ui")}\` and Unicons \`${version("unicons")}\`. The CDN tags use the \`@alpha\` tag, which always points at the newest alpha.`;
+  `Written for REALM \`${version("realm")}\`, REALM UI \`${version("ui")}\` and Unicons \`${version("unicons")}\`. The tags load the latest build from \`realm.js.org/dist\`.`;
 
 const REGIONS = {
   "SKILL.md": { versions },

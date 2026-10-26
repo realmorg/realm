@@ -296,7 +296,7 @@ layout: home
 <ui-tabs-content value="php">
 
 ```html
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/accordion.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/accordion.html"></import-element>
 
 <ui-accordion>
   <?php foreach ($faqs as $faq): ?>
@@ -312,7 +312,7 @@ layout: home
 <ui-tabs-content value="erb">
 
 ```html
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/accordion.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/accordion.html"></import-element>
 
 <ui-accordion>
   <% @faqs.each do |faq| %>
@@ -328,7 +328,7 @@ layout: home
 <ui-tabs-content value="django">
 
 ```html
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/accordion.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/accordion.html"></import-element>
 
 <ui-accordion>
   {% for faq in faqs %}
@@ -344,7 +344,7 @@ layout: home
 <ui-tabs-content value="go">
 
 ```html
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/ui@alpha/components/accordion.html"></import-element>
+<import-element from="https://realm.js.org/dist/ui/components/accordion.html"></import-element>
 
 <ui-accordion>
   {{range .FAQs}}
@@ -692,8 +692,8 @@ layout: home
 <div class="cta-code">
 
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/realm.css">
-<script type="module" src="https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/realm.js"></script>
+<link rel="stylesheet" href="https://realm.js.org/dist/realm.css">
+<script type="module" src="https://realm.js.org/dist/realm.js"></script>
 ```
 
 </div>

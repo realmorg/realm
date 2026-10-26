@@ -8,29 +8,29 @@ nav: Entry points
 
 # Entry points
 
-REALM ships as ES modules. Load them from the CDN, and pin an exact version in production.
+REALM ships as ES modules. Load them from realm.js.org. To pin an exact version in production, load the npm package instead (see [Pin a version](/docs/installation/#pin-a-version)).
 
 | File | Package export | Purpose |
 | --- | --- | --- |
-| `https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/realm.js` | `@realmorg/realm/auto` | Calls [`start()`](/reference/javascript/start/) when it loads, and exports the API |
-| `https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/index.js` | `@realmorg/realm` | The same API without starting. No side effects |
-| `https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/compiler.js` | `@realmorg/realm/compiler` | Build-time helpers. See [Compiler](/reference/javascript/compiler/) |
-| `https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/realm.css` | `@realmorg/realm/realm.css` | The page stylesheet. See [realm.css](/reference/css/realm-css/) |
+| `https://realm.js.org/dist/realm.js` | `@realmorg/realm/auto` | Calls [`start()`](/reference/javascript/start/) when it loads, and exports the API |
+| `https://realm.js.org/dist/index.js` | `@realmorg/realm` | The same API without starting. No side effects |
+| `https://realm.js.org/dist/compiler.js` | `@realmorg/realm/compiler` | Build-time helpers. See [Compiler](/reference/javascript/compiler/) |
+| `https://realm.js.org/dist/realm.css` | `@realmorg/realm/realm.css` | The page stylesheet. See [realm.css](/reference/css/realm-css/) |
 
 `realm.js` and `index.js` share one runtime chunk, so a page that starts REALM with `realm.js` and a module that imports from `index.js` (same version) use the same stores and definitions.
 
 ## Starting REALM
 
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/realm.css">
-<script type="module" src="https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/realm.js"></script>
+<link rel="stylesheet" href="https://realm.js.org/dist/realm.css">
+<script type="module" src="https://realm.js.org/dist/realm.js"></script>
 ```
 
 Or start it yourself after other setup:
 
 ```html
 <script type="module">
-  import { start } from "https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/index.js";
+  import { start } from "https://realm.js.org/dist/index.js";
 
   start();
 </script>
@@ -61,7 +61,7 @@ A component script that writes `import { defineStore } from "@realmorg/realm"` n
 
 ```html
 <script type="importmap">
-  { "imports": { "@realmorg/realm": "https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/realm.js" } }
+  { "imports": { "@realmorg/realm": "https://realm.js.org/dist/realm.js" } }
 </script>
 ```
 

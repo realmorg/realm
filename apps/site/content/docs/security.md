@@ -58,7 +58,7 @@ Limits:
 
 ## Imported components
 
-`<import-element from="https://…">` runs code from that origin in your page, like a `<script src>`. Only import from origins you trust, pin versions on CDNs, and restrict them with `script-src` and `connect-src`.
+`<import-element from="https://…">` runs code from that origin in your page, like a `<script src>`. Only import from origins you trust, [pin exact versions](/docs/installation/#pin-a-version), and restrict them with `script-src` and `connect-src`.
 
 ## Checklist
 

@@ -7,8 +7,8 @@ The component and its loader are about 1.9 KB gzipped. Icons are split into smal
 ## Usage
 
 ```html
-<script type="module" src="https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/realm.js"></script>
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/unicons@alpha/dist/unicons.html"></import-element>
+<script type="module" src="https://realm.js.org/dist/realm.js"></script>
+<import-element from="https://realm.js.org/dist/unicons/unicons.html"></import-element>
 
 <u-icon name="house"></u-icon>
 <u-icon set="fa6" name="heart" color="crimson" size="32"></u-icon>
@@ -60,7 +60,7 @@ Parts: `icon` (the wrapper) and `svg`.
 Load the component only once a `<u-icon>` appears in the page:
 
 ```html
-<import-element from="https://cdn.jsdelivr.net/npm/@realmorg/unicons@alpha/dist/unicons.html" loading="lazy" for="u-icon"></import-element>
+<import-element from="https://realm.js.org/dist/unicons/unicons.html" loading="lazy" for="u-icon"></import-element>
 ```
 
 ### Chunks
@@ -72,9 +72,9 @@ Load the component only once a `<u-icon>` appears in the page:
 An icon shows once REALM, `unicons.html`, `unicons.js` and the icon's chunk have loaded, one after another. Preload them to start every request at once:
 
 ```html
-<link rel="preload" href="https://cdn.jsdelivr.net/npm/@realmorg/unicons@alpha/dist/unicons.html" as="fetch" crossorigin>
-<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/@realmorg/unicons@alpha/dist/unicons.js">
-<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/@realmorg/unicons@alpha/dist/icons/lu/62.js">
+<link rel="preload" href="https://realm.js.org/dist/unicons/unicons.html" as="fetch" crossorigin>
+<link rel="modulepreload" href="https://realm.js.org/dist/unicons/unicons.js">
+<link rel="modulepreload" href="https://realm.js.org/dist/unicons/icons/lu/62.js">
 ```
 
 `chunkPath(set, name)` from `unicons.js` returns the chunk of an icon (`chunkPath("lu", "house")` is `icons/lu/62.js`), so a build step can list the chunks a page needs. Chunk numbers change between versions, so generate them rather than writing them by hand.

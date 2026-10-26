@@ -13,20 +13,20 @@
     <link rel="icon" type="image/png" sizes="16x16" href="./favicons/favicon-16x16.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="./favicons/apple-touch-icon.png" />
     <link rel="manifest" href="./favicons/site.webmanifest" />
-    <link rel="stylesheet" href="../assets/ui/theme.css" />
+    <link rel="stylesheet" href="../dist/ui/theme.css" />
     <link rel="stylesheet" href="./site.css" />
     <script>try{const t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch{}</script>
-    <script type="module" src="../assets/realm/realm.js"></script>
-    <link rel="modulepreload" href="./unicons.js" />
-    <link rel="preload" href="./unicons.html" as="fetch" crossorigin />
-    <link rel="preload" href="./sets.json" as="fetch" crossorigin />
-    <link rel="preload" href="./meta/lu.json" as="fetch" crossorigin />
+    <script type="module" src="../dist/realm.js"></script>
+    <link rel="modulepreload" href="../dist/unicons/unicons.js" />
+    <link rel="preload" href="../dist/unicons/unicons.html" as="fetch" crossorigin />
+    <link rel="preload" href="../dist/unicons/sets.json" as="fetch" crossorigin />
+    <link rel="preload" href="../dist/unicons/meta/lu.json" as="fetch" crossorigin />
   </head>
   <body>
-    <import-element from="./unicons.html"></import-element>
-    <import-element from="../assets/ui/components/slider.html"></import-element>
-    <import-element from="../assets/ui/components/select.html"></import-element>
-    <import-element from="../assets/ui/components/toggle-group.html"></import-element>
+    <import-element from="../dist/unicons/unicons.html"></import-element>
+    <import-element from="../dist/ui/components/slider.html"></import-element>
+    <import-element from="../dist/ui/components/select.html"></import-element>
+    <import-element from="../dist/ui/components/toggle-group.html"></import-element>
 
     <header class="masthead">
       <a class="brand" href="./"><img src="./assets/logo.svg" alt="Unicons" width="2714" height="474" /></a>
@@ -41,9 +41,9 @@
         <h1 id="intro-title">50,939 icons in one tag</h1>
         <p>Use any icon from 31 open source sets with one <code>&lt;u-icon&gt;</code> tag. Each page downloads only the icons it shows: no icon font, nothing to install.</p>
         <html-code code='<script type="module"
-  src="https://cdn.jsdelivr.net/npm/@realmorg/realm@alpha/dist/realm.js"></script>
+  src="https://realm.js.org/dist/realm.js"></script>
 <import-element
-  from="https://cdn.jsdelivr.net/npm/@realmorg/unicons@alpha/dist/unicons.html">
+  from="https://realm.js.org/dist/unicons/unicons.html">
 </import-element>
 
 <u-icon set="tb" name="heart"></u-icon>'></html-code>
@@ -171,7 +171,7 @@
 
         observe(() => {
           const set = catalog.set;
-          fetch(`./meta/${set}.json`, { signal })
+          fetch(`../dist/unicons/meta/${set}.json`, { signal })
             .then((response) => response.json())
             .then((names) => {
               if (catalog.set === set) catalog.shown = { set, names };
@@ -646,7 +646,7 @@
         </section>
         <fieldset>
           <legend>Icon sets <span class="total"><slot name="#catalog.sets.length"></slot></span></legend>
-          <ul class="sets" fetch="./sets.json" trigger="load" into="#catalog.sets">
+          <ul class="sets" fetch="../dist/unicons/sets.json" trigger="load" into="#catalog.sets">
             <li repeat="#catalog.choices" as="choice" key="id">
               <label>
                 <input type="radio" name="set" _value="#choice.id" _checked="#choice.selected" onchange="choose(this.value)" />
