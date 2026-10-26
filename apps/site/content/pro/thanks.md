@@ -12,7 +12,7 @@ Here is what happens next:
 
 1. **Check your email.** Polar sends your receipt, with a link to your customer portal.
 2. **Open your customer portal.** It has your licence key, the REALM Pro download and your invoices.
-3. **Read `INSTALL.md` in the download.** It shows the three ways to use Pro: copying the files, the npm package, or the source on GitHub.
+3. **Unzip the download and run `bun run studio`.** REALM Pro Studio opens in your browser, where you can preview every item and add it to your project. `INSTALL.md` in the download also covers the npm package and the source on GitHub.
 
 REALM Pro is in early access. When new items ship, the download in your portal is updated, and you can fetch it again at any time.
 
