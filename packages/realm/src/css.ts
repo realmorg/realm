@@ -19,35 +19,37 @@ export const scanCss = (css: string, into: CssBindings) => {
   for (const match of css.matchAll(STATE)) into.states.add(match[1] as string);
 };
 
-const attributeMirror = (instance: Instance, names: string[]) => {
+export const attributesOf = (instance: Instance) => {
+  if (instance.attrs) return instance.attrs;
   const host = instance.host;
   const mirror = reactive<Record<string, string | null>>({});
   const read = () => {
-    for (const name of names) mirror[name] = host.getAttribute(name);
+    for (const { name, value } of host.attributes) mirror[name] = value;
+    for (const name of Object.keys(mirror)) if (!host.hasAttribute(name)) mirror[name] = null;
   };
   read();
   const observer = new MutationObserver(read);
-  observer.observe(host, { attributes: true, attributeFilter: names });
+  observer.observe(host, { attributes: true });
   instance.disposers.push(() => observer.disconnect());
-  return mirror;
+  instance.attrs = new Proxy(mirror, {
+    get: (target, name: string) => target[name] ?? null,
+    set(_, name: string, value: unknown) {
+      if (value === null || value === undefined || value === false) host.removeAttribute(name);
+      else host.setAttribute(name, value === true ? "" : String(value));
+      read();
+      return true;
+    },
+  });
+  return instance.attrs;
 };
 
 export const bindCss = (instance: Instance, scope: Scope) => {
   const { variables, states } = instance.definition.css;
   if (!variables.size && !states.size) return;
-  const parsed = [
-    ...[...variables].map((name) => VARIABLE_NAME.exec(name) as RegExpExecArray),
-    ...[...states].map((name) => STATE_NAME.exec(name) as RegExpExecArray),
-  ];
-  const loose = parsed
-    .filter((m) => m[1] === "attr" && !instance.propAttributes.has(m[2] as string))
-    .map((m) => m[2] as string);
-  const mirror = attributeMirror(instance, [...new Set(loose)]);
-
   const read = (kind: string, name: string) => {
     if (kind === "attr") {
       const key = instance.propAttributes.get(name);
-      return key === undefined ? mirror[name] : instance.props?.[key];
+      return key === undefined ? attributesOf(instance)[name] : instance.props?.[key];
     }
     return readReference(
       { text: `#${name}`, negate: false, kind: "#", path: name.split("-") },

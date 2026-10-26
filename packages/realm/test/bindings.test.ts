@@ -198,6 +198,18 @@ describe("attribute bindings and refs", () => {
     expect(text(shadow.querySelector("button"))).toBe("1");
     expect(warned(`"soon" is not a duration`)).toBe(true);
   });
+
+  test("a loop variable named event is the item in its handlers", async () => {
+    const { shadow } = await component(
+      `const s = useState({ events: [{ id: 1, name: "Launch" }], picked: "" });
+       function pick(item) { s.picked = item.name; }`,
+      `<ul><li repeat="#s.events" as="event" key="id" onclick="pick(event)"><slot name="#event.name"></slot></li></ul>
+       <p><slot name="#s.picked"></slot></p>`,
+    );
+    (shadow.querySelector("li") as HTMLLIElement).click();
+    await tick();
+    expect(text(shadow.querySelector("p"))).toBe("Launch");
+  });
 });
 
 describe("conditional rendering", () => {

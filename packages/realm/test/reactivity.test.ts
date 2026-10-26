@@ -35,6 +35,17 @@ describe("reactive", () => {
     expect(isObservable(1)).toBe(false);
   });
 
+  test("frozen data is read as it is", () => {
+    const rows = Object.freeze([Object.freeze({ id: 1, tags: Object.freeze(["a"]) })]);
+    const state = reactive({ rows });
+    expect(state.rows).toBe(rows);
+    expect(state.rows[0]).toBe(rows[0]);
+    expect(state.rows[0]?.tags[0]).toBe("a");
+    const frozen = Object.freeze({ nested: Object.freeze({ value: 1 }) });
+    expect(reactive(frozen)).toBe(frozen);
+    expect(isObservable(frozen)).toBe(false);
+  });
+
   test("batches several changes into one run", async () => {
     const state = reactive({ a: 1, b: 2 });
     const spy = vi.fn(() => state.a + state.b);

@@ -41,7 +41,8 @@ export const collectHandlers = (
 const handlerSource = (vars: string[], code: string, names: Set<string>) => {
   const skip = new Set([...names, ...vars, ...HELPERS, "event"]);
   const lookups = [...freeNames(code)].filter((name) => !skip.has(name));
-  const params = ["event", ...vars].join(", ");
+  // A loop variable named event takes the name; the event itself is still the first argument.
+  const params = [vars.includes("event") ? "_" : "event", ...vars].join(", ");
   const resolved = lookups
     .map((name) => `const ${name} = lookup(${JSON.stringify(name)}, true);`)
     .join("\n");

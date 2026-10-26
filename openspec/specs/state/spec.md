@@ -6,7 +6,7 @@ Reactive state with useState, cached derived values through getters, and observe
 ## Requirements
 
 ### Requirement: useState
-useState SHALL return a reactive proxy. Property writes, array mutations, added and deleted keys SHALL notify readers. Getters SHALL be cached derived values. Updates SHALL be batched per microtask.
+useState SHALL return a reactive proxy. Property writes, array mutations, added and deleted keys SHALL notify readers. Getters SHALL be cached derived values. Updates SHALL be batched per microtask. Frozen objects and arrays SHALL NOT be made reactive and SHALL be read as they are, also when nested inside reactive data.
 
 #### Scenario: returns the same proxy for the same object
 - **WHEN** an object is made reactive twice
@@ -15,6 +15,10 @@ useState SHALL return a reactive proxy. Property writes, array mutations, added 
 #### Scenario: leaves non-plain objects untouched
 - **WHEN** a non-plain object is passed
 - **THEN** it is returned unchanged
+
+#### Scenario: frozen data is read as it is
+- **WHEN** state holds a frozen array of frozen objects, or is itself frozen
+- **THEN** reading any item returns the frozen value without errors
 
 #### Scenario: batches several changes into one run
 - **WHEN** several values change in one task

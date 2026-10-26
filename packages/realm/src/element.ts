@@ -1,5 +1,5 @@
 import { processTree } from "./bindings";
-import { bindCss } from "./css";
+import { attributesOf, bindCss } from "./css";
 import { bindControl } from "./forms";
 import { bindPageHandler, definePageHandlerProperty } from "./handlers";
 import { report, warn } from "./log";
@@ -91,30 +91,6 @@ export class Instance {
     instances.delete(this.host);
   }
 }
-
-const attributesOf = (instance: Instance) => {
-  if (instance.attrs) return instance.attrs;
-  const host = instance.host;
-  const mirror = reactive<Record<string, string | null>>({});
-  const read = () => {
-    for (const { name, value } of host.attributes) mirror[name] = value;
-    for (const name of Object.keys(mirror)) if (!host.hasAttribute(name)) mirror[name] = null;
-  };
-  read();
-  const observer = new MutationObserver(read);
-  observer.observe(host, { attributes: true });
-  instance.disposers.push(() => observer.disconnect());
-  instance.attrs = new Proxy(mirror, {
-    get: (target, name: string) => target[name] ?? null,
-    set(_, name: string, value: unknown) {
-      if (value === null || value === undefined || value === false) host.removeAttribute(name);
-      else host.setAttribute(name, value === true ? "" : String(value));
-      read();
-      return true;
-    },
-  });
-  return instance.attrs;
-};
 
 type TimerCallback = (...args: unknown[]) => void;
 

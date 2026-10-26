@@ -164,10 +164,9 @@ export const untrack = <T>(fn: () => T): T => {
 };
 
 export const isObservable = (value: unknown): value is object => {
-  if (value === null || typeof value !== "object") return false;
-  if (Array.isArray(value)) return true;
+  if (value === null || typeof value !== "object" || Object.isFrozen(value)) return false;
   const proto = Object.getPrototypeOf(value);
-  return proto === Object.prototype || proto === null;
+  return !proto || proto === Object.prototype || Array.isArray(value);
 };
 
 export const toRaw = <T>(value: T): T =>
