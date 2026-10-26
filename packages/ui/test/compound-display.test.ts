@@ -195,8 +195,9 @@ describe("input group parts", () => {
     const group = host.querySelector("ui-input-group") as Element;
     const [end, start] = [...group.querySelectorAll("ui-input-group-addon")];
     const input = part(group, "input");
-    expect(box(start as Element).right).toBeLessThanOrEqual(box(input).left);
-    expect(box(end as Element).left).toBeGreaterThanOrEqual(box(input).right);
+    // Firefox reports fractional positions that differ in the last decimal places.
+    expect(box(start as Element).right).toBeLessThanOrEqual(box(input).left + 0.01);
+    expect(box(end as Element).left).toBeGreaterThanOrEqual(box(input).right - 0.01);
     expect(new FormData(host.querySelector("form") as HTMLFormElement).get("site")).toBe(
       "realm.dev",
     );

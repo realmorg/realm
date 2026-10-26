@@ -182,7 +182,8 @@ group("dev server", () => {
       configFile: false,
       logLevel: "silent",
       plugins: [realm()],
-      server: { port: 0 },
+      // An explicit address, because localhost resolves to ::1 in some containers and fetch does not follow.
+      server: { port: 0, host: "127.0.0.1" },
     });
     await server.listen();
     const origin = server.resolvedUrls?.local[0] as string;
