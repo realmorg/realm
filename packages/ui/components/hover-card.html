@@ -61,11 +61,24 @@
 
 <custom-element name="ui-hover-card-content">
   <script>
-    defineProps({
+    const props = defineProps({
       placement: prop.enum(["bottom", "top", "left", "right"]).default("bottom"),
     });
 
+    const BLOCK_SIDES = new Set(["bottom", "top"]);
+
+    // Once open, it keeps the side it opened on. Re-deciding while the page scrolls makes it jump,
+    // because iOS Safari's toolbar changes the viewport height mid-scroll.
+    function opened(event) {
+      internals.states.delete("flipped");
+      if (event.newState !== "open" || !BLOCK_SIDES.has(props.placement)) return;
+      const box = host.getBoundingClientRect();
+      if (box.bottom > innerHeight || box.top < 0) internals.states.add("flipped");
+    }
+
     attrs.popover ??= "manual";
+
+    listen("toggle", opened);
   </script>
 
   <style>
@@ -90,11 +103,20 @@
       position-area: bottom;
       position-try-fallbacks: flip-block, flip-inline;
     }
+    :host(:popover-open) {
+      position-try-fallbacks: flip-inline;
+    }
     :host(:state(attr-width)) {
       width: calc(var(--spacing) * var(--attr-width));
     }
     :host(:state(attr-placement-is-top)) {
       position-area: top;
+    }
+    :host(:state(flipped)) {
+      position-area: top;
+    }
+    :host(:state(flipped):state(attr-placement-is-top)) {
+      position-area: bottom;
     }
     :host(:state(attr-placement-is-left)) {
       position-area: left;

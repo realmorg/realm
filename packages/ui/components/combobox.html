@@ -55,6 +55,11 @@
       combo.query = "";
       combo.active = Math.max(0, combo.visible.findIndex((item) => item.chosen));
       refs.list.showPopover();
+      // Once open, the list keeps the side it opened on. Re-deciding while the page scrolls makes
+      // it jump, because iOS Safari's toolbar changes the viewport height mid-scroll.
+      internals.states.delete("flipped");
+      const box = refs.list.getBoundingClientRect();
+      if (box.bottom > innerHeight || box.top < 0) internals.states.add("flipped");
     }
 
     function close() {
@@ -158,6 +163,13 @@
       height: fit-content;
       position-area: bottom span-right;
       position-try-fallbacks: flip-block;
+    }
+    [role="listbox"]:popover-open {
+      position-try-fallbacks: none;
+    }
+    :host(:state(flipped)) [role="listbox"] {
+      position-area: top span-right;
+      margin: 0 0 calc(var(--spacing) * 1);
     }
     [role="option"] {
       display: flex;

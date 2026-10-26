@@ -69,11 +69,24 @@
 
 <custom-element name="ui-tooltip-content" role="tooltip">
   <script>
-    defineProps({
+    const props = defineProps({
       placement: prop.enum(["top", "bottom", "left", "right"]).default("top"),
     });
 
+    const BLOCK_SIDES = new Set(["top", "bottom"]);
+
+    // Once open, it keeps the side it opened on. Re-deciding while the page scrolls makes it jump,
+    // because iOS Safari's toolbar changes the viewport height mid-scroll.
+    function opened(event) {
+      internals.states.delete("flipped");
+      if (event.newState !== "open" || !BLOCK_SIDES.has(props.placement)) return;
+      const box = host.getBoundingClientRect();
+      if (box.bottom > innerHeight || box.top < 0) internals.states.add("flipped");
+    }
+
     attrs.popover ??= "manual";
+
+    listen("toggle", opened);
   </script>
 
   <style>
@@ -99,6 +112,17 @@
     :host(:state(attr-placement-is-bottom)) {
       position-area: bottom;
       margin: calc(var(--spacing) * 1) 0 0;
+    }
+    :host(:popover-open) {
+      position-try-fallbacks: none;
+    }
+    :host(:state(flipped)) {
+      position-area: bottom;
+      margin: calc(var(--spacing) * 1) 0 0;
+    }
+    :host(:state(flipped):state(attr-placement-is-bottom)) {
+      position-area: top;
+      margin: 0 0 calc(var(--spacing) * 1);
     }
     :host(:state(attr-placement-is-left)) {
       position-area: left;

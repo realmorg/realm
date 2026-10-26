@@ -30,12 +30,6 @@ const depthOf = (el: Element): number => {
   return root instanceof ShadowRoot ? 1 + depthOf(root.host) : 0;
 };
 
-const ancestorSettingUp = (el: Element) => {
-  for (let node = parentOf(el); node; node = parentOf(node))
-    if (node instanceof Element && settingUp.has(node.localName)) return node.localName;
-  return undefined;
-};
-
 export class Instance {
   readonly controller = new AbortController();
   readonly refs = reactive<Record<string, Element>>({});
@@ -234,6 +228,9 @@ export class RealmElement extends HTMLElement {
   readonly #internals = this.attachInternals();
   #instance: Instance | undefined;
   #pending = false;
+  // Set while this element waits for an ancestor, so its descendants wait behind it and never
+  // set up before their parent.
+  #waiting: Promise<unknown> | undefined;
 
   get #definition() {
     return (this.constructor as typeof RealmElement).definition;
@@ -243,12 +240,19 @@ export class RealmElement extends HTMLElement {
     this.#pending = false;
     for (const attribute of this.attributes) bindPageHandler(this, attribute.name, attribute.value);
     if (this.#instance || this.closest("custom-element")) return;
-    const ancestor = ancestorSettingUp(this);
-    if (ancestor) {
-      void customElements.whenDefined(ancestor).then(() => {
-        if (this.isConnected) this.connectedCallback();
-      });
-      return;
+    for (let node = parentOf(this); node; node = parentOf(node)) {
+      const wait =
+        node instanceof RealmElement
+          ? node.#waiting
+          : settingUp.has((node as Element).localName) &&
+            customElements.whenDefined((node as Element).localName);
+      if (wait) {
+        this.#waiting = wait.then(() => {
+          this.#waiting = undefined;
+          if (this.isConnected) this.connectedCallback();
+        });
+        return;
+      }
     }
     const depth = depthOf(this);
     if (depth > 1000) {

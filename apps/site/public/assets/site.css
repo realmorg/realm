@@ -233,6 +233,8 @@ theme-builder:not(:defined) {
   background: var(--muted);
   font-family: var(--font-mono);
   font-size: 0.875em;
+  /* A long call chain has no spaces, so on a phone it would widen the page. */
+  overflow-wrap: anywhere;
 }
 /* Wide tables scroll inside their own box instead of widening the page. */
 .prose .table-scroll {

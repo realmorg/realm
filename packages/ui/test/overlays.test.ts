@@ -247,6 +247,111 @@ describe("ui-dropdown-menu", () => {
   });
 });
 
+describe("anchored menus keep their side", () => {
+  test("a dropdown that opens above its trigger stays above while the page scrolls", async () => {
+    const host = await render(`
+      <div style="height: calc(100vh - 48px)"></div>
+      <ui-dropdown-menu>
+        <ui-dropdown-menu-trigger><ui-button>Open</ui-button></ui-dropdown-menu-trigger>
+        <ui-dropdown-menu-content>
+          <ui-menu-item value="a">One</ui-menu-item>
+          <ui-menu-item value="b">Two</ui-menu-item>
+          <ui-menu-item value="c">Three</ui-menu-item>
+        </ui-dropdown-menu-content>
+      </ui-dropdown-menu>
+      <div style="height: 200vh"></div>`);
+    const trigger = host.querySelector("ui-dropdown-menu-trigger") as HTMLElement;
+    const menu = host.querySelector("ui-dropdown-menu-content") as HTMLElement;
+    const above = () => menu.getBoundingClientRect().bottom <= trigger.getBoundingClientRect().top;
+    part<HTMLButtonElement>(host.querySelector("ui-button"), "button").click();
+    await vi.waitFor(() => expect(menu.matches(":popover-open") && above()).toBe(true));
+    const scrolled = scrollY;
+    scrollBy(0, innerHeight / 2);
+    await new Promise(requestAnimationFrame);
+    await new Promise(requestAnimationFrame);
+    expect(trigger.getBoundingClientRect().top).toBeLessThan(innerHeight / 2);
+    expect(above()).toBe(true);
+    menu.hidePopover();
+    scrollTo(0, scrolled);
+  });
+});
+
+const BOTTOM_OF_SCREEN = [
+  {
+    name: "a popover",
+    markup: `<ui-popover><ui-popover-trigger><ui-button>Open</ui-button></ui-popover-trigger><ui-popover-content>Body</ui-popover-content></ui-popover>`,
+    trigger: "ui-popover-trigger",
+    overlay: (host: HTMLElement) => host.querySelector("ui-popover-content") as HTMLElement,
+    open: (host: HTMLElement) =>
+      part<HTMLButtonElement>(host.querySelector("ui-button"), "button").click(),
+  },
+  {
+    name: "a hover card",
+    markup: `<ui-hover-card open-delay="0" close-delay="0"><ui-hover-card-trigger><a href="#p">@realm</a></ui-hover-card-trigger><ui-hover-card-content>Card</ui-hover-card-content></ui-hover-card>`,
+    trigger: "ui-hover-card-trigger",
+    overlay: (host: HTMLElement) => host.querySelector("ui-hover-card-content") as HTMLElement,
+    open: (host: HTMLElement) =>
+      part(host.querySelector("ui-hover-card-trigger"), "trigger").dispatchEvent(
+        new FocusEvent("focusin", { bubbles: true }),
+      ),
+  },
+  {
+    name: "a tooltip placed below",
+    markup: `<ui-tooltip delay="0"><ui-tooltip-trigger><ui-button>Save</ui-button></ui-tooltip-trigger><ui-tooltip-content placement="bottom">Save the file</ui-tooltip-content></ui-tooltip>`,
+    trigger: "ui-tooltip-trigger",
+    overlay: (host: HTMLElement) => host.querySelector("ui-tooltip-content") as HTMLElement,
+    open: (host: HTMLElement) =>
+      part<HTMLButtonElement>(host.querySelector("ui-button"), "button").focus(),
+  },
+  {
+    name: "a menubar menu",
+    markup: `<ui-menubar><ui-menubar-menu><ui-menubar-trigger>File</ui-menubar-trigger><ui-menubar-content><ui-menu-item>New</ui-menu-item><ui-menu-item>Open</ui-menu-item></ui-menubar-content></ui-menubar-menu></ui-menubar>`,
+    trigger: "ui-menubar-trigger",
+    overlay: (host: HTMLElement) => host.querySelector("ui-menubar-content") as HTMLElement,
+    open: (host: HTMLElement) =>
+      part<HTMLButtonElement>(host.querySelector("ui-menubar-trigger"), "trigger").click(),
+  },
+  {
+    name: "a combobox list",
+    markup: `<ui-combobox aria-label="Framework"><option value="a">A</option><option value="b">B</option><option value="c">C</option></ui-combobox>`,
+    trigger: "ui-combobox",
+    overlay: (host: HTMLElement) => part(host.querySelector("ui-combobox"), "list"),
+    open: (host: HTMLElement) => part(host.querySelector("ui-combobox"), "input").focus(),
+  },
+];
+
+describe("anchored overlays keep their side", () => {
+  for (const { name, markup, trigger, overlay, open } of BOTTOM_OF_SCREEN)
+    test(`${name} that opens above its trigger stays above while the page scrolls`, async () => {
+      const host = await render(
+        `<div style="height: calc(100vh - 48px)"></div>${markup}<div style="height: 200vh"></div>`,
+      );
+      const anchor = host.querySelector(trigger) as HTMLElement;
+      const box = overlay(host);
+      const above = () => box.getBoundingClientRect().bottom <= anchor.getBoundingClientRect().top;
+      open(host);
+      await vi.waitFor(() => expect(box.matches(":popover-open") && above()).toBe(true));
+      const scrolled = scrollY;
+      scrollBy(0, innerHeight / 2);
+      await new Promise(requestAnimationFrame);
+      await new Promise(requestAnimationFrame);
+      expect(anchor.getBoundingClientRect().top).toBeLessThan(innerHeight / 2);
+      expect(above()).toBe(true);
+      scrollTo(0, scrolled);
+    });
+
+  test("an overlay placed to the side never flips up or down", async () => {
+    const host = await render(
+      `<div style="height: calc(100vh - 48px)"></div><ui-popover><ui-popover-trigger><ui-button>Open</ui-button></ui-popover-trigger><ui-popover-content placement="right">Body</ui-popover-content></ui-popover>`,
+    );
+    const content = host.querySelector("ui-popover-content") as HTMLElement;
+    part<HTMLButtonElement>(host.querySelector("ui-button"), "button").click();
+    await vi.waitFor(() => expect(content.matches(":popover-open")).toBe(true));
+    expect(getComputedStyle(content).getPropertyValue("position-area")).toBe("right");
+    content.hidePopover();
+  });
+});
+
 describe("ui-toaster", () => {
   test("shows toasts from document events and its method, then dismisses them", async () => {
     const host = await render(`<ui-toaster position="top-center" duration="40"></ui-toaster>`);

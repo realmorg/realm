@@ -1,6 +1,7 @@
 import { afterEach, beforeEach, describe, expect, type MockInstance, test, vi } from "vitest";
 import { defineComponent, getDefinition } from "../src/definition";
 import { instances } from "../src/element";
+import { settingUp } from "../src/registry";
 import { define, render, root, tag, text, tick } from "./helpers";
 
 let warn: MockInstance<typeof console.warn>;
@@ -501,6 +502,32 @@ describe("scope", () => {
     ) as HTMLElement;
     expect(text(root(spriteEl).querySelector("p"))).toBe("kaplay");
     expect(warned(`<${sprite}> reads "world"`)).toBe(false);
+    el.remove();
+  });
+
+  test("a child added while its parent waits for an ancestor sets up after the parent", async () => {
+    const outer = tag("outer");
+    const parent = tag("parent");
+    const child = tag("child");
+    await define(`
+      <custom-element name="${parent}">
+        <script>const tabs = { orientation: "horizontal" };</script>
+        <slot></slot>
+      </custom-element>
+      <custom-element name="${child}"><p><slot name="#tabs.orientation">none</slot></p></custom-element>`);
+    settingUp.add(outer);
+    const el = document.createElement(outer);
+    el.innerHTML = `<${parent}></${parent}>`;
+    document.body.append(el);
+    const parentEl = el.firstElementChild as HTMLElement;
+    settingUp.delete(outer);
+    customElements.define(outer, class extends HTMLElement {});
+    const childEl = document.createElement(child);
+    parentEl.append(childEl);
+    await tick();
+    await tick();
+    expect(text(root(childEl).querySelector("p"))).toBe("horizontal");
+    expect(warned(`<${child}> "#tabs.orientation" is not defined`)).toBe(false);
     el.remove();
   });
 

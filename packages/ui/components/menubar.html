@@ -94,8 +94,14 @@
   <script>
     const ITEMS = ":is(ui-menu-item, ui-menu-checkbox-item, ui-menu-radio-item):not([disabled])";
 
+    // Once open, it keeps the side it opened on. Re-deciding while the page scrolls makes it jump,
+    // because iOS Safari's toolbar changes the viewport height mid-scroll.
     function opened(event) {
-      if (event.newState === "open") host.querySelector(ITEMS)?.focus();
+      if (event.newState !== "open") return;
+      internals.states.delete("flipped");
+      const box = host.getBoundingClientRect();
+      if (box.bottom > innerHeight || box.top < 0) internals.states.add("flipped");
+      host.querySelector(ITEMS)?.focus({ preventScroll: true });
     }
 
     function leave(event) {
@@ -130,6 +136,13 @@
       overflow-y: auto;
       position-area: bottom span-right;
       position-try-fallbacks: flip-block, flip-inline;
+    }
+    :host(:popover-open) {
+      position-try-fallbacks: flip-inline;
+    }
+    :host(:state(flipped)) {
+      position-area: top span-right;
+      margin: 0 0 calc(var(--spacing) * 2) calc(var(--spacing) * -1);
     }
   </style>
 
