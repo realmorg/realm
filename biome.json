@@ -6,7 +6,16 @@
     "useIgnoreFile": true
   },
   "files": {
-    "includes": ["**", "!**/dist", "!**/coverage", "!**/*.md"]
+    "includes": [
+      "**",
+      "!**/dist",
+      "!**/coverage",
+      "!**/*.md",
+      "!pro",
+      "!apps/site/public/google*.html",
+      "!apps/site/public/yandex_*.html",
+      "!apps/site/public/BingSiteAuth.xml"
+    ]
   },
   "formatter": {
     "enabled": true,
