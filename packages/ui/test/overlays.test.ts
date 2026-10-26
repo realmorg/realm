@@ -337,6 +337,9 @@ describe("anchored overlays keep their side", () => {
       await new Promise(requestAnimationFrame);
       expect(anchor.getBoundingClientRect().top).toBeLessThan(innerHeight / 2);
       expect(above()).toBe(true);
+      box.hidePopover();
+      await vi.waitFor(() => expect(box.matches(":popover-open")).toBe(false));
+      await new Promise((resolve) => setTimeout(resolve));
       scrollTo(0, scrolled);
     });
 
