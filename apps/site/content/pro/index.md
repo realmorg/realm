@@ -42,8 +42,8 @@ nav: REALM Pro
 <section class="pro-band" aria-labelledby="components">
 <div class="pro-wrap">
 <header class="pro-head">
-<h2 id="components">Data grid, date range picker and flipbook components</h2>
-<p>Front-end teams usually buy these as separate libraries for React, Vue or jQuery. In REALM Pro they are framework-free web components that read your design tokens, so they match the rest of your interface.</p>
+<h2 id="components">{{pro:components}} components teams usually buy as separate libraries</h2>
+<p>Data grids, date pickers, flipbooks and the other widgets below are usually sold as paid add-ons for React, Vue or jQuery. In REALM Pro they are framework-free web components that read your design tokens, so they match the rest of your interface.</p>
 </header>
 <div class="pro-feature">
 <figure class="pro-video">
@@ -95,6 +95,8 @@ nav: REALM Pro
 </ul>
 </div>
 </div>
+<h3 class="pro-subhead">Every component in REALM Pro</h3>
+<!-- pro-components -->
 </div>
 </section>
 

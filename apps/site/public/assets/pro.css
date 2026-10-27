@@ -254,6 +254,54 @@
     center / contain no-repeat;
 }
 
+/* All components */
+.pro-subhead {
+  margin: calc(var(--spacing) * 24) 0 calc(var(--spacing) * 8);
+  font-size: var(--text-2xl);
+  letter-spacing: -0.02em;
+  text-align: center;
+}
+.pro-components {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(calc(var(--spacing) * 64), 1fr));
+  gap: calc(var(--spacing) * 6);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.pro-components li {
+  display: grid;
+  align-content: start;
+  gap: calc(var(--spacing) * 2);
+  padding-bottom: calc(var(--spacing) * 5);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--background);
+}
+.pro-components img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 720 / 394;
+  object-fit: cover;
+  object-position: top left;
+  margin-bottom: calc(var(--spacing) * 2);
+  border-bottom: 1px solid var(--border);
+}
+.pro-components code,
+.pro-components strong,
+.pro-components span {
+  margin-inline: calc(var(--spacing) * 5);
+}
+.pro-components code {
+  justify-self: start;
+}
+.pro-components span {
+  color: var(--muted-foreground);
+  font-size: var(--text-sm);
+  line-height: 1.5;
+}
+
 /* Catalogue */
 .pro-numbers {
   display: grid;
@@ -711,6 +759,9 @@
   }
   .pro-numbers div {
     padding: calc(var(--spacing) * 6) calc(var(--spacing) * 3);
+  }
+  .pro-components {
+    grid-template-columns: minmax(0, 1fr);
   }
   .pro-families {
     grid-template-columns: repeat(2, minmax(0, 1fr));

@@ -140,6 +140,13 @@ const proThemes = () =>
         `<li style="--swatch-bg: ${t.background}; --swatch-fg: ${t.foreground}; --swatch-primary: ${t.primary}; --swatch-accent: ${t.accent}"><span class="pro-swatch" aria-hidden="true"><span></span><span></span><span></span></span>${escapeHtml(t.name)}</li>`,
     )
     .join("")}</ul>`;
+const proComponents = () =>
+  `<ul class="pro-components">${(PRO.componentList ?? [])
+    .map(
+      (c) =>
+        `<li><img src="{{root}}pro/landing/components/${c.name}.webp" alt="" width="720" height="394" loading="lazy" decoding="async"><code class="pro-tag">&lt;${c.name}&gt;</code><strong>${escapeHtml(c.title)}</strong><span>${escapeHtml(c.description)}</span></li>`,
+    )
+    .join("")}</ul>`;
 const withPro = (text) =>
   PRO
     ? text
@@ -149,6 +156,7 @@ const withPro = (text) =>
         })
         .replace("<!-- pro-catalogue -->", proCatalogue)
         .replace("<!-- pro-themes -->", proThemes)
+        .replace("<!-- pro-components -->", proComponents)
     : text;
 
 const withVersions = (text) =>
