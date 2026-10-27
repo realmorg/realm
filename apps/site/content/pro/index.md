@@ -1,7 +1,7 @@
 ---
 title: REALM Pro
-seoTitle: REALM Pro · Data grid, blocks, layouts and themes for REALM
-description: A 100,000-row data grid, a date range picker, a flipbook, {{pro:blocks}} blocks, {{pro:layouts}} page layouts and {{pro:themes}} themes for REALM. One-time payment, 14-day refund.
+seoTitle: REALM Pro · Web component UI kit, blocks and templates
+description: Premium web components for REALM: data grid, date range picker, flipbook, {{pro:blocks}} UI blocks, {{pro:layouts}} page templates, {{pro:themes}} themes. Pay once.
 layout: landing
 nav: REALM Pro
 ---
@@ -11,8 +11,8 @@ nav: REALM Pro
 <section class="pro-hero">
 <div class="pro-wrap pro-hero-copy">
 <a class="pro-status" href="#roadmap"><span class="pro-status-dot" aria-hidden="true"></span>Early access · {{pro:total}} items ready</a>
-<h1>The hard parts of your app, already built.</h1>
-<p class="pro-lead">A data grid that scrolls 100,000 rows, a date range picker, a flipbook, {{pro:blocks}} blocks, {{pro:layouts}} page layouts and {{pro:themes}} themes. Each one is a REALM web component in one HTML file: copy it into your project and load it with a tag. No build step.</p>
+<h1>Web components, UI blocks and page templates for REALM</h1>
+<p class="pro-lead">REALM Pro is a UI kit for <a href="{{root}}docs/">REALM</a>: a data grid, a date range picker and a flipbook component, {{pro:blocks}} UI blocks, {{pro:layouts}} responsive page templates and {{pro:themes}} themes built on design tokens. Each item is an accessible, framework-free custom element in one HTML file, with light and dark mode. Copy it into your project and load it with one tag.</p>
 <div class="pro-actions">
 <a class="action primary" href="https://buy.polar.sh/polar_cl_LGiAIgKHE9dVha4DOPmnF8UnAL8r6P0JDtOl81VgV0b">Get early access, $149 <u-icon name="arrow-right"></u-icon></a>
 <a class="action outline" href="#catalogue"><u-icon name="layout-grid"></u-icon> Browse the catalogue</a>
@@ -42,8 +42,8 @@ nav: REALM Pro
 <section class="pro-band" aria-labelledby="components">
 <div class="pro-wrap">
 <header class="pro-head">
-<h2 id="components">Three components teams usually buy separately</h2>
-<p>Grids, date pickers and flipbooks are sold as paid add-ons for React, Vue and jQuery. These are built for REALM, run without a framework and come with the rest of Pro.</p>
+<h2 id="components">Data grid, date range picker and flipbook components</h2>
+<p>Front-end teams usually buy these as separate libraries for React, Vue or jQuery. In REALM Pro they are framework-free web components that read your design tokens, so they match the rest of your interface.</p>
 </header>
 <div class="pro-feature">
 <figure class="pro-video">
@@ -52,7 +52,7 @@ nav: REALM Pro
 <div class="pro-feature-copy">
 <code class="pro-tag">&lt;pro-data-grid&gt;</code>
 <h3>Data grid</h3>
-<p>Scrolls 100,000 rows at about 7 ms of work per frame, because only the rows on screen exist in the page.</p>
+<p>Virtual scrolling renders only the rows on screen, so a table of 100,000 rows scrolls at about 7 ms of work per frame.</p>
 <ul class="pro-checks">
 <li>Sort, multi-sort, column filters and search across columns</li>
 <li>Resize, reorder, pin and hide columns</li>
@@ -70,7 +70,7 @@ nav: REALM Pro
 <div class="pro-feature-copy">
 <code class="pro-tag">&lt;pro-date-range-picker&gt;</code>
 <h3>Date range picker</h3>
-<p>Two months side by side, presets such as Last 30 days, and a value your form submits as <code>2026-10-01/2026-10-14</code>.</p>
+<p>A two-month calendar with presets such as Last 30 days. It is a form control: the selected range submits as <code>2026-10-01/2026-10-14</code>.</p>
 <ul class="pro-checks">
 <li>Month and weekday names, and the first day of the week, from the reader's language</li>
 <li>Minimum and maximum dates, and blocked days</li>
@@ -86,7 +86,7 @@ nav: REALM Pro
 <div class="pro-feature-copy">
 <code class="pro-tag">&lt;pro-flipbook&gt;</code>
 <h3>Flipbook</h3>
-<p>Turns any HTML into a book: the page curls under the pointer, folds with shading and springs back if you let go early.</p>
+<p>A page-flip component for catalogues, magazines and brochures written in HTML. The page curls with the pointer, casts a shadow along the fold and returns if you let go early.</p>
 <ul class="pro-checks">
 <li>One page or a two-page spread, chosen by width</li>
 <li>Hard covers, thumbnails, zoom and full screen</li>
@@ -101,13 +101,13 @@ nav: REALM Pro
 <section class="pro-band muted" id="catalogue" aria-labelledby="catalogue-title">
 <div class="pro-wrap">
 <header class="pro-head">
-<h2 id="catalogue-title">{{pro:total}} items, grouped by the job they do</h2>
-<p>Blocks are sections you drop into a page. Layouts are whole pages made from blocks. Every one follows your theme and works in light and dark mode.</p>
+<h2 id="catalogue-title">What is included in REALM Pro?</h2>
+<p>{{pro:total}} items. UI blocks are page sections such as a pricing table, a sign-in form or a stats row. Page templates combine blocks into complete screens. Every item follows your theme and supports light and dark mode.</p>
 </header>
 <dl class="pro-numbers">
 <div><dt>Components</dt><dd>{{pro:components}}</dd></div>
-<div><dt>Blocks</dt><dd>{{pro:blocks}}</dd></div>
-<div><dt>Page layouts</dt><dd>{{pro:layouts}}</dd></div>
+<div><dt>UI blocks</dt><dd>{{pro:blocks}}</dd></div>
+<div><dt>Page templates</dt><dd>{{pro:layouts}}</dd></div>
 <div><dt>Themes</dt><dd>{{pro:themes}}</dd></div>
 </dl>
 <!-- pro-catalogue -->
@@ -117,8 +117,8 @@ nav: REALM Pro
 <section class="pro-band" aria-labelledby="layouts">
 <div class="pro-wrap">
 <header class="pro-head">
-<h2 id="layouts">Whole pages, on every screen size</h2>
-<p>A layout composes blocks into a finished page: dashboards, settings, sign-in flows, landing pages and docs. Each block it uses is copied with it.</p>
+<h2 id="layouts">Responsive page templates</h2>
+<p>Admin dashboards, settings pages, sign-in and sign-up flows, landing pages and documentation. Each template adapts from a 390px phone to a wide desktop, and adding one to a project copies the blocks it uses.</p>
 </header>
 <div class="pro-layouts">
 <figure>
@@ -149,8 +149,8 @@ nav: REALM Pro
 <section class="pro-band muted" aria-labelledby="themes">
 <div class="pro-wrap">
 <header class="pro-head">
-<h2 id="themes">{{pro:themes}} themes, each with light and dark modes</h2>
-<p>A theme is one stylesheet of colour, radius and font tokens. Load it after REALM UI and every component and Pro item on the page follows. Text and buttons meet 4.5:1 contrast in both modes.</p>
+<h2 id="themes">{{pro:themes}} themes built on design tokens</h2>
+<p>A theme is one stylesheet of colour, border radius and typography tokens with a light and a dark palette. Load it after REALM UI and every component on the page uses it. Text and buttons meet WCAG AA contrast (4.5:1) in both modes.</p>
 </header>
 <!-- pro-themes -->
 </div>
@@ -160,8 +160,8 @@ nav: REALM Pro
 <div class="pro-wrap pro-delivery">
 <div>
 <header class="pro-head left">
-<h2 id="delivery">Browse, preview and copy, even offline</h2>
-<p>The download includes REALM Pro Studio, a small app that runs on your computer. Search the catalogue, preview any item at desktop, tablet and phone widths in light or dark mode, try your colours, and add an item to your project with the files it needs.</p>
+<h2 id="delivery">How do you install REALM Pro?</h2>
+<p>The download includes REALM Pro Studio, a local app for browsing the catalogue offline. Preview any item at desktop, tablet and phone widths in light or dark mode, try your own colours in the theme builder, and add an item to your project with the files it needs.</p>
 </header>
 <ol class="pro-steps">
 <li><strong>Download</strong> from your Polar customer portal: one zip, or a version for macOS, Windows or Linux that needs nothing installed.</li>
@@ -176,14 +176,14 @@ nav: REALM Pro
 <section class="pro-band muted" aria-labelledby="quality">
 <div class="pro-wrap">
 <header class="pro-head">
-<h2 id="quality">Built by the same rules as REALM</h2>
-<p>Pro items are written the way REALM UI is, by the people who make REALM.</p>
+<h2 id="quality">Accessible, themeable and framework-free</h2>
+<p>Pro items follow the same rules as the free REALM UI components, and the REALM maintainers write them.</p>
 </header>
 <ul class="pro-rules">
-<li><u-icon name="file-code-2" aria-hidden="true"></u-icon><strong>One file per item</strong><span>A <code>&lt;custom-element&gt;</code> with its script, style and markup. Read it, change it, own it.</span></li>
-<li><u-icon name="palette" aria-hidden="true"></u-icon><strong>Theme tokens only</strong><span>No hard-coded colours or sizes, so your theme and dark mode reach every item.</span></li>
-<li><u-icon name="keyboard" aria-hidden="true"></u-icon><strong>Keyboard and screen readers</strong><span>Focus order, labels and the ARIA patterns that match each component.</span></li>
-<li><u-icon name="monitor-check" aria-hidden="true"></u-icon><strong>Checked in a browser</strong><span>Every item renders without errors at desktop and phone widths in light and dark mode. The components have their own test suites.</span></li>
+<li><u-icon name="file-code-2" aria-hidden="true"></u-icon><strong>One file per component</strong><span>A <code>&lt;custom-element&gt;</code> with its script, style and markup, which you can read and edit like your own code.</span></li>
+<li><u-icon name="palette" aria-hidden="true"></u-icon><strong>Design tokens only</strong><span>Spacing, type, radius and colour come from tokens, so your theme and dark mode reach every item.</span></li>
+<li><u-icon name="keyboard" aria-hidden="true"></u-icon><strong>Keyboard and screen readers</strong><span>Visible focus, labelled controls and the WAI-ARIA patterns for grids, date pickers and menus.</span></li>
+<li><u-icon name="monitor-check" aria-hidden="true"></u-icon><strong>Tested in a browser</strong><span>Every item renders without errors at desktop and phone widths in light and dark mode. The three components have their own test suites.</span></li>
 </ul>
 </div>
 </section>
@@ -191,8 +191,8 @@ nav: REALM Pro
 <section class="pro-band" id="pricing" aria-labelledby="pricing-title">
 <div class="pro-wrap">
 <header class="pro-head">
-<h2 id="pricing-title">Pay once, use it in every project</h2>
-<p>Both plans include every item, every 1.x update, and use in client work. Early-access prices hold until the 1.x catalogue is complete.</p>
+<h2 id="pricing-title">How much does REALM Pro cost?</h2>
+<p>A one-time payment, not a subscription. Both plans include every item, every 1.x update and commercial use in client projects. Early-access prices apply until the 1.x catalogue is complete.</p>
 </header>
 <div class="pro-plans">
 <article class="pro-plan">
@@ -231,7 +231,7 @@ nav: REALM Pro
 <section class="pro-band muted" id="roadmap" aria-labelledby="roadmap-title">
 <div class="pro-wrap pro-two">
 <div>
-<h2 id="roadmap-title">Coming in 1.x</h2>
+<h2 id="roadmap-title">What ships next in 1.x</h2>
 <p>Your purchase includes everything below as it ships.</p>
 <ul class="pro-roadmap">
 <li>Scheduler with resource timeline</li>
@@ -253,8 +253,12 @@ nav: REALM Pro
 
 <section class="pro-band" aria-labelledby="faq">
 <div class="pro-wrap pro-narrow">
-<h2 id="faq">Questions</h2>
+<h2 id="faq">Frequently asked questions</h2>
 <ui-accordion type="multiple" class="faq">
+  <ui-accordion-item>
+    <ui-accordion-trigger>What is REALM Pro?</ui-accordion-trigger>
+    <ui-accordion-content>REALM Pro is a paid UI kit for REALM, the HTML framework for web components. It contains a data grid, a date range picker and a flipbook component, {{pro:blocks}} UI blocks, {{pro:layouts}} page templates and {{pro:themes}} themes. Each item is a custom element in one HTML file that uses REALM UI and your design tokens.</ui-accordion-content>
+  </ui-accordion-item>
   <ui-accordion-item>
     <ui-accordion-trigger>What does early access mean?</ui-accordion-trigger>
     <ui-accordion-content>All {{pro:total}} launch items are ready to download today. Early access means the 1.x series is still growing: the items listed under Coming in 1.x appear in your download as they ship, and you pay the lower early-access price for them now.</ui-accordion-content>
@@ -276,6 +280,10 @@ nav: REALM Pro
     <ui-accordion-content>No. Pro items are REALM components, so they work like the rest of REALM: copy the files into your site and load them with one tag. They work in pages rendered by any server and next to any framework that supports custom elements.</ui-accordion-content>
   </ui-accordion-item>
   <ui-accordion-item>
+    <ui-accordion-trigger>Are the components accessible?</ui-accordion-trigger>
+    <ui-accordion-content>Every item supports the keyboard, shows a visible focus ring and labels its controls. The data grid and date range picker follow the WAI-ARIA grid and date picker patterns, and theme colours meet WCAG AA contrast for text and buttons.</ui-accordion-content>
+  </ui-accordion-item>
+  <ui-accordion-item>
     <ui-accordion-trigger>Which browsers are supported?</ui-accordion-trigger>
     <ui-accordion-content>The same as REALM: current Chrome, Edge, Firefox and Safari.</ui-accordion-content>
   </ui-accordion-item>
@@ -289,14 +297,18 @@ nav: REALM Pro
 
 <section class="pro-close" aria-labelledby="close">
 <div class="pro-wrap">
-<h2 id="close">Start with the hard parts done.</h2>
-<p>{{pro:total}} items for $149, paid once, with 14 days to change your mind.</p>
+<h2 id="close">All {{pro:total}} items for $149</h2>
+<p>Paid once, with every 1.x update. If it does not fit your project, ask for a refund within 14 days.</p>
 <div class="pro-actions">
 <a class="action primary" href="https://buy.polar.sh/polar_cl_LGiAIgKHE9dVha4DOPmnF8UnAL8r6P0JDtOl81VgV0b">Get early access, $149 <u-icon name="arrow-right"></u-icon></a>
-<a class="action outline" href="#pricing">Compare plans</a>
+<a class="action outline" href="#pricing">Compare Personal and Team</a>
 </div>
 </div>
 </section>
+
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Product","name":"REALM Pro","description":"A UI kit for REALM: a data grid, a date range picker and a flipbook web component, {{pro:blocks}} UI blocks, {{pro:layouts}} page templates and {{pro:themes}} themes.","brand":{"@type":"Brand","name":"REALM"},"url":"https://realm.js.org/pro/","image":"https://realm.js.org/pro/landing/wall/pro-dashboard-sidebar-analytics.webp","offers":[{"@type":"Offer","name":"Personal","price":"149","priceCurrency":"USD","availability":"https://schema.org/InStock","url":"https://buy.polar.sh/polar_cl_LGiAIgKHE9dVha4DOPmnF8UnAL8r6P0JDtOl81VgV0b","seller":{"@type":"Organization","name":"Taraxa Studio"}},{"@type":"Offer","name":"Team, up to 10 developers","price":"499","priceCurrency":"USD","availability":"https://schema.org/InStock","url":"https://buy.polar.sh/polar_cl_i06D1Rh91CpXAmLf2X0FLbwPxlVkuR2wjpIuz0x3y2Y","seller":{"@type":"Organization","name":"Taraxa Studio"}}]}
+</script>
 
 <script type="module">
   // Respect a reader who asked for less motion: keep the poster frame instead of the loop.

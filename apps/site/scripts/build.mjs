@@ -112,7 +112,7 @@ const PRO_FILE = join(root, "public/pro/landing/counts.json");
 const PRO = existsSync(PRO_FILE) ? JSON.parse(readFileSync(PRO_FILE, "utf8")) : null;
 const KIND_LABEL = {
   blocks: "blocks",
-  layouts: "page layouts",
+  layouts: "page templates",
   components: "components",
   themes: "themes",
 };
