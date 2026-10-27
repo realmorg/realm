@@ -53,7 +53,7 @@ nav: REALM Pro
 <video src="{{root}}pro/landing/video/pro-data-grid.mp4" poster="{{root}}pro/landing/video/pro-data-grid.webp" width="1280" height="720" muted loop playsinline autoplay preload="none" aria-label="The data grid scrolling 100,000 orders, sorting by total and searching"></video>
 </figure>
 <div class="pro-feature-copy">
-<code class="pro-tag">&lt;ui-pro-data-grid&gt;</code>
+<code class="pro-tag">&lt;ui-kit-data-grid&gt;</code>
 <h3>Data grid</h3>
 <p>Handles 100,000 rows and still scrolls smoothly.</p>
 <ul class="pro-checks">
@@ -70,7 +70,7 @@ nav: REALM Pro
 <video src="{{root}}pro/landing/video/pro-scheduler.mp4" poster="{{root}}pro/landing/video/pro-scheduler.webp" width="1280" height="720" muted loop playsinline autoplay preload="none" aria-label="The scheduler switching between week, month, day and resource timeline views"></video>
 </figure>
 <div class="pro-feature-copy">
-<code class="pro-tag">&lt;ui-pro-scheduler&gt;</code>
+<code class="pro-tag">&lt;ui-kit-scheduler&gt;</code>
 <h3>Scheduler</h3>
 <p>Bookings for clinics, salons, rooms and field teams, in month, week, day, list and timeline views.</p>
 <ul class="pro-checks">
@@ -87,7 +87,7 @@ nav: REALM Pro
 <video src="{{root}}pro/landing/video/pro-chart.mp4" poster="{{root}}pro/landing/video/pro-chart.webp" width="1280" height="720" muted loop playsinline autoplay preload="none" aria-label="Candlestick, treemap, sankey, gauge and heatmap charts with tooltips"></video>
 </figure>
 <div class="pro-feature-copy">
-<code class="pro-tag">&lt;ui-pro-chart&gt;</code>
+<code class="pro-tag">&lt;ui-kit-chart&gt;</code>
 <h3>Charts</h3>
 <p>Every chart a dashboard needs, in your brand colours. Draws 100,000 points in under 50 ms.</p>
 <ul class="pro-checks">
