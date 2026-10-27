@@ -19,8 +19,11 @@ export const attachProps = (instance: Instance, schema: Record<string, PropType>
     }
   };
 
-  const parseAll = () => {
+  // Like a native reset: only the form value goes back to its attribute, so data a page set
+  // as a property (an options array, a loader) survives.
+  const resetFormValue = () => {
     for (const [attribute, key] of byAttribute) {
+      if (key !== "value" && key !== "checked") continue;
       apply(
         key,
         schema[key] as PropType,
@@ -95,7 +98,7 @@ export const attachProps = (instance: Instance, schema: Record<string, PropType>
         }),
       );
     }
-    instance.formReset.push(parseAll);
+    instance.formReset.push(resetFormValue);
     instance.formStateRestore.push((state) => {
       if (checkable) host.checked = state !== null;
       else host.value = state;

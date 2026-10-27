@@ -109,6 +109,21 @@ describe("form-associated automation", () => {
     expect((host.querySelector(check) as unknown as { checked: boolean }).checked).toBe(false);
   });
 
+  test("a form reset keeps props that are not the form value", async () => {
+    const name = tag("picker");
+    await define(
+      `<custom-element name="${name}" form-associated><script>defineProps({ value: prop.string().default(""), options: prop.array().default([]) });</script></custom-element>`,
+    );
+    const host = render(`<form><${name} name="p" value="a"></${name}></form>`);
+    const picker = host.querySelector(name) as unknown as { value: string; options: string[] };
+    picker.options = ["a", "b"];
+    picker.value = "b";
+    (host.querySelector("form") as HTMLFormElement).reset();
+    await tick();
+    expect(picker.value).toBe("a");
+    expect(picker.options).toEqual(["a", "b"]);
+  });
+
   test("form-associated components without value props still reset", async () => {
     const name = tag("plain-form");
     await define(
