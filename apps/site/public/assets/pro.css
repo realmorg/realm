@@ -72,6 +72,26 @@
   letter-spacing: -0.045em;
   text-wrap: balance;
 }
+.pro-title {
+  display: grid;
+  justify-items: center;
+  gap: calc(var(--spacing) * 3);
+  margin: 0;
+}
+.pro-title p {
+  margin: 0;
+  color: var(--muted-foreground);
+  font-size: clamp(var(--text-xl), 1rem + 1.4vw, var(--text-3xl));
+  font-weight: var(--font-weight-medium);
+  letter-spacing: -0.02em;
+}
+.pro-title a {
+  color: var(--foreground);
+  text-decoration: none;
+}
+.pro-title a:hover {
+  color: var(--primary);
+}
 .pro-lead {
   max-width: calc(var(--spacing) * 168);
   margin: 0;
