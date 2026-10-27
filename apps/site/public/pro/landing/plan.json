@@ -1,0 +1,108 @@
+{
+  "$comment": "Launch figures for the /pro/ landing design. Edit the numbers here; they override counts.json on the page. Keep them equal to what the launch download contains.",
+  "total": 5000,
+  "components": 500,
+  "blocks": 3200,
+  "layouts": 1000,
+  "themes": 300,
+  "directory": [
+    {
+      "title": "Data and tables",
+      "icon": "table-2",
+      "items": [
+        "Data grid",
+        "Pivot table",
+        "Spreadsheet",
+        "Tree view",
+        "Transfer list",
+        "Query builder",
+        "Virtual list",
+        "Sortable list"
+      ]
+    },
+    {
+      "title": "Planning",
+      "icon": "calendar-range",
+      "items": [
+        "Scheduler",
+        "Resource timeline",
+        "Gantt chart",
+        "Kanban board",
+        "Timeline",
+        "Calendar heatmap",
+        "Org chart",
+        "Diagram editor"
+      ]
+    },
+    {
+      "title": "Charts",
+      "icon": "chart-candlestick",
+      "items": [
+        "Candlestick",
+        "Heatmap",
+        "Treemap",
+        "Sankey",
+        "Gauge",
+        "Radar",
+        "Funnel",
+        "Region map"
+      ]
+    },
+    {
+      "title": "Forms and inputs",
+      "icon": "text-cursor-input",
+      "items": [
+        "Date range picker",
+        "Advanced select",
+        "Tag input",
+        "Color picker",
+        "Time picker",
+        "Phone input",
+        "Currency input",
+        "Rating"
+      ]
+    },
+    {
+      "title": "Editors",
+      "icon": "pen-line",
+      "items": [
+        "Rich text editor",
+        "Markdown editor",
+        "Form builder",
+        "Form wizard",
+        "Cron builder",
+        "Signature pad",
+        "Image cropper",
+        "Image editor"
+      ]
+    },
+    {
+      "title": "Media",
+      "icon": "images",
+      "items": [
+        "Flipbook",
+        "Gallery",
+        "Lightbox",
+        "Layered slider",
+        "Before and after",
+        "Video player",
+        "Audio player",
+        "PDF viewer"
+      ]
+    },
+    {
+      "title": "App and onboarding",
+      "icon": "app-window",
+      "items": [
+        "Product tour",
+        "Notification center",
+        "Chat",
+        "Emoji picker",
+        "Command palette",
+        "File upload",
+        "Comments",
+        "Activity feed"
+      ]
+    }
+  ]
+}

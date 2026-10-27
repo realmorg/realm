@@ -109,7 +109,15 @@ const VERSIONS = Object.fromEntries(
 // public/pro/landing/counts.json, which `bun run landing` in the Pro repository writes from the
 // real catalogue, so no count on the page can drift from what buyers get.
 const PRO_FILE = join(root, "public/pro/landing/counts.json");
-const PRO = existsSync(PRO_FILE) ? JSON.parse(readFileSync(PRO_FILE, "utf8")) : null;
+// plan.json holds the launch figures for the landing design and overrides the captured counts.
+const PRO_PLAN_FILE = join(root, "public/pro/landing/plan.json");
+const PRO = existsSync(PRO_FILE)
+  ? {
+      ...JSON.parse(readFileSync(PRO_FILE, "utf8")),
+      ...(existsSync(PRO_PLAN_FILE) ? JSON.parse(readFileSync(PRO_PLAN_FILE, "utf8")) : {}),
+    }
+  : null;
+const proNumber = (value) => value.toLocaleString("en-US");
 const KIND_LABEL = {
   blocks: "blocks",
   layouts: "page templates",
@@ -147,16 +155,24 @@ const proComponents = () =>
         `<li><img src="{{root}}pro/landing/components/${c.name}.webp" alt="" width="720" height="394" loading="lazy" decoding="async"><code class="pro-tag">&lt;${c.name}&gt;</code><strong>${escapeHtml(c.title)}</strong><span>${escapeHtml(c.description)}</span></li>`,
     )
     .join("")}</ul>`;
+const proDirectory = () =>
+  `<div class="pro-directory">${(PRO.directory ?? [])
+    .map(
+      (group) =>
+        `<section><h4><u-icon name="${group.icon}" aria-hidden="true"></u-icon>${escapeHtml(group.title)}</h4><ul>${group.items.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul></section>`,
+    )
+    .join("")}</div>`;
 const withPro = (text) =>
   PRO
     ? text
         .replace(/\{\{pro:(\w+)\}\}/g, (placeholder, key) => {
           if (typeof PRO[key] !== "number") throw new Error(`Unknown Pro count in ${placeholder}`);
-          return String(PRO[key]);
+          return proNumber(PRO[key]);
         })
         .replace("<!-- pro-catalogue -->", proCatalogue)
         .replace("<!-- pro-themes -->", proThemes)
         .replace("<!-- pro-components -->", proComponents)
+        .replace("<!-- pro-directory -->", proDirectory)
     : text;
 
 const withVersions = (text) =>

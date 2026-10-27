@@ -1,7 +1,7 @@
 ---
 title: REALM Pro
 seoTitle: REALM Pro · Web component UI kit, blocks and templates
-description: Premium web components for REALM: data grid, date range picker, flipbook, {{pro:blocks}} UI blocks, {{pro:layouts}} page templates, {{pro:themes}} themes. Pay once.
+description: {{pro:total}} premium web components, UI blocks, page templates and themes for REALM: data grid, scheduler, charts, rich text editor and more.
 layout: landing
 nav: REALM Pro
 ---
@@ -12,7 +12,7 @@ nav: REALM Pro
 <div class="pro-wrap pro-hero-copy">
 <a class="pro-status" href="#roadmap"><span class="pro-status-dot" aria-hidden="true"></span>Early access · {{pro:total}} items ready</a>
 <h1>Web components, UI blocks and page templates for REALM</h1>
-<p class="pro-lead">REALM Pro is a UI kit for <a href="{{root}}docs/">REALM</a>: a data grid, a date range picker and a flipbook component, {{pro:blocks}} UI blocks, {{pro:layouts}} responsive page templates and {{pro:themes}} themes built on design tokens. Each item is an accessible, framework-free custom element in one HTML file, with light and dark mode. Copy it into your project and load it with one tag.</p>
+<p class="pro-lead">REALM Pro is a UI kit for <a href="{{root}}docs/">REALM</a>: {{pro:components}} advanced components such as a data grid, scheduler, charts and rich text editor, {{pro:blocks}} UI blocks, {{pro:layouts}} responsive page templates and {{pro:themes}} themes built on design tokens. Each item is an accessible, framework-free custom element in one HTML file, with light and dark mode. Copy it into your project and load it with one tag.</p>
 <div class="pro-actions">
 <a class="action primary" href="https://buy.polar.sh/polar_cl_LGiAIgKHE9dVha4DOPmnF8UnAL8r6P0JDtOl81VgV0b">Get early access, $149 <u-icon name="arrow-right"></u-icon></a>
 <a class="action outline" href="#catalogue"><u-icon name="layout-grid"></u-icon> Browse the catalogue</a>
@@ -42,7 +42,7 @@ nav: REALM Pro
 <section class="pro-band" aria-labelledby="components">
 <div class="pro-wrap">
 <header class="pro-head">
-<h2 id="components">{{pro:components}} components teams usually buy as separate libraries</h2>
+<h2 id="components">Components teams usually buy as separate libraries</h2>
 <p>Data grids, date pickers, flipbooks and the other widgets below are usually sold as paid add-ons for React, Vue or jQuery. In REALM Pro they are framework-free web components that read your design tokens, so they match the rest of your interface.</p>
 </header>
 <div class="pro-feature">
@@ -95,8 +95,8 @@ nav: REALM Pro
 </ul>
 </div>
 </div>
-<h3 class="pro-subhead">Every component in REALM Pro</h3>
-<!-- pro-components -->
+<h3 class="pro-subhead">{{pro:components}} components, grouped by what they do</h3>
+<!-- pro-directory -->
 </div>
 </section>
 
@@ -259,7 +259,7 @@ nav: REALM Pro
 <ui-accordion type="multiple" class="faq">
   <ui-accordion-item>
     <ui-accordion-trigger>What is REALM Pro?</ui-accordion-trigger>
-    <ui-accordion-content>REALM Pro is a paid UI kit for REALM, the HTML framework for web components. It contains a data grid, a date range picker and a flipbook component, {{pro:blocks}} UI blocks, {{pro:layouts}} page templates and {{pro:themes}} themes. Each item is a custom element in one HTML file that uses REALM UI and your design tokens.</ui-accordion-content>
+    <ui-accordion-content>REALM Pro is a paid UI kit for REALM, the HTML framework for web components. It contains {{pro:components}} advanced components such as a data grid, scheduler, charts and a rich text editor, {{pro:blocks}} UI blocks, {{pro:layouts}} page templates and {{pro:themes}} themes. Each item is a custom element in one HTML file that uses REALM UI and your design tokens.</ui-accordion-content>
   </ui-accordion-item>
   <ui-accordion-item>
     <ui-accordion-trigger>What does early access mean?</ui-accordion-trigger>
@@ -309,7 +309,7 @@ nav: REALM Pro
 </section>
 
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"Product","name":"REALM Pro","description":"A UI kit for REALM: a data grid, a date range picker and a flipbook web component, {{pro:blocks}} UI blocks, {{pro:layouts}} page templates and {{pro:themes}} themes.","brand":{"@type":"Brand","name":"REALM"},"url":"https://realm.js.org/pro/","image":"https://realm.js.org/pro/landing/wall/pro-dashboard-sidebar-analytics.webp","offers":[{"@type":"Offer","name":"Personal","price":"149","priceCurrency":"USD","availability":"https://schema.org/InStock","url":"https://buy.polar.sh/polar_cl_LGiAIgKHE9dVha4DOPmnF8UnAL8r6P0JDtOl81VgV0b","seller":{"@type":"Organization","name":"Taraxa Studio"}},{"@type":"Offer","name":"Team, up to 10 developers","price":"499","priceCurrency":"USD","availability":"https://schema.org/InStock","url":"https://buy.polar.sh/polar_cl_i06D1Rh91CpXAmLf2X0FLbwPxlVkuR2wjpIuz0x3y2Y","seller":{"@type":"Organization","name":"Taraxa Studio"}}]}
+{"@context":"https://schema.org","@type":"Product","name":"REALM Pro","description":"A UI kit for REALM: {{pro:components}} advanced web components such as a data grid, scheduler and charts, {{pro:blocks}} UI blocks, {{pro:layouts}} page templates and {{pro:themes}} themes.","brand":{"@type":"Brand","name":"REALM"},"url":"https://realm.js.org/pro/","image":"https://realm.js.org/pro/landing/wall/pro-dashboard-sidebar-analytics.webp","offers":[{"@type":"Offer","name":"Personal","price":"149","priceCurrency":"USD","availability":"https://schema.org/InStock","url":"https://buy.polar.sh/polar_cl_LGiAIgKHE9dVha4DOPmnF8UnAL8r6P0JDtOl81VgV0b","seller":{"@type":"Organization","name":"Taraxa Studio"}},{"@type":"Offer","name":"Team, up to 10 developers","price":"499","priceCurrency":"USD","availability":"https://schema.org/InStock","url":"https://buy.polar.sh/polar_cl_i06D1Rh91CpXAmLf2X0FLbwPxlVkuR2wjpIuz0x3y2Y","seller":{"@type":"Organization","name":"Taraxa Studio"}}]}
 </script>
 
 <script type="module">

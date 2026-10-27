@@ -302,6 +302,47 @@
   line-height: 1.5;
 }
 
+/* Component directory */
+.pro-directory {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(calc(var(--spacing) * 60), 1fr));
+  gap: calc(var(--spacing) * 6);
+}
+.pro-directory section {
+  display: grid;
+  align-content: start;
+  gap: calc(var(--spacing) * 4);
+  padding: calc(var(--spacing) * 6);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--background);
+}
+.pro-directory h4 {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--spacing) * 2.5);
+  margin: 0;
+  font-size: var(--text-base);
+}
+.pro-directory h4 u-icon {
+  color: var(--primary);
+}
+.pro-directory ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: calc(var(--spacing) * 2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.pro-directory li {
+  padding: calc(var(--spacing) * 1) calc(var(--spacing) * 2.5);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  color: var(--muted-foreground);
+  font-size: var(--text-sm);
+}
+
 /* Catalogue */
 .pro-numbers {
   display: grid;
