@@ -79,8 +79,11 @@ const internalLinks = (body) =>
     href.endsWith("/") ? href : `${href}/`,
   );
 
+// Code samples are shown as text, so a src inside a fenced block is not an image on the page.
 const imageSources = (body) =>
-  [...body.matchAll(/\b(?:src|srcset)="(\/[^"\s]+)/g)].map(([, src]) => src);
+  [...body.replace(/```[\s\S]*?```/g, "").matchAll(/\b(?:src|srcset)="(\/[^"\s]+)/g)].map(
+    ([, src]) => src,
+  );
 
 // Every problem with a batch. An empty list means it can be published.
 export const problemsOf = ({ date, batch, existing, assets = new Set() }) => {

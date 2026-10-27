@@ -84,3 +84,11 @@ test("a page may only show images that exist in the site or in its batch", () =>
     "pro/blocks/x.md: shows /pro/blocks/x/dark.png, which does not exist",
   ]);
 });
+
+test("a src inside a code sample is not an image on the page", () => {
+  const body = `${words(MIN_WORDS)}\n\n\`\`\`html\n<script type="module" src="/src/main.jsx"></script>\n\`\`\``;
+  assert.deepEqual(
+    problemsOf({ date: "2026-11-02", batch: [page("docs/react.md", {}, body)], existing: [] }),
+    [],
+  );
+});
