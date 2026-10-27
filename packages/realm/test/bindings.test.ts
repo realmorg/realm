@@ -387,6 +387,30 @@ test("the repeat attribute on a top-level element keeps updating after the marku
   expect([...shadow.querySelectorAll("p")].map((p) => p.textContent)).toEqual(["a", "b"]);
 });
 
+test("a bound value on a component keeps what the user types until state changes", async () => {
+  const field = tag("field");
+  const name = tag("bound");
+  await define(`<custom-element name="${field}" form-associated>
+    <script>defineProps({ value: prop.string().default("") });</script>
+    <input ref="control" _value="@value">
+  </custom-element>`);
+  await define(`<custom-element name="${name}">
+    <script>const form = useState({ text: "" }); function search(value) { form.text = value; }</script>
+    <${field} _value="#form.text" oninput="search(this.value)" debounce="100ms"></${field}>
+  </custom-element>`);
+  const host = render(`<${name}></${name}>`);
+  const child = root(host.querySelector(name)).querySelector(field) as HTMLElement & {
+    value: string;
+  };
+  const input = root(child).querySelector("input") as HTMLInputElement;
+  input.focus();
+  await userEvent.keyboard("abc");
+  await new Promise((resolve) => setTimeout(resolve, 150));
+  await tick();
+  expect(input.value).toBe("abc");
+  expect(child.value).toBe("abc");
+});
+
 test("a typed value is not written back, so length limits still apply", async () => {
   const name = tag("typed");
   await define(`<custom-element name="${name}">

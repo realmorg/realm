@@ -41,8 +41,10 @@ export const applyAttribute = (el: Element, attribute: string, value: unknown) =
   } else if (FORM_PROPERTIES.has(name) && name in el) {
     // Writing a control's own value back would clear the browser's "changed by the user" flag,
     // which tooShort and tooLong depend on.
+    // Untracked, because on a component the property is a prop: tracking it would make the
+    // binding rerun on every keystroke and put the old state value back.
     const next = name === "value" ? (value ?? "") : Boolean(value);
-    if (target[name] !== next) target[name] = next;
+    if (untrack(() => target[name]) !== next) target[name] = next;
   } else if (el.localName.includes("-") && value !== null && typeof value === "object") {
     target[camelCase(name)] = value;
   } else if (
