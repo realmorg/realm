@@ -8,7 +8,10 @@
       name: prop.string().reflect(),
       disabled: prop.boolean(),
       required: prop.boolean(),
+      inputmode: prop.string(),
     });
+
+    const DIGITS = /^(?:\[0-9\]|\\d)$/;
 
     const otp = useState({
       get slots() {
@@ -18,6 +21,9 @@
           gap: props.separator > 0 && index > 0 && index % props.separator === 0,
           label: `Character ${index + 1} of ${props.length}`,
         }));
+      },
+      get inputmode() {
+        return props.inputmode ?? (DIGITS.test(props.pattern) ? "numeric" : "text");
       },
       get complete() {
         return props.value.length === props.length;
@@ -50,7 +56,9 @@
     function input(slot, field) {
       const text = field.value;
       field.value = slot.char;
-      if (text) write(slot.index, text.slice(-1));
+      // One key typed next to the existing character keeps the new one. Anything else, such as a
+      // code filled in by the browser, spreads across the boxes like a paste.
+      if (text) write(slot.index, slot.char && text.length === 2 ? text.slice(-1) : text);
     }
 
     function paste(slot, event) {
@@ -138,9 +146,8 @@
     <repeat-list of="#otp.slots" as="slot" key="index">
       <input
         part="slot"
-        inputmode="numeric"
+        _inputmode="#otp.inputmode"
         autocomplete="one-time-code"
-        maxlength="2"
         _value="#slot.char"
         _aria-label="#slot.label"
         _data-gap="#slot.gap"

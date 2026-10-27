@@ -202,4 +202,4 @@ nothing. Validity is mirrored from the inner checkbox, so `required` takes part 
 
 The inner native checkbox keeps its role, Space toggles it, and the host delegates focus to it. The slotted text is
 its label. When there is no text, `aria-label` is passed to the inner checkbox, and a `<ui-label for>` pointing at
-the element sets one too.
+the element labels the inner checkbox through `aria-labelledby`, without adding attributes to the host.

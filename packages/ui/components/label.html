@@ -15,10 +15,18 @@
       if (CHECKABLE.has(field.type) || "checked" in field) (field.shadowRoot?.querySelector('[ref="control"]') ?? field).click();
     }
 
-    onConnected(() => {
+    function labelField(retry = true) {
       const field = target();
-      if (field && !field.hasAttribute("aria-label")) field.setAttribute("aria-label", host.textContent.trim());
-    });
+      if (!field || field.hasAttribute("aria-label")) return;
+      if (field.localName.includes("-") && !field.shadowRoot) {
+        if (retry) customElements.whenDefined(field.localName).then(() => labelField(false));
+        return;
+      }
+      const control = field.shadowRoot ? field.shadowRoot.querySelector('[ref="control"]') : field;
+      if (control) control.ariaLabelledByElements = [host];
+    }
+
+    onConnected(labelField);
   </script>
 
   <style>

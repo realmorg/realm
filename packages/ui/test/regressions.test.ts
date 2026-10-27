@@ -542,7 +542,7 @@ describe("empty and missing values", () => {
     part(host.querySelector('ui-label[for="native"]'), "label").click();
     const checkbox = host.querySelector("#native") as HTMLInputElement;
     expect(checkbox.checked).toBe(true);
-    expect(checkbox.getAttribute("aria-label")).toBe("Native");
+    expect(checkbox.ariaLabelledByElements).toEqual([host.querySelector('ui-label[for="native"]')]);
   });
 
   test("sidebar group without a label has no accessible name", async () => {
@@ -697,4 +697,98 @@ test("a toaster removed right after a toast is queued logs no error", async () =
   await tick();
   expect(errors).toEqual([]);
   spy.mockRestore();
+});
+
+test("ui-label names the inner control without changing its target's attributes", async () => {
+  const late = `late-field-${Math.random().toString(36).slice(2, 7)}`;
+  const host = await render(`
+    <ui-label for="email">Email</ui-label><ui-input id="email"></ui-input>
+    <ui-label for="agree">Agree</ui-label><ui-switch id="agree"></ui-switch>
+    <ui-label for="named">Ignored</ui-label><ui-input id="named" aria-label="Own name"></ui-input>
+    <ui-label for="plain">Plain</ui-label><input id="plain">
+    <ui-label for="bare">Bare</ui-label><ui-badge id="bare">x</ui-badge>
+    <ui-label for="later">Later</ui-label><${late} id="later"></${late}>`);
+  const label = (id: string) => host.querySelector(`ui-label[for="${id}"]`);
+  const email = host.querySelector("#email") as HTMLElement;
+  expect(email.getAttributeNames()).toEqual(["id"]);
+  expect(part(email, "input").ariaLabelledByElements).toEqual([label("email")]);
+  const agree = host.querySelector("#agree") as HTMLElement;
+  expect(agree.hasAttribute("aria-label")).toBe(false);
+  expect(shadow(agree).querySelector('[ref="control"]')?.ariaLabelledByElements).toEqual([
+    label("agree"),
+  ]);
+  expect(part(host.querySelector("#named"), "input").ariaLabelledByElements).toBeNull();
+  expect((host.querySelector("#plain") as HTMLInputElement).ariaLabelledByElements).toEqual([
+    label("plain"),
+  ]);
+  expect(host.querySelector("#bare")?.hasAttribute("aria-labelledby")).toBe(false);
+  customElements.define(
+    late,
+    class extends HTMLElement {
+      constructor() {
+        super();
+        this.attachShadow({ mode: "open" }).innerHTML = `<input ref="control">`;
+      }
+    },
+  );
+  await tick();
+  const later = host.querySelector("#later") as HTMLElement;
+  expect(shadow(later).querySelector("input")?.ariaLabelledByElements).toEqual([label("later")]);
+  expect(later.getAttributeNames()).toEqual(["id"]);
+});
+
+test("ui-input enforces minlength and maxlength on typed values", async () => {
+  const host = await render(`<form>
+    <ui-input name="password" minlength="8" required></ui-input>
+    <ui-input name="code" maxlength="3" value="12345"></ui-input>
+  </form>`);
+  const form = host.querySelector("form") as HTMLFormElement;
+  const [short, long] = [...host.querySelectorAll("ui-input")] as [HTMLElement, HTMLElement];
+  await userEvent.type(part(short, "input"), "short");
+  await tick();
+  expect(short.matches(":invalid")).toBe(true);
+  expect(form.checkValidity()).toBe(false);
+  await userEvent.type(part(short, "input"), "-and-long");
+  await tick();
+  expect(short.matches(":invalid")).toBe(false);
+  await userEvent.type(part(long, "input"), "{Backspace}");
+  await tick();
+  expect((long as HTMLElement & { value: string }).value).toBe("1234");
+  expect(long.matches(":invalid")).toBe(true);
+  expect(form.checkValidity()).toBe(false);
+});
+
+test("ui-input-otp spreads a code filled into one box across the boxes", async () => {
+  const host = await render(`<ui-input-otp></ui-input-otp>`);
+  const otp = host.querySelector("ui-input-otp") as HTMLElement & { value: string };
+  const boxes = () => [...shadow(otp).querySelectorAll("input")];
+  const fill = async (index: number, text: string) => {
+    const box = boxes()[index] as HTMLInputElement;
+    box.value = text;
+    box.dispatchEvent(new Event("input", { bubbles: true }));
+    await tick();
+  };
+  await fill(0, "654321");
+  expect(otp.value).toBe("654321");
+  expect(boxes().map((box) => box.value)).toEqual(["6", "5", "4", "3", "2", "1"]);
+  await fill(2, "49");
+  expect(otp.value).toBe("659321");
+  await fill(5, "12");
+  expect(otp.value).toBe("659322");
+});
+
+test("ui-input-otp picks its keyboard from the pattern unless inputmode is set", async () => {
+  const host = await render(`
+    <ui-input-otp id="digits" length="2"></ui-input-otp>
+    <ui-input-otp id="short" length="2" pattern="\\d"></ui-input-otp>
+    <ui-input-otp id="letters" length="2" pattern="[A-Za-z0-9]"></ui-input-otp>
+    <ui-input-otp id="override" length="2" pattern="[A-Z]" inputmode="numeric"></ui-input-otp>`);
+  const mode = (id: string) =>
+    [...shadow(host.querySelector(`#${id}`)).querySelectorAll("input")].map((box) =>
+      box.getAttribute("inputmode"),
+    );
+  expect(mode("digits")).toEqual(["numeric", "numeric"]);
+  expect(mode("short")).toEqual(["numeric", "numeric"]);
+  expect(mode("letters")).toEqual(["text", "text"]);
+  expect(mode("override")).toEqual(["numeric", "numeric"]);
 });

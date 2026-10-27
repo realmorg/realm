@@ -54,7 +54,10 @@ describe("layout and display", () => {
     expect(part(field, "error").hidden).toBe(false);
     expect(part(field, "error").textContent).toBe("Required");
     const input = host.querySelector("#name") as HTMLElement;
-    expect(input.getAttribute("aria-label")).toBe("Name");
+    expect(input.hasAttribute("aria-label")).toBe(false);
+    expect(part(input, "input").ariaLabelledByElements).toEqual([
+      host.querySelector('ui-label[for="name"]'),
+    ]);
     part(host.querySelector('ui-label[for="name"]'), "label").click();
     expect(document.activeElement).toBe(input);
     part(host.querySelector('ui-label[for="terms"]'), "label").click();

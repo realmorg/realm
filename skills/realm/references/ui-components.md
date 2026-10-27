@@ -39,83 +39,83 @@ Conventions shared by every component:
 | [Field](#field) | 457-519 | `field.html` | `ui-field`, `ui-field-content`, `ui-field-description`, `ui-field-group`, `ui-field-set`, `ui-field-legend` |
 | [Input](#input) | 521-592 | `input.html` | `ui-input` |
 | [Input Group](#input-group) | 594-679 | `input-group.html` | `ui-input-group`, `ui-input-group-addon` |
-| [Input OTP](#input-otp) | 681-735 | `input-otp.html` | `ui-input-otp` |
-| [Label](#label) | 737-778 | `label.html` | `ui-label` |
-| [Radio Group](#radio-group) | 780-844 | `radio-group.html` | `ui-radio-group` |
-| [Select](#select) | 846-925 | `select.html` | `ui-select` |
-| [Slider](#slider) | 927-982 | `slider.html` | `ui-slider` |
-| [Switch](#switch) | 984-1046 | `switch.html` | `ui-switch` |
-| [Textarea](#textarea) | 1048-1109 | `textarea.html` | `ui-textarea` |
-| [Toggle](#toggle) | 1111-1169 | `toggle.html` | `ui-toggle` |
-| [Toggle Group](#toggle-group) | 1171-1247 | `toggle-group.html` | `ui-toggle-group` |
+| [Input OTP](#input-otp) | 681-736 | `input-otp.html` | `ui-input-otp` |
+| [Label](#label) | 738-779 | `label.html` | `ui-label` |
+| [Radio Group](#radio-group) | 781-845 | `radio-group.html` | `ui-radio-group` |
+| [Select](#select) | 847-926 | `select.html` | `ui-select` |
+| [Slider](#slider) | 928-983 | `slider.html` | `ui-slider` |
+| [Switch](#switch) | 985-1047 | `switch.html` | `ui-switch` |
+| [Textarea](#textarea) | 1049-1110 | `textarea.html` | `ui-textarea` |
+| [Toggle](#toggle) | 1112-1170 | `toggle.html` | `ui-toggle` |
+| [Toggle Group](#toggle-group) | 1172-1248 | `toggle-group.html` | `ui-toggle-group` |
 
 ### Display
 
 | Component | Lines | File | Tags |
 | --- | --- | --- | --- |
-| [Alert](#alert) | 1249-1283 | `alert.html` | `ui-alert`, `ui-alert-title`, `ui-alert-description` |
-| [Avatar](#avatar) | 1285-1345 | `avatar.html` | `ui-avatar`, `ui-avatar-image`, `ui-avatar-fallback`, `ui-avatar-group`, `ui-avatar-group-count` |
-| [Badge](#badge) | 1347-1380 | `badge.html` | `ui-badge` |
-| [Card](#card) | 1382-1449 | `card.html` | `ui-card`, `ui-card-header`, `ui-card-title`, `ui-card-description`, `ui-card-action`, `ui-card-content`, `ui-card-footer` |
-| [Chart](#chart) | 1451-1498 | `chart.html` | `ui-chart` |
-| [Empty](#empty) | 1500-1563 | `empty.html` | `ui-empty`, `ui-empty-header`, `ui-empty-media`, `ui-empty-title`, `ui-empty-description`, `ui-empty-content` |
-| [Item](#item) | 1565-1619 | `item.html` | `ui-item`, `ui-item-group`, `ui-item-media`, `ui-item-content`, `ui-item-title`, `ui-item-description`, `ui-item-actions`, `ui-item-header`, `ui-item-footer` |
-| [Kbd](#kbd) | 1621-1659 | `kbd.html` | `ui-kbd`, `ui-kbd-group` |
-| [Progress](#progress) | 1661-1693 | `progress.html` | `ui-progress` |
-| [Separator](#separator) | 1695-1735 | `separator.html` | `ui-separator` |
-| [Skeleton](#skeleton) | 1737-1772 | `skeleton.html` | `ui-skeleton` |
-| [Spinner](#spinner) | 1774-1805 | `spinner.html` | `ui-spinner` |
-| [Table](#table) | 1807-1862 | `table.html` | `ui-table` |
+| [Alert](#alert) | 1250-1284 | `alert.html` | `ui-alert`, `ui-alert-title`, `ui-alert-description` |
+| [Avatar](#avatar) | 1286-1346 | `avatar.html` | `ui-avatar`, `ui-avatar-image`, `ui-avatar-fallback`, `ui-avatar-group`, `ui-avatar-group-count` |
+| [Badge](#badge) | 1348-1381 | `badge.html` | `ui-badge` |
+| [Card](#card) | 1383-1450 | `card.html` | `ui-card`, `ui-card-header`, `ui-card-title`, `ui-card-description`, `ui-card-action`, `ui-card-content`, `ui-card-footer` |
+| [Chart](#chart) | 1452-1499 | `chart.html` | `ui-chart` |
+| [Empty](#empty) | 1501-1564 | `empty.html` | `ui-empty`, `ui-empty-header`, `ui-empty-media`, `ui-empty-title`, `ui-empty-description`, `ui-empty-content` |
+| [Item](#item) | 1566-1620 | `item.html` | `ui-item`, `ui-item-group`, `ui-item-media`, `ui-item-content`, `ui-item-title`, `ui-item-description`, `ui-item-actions`, `ui-item-header`, `ui-item-footer` |
+| [Kbd](#kbd) | 1622-1660 | `kbd.html` | `ui-kbd`, `ui-kbd-group` |
+| [Progress](#progress) | 1662-1694 | `progress.html` | `ui-progress` |
+| [Separator](#separator) | 1696-1736 | `separator.html` | `ui-separator` |
+| [Skeleton](#skeleton) | 1738-1773 | `skeleton.html` | `ui-skeleton` |
+| [Spinner](#spinner) | 1775-1806 | `spinner.html` | `ui-spinner` |
+| [Table](#table) | 1808-1863 | `table.html` | `ui-table` |
 
 ### Overlays
 
 | Component | Lines | File | Tags |
 | --- | --- | --- | --- |
-| [Alert Dialog](#alert-dialog) | 1864-1961 | `alert-dialog.html` | `ui-alert-dialog`, `ui-alert-dialog-trigger`, `ui-alert-dialog-header`, `ui-alert-dialog-title`, `ui-alert-dialog-description`, `ui-alert-dialog-footer`, `ui-alert-dialog-action`, `ui-alert-dialog-cancel` |
-| [Command](#command) | 1963-2032 | `command.html` | `ui-command`, `ui-command-empty` |
-| [Context Menu](#context-menu) | 2034-2091 | `context-menu.html` | `ui-context-menu`, `ui-context-menu-trigger`, `ui-context-menu-content` |
-| [Dialog](#dialog) | 2093-2196 | `dialog.html` | `ui-dialog`, `ui-dialog-trigger`, `ui-dialog-close`, `ui-dialog-header`, `ui-dialog-title`, `ui-dialog-description`, `ui-dialog-footer` |
-| [Drawer](#drawer) | 2198-2281 | `drawer.html` | `ui-drawer`, `ui-drawer-trigger`, `ui-drawer-close`, `ui-drawer-header`, `ui-drawer-title`, `ui-drawer-description`, `ui-drawer-footer` |
-| [Dropdown Menu](#dropdown-menu) | 2283-2383 | `dropdown-menu.html` | `ui-dropdown-menu`, `ui-dropdown-menu-trigger`, `ui-dropdown-menu-content`, `ui-menu-item`, `ui-menu-checkbox-item`, `ui-menu-radio-group`, `ui-menu-radio-item`, `ui-menu-label`, `ui-menu-group`, `ui-menu-separator`, `ui-menu-shortcut` |
-| [Hover Card](#hover-card) | 2385-2441 | `hover-card.html` | `ui-hover-card`, `ui-hover-card-trigger`, `ui-hover-card-content` |
-| [Popover](#popover) | 2443-2521 | `popover.html` | `ui-popover`, `ui-popover-trigger`, `ui-popover-content`, `ui-popover-header`, `ui-popover-title`, `ui-popover-description` |
-| [Sheet](#sheet) | 2523-2614 | `sheet.html` | `ui-sheet`, `ui-sheet-trigger`, `ui-sheet-close`, `ui-sheet-header`, `ui-sheet-title`, `ui-sheet-description`, `ui-sheet-footer` |
-| [Toaster](#toaster) | 2616-2675 | `toaster.html` | `ui-toaster` |
-| [Tooltip](#tooltip) | 2677-2726 | `tooltip.html` | `ui-tooltip`, `ui-tooltip-trigger`, `ui-tooltip-content` |
+| [Alert Dialog](#alert-dialog) | 1865-1962 | `alert-dialog.html` | `ui-alert-dialog`, `ui-alert-dialog-trigger`, `ui-alert-dialog-header`, `ui-alert-dialog-title`, `ui-alert-dialog-description`, `ui-alert-dialog-footer`, `ui-alert-dialog-action`, `ui-alert-dialog-cancel` |
+| [Command](#command) | 1964-2033 | `command.html` | `ui-command`, `ui-command-empty` |
+| [Context Menu](#context-menu) | 2035-2092 | `context-menu.html` | `ui-context-menu`, `ui-context-menu-trigger`, `ui-context-menu-content` |
+| [Dialog](#dialog) | 2094-2197 | `dialog.html` | `ui-dialog`, `ui-dialog-trigger`, `ui-dialog-close`, `ui-dialog-header`, `ui-dialog-title`, `ui-dialog-description`, `ui-dialog-footer` |
+| [Drawer](#drawer) | 2199-2282 | `drawer.html` | `ui-drawer`, `ui-drawer-trigger`, `ui-drawer-close`, `ui-drawer-header`, `ui-drawer-title`, `ui-drawer-description`, `ui-drawer-footer` |
+| [Dropdown Menu](#dropdown-menu) | 2284-2384 | `dropdown-menu.html` | `ui-dropdown-menu`, `ui-dropdown-menu-trigger`, `ui-dropdown-menu-content`, `ui-menu-item`, `ui-menu-checkbox-item`, `ui-menu-radio-group`, `ui-menu-radio-item`, `ui-menu-label`, `ui-menu-group`, `ui-menu-separator`, `ui-menu-shortcut` |
+| [Hover Card](#hover-card) | 2386-2442 | `hover-card.html` | `ui-hover-card`, `ui-hover-card-trigger`, `ui-hover-card-content` |
+| [Popover](#popover) | 2444-2522 | `popover.html` | `ui-popover`, `ui-popover-trigger`, `ui-popover-content`, `ui-popover-header`, `ui-popover-title`, `ui-popover-description` |
+| [Sheet](#sheet) | 2524-2615 | `sheet.html` | `ui-sheet`, `ui-sheet-trigger`, `ui-sheet-close`, `ui-sheet-header`, `ui-sheet-title`, `ui-sheet-description`, `ui-sheet-footer` |
+| [Toaster](#toaster) | 2617-2676 | `toaster.html` | `ui-toaster` |
+| [Tooltip](#tooltip) | 2678-2727 | `tooltip.html` | `ui-tooltip`, `ui-tooltip-trigger`, `ui-tooltip-content` |
 
 ### Navigation
 
 | Component | Lines | File | Tags |
 | --- | --- | --- | --- |
-| [Accordion](#accordion) | 2728-2796 | `accordion.html` | `ui-accordion`, `ui-accordion-item`, `ui-accordion-trigger`, `ui-accordion-content` |
-| [Breadcrumb](#breadcrumb) | 2798-2863 | `breadcrumb.html` | `ui-breadcrumb`, `ui-breadcrumb-list`, `ui-breadcrumb-item`, `ui-breadcrumb-link`, `ui-breadcrumb-page`, `ui-breadcrumb-separator`, `ui-breadcrumb-ellipsis` |
-| [Collapsible](#collapsible) | 2865-2920 | `collapsible.html` | `ui-collapsible`, `ui-collapsible-trigger`, `ui-collapsible-content` |
-| [Menubar](#menubar) | 2922-2987 | `menubar.html` | `ui-menubar`, `ui-menubar-menu`, `ui-menubar-trigger`, `ui-menubar-content` |
-| [Navigation Menu](#navigation-menu) | 2989-3074 | `navigation-menu.html` | `ui-navigation-menu`, `ui-navigation-menu-list`, `ui-navigation-menu-item`, `ui-navigation-menu-trigger`, `ui-navigation-menu-content`, `ui-navigation-menu-link` |
-| [Pagination](#pagination) | 3076-3114 | `pagination.html` | `ui-pagination` |
-| [Sidebar](#sidebar) | 3116-3321 | `sidebar.html` | `ui-sidebar-layout`, `ui-sidebar`, `ui-sidebar-header`, `ui-sidebar-footer`, `ui-sidebar-content`, `ui-sidebar-group`, `ui-sidebar-group-label`, `ui-sidebar-menu`, `ui-sidebar-menu-item`, `ui-sidebar-menu-button`, `ui-sidebar-menu-badge`, `ui-sidebar-trigger`, `ui-sidebar-inset` |
-| [Tabs](#tabs) | 3323-3422 | `tabs.html` | `ui-tabs`, `ui-tabs-list`, `ui-tabs-trigger`, `ui-tabs-content` |
+| [Accordion](#accordion) | 2729-2797 | `accordion.html` | `ui-accordion`, `ui-accordion-item`, `ui-accordion-trigger`, `ui-accordion-content` |
+| [Breadcrumb](#breadcrumb) | 2799-2864 | `breadcrumb.html` | `ui-breadcrumb`, `ui-breadcrumb-list`, `ui-breadcrumb-item`, `ui-breadcrumb-link`, `ui-breadcrumb-page`, `ui-breadcrumb-separator`, `ui-breadcrumb-ellipsis` |
+| [Collapsible](#collapsible) | 2866-2921 | `collapsible.html` | `ui-collapsible`, `ui-collapsible-trigger`, `ui-collapsible-content` |
+| [Menubar](#menubar) | 2923-2988 | `menubar.html` | `ui-menubar`, `ui-menubar-menu`, `ui-menubar-trigger`, `ui-menubar-content` |
+| [Navigation Menu](#navigation-menu) | 2990-3075 | `navigation-menu.html` | `ui-navigation-menu`, `ui-navigation-menu-list`, `ui-navigation-menu-item`, `ui-navigation-menu-trigger`, `ui-navigation-menu-content`, `ui-navigation-menu-link` |
+| [Pagination](#pagination) | 3077-3115 | `pagination.html` | `ui-pagination` |
+| [Sidebar](#sidebar) | 3117-3322 | `sidebar.html` | `ui-sidebar-layout`, `ui-sidebar`, `ui-sidebar-header`, `ui-sidebar-footer`, `ui-sidebar-content`, `ui-sidebar-group`, `ui-sidebar-group-label`, `ui-sidebar-menu`, `ui-sidebar-menu-item`, `ui-sidebar-menu-button`, `ui-sidebar-menu-badge`, `ui-sidebar-trigger`, `ui-sidebar-inset` |
+| [Tabs](#tabs) | 3324-3423 | `tabs.html` | `ui-tabs`, `ui-tabs-list`, `ui-tabs-trigger`, `ui-tabs-content` |
 
 ### Layout
 
 | Component | Lines | File | Tags |
 | --- | --- | --- | --- |
-| [Aspect Ratio](#aspect-ratio) | 3424-3459 | `aspect-ratio.html` | `ui-aspect-ratio` |
-| [Carousel](#carousel) | 3461-3553 | `carousel.html` | `ui-carousel`, `ui-carousel-content`, `ui-carousel-item`, `ui-carousel-previous`, `ui-carousel-next` |
-| [Direction](#direction) | 3555-3600 | `direction.html` | `ui-direction` |
-| [Resizable](#resizable) | 3602-3672 | `resizable.html` | `ui-resizable`, `ui-resizable-panel`, `ui-resizable-handle` |
-| [Scroll Area](#scroll-area) | 3674-3736 | `scroll-area.html` | `ui-scroll-area` |
+| [Aspect Ratio](#aspect-ratio) | 3425-3460 | `aspect-ratio.html` | `ui-aspect-ratio` |
+| [Carousel](#carousel) | 3462-3554 | `carousel.html` | `ui-carousel`, `ui-carousel-content`, `ui-carousel-item`, `ui-carousel-previous`, `ui-carousel-next` |
+| [Direction](#direction) | 3556-3601 | `direction.html` | `ui-direction` |
+| [Resizable](#resizable) | 3603-3673 | `resizable.html` | `ui-resizable`, `ui-resizable-panel`, `ui-resizable-handle` |
+| [Scroll Area](#scroll-area) | 3675-3737 | `scroll-area.html` | `ui-scroll-area` |
 
 ### Chat and content
 
 | Component | Lines | File | Tags |
 | --- | --- | --- | --- |
-| [Attachment](#attachment) | 3738-3781 | `attachment.html` | `ui-attachment`, `ui-attachment-media`, `ui-attachment-actions` |
-| [Bubble](#bubble) | 3783-3825 | `bubble.html` | `ui-bubble`, `ui-bubble-reactions` |
-| [Code Block](#code-block) | 3827-3859 | `code-block.html` | `ui-code-block` |
-| [Marker](#marker) | 3861-3896 | `marker.html` | `ui-marker` |
-| [Message](#message) | 3898-3951 | `message.html` | `ui-message`, `ui-message-avatar`, `ui-message-header`, `ui-message-footer` |
-| [Message Scroller](#message-scroller) | 3953-4048 | `message-scroller.html` | `ui-message-scroller` |
+| [Attachment](#attachment) | 3739-3782 | `attachment.html` | `ui-attachment`, `ui-attachment-media`, `ui-attachment-actions` |
+| [Bubble](#bubble) | 3784-3826 | `bubble.html` | `ui-bubble`, `ui-bubble-reactions` |
+| [Code Block](#code-block) | 3828-3860 | `code-block.html` | `ui-code-block` |
+| [Marker](#marker) | 3862-3897 | `marker.html` | `ui-marker` |
+| [Message](#message) | 3899-3952 | `message.html` | `ui-message`, `ui-message-avatar`, `ui-message-header`, `ui-message-footer` |
+| [Message Scroller](#message-scroller) | 3954-4049 | `message-scroller.html` | `ui-message-scroller` |
 
 <a id="button"></a>
 
@@ -701,6 +701,7 @@ A one-time code input with one box per character, paste support and a complete e
 | `value` | string | `""` | The code entered so far. The attribute is the initial and reset value. |
 | `length` | number | `6` | Number of boxes. An integer from 1 to 12. |
 | `pattern` | string | `"[0-9]"` | Regular expression that a single character must match. |
+| `inputmode` | string | | Keyboard hint for phones, as on a native input. Without it the boxes use `numeric` when `pattern` is `[0-9]` or `\d`, and `text` otherwise. |
 | `separator` | number | `0` | Adds a gap before every box whose index is a multiple of this number. `0` means no gaps. Each group of boxes has its own rounded outer corners. |
 | `disabled` | boolean | `false` | Disables every box. Also true inside a disabled `<fieldset>`. |
 | `required` | boolean | `false` | The form is invalid until all boxes are filled. |

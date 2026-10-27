@@ -251,4 +251,6 @@ text-like types. `form.reset()` restores the `value` attribute, and a disabled `
 ### Accessibility
 
 The host delegates focus to the inner input. Name it with `aria-label`, `ui-label for`, or a native `<label>`
-wrapped around the element. In the last two cases the label text is copied to the inner input's `aria-label`.
+wrapped around the element. A `ui-label for` points the inner input's `aria-labelledby` at itself, and a native label's
+text is copied to the inner input's `aria-label`. Neither adds attributes to the `<ui-input>` host, so libraries that
+patch or hydrate the page see the markup they rendered.

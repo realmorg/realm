@@ -9,7 +9,7 @@ nav: Input OTP
 # Input OTP
 
 `ui-input-otp` shows one native `<input>` per character of a verification code. Typing moves to the next box,
-Backspace moves back, and pasting a whole code fills every box at once. Characters that do not match `pattern` are
+Backspace moves back, and pasting a whole code, or a code the browser fills in from an SMS, fills every box at once. Characters that do not match `pattern` are
 ignored. The boxes use `autocomplete="one-time-code"`, so browsers can offer a code received by SMS.
 
 It is form-associated. The code is the element's `value` and is submitted under its `name`.
@@ -154,6 +154,7 @@ restores the `value` attribute.
 | `value` | string | `""` | The code entered so far. The attribute is the initial and reset value. |
 | `length` | number | `6` | Number of boxes. An integer from 1 to 12. |
 | `pattern` | string | `"[0-9]"` | Regular expression that a single character must match. |
+| `inputmode` | string | | Keyboard hint for phones, as on a native input. Without it the boxes use `numeric` when `pattern` is `[0-9]` or `\d`, and `text` otherwise. |
 | `separator` | number | `0` | Adds a gap before every box whose index is a multiple of this number. `0` means no gaps. Each group of boxes has its own rounded outer corners. |
 | `disabled` | boolean | `false` | Disables every box. Also true inside a disabled `<fieldset>`. |
 | `required` | boolean | `false` | The form is invalid until all boxes are filled. |
@@ -189,8 +190,8 @@ points at the first empty box, which takes focus. `form.reset()` restores the `v
 
 ### Accessibility
 
-Each box is a native text input labelled "Character N of M" and uses `inputmode="numeric"`, so phones show a number
-pad. The boxes are wrapped in an element with `role="group"`.
+Each box is a native text input labelled "Character N of M". With the default digit pattern it uses
+`inputmode="numeric"`, so phones show a number pad. Other patterns get the full keyboard unless you set `inputmode`. The boxes are wrapped in an element with `role="group"`.
 
 | Key | Action |
 | --- | --- |

@@ -9,9 +9,8 @@ nav: Label
 # Label
 
 `ui-label` is a styled caption for a form control. A native `<label for>` cannot reach a control inside another
-element's shadow root, so `ui-label` does the work itself. With `for` set to the id of a control, it copies its text
-to the control's `aria-label` (unless the control already has one), focuses the control when the label text is
-clicked, and toggles it when it is a checkbox, radio or switch.
+element's shadow root, so `ui-label` does the work itself. With `for` set to the id of a control, it names the control
+(unless the control already has an `aria-label`), focuses the control when the label text is clicked, and toggles it when it is a checkbox, radio or switch.
 
 It works with native controls and with `ui-*` controls such as `ui-input`, `ui-checkbox` and `ui-switch`.
 
@@ -156,8 +155,11 @@ The default slot takes any content.
 ### Accessibility
 
 `ui-label` is not a native `<label>`, so the browser does not link it to the control. Instead, when the label is
-connected it sets the target's `aria-label` to the label text, unless the target already has an `aria-label`. The
-text is copied once. Changing the label text later does not update it.
+connected it points the control's `aria-labelledby` at itself (through `ariaLabelledByElements`), unless the target
+already has an `aria-label`. For a `ui-*` control that is the inner control in its shadow root (the element with
+`ref="control"`), so the `<ui-input>` host keeps exactly the attributes you wrote, and libraries that patch or hydrate
+the page (Phoenix LiveView, React) see no change. A native control gets the reference itself. The name follows the
+label text when it changes.
 
 Only the label text responds to clicks. The target must exist when the label is connected and be in the same document
 or shadow root.
