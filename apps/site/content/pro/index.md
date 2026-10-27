@@ -1,7 +1,7 @@
 ---
 title: REALM Pro
 seoTitle: REALM Pro · Buy premium web components, UI blocks and templates
-description: {{pro:total}} premium web components, UI blocks, page templates and themes for REALM. Data grid, scheduler, charts and more. Pay once, use in every project.
+description: {{pro:total}} premium web components, UI blocks, page templates and themes for REALM. Data grid, scheduler, charts and more. Pay once, use it in all your projects.
 layout: landing
 nav: REALM Pro
 ---
@@ -15,7 +15,7 @@ nav: REALM Pro
 <h1>Premium web components</h1>
 <p>The UI kit for <strong>REALM</strong></p>
 </hgroup>
-<p class="pro-lead">{{pro:components}} components, {{pro:blocks}} UI blocks, {{pro:layouts}} page templates and {{pro:themes}} themes. Pay once, use in every project.</p>
+<p class="pro-lead">{{pro:components}} components, {{pro:blocks}} UI blocks, {{pro:layouts}} page templates and {{pro:themes}} themes. Pay once, use it in all your projects.</p>
 <div class="pro-actions">
 <a class="action primary" href="https://buy.polar.sh/polar_cl_LGiAIgKHE9dVha4DOPmnF8UnAL8r6P0JDtOl81VgV0b">Buy REALM Pro, $149 <u-icon name="arrow-right"></u-icon></a>
 <a class="action outline" href="#catalogue"><u-icon name="layout-grid"></u-icon> See what’s included</a>
@@ -89,7 +89,7 @@ nav: REALM Pro
 <div class="pro-feature-copy">
 <code class="pro-tag">&lt;ui-kit-chart&gt;</code>
 <h3>Charts</h3>
-<p>Every chart a dashboard needs, in your brand colours. Draws 100,000 points in under 50 ms.</p>
+<p>The charts dashboards use most, in your brand colours. Draws 100,000 points in under 50 ms.</p>
 <ul class="pro-checks">
 <li>Candlestick, heatmap, treemap, sankey and gauge</li>
 <li>Line, bar, area, pie, radar, scatter and more</li>
@@ -99,16 +99,24 @@ nav: REALM Pro
 </ul>
 </div>
 </div>
-<h3 class="pro-subhead">{{pro:components}} components in every licence</h3>
+</div>
+</section>
+
+<section class="pro-band muted" id="components-library" aria-labelledby="library">
+<div class="pro-wrap">
+<header class="pro-head">
+<h2 id="library">{{pro:components}} Premium Web Components</h2>
+<p>Data grids, schedulers, charts, editors and form controls, built as custom elements for REALM. Each one supports the keyboard, dark mode and your theme.</p>
+</header>
 <!-- pro-directory -->
 </div>
 </section>
 
-<section class="pro-band muted" id="catalogue" aria-labelledby="catalogue-title">
+<section class="pro-band" id="catalogue" aria-labelledby="catalogue-title">
 <div class="pro-wrap">
 <header class="pro-head">
 <h2 id="catalogue-title">What’s included in REALM Pro?</h2>
-<p>{{pro:total}} ready-made pieces for apps, accounts and marketing sites. Every one matches your theme in light and dark mode.</p>
+<p>{{pro:total}} ready-made pieces for apps, accounts and marketing sites. Each one matches your theme in light and dark mode.</p>
 </header>
 <dl class="pro-numbers">
 <div><dt>Components</dt><dd>{{pro:components}}</dd></div>
@@ -156,7 +164,7 @@ nav: REALM Pro
 <div class="pro-wrap">
 <header class="pro-head">
 <h2 id="themes">{{pro:themes}} ready-made themes</h2>
-<p>Change your whole look with one stylesheet. Every theme has light and dark modes and meets WCAG AA contrast.</p>
+<p>Change your whole look with one stylesheet. Each theme has light and dark modes and meets WCAG AA contrast.</p>
 </header>
 <!-- pro-themes -->
 </div>
@@ -167,7 +175,7 @@ nav: REALM Pro
 <div>
 <header class="pro-head left">
 <h2 id="delivery">How do you get started?</h2>
-<p>REALM Pro Studio lets you browse every item offline, preview it on any screen size, try your colours and add it to your project.</p>
+<p>REALM Pro Studio lets you browse the whole catalogue offline, preview it on any screen size, try your colours and add it to your project.</p>
 </header>
 <ol class="pro-steps">
 <li><strong>Download</strong> the zip or the desktop app for macOS, Windows or Linux from your Polar account.</li>
@@ -187,9 +195,9 @@ nav: REALM Pro
 </header>
 <ul class="pro-rules">
 <li><u-icon name="file-code-2" aria-hidden="true"></u-icon><strong>One file per component</strong><span>Read it, edit it, own it.</span></li>
-<li><u-icon name="palette" aria-hidden="true"></u-icon><strong>Your design tokens</strong><span>Your colours, spacing and fonts reach every item.</span></li>
+<li><u-icon name="palette" aria-hidden="true"></u-icon><strong>Your design tokens</strong><span>Your colours, spacing and fonts apply across the kit.</span></li>
 <li><u-icon name="keyboard" aria-hidden="true"></u-icon><strong>Keyboard and screen readers</strong><span>Visible focus, labelled controls and WAI-ARIA patterns.</span></li>
-<li><u-icon name="monitor-check" aria-hidden="true"></u-icon><strong>Tested in real browsers</strong><span>Every item checked on desktop and phone, in light and dark mode.</span></li>
+<li><u-icon name="monitor-check" aria-hidden="true"></u-icon><strong>Tested in real browsers</strong><span>Checked on desktop and phone, in light and dark mode.</span></li>
 </ul>
 </div>
 </section>
@@ -198,7 +206,7 @@ nav: REALM Pro
 <div class="pro-wrap">
 <header class="pro-head">
 <h2 id="pricing-title">How much does REALM Pro cost?</h2>
-<p>Pay once. Every 1.x update and client work included.</p>
+<p>Pay once. Includes 1.x updates and client work.</p>
 </header>
 <div class="pro-plans">
 <article class="pro-plan">
@@ -208,7 +216,7 @@ nav: REALM Pro
 <p class="pro-plan-later">Early-access price. $249 after.</p>
 <a class="action primary" href="https://buy.polar.sh/polar_cl_LGiAIgKHE9dVha4DOPmnF8UnAL8r6P0JDtOl81VgV0b">Buy Personal, $149 <u-icon name="arrow-right"></u-icon></a>
 <ul class="pro-checks">
-<li>All {{pro:total}} items, plus everything added in 1.x</li>
+<li>All {{pro:total}} items, plus new items in 1.x</li>
 <li>Unlimited projects, including client work</li>
 <li>Studio app, npm package and GitHub access</li>
 </ul>
@@ -220,7 +228,7 @@ nav: REALM Pro
 <p class="pro-plan-later">Early-access price. $749 after.</p>
 <a class="action primary" href="https://buy.polar.sh/polar_cl_i06D1Rh91CpXAmLf2X0FLbwPxlVkuR2wjpIuz0x3y2Y">Buy Team, $499 <u-icon name="arrow-right"></u-icon></a>
 <ul class="pro-checks">
-<li>Everything in Personal</li>
+<li>All Personal features</li>
 <li>One licence for the whole team</li>
 <li>Priority support</li>
 </ul>
@@ -229,7 +237,7 @@ nav: REALM Pro
 <ul class="pro-assurance">
 <li><u-icon name="rotate-ccw" aria-hidden="true"></u-icon>14-day refund, no questions asked</li>
 <li><u-icon name="receipt" aria-hidden="true"></u-icon>Tax and VAT invoices by Polar</li>
-<li><u-icon name="refresh-cw" aria-hidden="true"></u-icon>Every 1.x update included</li>
+<li><u-icon name="refresh-cw" aria-hidden="true"></u-icon>Free 1.x updates</li>
 </ul>
 </div>
 </section>
@@ -267,11 +275,11 @@ nav: REALM Pro
   </ui-accordion-item>
   <ui-accordion-item>
     <ui-accordion-trigger>What does early access mean?</ui-accordion-trigger>
-    <ui-accordion-content>You pay the lower price now and get everything added during 1.x at no extra cost.</ui-accordion-content>
+    <ui-accordion-content>You pay the lower price now and get new 1.x items at no extra cost.</ui-accordion-content>
   </ui-accordion-item>
   <ui-accordion-item>
     <ui-accordion-trigger>Is it a subscription?</ui-accordion-trigger>
-    <ui-accordion-content>No. Pay once and keep every 1.x update. REALM Pro 2 will be a discounted upgrade for 1.x owners.</ui-accordion-content>
+    <ui-accordion-content>No. Pay once and keep all 1.x updates. REALM Pro 2 will be a discounted upgrade for 1.x owners.</ui-accordion-content>
   </ui-accordion-item>
   <ui-accordion-item>
     <ui-accordion-trigger>Can I get a refund?</ui-accordion-trigger>
@@ -304,7 +312,7 @@ nav: REALM Pro
 <section class="pro-close" aria-labelledby="close">
 <div class="pro-wrap">
 <h2 id="close">Get all {{pro:total}} items for $149</h2>
-<p>One payment, every 1.x update and a 14-day refund.</p>
+<p>One payment, free 1.x updates and a 14-day refund.</p>
 <div class="pro-actions">
 <a class="action primary" href="https://buy.polar.sh/polar_cl_LGiAIgKHE9dVha4DOPmnF8UnAL8r6P0JDtOl81VgV0b">Buy REALM Pro, $149 <u-icon name="arrow-right"></u-icon></a>
 <a class="action outline" href="#pricing">Compare Personal and Team</a>

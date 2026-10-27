@@ -159,13 +159,49 @@ const proComponents = () =>
         `<li><img src="{{root}}pro/landing/components/${c.name}.webp" alt="" width="720" height="394" loading="lazy" decoding="async"><code class="pro-tag">&lt;${c.name}&gt;</code><strong>${escapeHtml(c.title)}</strong><span>${escapeHtml(c.description)}</span></li>`,
     )
     .join("")}</ul>`;
-const proDirectory = () =>
-  `<div class="pro-directory">${(PRO.directory ?? [])
-    .map(
-      (group) =>
-        `<section><h4><u-icon name="${group.icon}" aria-hidden="true"></u-icon>${escapeHtml(group.title)}</h4><ul>${group.items.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul></section>`,
-    )
-    .join("")}</div>`;
+const DIRECTORY_SHOTS = join(root, "public/pro/landing/directory");
+const proShot = (item, icon) =>
+  existsSync(join(DIRECTORY_SHOTS, `${item.slug}.webp`))
+    ? `<img src="{{root}}pro/landing/directory/${item.slug}.webp" alt="${escapeHtml(item.name)} web component" width="960" height="600" loading="lazy" decoding="async">`
+    : `<span class="pro-shot-placeholder" aria-hidden="true"><u-icon name="${icon}"></u-icon><span></span><span></span><span></span></span>`;
+const proDirectory = () => {
+  const groups = PRO.directory ?? [];
+  const id = (group) => group.title.toLowerCase().replace(/[^a-z]+/g, "-");
+  const tabs =
+    `<ui-tabs value="${id(groups[0])}" class="pro-catalogue pro-library">` +
+    `<ui-tabs-list aria-label="Component categories">${groups
+      .map(
+        (group) =>
+          `<ui-tabs-trigger value="${id(group)}">${escapeHtml(group.title)}</ui-tabs-trigger>`,
+      )
+      .join("")}</ui-tabs-list>` +
+    groups
+      .map(
+        (group) =>
+          `<ui-tabs-content value="${id(group)}"><ul class="pro-library-grid">${group.items
+            .map(
+              (item) =>
+                `<li><figure>${proShot(item, group.icon)}</figure><h3>${escapeHtml(item.name)}</h3><code>&lt;${item.tag}&gt;</code><p>${escapeHtml(item.description)}</p></li>`,
+            )
+            .join("")}</ul></ui-tabs-content>`,
+      )
+      .join("") +
+    "</ui-tabs>";
+  const list = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: "REALM Pro web components",
+    itemListElement: groups
+      .flatMap((group) => group.items)
+      .map((item, index) => ({
+        "@type": "ListItem",
+        position: index + 1,
+        name: item.name,
+        description: item.description,
+      })),
+  };
+  return `${tabs}<script type="application/ld+json">${JSON.stringify(list)}</script>`;
+};
 const withPro = (text) =>
   PRO
     ? text

@@ -10,98 +10,378 @@
       "title": "Data and tables",
       "icon": "table-2",
       "items": [
-        "Data grid",
-        "Pivot table",
-        "Spreadsheet",
-        "Tree view",
-        "Transfer list",
-        "Query builder",
-        "Virtual list",
-        "Sortable list"
+        {
+          "name": "Data grid",
+          "tag": "ui-kit-data-grid",
+          "slug": "data-grid",
+          "description": "Sort, filter, edit and export 100,000 rows."
+        },
+        {
+          "name": "Pivot table",
+          "tag": "ui-kit-pivot-table",
+          "slug": "pivot-table",
+          "description": "Group and total rows by any field."
+        },
+        {
+          "name": "Spreadsheet",
+          "tag": "ui-kit-spreadsheet",
+          "slug": "spreadsheet",
+          "description": "Cells, formulas and copy-paste from Excel."
+        },
+        {
+          "name": "Tree view",
+          "tag": "ui-kit-tree",
+          "slug": "tree",
+          "description": "Nested folders with drag, checkboxes and lazy loading."
+        },
+        {
+          "name": "Transfer list",
+          "tag": "ui-kit-transfer-list",
+          "slug": "transfer-list",
+          "description": "Move items between two searchable lists."
+        },
+        {
+          "name": "Query builder",
+          "tag": "ui-kit-query-builder",
+          "slug": "query-builder",
+          "description": "Build filters with AND, OR and nested groups."
+        },
+        {
+          "name": "Virtual list",
+          "tag": "ui-kit-virtual-list",
+          "slug": "virtual-list",
+          "description": "Scroll long lists without slowing the page."
+        },
+        {
+          "name": "Sortable list",
+          "tag": "ui-kit-sortable",
+          "slug": "sortable",
+          "description": "Reorder items by drag or keyboard."
+        }
       ]
     },
     {
       "title": "Planning",
       "icon": "calendar-range",
       "items": [
-        "Scheduler",
-        "Resource timeline",
-        "Gantt chart",
-        "Kanban board",
-        "Timeline",
-        "Calendar heatmap",
-        "Org chart",
-        "Diagram editor"
+        {
+          "name": "Scheduler",
+          "tag": "ui-kit-scheduler",
+          "slug": "scheduler",
+          "description": "Month, week, day and resource views for bookings."
+        },
+        {
+          "name": "Resource timeline",
+          "tag": "ui-kit-resource-timeline",
+          "slug": "resource-timeline",
+          "description": "People and rooms as rows, time across."
+        },
+        {
+          "name": "Gantt chart",
+          "tag": "ui-kit-gantt",
+          "slug": "gantt",
+          "description": "Tasks, dependencies and progress over time."
+        },
+        {
+          "name": "Kanban board",
+          "tag": "ui-kit-kanban",
+          "slug": "kanban",
+          "description": "Drag cards between columns and swimlanes."
+        },
+        {
+          "name": "Timeline",
+          "tag": "ui-kit-timeline",
+          "slug": "timeline",
+          "description": "Milestones and events on one line."
+        },
+        {
+          "name": "Calendar heatmap",
+          "tag": "ui-kit-calendar-heatmap",
+          "slug": "calendar-heatmap",
+          "description": "A year of daily activity at a glance."
+        },
+        {
+          "name": "Org chart",
+          "tag": "ui-kit-org-chart",
+          "slug": "org-chart",
+          "description": "Reporting lines with expand and collapse."
+        },
+        {
+          "name": "Diagram editor",
+          "tag": "ui-kit-diagram",
+          "slug": "diagram",
+          "description": "Flowcharts with shapes, links and auto layout."
+        }
       ]
     },
     {
       "title": "Charts",
       "icon": "chart-candlestick",
       "items": [
-        "Candlestick",
-        "Heatmap",
-        "Treemap",
-        "Sankey",
-        "Gauge",
-        "Radar",
-        "Funnel",
-        "Region map"
+        {
+          "name": "Candlestick chart",
+          "tag": "ui-kit-candlestick",
+          "slug": "candlestick",
+          "description": "Price, volume and moving averages with zoom."
+        },
+        {
+          "name": "Heatmap",
+          "tag": "ui-kit-heatmap",
+          "slug": "heatmap",
+          "description": "Values by row and column on a colour scale."
+        },
+        {
+          "name": "Treemap",
+          "tag": "ui-kit-treemap",
+          "slug": "treemap",
+          "description": "Nested totals you can drill into."
+        },
+        {
+          "name": "Sankey diagram",
+          "tag": "ui-kit-sankey",
+          "slug": "sankey",
+          "description": "Flows between stages, sized by value."
+        },
+        {
+          "name": "Gauge",
+          "tag": "ui-kit-gauge",
+          "slug": "gauge",
+          "description": "One KPI against a target and bands."
+        },
+        {
+          "name": "Radar chart",
+          "tag": "ui-kit-radar",
+          "slug": "radar",
+          "description": "Compare scores across several measures."
+        },
+        {
+          "name": "Funnel chart",
+          "tag": "ui-kit-funnel",
+          "slug": "funnel",
+          "description": "Drop-off from one step to the next."
+        },
+        {
+          "name": "Region map",
+          "tag": "ui-kit-region-map",
+          "slug": "region-map",
+          "description": "Values coloured by country or region."
+        }
       ]
     },
     {
       "title": "Forms and inputs",
       "icon": "text-cursor-input",
       "items": [
-        "Date range picker",
-        "Advanced select",
-        "Tag input",
-        "Color picker",
-        "Time picker",
-        "Phone input",
-        "Currency input",
-        "Rating"
+        {
+          "name": "Date range picker",
+          "tag": "ui-kit-date-range-picker",
+          "slug": "date-range-picker",
+          "description": "Two months, presets and form support."
+        },
+        {
+          "name": "Advanced select",
+          "tag": "ui-kit-select",
+          "slug": "select",
+          "description": "Search, groups, multi-select and async options."
+        },
+        {
+          "name": "Tag input",
+          "tag": "ui-kit-tag-input",
+          "slug": "tag-input",
+          "description": "Type, paste or pick tags with suggestions."
+        },
+        {
+          "name": "Color picker",
+          "tag": "ui-kit-color-picker",
+          "slug": "color-picker",
+          "description": "Swatches, eyedropper and hex, RGB or OKLCH."
+        },
+        {
+          "name": "Time picker",
+          "tag": "ui-kit-time-picker",
+          "slug": "time-picker",
+          "description": "Hours and minutes in 12 or 24-hour format."
+        },
+        {
+          "name": "Phone input",
+          "tag": "ui-kit-phone-input",
+          "slug": "phone-input",
+          "description": "Country flags, formats and validation."
+        },
+        {
+          "name": "Currency input",
+          "tag": "ui-kit-currency-input",
+          "slug": "currency-input",
+          "description": "Amounts formatted for the reader's locale."
+        },
+        {
+          "name": "Rating",
+          "tag": "ui-kit-rating",
+          "slug": "rating",
+          "description": "Stars or icons, with half steps."
+        }
       ]
     },
     {
       "title": "Editors",
       "icon": "pen-line",
       "items": [
-        "Rich text editor",
-        "Markdown editor",
-        "Form builder",
-        "Form wizard",
-        "Cron builder",
-        "Signature pad",
-        "Image cropper",
-        "Image editor"
+        {
+          "name": "Rich text editor",
+          "tag": "ui-kit-editor",
+          "slug": "editor",
+          "description": "Toolbar, tables, images, mentions and Markdown."
+        },
+        {
+          "name": "Markdown editor",
+          "tag": "ui-kit-markdown-editor",
+          "slug": "markdown-editor",
+          "description": "Write Markdown with a live preview."
+        },
+        {
+          "name": "Form builder",
+          "tag": "ui-kit-form-builder",
+          "slug": "form-builder",
+          "description": "Drag fields to build forms without code."
+        },
+        {
+          "name": "Form wizard",
+          "tag": "ui-kit-wizard",
+          "slug": "wizard",
+          "description": "Multi-step forms with progress and validation."
+        },
+        {
+          "name": "Cron builder",
+          "tag": "ui-kit-cron-builder",
+          "slug": "cron-builder",
+          "description": "Pick a schedule and get the cron expression."
+        },
+        {
+          "name": "Signature pad",
+          "tag": "ui-kit-signature-pad",
+          "slug": "signature-pad",
+          "description": "Sign with mouse, pen or finger."
+        },
+        {
+          "name": "Image cropper",
+          "tag": "ui-kit-image-cropper",
+          "slug": "image-cropper",
+          "description": "Crop, rotate and zoom before upload."
+        },
+        {
+          "name": "Image editor",
+          "tag": "ui-kit-image-editor",
+          "slug": "image-editor",
+          "description": "Adjust, filter and annotate images."
+        }
       ]
     },
     {
       "title": "Media",
       "icon": "images",
       "items": [
-        "Flipbook",
-        "Gallery",
-        "Lightbox",
-        "Layered slider",
-        "Before and after",
-        "Video player",
-        "Audio player",
-        "PDF viewer"
+        {
+          "name": "Gallery",
+          "tag": "ui-kit-gallery",
+          "slug": "gallery",
+          "description": "Masonry and grid layouts with filters."
+        },
+        {
+          "name": "Lightbox",
+          "tag": "ui-kit-lightbox",
+          "slug": "lightbox",
+          "description": "Full-screen images with zoom and swipe."
+        },
+        {
+          "name": "Layered slider",
+          "tag": "ui-kit-slider",
+          "slug": "slider",
+          "description": "Hero slides with captions and autoplay."
+        },
+        {
+          "name": "Before and after",
+          "tag": "ui-kit-compare",
+          "slug": "compare",
+          "description": "Drag a handle to compare two images."
+        },
+        {
+          "name": "Flipbook",
+          "tag": "ui-kit-flipbook",
+          "slug": "flipbook",
+          "description": "Page-turn catalogues and magazines."
+        },
+        {
+          "name": "Video player",
+          "tag": "ui-kit-video-player",
+          "slug": "video-player",
+          "description": "Chapters, captions and playback speed."
+        },
+        {
+          "name": "Audio player",
+          "tag": "ui-kit-audio-player",
+          "slug": "audio-player",
+          "description": "Waveform, playlist and keyboard control."
+        },
+        {
+          "name": "PDF viewer",
+          "tag": "ui-kit-pdf-viewer",
+          "slug": "pdf-viewer",
+          "description": "Pages, search and zoom in the browser."
+        }
       ]
     },
     {
       "title": "App and onboarding",
       "icon": "app-window",
       "items": [
-        "Product tour",
-        "Notification center",
-        "Chat",
-        "Emoji picker",
-        "Command palette",
-        "File upload",
-        "Comments",
-        "Activity feed"
+        {
+          "name": "Product tour",
+          "tag": "ui-kit-tour",
+          "slug": "tour",
+          "description": "Step-by-step tips that point at the UI."
+        },
+        {
+          "name": "Notification center",
+          "tag": "ui-kit-notification-center",
+          "slug": "notification-center",
+          "description": "Unread counts, groups and mark as read."
+        },
+        {
+          "name": "Command palette",
+          "tag": "ui-kit-command-palette",
+          "slug": "command-palette",
+          "description": "Search actions and pages with ⌘K."
+        },
+        {
+          "name": "File upload",
+          "tag": "ui-kit-file-upload",
+          "slug": "file-upload",
+          "description": "Drag and drop with progress and retries."
+        },
+        {
+          "name": "Chat",
+          "tag": "ui-kit-chat",
+          "slug": "chat",
+          "description": "Threads, typing state and attachments."
+        },
+        {
+          "name": "Comments",
+          "tag": "ui-kit-comments",
+          "slug": "comments",
+          "description": "Replies, mentions and reactions."
+        },
+        {
+          "name": "Activity feed",
+          "tag": "ui-kit-activity-feed",
+          "slug": "activity-feed",
+          "description": "Who did what, grouped by day."
+        },
+        {
+          "name": "Emoji picker",
+          "tag": "ui-kit-emoji-picker",
+          "slug": "emoji-picker",
+          "description": "Search, categories and skin tones."
+        }
       ]
     }
   ],

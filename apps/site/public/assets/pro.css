@@ -319,45 +319,83 @@
   line-height: 1.5;
 }
 
-/* Component directory */
-.pro-directory {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(calc(var(--spacing) * 60), 1fr));
-  gap: calc(var(--spacing) * 6);
+/* Component library */
+.pro-library ui-tabs-list {
+  max-width: 100%;
+  overflow-x: auto;
+  scrollbar-width: none;
 }
-.pro-directory section {
+.pro-library-grid {
   display: grid;
-  align-content: start;
-  gap: calc(var(--spacing) * 4);
-  padding: calc(var(--spacing) * 6);
+  grid-template-columns: repeat(auto-fill, minmax(calc(var(--spacing) * 64), 1fr));
+  gap: calc(var(--spacing) * 6);
+  margin: calc(var(--spacing) * 10) 0 0;
+  padding: 0;
+  list-style: none;
+}
+.pro-library-grid li {
+  display: grid;
+  grid-template-rows: auto auto auto 1fr;
+  overflow: hidden;
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   background: var(--background);
 }
-.pro-directory h4 {
-  display: flex;
-  align-items: center;
-  gap: calc(var(--spacing) * 2.5);
+.pro-library-grid figure {
   margin: 0;
-  font-size: var(--text-base);
+  aspect-ratio: 8 / 5;
+  overflow: hidden;
+  border-bottom: 1px solid var(--border);
+  background: var(--muted);
 }
-.pro-directory h4 u-icon {
+.pro-library-grid img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top left;
+}
+.pro-shot-placeholder {
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: calc(var(--spacing) * 2);
+  height: 100%;
+  color: var(--muted-foreground);
+}
+.pro-shot-placeholder u-icon {
+  width: calc(var(--spacing) * 8);
+  height: calc(var(--spacing) * 8);
+  margin-bottom: calc(var(--spacing) * 2);
   color: var(--primary);
 }
-.pro-directory ul {
-  display: flex;
-  flex-wrap: wrap;
-  gap: calc(var(--spacing) * 2);
-  margin: 0;
-  padding: 0;
-  list-style: none;
+.pro-shot-placeholder span {
+  width: 40%;
+  height: calc(var(--spacing) * 2);
+  border-radius: var(--radius-sm);
+  background: var(--border);
 }
-.pro-directory li {
-  padding: calc(var(--spacing) * 1) calc(var(--spacing) * 2.5);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
+.pro-shot-placeholder span + span {
+  width: 56%;
+}
+.pro-shot-placeholder span + span + span {
+  width: 32%;
+}
+.pro-library-grid h3 {
+  margin: calc(var(--spacing) * 4) calc(var(--spacing) * 5) 0;
+  font-size: var(--text-base);
+}
+.pro-library-grid code {
+  justify-self: start;
+  margin: calc(var(--spacing) * 1) calc(var(--spacing) * 5) 0;
+  color: var(--primary);
+  font-size: var(--text-xs);
+}
+.pro-library-grid p {
+  margin: calc(var(--spacing) * 2) calc(var(--spacing) * 5) calc(var(--spacing) * 5);
   color: var(--muted-foreground);
   font-size: var(--text-sm);
+  line-height: 1.5;
 }
 
 /* Catalogue */
