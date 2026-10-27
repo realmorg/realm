@@ -228,6 +228,21 @@ test("the sitemap index lists one sitemap per section, and every page is in one"
     expect(urls).toContain(new URL(page.url, "https://x/").pathname);
 });
 
+test("headings with quotes and apostrophes are escaped once in the page outline and search", () => {
+  const dist = (file: string) => readFileSync(new URL(`../dist/${file}`, import.meta.url), "utf8");
+  const outline = (html: string) => html.match(/<nav slot="toc"[\s\S]*?<\/nav>/)?.[0] ?? "";
+  const events = outline(dist("docs/events/index.html"));
+  expect(events).toContain(">Handling a component&#39;s events</a>");
+  expect(events).not.toContain("&amp;");
+  expect(outline(dist("reference/attributes/ref/index.html"))).toContain(
+    ">ref=&quot;control&quot;</a>",
+  );
+  const index: { url: string; headings: string[] }[] = JSON.parse(dist("search-index.json"));
+  expect(index.find((entry) => entry.url === "docs/events/")?.headings).toContain(
+    "Handling a component's events",
+  );
+});
+
 test("every link between site pages points at a page that exists", () => {
   const dist = fileURLToPath(new URL("../dist/", import.meta.url));
   const broken: string[] = [];

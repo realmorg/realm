@@ -67,6 +67,10 @@ const escapeHtml = (text) =>
     (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c],
   );
 
+const ENTITIES = { "&amp;": "&", "&lt;": "<", "&gt;": ">", "&quot;": '"', "&#39;": "'" };
+const decodeHtml = (html) =>
+  html.replace(/&(?:amp|lt|gt|quot|#39);/g, (entity) => ENTITIES[entity]);
+
 const slugify = (text) =>
   text
     .toLowerCase()
@@ -419,7 +423,8 @@ const render = (page) => {
       heading({ tokens, depth }) {
         const text = this.parser.parseInline(tokens);
         const id = slugify(text);
-        if (depth === 2 || depth === 3) toc.push({ id, text: text.replace(/<[^>]+>/g, ""), depth });
+        if (depth === 2 || depth === 3)
+          toc.push({ id, text: decodeHtml(text.replace(/<[^>]+>/g, "")), depth });
         return `<h${depth} id="${id}"><a class="anchor" href="#${id}">${text}</a></h${depth}>\n`;
       },
       link({ href, title, tokens }) {
