@@ -105,6 +105,47 @@ const VERSIONS = Object.fromEntries(
     JSON.parse(readFileSync(join(repo, `packages/${name}/package.json`), "utf8")).version,
   ]),
 );
+// The /pro/ page reads its numbers, catalogue cards and theme swatches from
+// public/pro/landing/counts.json, which `bun run landing` in the Pro repository writes from the
+// real catalogue, so no count on the page can drift from what buyers get.
+const PRO_FILE = join(root, "public/pro/landing/counts.json");
+const PRO = existsSync(PRO_FILE) ? JSON.parse(readFileSync(PRO_FILE, "utf8")) : null;
+const KIND_LABEL = { blocks: "blocks", layouts: "page layouts", components: "components", themes: "themes" };
+const proCatalogue = () =>
+  `<ui-tabs value="${PRO.jobs[0].id}" class="pro-catalogue">` +
+  `<ui-tabs-list aria-label="Catalogue by job">${PRO.jobs
+    .map((job) => `<ui-tabs-trigger value="${job.id}">${escapeHtml(job.title)}</ui-tabs-trigger>`)
+    .join("")}</ui-tabs-list>` +
+  PRO.jobs
+    .map(
+      (job) =>
+        `<ui-tabs-content value="${job.id}"><ul class="pro-families">${job.families
+          .map(
+            (f) =>
+              `<li><img src="{{root}}pro/landing/families/${f.family}.webp" alt="" width="720" height="${f.kind === "layouts" ? 450 : 360}" loading="lazy" decoding="async"><span class="pro-family-name">${escapeHtml(f.title)}</span><span class="pro-family-count">${f.count} ${f.count === 1 ? KIND_LABEL[f.kind].replace(/s$/, "") : KIND_LABEL[f.kind]}</span></li>`,
+          )
+          .join("")}</ul></ui-tabs-content>`,
+    )
+    .join("") +
+  "</ui-tabs>";
+const proThemes = () =>
+  `<ul class="pro-themes">${PRO.themeList
+    .map(
+      (t) =>
+        `<li style="--swatch-bg: ${t.background}; --swatch-fg: ${t.foreground}; --swatch-primary: ${t.primary}; --swatch-accent: ${t.accent}"><span class="pro-swatch" aria-hidden="true"><span></span><span></span><span></span></span>${escapeHtml(t.name)}</li>`,
+    )
+    .join("")}</ul>`;
+const withPro = (text) =>
+  PRO
+    ? text
+        .replace(/\{\{pro:(\w+)\}\}/g, (placeholder, key) => {
+          if (typeof PRO[key] !== "number") throw new Error(`Unknown Pro count in ${placeholder}`);
+          return String(PRO[key]);
+        })
+        .replace("<!-- pro-catalogue -->", proCatalogue)
+        .replace("<!-- pro-themes -->", proThemes)
+    : text;
+
 const withVersions = (text) =>
   text.replace(/\{\{version:([\w-]+)\}\}/g, (placeholder, name) => {
     if (!VERSIONS[name]) throw new Error(`Unknown package in ${placeholder}`);
@@ -114,7 +155,7 @@ const withVersions = (text) =>
 const pages = walk(join(root, "content"))
   .filter((file) => file.endsWith(".md"))
   .map((file) => {
-    const { meta, body } = frontmatter(withVersions(readFileSync(file, "utf8")));
+    const { meta, body } = frontmatter(withPro(withVersions(readFileSync(file, "utf8"))));
     const updated = updatedOn(file);
     const path = relative(join(root, "content"), file).replace(/\.md$/, "");
     const slug = path === "index" ? "" : path.replace(/\/index$/, "");
@@ -688,12 +729,13 @@ const template = (page, { html, toc }) => {
       "Build native web components with one HTML tag. No compiler, no build step.",
   );
   const p = page.prefix;
-  const home = page.meta.layout === "home";
+  // home and landing pages are full width, with no docs sidebar; landing adds no width limit.
+  const home = page.meta.layout === "home" || page.meta.layout === "landing";
   const wide = page.meta.layout === "wide";
   const sectionLabel = SECTIONS.find((s) => s.id === page.section)?.label ?? "Site";
   const editUrl = `https://github.com/realmorg/realm/edit/main/apps/site/content/${relative(join(root, "content"), page.file)}`;
   const body = home
-    ? `<main id="main" class="home">${html}</main>`
+    ? `<main id="main" class="${page.meta.layout}">${html}</main>`
     : `<site-layout${wide ? " wide" : ""} label="${escapeHtml(sectionLabel)}">
   <nav slot="nav" class="sidebar" aria-label="${escapeHtml(sectionLabel)}">${navFor(page)}</nav>
   <article id="main" class="prose${wide ? " wide" : ""}">${html}${pager(page)}<p class="edit">${page.updated ? `Updated <time datetime="${page.updated}">${longDate(page.updated)}</time> · ` : ""}<a href="${editUrl}" rel="noopener" target="_blank">Edit this page on GitHub</a> · <a href="${p}${page.slug}.md">View as Markdown</a></p></article>

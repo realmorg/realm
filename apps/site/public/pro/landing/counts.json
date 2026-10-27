@@ -1,0 +1,393 @@
+{
+  "total": 250,
+  "components": 3,
+  "blocks": 189,
+  "layouts": 30,
+  "themes": 28,
+  "jobs": [
+    {
+      "id": "apps",
+      "title": "Apps and data",
+      "families": [
+        {
+          "family": "stats",
+          "title": "Stats",
+          "kind": "blocks",
+          "count": 10
+        },
+        {
+          "family": "data-table",
+          "title": "Data table with filters and bulk actions",
+          "kind": "blocks",
+          "count": 8
+        },
+        {
+          "family": "activity",
+          "title": "Activity feed",
+          "kind": "blocks",
+          "count": 8
+        },
+        {
+          "family": "notifications",
+          "title": "Notifications panel",
+          "kind": "blocks",
+          "count": 6
+        },
+        {
+          "family": "team",
+          "title": "Team members",
+          "kind": "blocks",
+          "count": 8
+        },
+        {
+          "family": "empty-state",
+          "title": "Empty state",
+          "kind": "blocks",
+          "count": 8
+        },
+        {
+          "family": "onboarding",
+          "title": "Onboarding checklist",
+          "kind": "blocks",
+          "count": 6
+        },
+        {
+          "family": "dashboard",
+          "title": "Dashboard",
+          "kind": "layouts",
+          "count": 8
+        }
+      ]
+    },
+    {
+      "id": "account",
+      "title": "Accounts",
+      "families": [
+        {
+          "family": "sign-in",
+          "title": "Sign in",
+          "kind": "blocks",
+          "count": 10
+        },
+        {
+          "family": "sign-up",
+          "title": "Sign up",
+          "kind": "blocks",
+          "count": 8
+        },
+        {
+          "family": "forgot-password",
+          "title": "Forgot password",
+          "kind": "blocks",
+          "count": 6
+        },
+        {
+          "family": "one-time-code",
+          "title": "One-time code",
+          "kind": "blocks",
+          "count": 6
+        },
+        {
+          "family": "settings",
+          "title": "Settings section",
+          "kind": "blocks",
+          "count": 8
+        },
+        {
+          "family": "billing",
+          "title": "Billing and plan",
+          "kind": "blocks",
+          "count": 8
+        },
+        {
+          "family": "auth",
+          "title": "Authentication page",
+          "kind": "layouts",
+          "count": 6
+        },
+        {
+          "family": "settings-page",
+          "title": "Settings page",
+          "kind": "layouts",
+          "count": 5
+        }
+      ]
+    },
+    {
+      "id": "marketing",
+      "title": "Marketing",
+      "families": [
+        {
+          "family": "hero",
+          "title": "Hero",
+          "kind": "blocks",
+          "count": 12
+        },
+        {
+          "family": "features",
+          "title": "Features",
+          "kind": "blocks",
+          "count": 10
+        },
+        {
+          "family": "pricing",
+          "title": "Pricing",
+          "kind": "blocks",
+          "count": 10
+        },
+        {
+          "family": "testimonials",
+          "title": "Testimonials",
+          "kind": "blocks",
+          "count": 10
+        },
+        {
+          "family": "faq",
+          "title": "FAQ",
+          "kind": "blocks",
+          "count": 8
+        },
+        {
+          "family": "cta",
+          "title": "Call to action",
+          "kind": "blocks",
+          "count": 10
+        },
+        {
+          "family": "logo-cloud",
+          "title": "Logo cloud",
+          "kind": "blocks",
+          "count": 6
+        },
+        {
+          "family": "header",
+          "title": "Header and navigation",
+          "kind": "blocks",
+          "count": 8
+        },
+        {
+          "family": "footer",
+          "title": "Footer",
+          "kind": "blocks",
+          "count": 8
+        },
+        {
+          "family": "cookie-consent",
+          "title": "Cookie consent",
+          "kind": "blocks",
+          "count": 6
+        },
+        {
+          "family": "landing",
+          "title": "Landing page",
+          "kind": "layouts",
+          "count": 6
+        },
+        {
+          "family": "docs",
+          "title": "Docs and help centre",
+          "kind": "layouts",
+          "count": 5
+        }
+      ]
+    }
+  ],
+  "themeList": [
+    {
+      "name": "Aurora",
+      "primary": "oklch(0.499 0.094 175.1)",
+      "background": "oklch(1 0 0)",
+      "foreground": "oklch(0.172 0.024 195.2)",
+      "accent": "oklch(0.471 0.17 295.1)"
+    },
+    {
+      "name": "Citrus",
+      "primary": "oklch(0.82 0.2 125)",
+      "background": "oklch(1 0 0)",
+      "foreground": "oklch(0.169 0.018 113.4)",
+      "accent": "oklch(0.47 0.1 69.9)"
+    },
+    {
+      "name": "Cobalt",
+      "primary": "oklch(0.479 0.23 264)",
+      "background": "oklch(1 0 0)",
+      "foreground": "oklch(0.169 0.016 266.7)",
+      "accent": "oklch(0.471 0.092 229.3)"
+    },
+    {
+      "name": "Coral",
+      "primary": "oklch(0.559 0.16 28)",
+      "background": "oklch(1 0 0)",
+      "foreground": "oklch(0.171 0.016 32.9)",
+      "accent": "oklch(0.47 0.11 60.2)"
+    },
+    {
+      "name": "Dune",
+      "primary": "oklch(0.45 0.076 194.8)",
+      "background": "oklch(0.975 0.022 83.3)",
+      "foreground": "oklch(0.17 0.035 86.2)",
+      "accent": "oklch(0.47 0.11 60.2)"
+    },
+    {
+      "name": "Dusk",
+      "primary": "oklch(0.481 0.081 340.1)",
+      "background": "oklch(1 0 0)",
+      "foreground": "oklch(0.169 0.024 337.1)",
+      "accent": "oklch(0.471 0.08 30.9)"
+    },
+    {
+      "name": "Ember",
+      "primary": "oklch(0.561 0.182 38)",
+      "background": "oklch(1 0 0)",
+      "foreground": "oklch(0.168 0.016 47.9)",
+      "accent": "oklch(0.47 0.104 64.6)"
+    },
+    {
+      "name": "Espresso",
+      "primary": "oklch(0.379 0.06 49.3)",
+      "background": "oklch(0.981 0.012 59.6)",
+      "foreground": "oklch(0.17 0.032 63.7)",
+      "accent": "oklch(0.47 0.1 69.9)"
+    },
+    {
+      "name": "Glacier",
+      "primary": "oklch(0.501 0.106 234.9)",
+      "background": "oklch(0.984 0.008 228.9)",
+      "foreground": "oklch(0.17 0.032 225.9)",
+      "accent": "oklch(0.469 0.08 205.3)"
+    },
+    {
+      "name": "Harbor",
+      "primary": "oklch(0.361 0.1 249.7)",
+      "background": "oklch(1 0 0)",
+      "foreground": "oklch(0.17 0.024 234)",
+      "accent": "oklch(0.469 0.08 195.9)"
+    },
+    {
+      "name": "Lagoon",
+      "primary": "oklch(0.5 0.086 209.9)",
+      "background": "oklch(1 0 0)",
+      "foreground": "oklch(0.17 0.02 201.6)",
+      "accent": "oklch(0.471 0.084 180.4)"
+    },
+    {
+      "name": "Lavender",
+      "primary": "oklch(0.521 0.12 289.8)",
+      "background": "oklch(0.99 0.004 301.4)",
+      "foreground": "oklch(0.17 0.031 288.8)",
+      "accent": "oklch(0.47 0.09 320.1)"
+    },
+    {
+      "name": "Meadow",
+      "primary": "oklch(0.5 0.15 145)",
+      "background": "oklch(1 0 0)",
+      "foreground": "oklch(0.172 0.021 138.8)",
+      "accent": "oklch(0.469 0.106 115.2)"
+    },
+    {
+      "name": "Midnight",
+      "primary": "oklch(0.48 0.2 275.1)",
+      "background": "oklch(1 0 0)",
+      "foreground": "oklch(0.17 0.041 276.7)",
+      "accent": "oklch(0.469 0.084 220.1)"
+    },
+    {
+      "name": "Mono",
+      "primary": "oklch(0.2 0 0)",
+      "background": "oklch(1 0 0)",
+      "foreground": "oklch(0.168 0 0)",
+      "accent": "oklch(0.42 0 0)"
+    },
+    {
+      "name": "Moss",
+      "primary": "oklch(0.451 0.081 119.9)",
+      "background": "oklch(0.979 0.013 106.6)",
+      "foreground": "oklch(0.168 0.028 109)",
+      "accent": "oklch(0.469 0.09 79.8)"
+    },
+    {
+      "name": "Neon",
+      "primary": "oklch(0.55 0.232 344.8)",
+      "background": "oklch(1 0 0)",
+      "foreground": "oklch(0.169 0.021 302.5)",
+      "accent": "oklch(0.471 0.078 199.6)"
+    },
+    {
+      "name": "Orchid",
+      "primary": "oklch(0.521 0.22 305.1)",
+      "background": "oklch(1 0 0)",
+      "foreground": "oklch(0.169 0.019 304.7)",
+      "accent": "oklch(0.47 0.17 340.1)"
+    },
+    {
+      "name": "Paper",
+      "primary": "oklch(0.36 0.09 262.4)",
+      "background": "oklch(0.969 0.02 84.6)",
+      "foreground": "oklch(0.17 0.035 86.2)",
+      "accent": "oklch(0.47 0.111 34.9)"
+    },
+    {
+      "name": "Pine",
+      "primary": "oklch(0.4 0.08 165.2)",
+      "background": "oklch(1 0 0)",
+      "foreground": "oklch(0.171 0.017 167.6)",
+      "accent": "oklch(0.471 0.101 130)"
+    },
+    {
+      "name": "Plum",
+      "primary": "oklch(0.42 0.141 325)",
+      "background": "oklch(1 0 0)",
+      "foreground": "oklch(0.171 0.019 317.6)",
+      "accent": "oklch(0.469 0.12 354.9)"
+    },
+    {
+      "name": "Ruby",
+      "primary": "oklch(0.451 0.17 18.1)",
+      "background": "oklch(1 0 0)",
+      "foreground": "oklch(0.169 0.012 8.9)",
+      "accent": "oklch(0.47 0.12 350)"
+    },
+    {
+      "name": "Saffron",
+      "primary": "oklch(0.8 0.16 78.3)",
+      "background": "oklch(1 0 0)",
+      "foreground": "oklch(0.169 0.019 75.8)",
+      "accent": "oklch(0.469 0.124 50.3)"
+    },
+    {
+      "name": "Sakura",
+      "primary": "oklch(0.551 0.15 0)",
+      "background": "oklch(0.991 0.003 354.7)",
+      "foreground": "oklch(0.171 0.024 355.3)",
+      "accent": "oklch(0.47 0.101 330.5)"
+    },
+    {
+      "name": "Sandstone",
+      "primary": "oklch(0.5 0.129 40.4)",
+      "background": "oklch(0.98 0.012 67.7)",
+      "foreground": "oklch(0.171 0.029 67.1)",
+      "accent": "oklch(0.47 0.1 69.9)"
+    },
+    {
+      "name": "Slate",
+      "primary": "oklch(0.451 0.07 255)",
+      "background": "oklch(1 0 0)",
+      "foreground": "oklch(0.17 0.027 253.4)",
+      "accent": "oklch(0.471 0.08 210.1)"
+    },
+    {
+      "name": "Stone",
+      "primary": "oklch(0.271 0.007 67.5)",
+      "background": "oklch(1 0 0)",
+      "foreground": "oklch(0.172 0.012 73.1)",
+      "accent": "oklch(0.47 0.05 149.6)"
+    },
+    {
+      "name": "Terminal",
+      "primary": "oklch(0.48 0.131 150.2)",
+      "background": "oklch(1 0 0)",
+      "foreground": "oklch(0.17 0.03 148.4)",
+      "accent": "oklch(0.469 0.096 94.4)"
+    }
+  ]
+}
