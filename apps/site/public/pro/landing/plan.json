@@ -104,5 +104,35 @@
         "Activity feed"
       ]
     }
-  ]
+  ],
+  "families": {
+    "stats": 120,
+    "data-table": 160,
+    "activity": 80,
+    "notifications": 60,
+    "team": 70,
+    "empty-state": 90,
+    "onboarding": 60,
+    "dashboard": 120,
+    "sign-in": 80,
+    "sign-up": 70,
+    "forgot-password": 40,
+    "one-time-code": 30,
+    "settings": 110,
+    "billing": 90,
+    "auth": 60,
+    "settings-page": 70,
+    "hero": 180,
+    "features": 160,
+    "pricing": 120,
+    "testimonials": 100,
+    "faq": 70,
+    "cta": 90,
+    "logo-cloud": 50,
+    "header": 80,
+    "footer": 80,
+    "cookie-consent": 30,
+    "landing": 150,
+    "docs": 60
+  }
 }

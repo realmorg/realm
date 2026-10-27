@@ -105,11 +105,10 @@ const VERSIONS = Object.fromEntries(
     JSON.parse(readFileSync(join(repo, `packages/${name}/package.json`), "utf8")).version,
   ]),
 );
-// The /pro/ page reads its numbers, catalogue cards and theme swatches from
-// public/pro/landing/counts.json, which `bun run landing` in the Pro repository writes from the
-// real catalogue, so no count on the page can drift from what buyers get.
+// The /pro/ page takes its pictures, catalogue cards and theme swatches from
+// public/pro/landing/counts.json, which `bun run landing` in the Pro repository writes.
 const PRO_FILE = join(root, "public/pro/landing/counts.json");
-// plan.json holds the launch figures for the landing design and overrides the captured counts.
+// Every number on the page comes from plan.json, the planned launch catalogue.
 const PRO_PLAN_FILE = join(root, "public/pro/landing/plan.json");
 const PRO = existsSync(PRO_FILE)
   ? {
@@ -118,6 +117,11 @@ const PRO = existsSync(PRO_FILE)
     }
   : null;
 const proNumber = (value) => value.toLocaleString("en-US");
+const familyCount = (family) => {
+  if (typeof PRO.families?.[family] !== "number")
+    throw new Error(`No planned count for the Pro family ${family} in plan.json`);
+  return PRO.families[family];
+};
 const KIND_LABEL = {
   blocks: "blocks",
   layouts: "page templates",
@@ -135,7 +139,7 @@ const proCatalogue = () =>
         `<ui-tabs-content value="${job.id}"><ul class="pro-families">${job.families
           .map(
             (f) =>
-              `<li><img src="{{root}}pro/landing/families/${f.family}.webp" alt="" width="720" height="${f.kind === "layouts" ? 450 : 360}" loading="lazy" decoding="async"><span class="pro-family-name">${escapeHtml(f.title)}</span><span class="pro-family-count">${f.count} ${f.count === 1 ? KIND_LABEL[f.kind].replace(/s$/, "") : KIND_LABEL[f.kind]}</span></li>`,
+              `<li><img src="{{root}}pro/landing/families/${f.family}.webp" alt="" width="720" height="${f.kind === "layouts" ? 450 : 360}" loading="lazy" decoding="async"><span class="pro-family-name">${escapeHtml(f.title)}</span><span class="pro-family-count">${proNumber(familyCount(f.family))} ${KIND_LABEL[f.kind]}</span></li>`,
           )
           .join("")}</ul></ui-tabs-content>`,
     )

@@ -1,6 +1,6 @@
 ---
 title: REALM Pro
-seoTitle: REALM Pro · Web component UI kit, blocks and templates
+seoTitle: REALM Pro · Buy premium web components, UI blocks and templates
 description: {{pro:total}} premium web components, UI blocks, page templates and themes for REALM: data grid, scheduler, charts, rich text editor and more.
 layout: landing
 nav: REALM Pro
@@ -10,14 +10,14 @@ nav: REALM Pro
 
 <section class="pro-hero">
 <div class="pro-wrap pro-hero-copy">
-<a class="pro-status" href="#roadmap"><span class="pro-status-dot" aria-hidden="true"></span>Early access · {{pro:total}} items ready</a>
-<h1>Web components, UI blocks and page templates for REALM</h1>
-<p class="pro-lead">REALM Pro is a UI kit for <a href="{{root}}docs/">REALM</a>: {{pro:components}} advanced components such as a data grid, scheduler, charts and rich text editor, {{pro:blocks}} UI blocks, {{pro:layouts}} responsive page templates and {{pro:themes}} themes built on design tokens. Each item is an accessible, framework-free custom element in one HTML file, with light and dark mode. Copy it into your project and load it with one tag.</p>
+<a class="pro-status" href="#pricing"><span class="pro-status-dot" aria-hidden="true"></span>Early-access price · {{pro:total}} items</a>
+<h1>Premium web components, UI blocks and page templates for REALM</h1>
+<p class="pro-lead">REALM Pro is a UI kit for <a href="{{root}}docs/">REALM</a> that you buy once and use in every project: {{pro:components}} advanced components including a data grid, scheduler, charts and rich text editor, {{pro:blocks}} UI blocks, {{pro:layouts}} responsive page templates and {{pro:themes}} themes built on design tokens. Each item is an accessible, framework-free custom element in one HTML file, with light and dark mode, so you ship the interface instead of building it.</p>
 <div class="pro-actions">
-<a class="action primary" href="https://buy.polar.sh/polar_cl_LGiAIgKHE9dVha4DOPmnF8UnAL8r6P0JDtOl81VgV0b">Get early access, $149 <u-icon name="arrow-right"></u-icon></a>
-<a class="action outline" href="#catalogue"><u-icon name="layout-grid"></u-icon> Browse the catalogue</a>
+<a class="action primary" href="https://buy.polar.sh/polar_cl_LGiAIgKHE9dVha4DOPmnF8UnAL8r6P0JDtOl81VgV0b">Buy REALM Pro, $149 <u-icon name="arrow-right"></u-icon></a>
+<a class="action outline" href="#catalogue"><u-icon name="layout-grid"></u-icon> See what is included</a>
 </div>
-<p class="pro-trust">Pay once · 14-day refund · REALM stays MIT</p>
+<p class="pro-trust">One-time payment · Unlimited projects · 14-day refund</p>
 </div>
 <div class="pro-wall" aria-label="Screens built with REALM Pro">
 <div class="pro-wall-row">
@@ -42,15 +42,15 @@ nav: REALM Pro
 <section class="pro-band" aria-labelledby="components">
 <div class="pro-wrap">
 <header class="pro-head">
-<h2 id="components">Components teams usually buy as separate libraries</h2>
-<p>Data grids, date pickers, flipbooks and the other widgets below are usually sold as paid add-ons for React, Vue or jQuery. In REALM Pro they are framework-free web components that read your design tokens, so they match the rest of your interface.</p>
+<h2 id="components">The components your app needs, under one licence</h2>
+<p>A data grid, a scheduler and a chart library are usually three purchases, often priced per developer per year and tied to React, Vue or Angular. REALM Pro includes them with every other component below, as framework-free web components that use your design tokens and match the rest of your interface.</p>
 </header>
 <div class="pro-feature">
 <figure class="pro-video">
 <video src="{{root}}pro/landing/video/pro-data-grid.mp4" poster="{{root}}pro/landing/video/pro-data-grid.webp" width="1280" height="720" muted loop playsinline autoplay preload="none" aria-label="The data grid scrolling 100,000 orders, sorting by total and searching"></video>
 </figure>
 <div class="pro-feature-copy">
-<code class="pro-tag">&lt;pro-data-grid&gt;</code>
+<code class="pro-tag">&lt;ui-pro-data-grid&gt;</code>
 <h3>Data grid</h3>
 <p>Virtual scrolling renders only the rows on screen, so a table of 100,000 rows scrolls at about 7 ms of work per frame.</p>
 <ul class="pro-checks">
@@ -65,33 +65,35 @@ nav: REALM Pro
 </div>
 <div class="pro-feature reverse">
 <figure class="pro-video">
-<video src="{{root}}pro/landing/video/pro-date-range-picker.mp4" poster="{{root}}pro/landing/video/pro-date-range-picker.webp" width="1280" height="720" muted loop playsinline autoplay preload="none" aria-label="Choosing a date range in the date range picker"></video>
+<video src="{{root}}pro/landing/video/pro-scheduler.mp4" poster="{{root}}pro/landing/video/pro-scheduler.webp" width="1280" height="720" muted loop playsinline autoplay preload="none" aria-label="The scheduler switching between week, month, day and resource timeline views"></video>
 </figure>
 <div class="pro-feature-copy">
-<code class="pro-tag">&lt;pro-date-range-picker&gt;</code>
-<h3>Date range picker</h3>
-<p>A two-month calendar with presets such as Last 30 days. It is a form control: the selected range submits as <code>2026-10-01/2026-10-14</code>.</p>
+<code class="pro-tag">&lt;ui-pro-scheduler&gt;</code>
+<h3>Scheduler and resource calendar</h3>
+<p>A booking calendar for clinics, salons, rooms and field teams. Month, week, day, agenda list and a resource timeline where each person or room is a row.</p>
 <ul class="pro-checks">
-<li>Month and weekday names, and the first day of the week, from the reader's language</li>
-<li>Minimum and maximum dates, and blocked days</li>
-<li>Keyboard support following the ARIA date picker pattern</li>
-<li>Popover or inline, one month on phones</li>
+<li>Drag to book, move and resize, snapped to 15 or 30 minute slots</li>
+<li>Repeating events with exceptions, and any time zone across daylight saving changes</li>
+<li>Load events from your API by visible date range</li>
+<li>Export to an <code>.ics</code> file for Google Calendar, Outlook and Apple Calendar</li>
+<li>Arrow keys move and resize events, and every change is announced</li>
 </ul>
 </div>
 </div>
 <div class="pro-feature">
 <figure class="pro-video">
-<video src="{{root}}pro/landing/video/pro-flipbook.mp4" poster="{{root}}pro/landing/video/pro-flipbook.webp" width="1280" height="720" muted loop playsinline autoplay preload="none" aria-label="Turning the pages of a catalogue in the flipbook"></video>
+<video src="{{root}}pro/landing/video/pro-chart.mp4" poster="{{root}}pro/landing/video/pro-chart.webp" width="1280" height="720" muted loop playsinline autoplay preload="none" aria-label="Candlestick, treemap, sankey, gauge and heatmap charts with tooltips"></video>
 </figure>
 <div class="pro-feature-copy">
-<code class="pro-tag">&lt;pro-flipbook&gt;</code>
-<h3>Flipbook</h3>
-<p>A page-flip component for catalogues, magazines and brochures written in HTML. The page curls with the pointer, casts a shadow along the fold and returns if you let go early.</p>
+<code class="pro-tag">&lt;ui-pro-chart&gt;</code>
+<h3>Charts for dashboards and reports</h3>
+<p>One chart element for the charts dashboards actually use, drawn from your theme's chart colours. A line of 100,000 points draws in about 45 ms.</p>
 <ul class="pro-checks">
-<li>One page or a two-page spread, chosen by width</li>
-<li>Hard covers, thumbnails, zoom and full screen</li>
-<li>Arrow keys, swipe, and links to a page such as <code>#page=5</code></li>
-<li>A plain slide when the reader asks for reduced motion</li>
+<li>Candlestick and OHLC, heatmap, calendar heatmap, treemap, sankey, gauge</li>
+<li>Line, area, bar, pie, donut, radar, scatter and bubble, on one or two y axes</li>
+<li>Zoom, pan and a range navigator for time series</li>
+<li>Export to PNG, SVG or CSV</li>
+<li>Keyboard reading of every point, with a data table for screen readers</li>
 </ul>
 </div>
 </div>
@@ -104,7 +106,7 @@ nav: REALM Pro
 <div class="pro-wrap">
 <header class="pro-head">
 <h2 id="catalogue-title">What is included in REALM Pro?</h2>
-<p>{{pro:total}} items. UI blocks are page sections such as a pricing table, a sign-in form or a stats row. Page templates combine blocks into complete screens. Every item follows your theme and supports light and dark mode.</p>
+<p>{{pro:total}} items in one download. UI blocks are page sections such as a pricing table, a sign-in form or a stats row. Page templates combine blocks into complete screens. Every item follows your theme and supports light and dark mode.</p>
 </header>
 <dl class="pro-numbers">
 <div><dt>Components</dt><dd>{{pro:components}}</dd></div>
@@ -185,7 +187,7 @@ nav: REALM Pro
 <li><u-icon name="file-code-2" aria-hidden="true"></u-icon><strong>One file per component</strong><span>A <code>&lt;custom-element&gt;</code> with its script, style and markup, which you can read and edit like your own code.</span></li>
 <li><u-icon name="palette" aria-hidden="true"></u-icon><strong>Design tokens only</strong><span>Spacing, type, radius and colour come from tokens, so your theme and dark mode reach every item.</span></li>
 <li><u-icon name="keyboard" aria-hidden="true"></u-icon><strong>Keyboard and screen readers</strong><span>Visible focus, labelled controls and the WAI-ARIA patterns for grids, date pickers and menus.</span></li>
-<li><u-icon name="monitor-check" aria-hidden="true"></u-icon><strong>Tested in a browser</strong><span>Every item renders without errors at desktop and phone widths in light and dark mode. The three components have their own test suites.</span></li>
+<li><u-icon name="monitor-check" aria-hidden="true"></u-icon><strong>Tested in a browser</strong><span>Every item renders without errors at desktop and phone widths in light and dark mode. Every component also has its own test suite.</span></li>
 </ul>
 </div>
 </section>
@@ -202,7 +204,7 @@ nav: REALM Pro
 <p class="pro-plan-for">For one developer.</p>
 <p class="pro-price"><span>$149</span> paid once</p>
 <p class="pro-plan-later">$149 during early access. $249 after.</p>
-<a class="action primary" href="https://buy.polar.sh/polar_cl_LGiAIgKHE9dVha4DOPmnF8UnAL8r6P0JDtOl81VgV0b">Get early access <u-icon name="arrow-right"></u-icon></a>
+<a class="action primary" href="https://buy.polar.sh/polar_cl_LGiAIgKHE9dVha4DOPmnF8UnAL8r6P0JDtOl81VgV0b">Buy Personal, $149 <u-icon name="arrow-right"></u-icon></a>
 <ul class="pro-checks">
 <li>All {{pro:total}} items, and every item added in 1.x</li>
 <li>Unlimited projects, including client work</li>
@@ -214,7 +216,7 @@ nav: REALM Pro
 <p class="pro-plan-for">For up to 10 developers.</p>
 <p class="pro-price"><span>$499</span> paid once</p>
 <p class="pro-plan-later">$499 during early access. $749 after.</p>
-<a class="action primary" href="https://buy.polar.sh/polar_cl_i06D1Rh91CpXAmLf2X0FLbwPxlVkuR2wjpIuz0x3y2Y">Get early access for your team <u-icon name="arrow-right"></u-icon></a>
+<a class="action primary" href="https://buy.polar.sh/polar_cl_i06D1Rh91CpXAmLf2X0FLbwPxlVkuR2wjpIuz0x3y2Y">Buy Team, $499 <u-icon name="arrow-right"></u-icon></a>
 <ul class="pro-checks">
 <li>Everything in Personal, for 10 developers</li>
 <li>One licence covers the whole team</li>
@@ -236,13 +238,13 @@ nav: REALM Pro
 <h2 id="roadmap-title">What ships next in 1.x</h2>
 <p>Your purchase includes everything below as it ships.</p>
 <ul class="pro-roadmap">
-<li>Scheduler with resource timeline</li>
-<li>Advanced charts: heatmap, treemap, sankey, gauge, candlestick</li>
-<li>Rich text editor</li>
-<li>Kanban board</li>
-<li>Gallery and lightbox</li>
-<li>Product tour</li>
-<li>E-commerce, inbox, file browser and invoice blocks</li>
+<li>Gantt chart with dependencies</li>
+<li>Spreadsheet with formulas</li>
+<li>PDF viewer</li>
+<li>Org chart and diagram editor</li>
+<li>Drag-and-drop form builder</li>
+<li>Image editor with crop and filters</li>
+<li>Pivot table</li>
 </ul>
 </div>
 <div>
@@ -283,7 +285,7 @@ nav: REALM Pro
   </ui-accordion-item>
   <ui-accordion-item>
     <ui-accordion-trigger>Are the components accessible?</ui-accordion-trigger>
-    <ui-accordion-content>Every item supports the keyboard, shows a visible focus ring and labels its controls. The data grid and date range picker follow the WAI-ARIA grid and date picker patterns, and theme colours meet WCAG AA contrast for text and buttons.</ui-accordion-content>
+    <ui-accordion-content>Every item supports the keyboard, shows a visible focus ring and labels its controls. Grids, calendars, date pickers, menus and dialogs follow their WAI-ARIA patterns, and theme colours meet WCAG AA contrast for text and buttons.</ui-accordion-content>
   </ui-accordion-item>
   <ui-accordion-item>
     <ui-accordion-trigger>Which browsers are supported?</ui-accordion-trigger>
@@ -299,10 +301,10 @@ nav: REALM Pro
 
 <section class="pro-close" aria-labelledby="close">
 <div class="pro-wrap">
-<h2 id="close">All {{pro:total}} items for $149</h2>
-<p>Paid once, with every 1.x update. If it does not fit your project, ask for a refund within 14 days.</p>
+<h2 id="close">Get all {{pro:total}} items for $149</h2>
+<p>One payment covers every 1.x update and unlimited projects. If it does not fit your project, ask for a refund within 14 days.</p>
 <div class="pro-actions">
-<a class="action primary" href="https://buy.polar.sh/polar_cl_LGiAIgKHE9dVha4DOPmnF8UnAL8r6P0JDtOl81VgV0b">Get early access, $149 <u-icon name="arrow-right"></u-icon></a>
+<a class="action primary" href="https://buy.polar.sh/polar_cl_LGiAIgKHE9dVha4DOPmnF8UnAL8r6P0JDtOl81VgV0b">Buy REALM Pro, $149 <u-icon name="arrow-right"></u-icon></a>
 <a class="action outline" href="#pricing">Compare Personal and Team</a>
 </div>
 </div>
