@@ -82,6 +82,9 @@ const wordsOf = (body) =>
     .split(/\s+/)
     .filter((word) => /[a-z0-9]/i.test(word)).length;
 
+// Copied into the site as whole apps, not built from content pages.
+const APPS = ["/dist/", "/unicons/", "/examples/"];
+
 const internalLinks = (body) =>
   [...body.matchAll(/\]\((\/[^)\s#?]*)/g)].map(([, href]) =>
     href.endsWith("/") ? href : `${href}/`,
@@ -129,7 +132,7 @@ export const problemsOf = ({ date, batch, existing, assets = new Set(), exists =
     const words = wordsOf(body);
     if (words < MIN_WORDS) problems.push(`${path}: ${words} words, expected at least ${MIN_WORDS}`);
     for (const href of internalLinks(body))
-      if (!urls.has(href) && !href.startsWith("/dist/"))
+      if (!urls.has(href) && !APPS.some((app) => href.startsWith(app)))
         problems.push(`${path}: links to ${href}, which does not exist`);
     for (const file of supersededBy(page))
       if (!exists(file)) problems.push(`${path}: supersedes ${file}, which does not exist`);

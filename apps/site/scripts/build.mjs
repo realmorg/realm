@@ -144,6 +144,7 @@ const SECTIONS = [
   { id: "recipes", label: "Recipes" },
   { id: "learn", label: "Learn" },
   { id: "blocks", label: "Blocks" },
+  { id: "unicons", label: "Unicons" },
   { id: "pro", label: "REALM Pro" },
 ];
 

@@ -121,3 +121,11 @@ test("a page that supersedes example pages marks them noindex, and they must exi
   assert.ok(marked.includes('<meta name="robots" content="noindex, follow">\n  </head>'));
   assert.equal(withNoindex(marked), marked);
 });
+
+test("links into the copied apps are accepted", () => {
+  const body = `${words(MIN_WORDS)} [icons](/unicons/) [todo](/examples/todo/) [realm](/dist/realm.js)`;
+  assert.deepEqual(
+    problemsOf({ date: "2026-11-02", batch: [page("docs/x.md", {}, body)], existing: [] }),
+    [],
+  );
+});
