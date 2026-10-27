@@ -69,6 +69,19 @@ describe("import-element", () => {
     expect(spy).not.toHaveBeenCalled();
   });
 
+  test("an importer is in the loading state until its definitions are defined", async () => {
+    const name = tag("pending");
+    let release: () => void = () => {};
+    respond = () => new Promise((resolve) => (release = () => resolve(new Response(file(name)))));
+    const el = render(`<import-element from="/${name}.html"></import-element>`)
+      .firstElementChild as HTMLElement;
+    await tick();
+    expect(el.matches(":state(loading)")).toBe(true);
+    release();
+    await vi.waitFor(() => expect(el.matches(":state(loading)")).toBe(false));
+    expect(customElements.get(name)).toBeDefined();
+  });
+
   test("an importer removed before its file arrives does not fire load", async () => {
     const name = tag("gone");
     let release: () => void = () => {};

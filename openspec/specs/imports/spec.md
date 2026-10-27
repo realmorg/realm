@@ -6,7 +6,7 @@ Loading component files with <import-element>: shared requests, bundles, errors,
 ## Requirements
 
 ### Requirement: Import element
-Each URL SHALL be fetched once and shared by every importer, every definition in the file SHALL be registered, failures SHALL fire error and warn, detached importers SHALL stay quiet, at most six requests per origin SHALL run at once, and loading=lazy SHALL wait for a listed tag.
+Each URL SHALL be fetched once and shared by every importer, every definition in the file SHALL be registered, failures SHALL fire error and warn, detached importers SHALL stay quiet, at most six requests per origin SHALL run at once, loading=lazy SHALL wait for a listed tag, and an importer SHALL match `:state(loading)` from the start of its request until the file's definitions are defined or the import fails.
 
 #### Scenario: racing imports of the same file fetch once and define every component in it
 - **WHEN** two importers load the same bundle
@@ -35,6 +35,10 @@ Each URL SHALL be fetched once and shared by every importer, every definition in
 #### Scenario: at most six requests per origin run at once
 - **WHEN** many files load from one origin
 - **THEN** six run at a time
+
+#### Scenario: an importer is in the loading state until its definitions are defined
+- **WHEN** an importer waits for its file
+- **THEN** it matches :state(loading) until the definitions are defined
 
 ### Requirement: Inert imports in definitions
 An `<import-element>` inside a `<custom-element>` definition SHALL NOT import; the copies rendered by components do.

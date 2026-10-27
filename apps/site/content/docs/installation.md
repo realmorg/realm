@@ -25,7 +25,17 @@ Put both tags in the `<head>` of your HTML file:
 
 - hides `<custom-element>` definitions and `<import-element>` tags,
 - lays out `<is-visible>`, `<is-hidden>` and `<repeat-list>` with `display: contents`,
-- hides custom elements until they are defined (`:not(:defined) { visibility: hidden }`), so a page never flashes unstyled component content.
+- hides undefined custom elements while REALM is starting or importing, so a page never flashes unstyled component content.
+
+The last rule only applies while the page still has an unread `<custom-element>`, while `<import-element>` is not yet defined (REALM has not started), or while an `<import-element>` is loading (`import-element:state(loading)`). Once REALM is done, tags it never defines, such as Angular's `<app-root>` or another library's elements, are visible again:
+
+```css
+:root:has(custom-element, import-element:not(:defined), import-element:state(loading)) :not(:defined) {
+  visibility: hidden;
+}
+```
+
+A lazy import (`loading="lazy"`) does not count as loading while it waits for its tag, so elements it will define show their light-DOM content until it starts.
 
 ## Add REALM UI
 

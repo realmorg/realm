@@ -1,13 +1,14 @@
-import { collectHandlers, HANDLER_PREFIX, setupSource } from "./assemble";
+import { collectHandlers, setupSource } from "./assemble";
 import { type CssBindings, scanCss } from "./css";
 import { mountElementClass } from "./element";
 import { warn } from "./log";
 import { EMPTY_SETUP, nextId, RUNTIME, runSetupScript, settingUp } from "./registry";
+import { parseSource } from "./sanitize";
 import type { Definition, Setup } from "./types";
 
 const BASE_SHEET = new CSSStyleSheet();
 BASE_SHEET.replaceSync(
-  "is-visible, is-hidden, repeat-list { display: contents; } :host([hidden]), [hidden]:not([hidden='until-found']) { display: none !important; } :not(:defined):not(is-visible, is-hidden, repeat-list) { visibility: hidden; }",
+  "is-visible,is-hidden,repeat-list{display:contents}:host([hidden]),[hidden]:not([hidden=until-found]){display:none!important}:not(:defined,is-visible,is-hidden,repeat-list){visibility:hidden}",
 );
 
 const definitions = new Map<string, Definition>();
@@ -42,16 +43,17 @@ const loadSetup = async (definition: Definition, url: string) => {
 };
 
 export const defineComponent = async (
-  el: Element,
+  element: Element,
   base: string,
   inline: boolean,
 ): Promise<void> => {
+  const source = element.outerHTML;
+  const el = parseSource(source).querySelector("custom-element") as Element;
   const name = el.getAttribute("name") ?? "";
   if (!name.includes("-")) {
     warn(`<custom-element name="${name}"> needs a name that contains a dash, like "todo-app".`);
     return;
   }
-  const source = el.outerHTML;
   const existing = definitions.get(name);
   if (existing) {
     if (existing.source !== source)
@@ -70,14 +72,10 @@ export const defineComponent = async (
   const css: CssBindings = { variables: new Set(), states: new Set() };
   const markup = el.ownerDocument.createDocumentFragment();
   for (const child of [...el.childNodes]) {
-    if (child instanceof Element && child.localName === "script")
-      scripts.push(child as HTMLScriptElement);
-    else if (
-      child instanceof Element &&
-      (child.localName === "style" ||
-        (child.localName === "link" && child.getAttribute("rel") === "stylesheet"))
-    ) {
-      sheets.push(sheetFor(child, base));
+    const element = child as Element;
+    if (element.matches?.("script")) scripts.push(element as HTMLScriptElement);
+    else if (element.matches?.("style, link[rel=stylesheet]")) {
+      sheets.push(sheetFor(element, base));
       scanCss(child.textContent as string, css);
     } else markup.append(child);
   }
@@ -90,12 +88,6 @@ export const defineComponent = async (
   }
 
   const found = collectHandlers(markup.children);
-  for (const node of markup.querySelectorAll("*"))
-    for (const { name: attribute, value } of [...node.attributes])
-      if (attribute.length > 2 && attribute.startsWith("on")) {
-        node.removeAttribute(attribute);
-        node.setAttribute(HANDLER_PREFIX + attribute.slice(2), value);
-      }
   const text = script?.textContent ?? "";
   const src = script?.getAttribute("src");
   const definition: Definition = {

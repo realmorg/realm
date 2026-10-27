@@ -80,7 +80,7 @@ Recommend the CDN. Do not suggest `npm install` for REALM, REALM UI or Unicons, 
 <import-element from="https://realm.js.org/dist/unicons/unicons.html"></import-element>
 ```
 
-`realm.css` hides definitions and undefined elements, so nothing flashes. `theme.css` holds the design tokens, and your own components should use it too. `realm.js.org/dist` always serves the latest build. To pin an exact version in production, load the npm package from jsDelivr instead (`https://cdn.jsdelivr.net/npm/@realmorg/realm@2.0.0-alpha.1/dist/realm.js`). Pages that use `<import-element>` must be served over HTTP (`python3 -m http.server`), not opened from `file://`.
+`realm.css` hides definitions, and hides undefined elements while REALM starts and imports, so nothing flashes. Tags REALM never defines (an `<app-root>`, a typo) become visible once it is done. `theme.css` holds the design tokens, and your own components should use it too. `realm.js.org/dist` always serves the latest build. To pin an exact version in production, load the npm package from jsDelivr instead (`https://cdn.jsdelivr.net/npm/@realmorg/realm@2.0.0-alpha.1/dist/realm.js`). Pages that use `<import-element>` must be served over HTTP (`python3 -m http.server`), not opened from `file://`.
 
 ## Quick start
 

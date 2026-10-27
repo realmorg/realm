@@ -34,7 +34,7 @@ Keyed lists (`key="id"`) reuse rows for items that stay, move rows instead of re
 - `<import-element>` fetches each URL once, however many tags or components ask for it, and runs at most six requests per origin at a time.
 - `loading="lazy"` with `for` defers a file until one of its tags is used.
 - Identical `GET` requests from fetch attributes made at the same time are sent once.
-- `realm.css` hides undefined custom elements, so nothing flashes unstyled while files load.
+- `realm.css` hides undefined custom elements while REALM starts and while `<import-element>` files load, so nothing flashes unstyled.
 
 ## Memory and cleanup
 

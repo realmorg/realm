@@ -6,7 +6,7 @@ Everything in a `<custom-element>` that is not the script or a stylesheet is mar
 
 | Element | Purpose |
 | --- | --- |
-| `<custom-element name="tag-name">` | Defines a component. Hidden by `realm.css` and removed from the page once read |
+| `<custom-element name="tag-name">` | Defines a component. Hidden by `realm.css` and removed from the page once defined |
 | `<import-element from="file.html">` | Loads a file of definitions. See imports.md |
 | `<is-visible when="#ref">` | Mounts its content while the value is truthy (or the comparison is true) |
 | `<is-hidden when="#ref">` | Mounts its content while the value is falsy (or the comparison is false) |

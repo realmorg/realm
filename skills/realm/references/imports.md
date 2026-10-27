@@ -31,7 +31,7 @@ Behaviour:
 - Each URL is fetched once per page. Every `<import-element>` and `importDefinitions()` call for that URL shares the request.
 - At most six files load at once per origin.
 - The file is parsed with `DOMParser`, never executed or rendered. Only its `<custom-element>` elements and top-level `<import-element>` tags are used.
-- Elements used before their definition arrives upgrade when it does. Until then `realm.css` keeps them hidden.
+- Elements used before their definition arrives upgrade when it does. Until then `realm.css` keeps them hidden, as long as the `<import-element>` that brings the definition is still loading (it matches `:state(loading)`).
 - Importing the same component twice is harmless. A different definition for an existing name keeps the first and warns with both file names.
 - Files are loaded with `fetch`, so the page must be served over HTTP. `file://` pages can only use inline definitions.
 

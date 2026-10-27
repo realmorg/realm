@@ -21,7 +21,7 @@ Any static server works (`npx serve`, an editor's live preview). Use `localhost`
 
 ## 3. Check that everything is defined
 
-Undefined elements stay invisible (`realm.css` hides them), so a missing import looks like an empty space. Paste this into the browser console. It walks into shadow roots and lists custom tags that never got a definition:
+`realm.css` hides undefined elements only while REALM starts and imports, so a component whose import failed or never existed shows its raw light-DOM content (or nothing, if it has none). Paste this into the browser console. It walks into shadow roots and lists custom tags that never got a definition:
 
 ```js
 (() => {

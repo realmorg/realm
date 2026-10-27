@@ -9,6 +9,8 @@ repeat-list {
   display: contents;
 }
 
+/* Only while REALM is starting or importing definitions, so tags it never defines stay visible. */
+:root:has(custom-element, import-element:not(:defined), import-element:state(loading))
 :not(:defined) {
   visibility: hidden;
 }

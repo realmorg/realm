@@ -39,7 +39,10 @@ export const applyAttribute = (el: Element, attribute: string, value: unknown) =
   } else if (name === "value" && value == null && RANGE_ELEMENTS.has(el.localName)) {
     el.removeAttribute(name);
   } else if (FORM_PROPERTIES.has(name) && name in el) {
-    target[name] = name === "value" ? (value ?? "") : Boolean(value);
+    // Writing a control's own value back would clear the browser's "changed by the user" flag,
+    // which tooShort and tooLong depend on.
+    const next = name === "value" ? (value ?? "") : Boolean(value);
+    if (target[name] !== next) target[name] = next;
   } else if (el.localName.includes("-") && value !== null && typeof value === "object") {
     target[camelCase(name)] = value;
   } else if (
@@ -142,7 +145,7 @@ const mountBlock = (
     signal: controller.signal,
     disposers: [],
   };
-  const fragment = document.createDocumentFragment();
+  const fragment = new DocumentFragment();
   fragment.append(template.cloneNode(true));
   processTree(fragment, child);
   const nodes = [...fragment.childNodes];
@@ -158,7 +161,7 @@ const mountBlock = (
 };
 
 const takeChildren = (el: Element) => {
-  const template = document.createDocumentFragment();
+  const template = new DocumentFragment();
   template.append(...el.childNodes);
   return template;
 };

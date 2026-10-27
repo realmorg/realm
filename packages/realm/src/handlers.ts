@@ -4,9 +4,9 @@ import { compileHandler } from "./registry";
 type Listener = (this: Element, event: Event) => unknown;
 
 interface Slot {
-  fn: Listener | null;
-  code: string | null;
-  listening: boolean;
+  fn?: Listener | null;
+  code?: string | null;
+  listening?: boolean;
 }
 
 const slots = new WeakMap<Element, Map<string, Slot>>();
@@ -15,11 +15,7 @@ const slotFor = (el: Element, event: string) =>
   getOrCreate(
     getOrCreate(slots, el, () => new Map<string, Slot>()),
     event,
-    () => ({
-      fn: null,
-      code: null,
-      listening: false,
-    }),
+    (): Slot => ({}),
   );
 
 const setHandler = (el: Element, event: string, fn: Listener | null, code: string | null) => {

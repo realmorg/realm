@@ -1,5 +1,6 @@
 import { defineComponent } from "./definition";
 import { warn } from "./log";
+import { parseSource } from "./sanitize";
 
 const MAX_PER_ORIGIN = 6;
 const documents = new Map<string, Promise<Document>>();
@@ -44,7 +45,7 @@ const load = (url: string) => {
     .then(() => fetch(url))
     .then(async (response) => {
       if (!response.ok) throw new ImportError(url, response.status);
-      return new DOMParser().parseFromString(await response.text(), "text/html");
+      return parseSource(await response.text());
     })
     .catch((error: unknown) => {
       throw error instanceof ImportError ? error : new ImportError(url, 0);
@@ -63,9 +64,7 @@ export const importDefinitions = async (url: string, chain: ReadonlySet<string> 
     .filter((dependency) => !path.has(dependency));
   await Promise.all(dependencies.map((dependency) => importDefinitions(dependency, path)));
   await Promise.all(
-    [...doc.querySelectorAll("custom-element")].map((el) =>
-      defineComponent(el.cloneNode(true) as Element, url, false),
-    ),
+    [...doc.querySelectorAll("custom-element")].map((el) => defineComponent(el, url, false)),
   );
 };
 
@@ -96,6 +95,7 @@ export const watchDocumentTags = (root: Document) => {
 
 export class ImportElement extends HTMLElement {
   #started = false;
+  readonly #states = this.attachInternals().states;
 
   async connectedCallback() {
     if (this.#started || this.closest("custom-element")) return;
@@ -114,6 +114,7 @@ export class ImportElement extends HTMLElement {
           `<import-element from="${from}" loading="lazy"> needs a for attribute listing the tags it defines.`,
         );
     }
+    this.#states.add("loading");
     try {
       await importDefinitions(url);
       if (this.isConnected) this.dispatchEvent(new CustomEvent("load", { detail: { url } }));
@@ -123,5 +124,6 @@ export class ImportElement extends HTMLElement {
       if (this.isConnected)
         this.dispatchEvent(new CustomEvent("error", { detail: { url, status } }));
     }
+    this.#states.delete("loading");
   }
 }

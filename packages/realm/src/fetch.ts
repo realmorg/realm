@@ -64,11 +64,11 @@ export const wantsFetch = (el: Element) =>
   ((el.localName === "form" || el.localName === "a") &&
     (el.hasAttribute("into") || el.hasAttribute("render") || el.hasAttribute("busy")));
 
-const defaultTrigger = (el: Element) => {
-  if (el.localName === "form") return "submit";
-  if (el.localName === "input" || el.localName === "select" || el.localName === "textarea")
-    return "change";
-  return "click";
+const TRIGGERS: Record<string, string> = {
+  form: "submit",
+  input: "change",
+  select: "change",
+  textarea: "change",
 };
 
 const morph = (from: Node, to: Node) => {
@@ -317,7 +317,7 @@ export const setupFetch = (el: Element, scope: Scope) => {
   if (owned)
     el.addEventListener(owned, (event) => event.preventDefault(), { signal: scope.signal });
 
-  const triggers = (el.getAttribute("trigger") ?? defaultTrigger(el))
+  const triggers = (el.getAttribute("trigger") ?? TRIGGERS[el.localName] ?? "click")
     .split(/[\s,]+/)
     .filter(Boolean);
   for (const trigger of triggers) {

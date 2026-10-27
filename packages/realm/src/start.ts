@@ -3,15 +3,14 @@ import { ImportElement, watchDocumentTags } from "./loader";
 
 const PAGE_SHEET = new CSSStyleSheet();
 PAGE_SHEET.replaceSync(
-  "custom-element, import-element { display: none !important; } is-visible, is-hidden, repeat-list { display: contents; }",
+  "custom-element,import-element{display:none!important}is-visible,is-hidden,repeat-list{display:contents}",
 );
 
 let started = false;
 
-const defineInline = (el: Element) => {
-  el.remove();
-  void defineComponent(el, document.baseURI, true);
-};
+// The definition stays in the page until it is defined, so realm.css keeps hiding what it defines.
+const defineInline = (el: Element) =>
+  defineComponent(el, document.baseURI, true).then(() => el.remove());
 
 const scan = (root: ParentNode) => {
   for (const el of root.querySelectorAll("custom-element")) defineInline(el);

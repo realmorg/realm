@@ -48,8 +48,22 @@ REALM works under a nonce-based policy. Give the page's REALM `<script>` tag a n
 
 - Send the policy as an HTTP header in production, and generate a new nonce for every response.
 - `'strict-dynamic'` lets scripts loaded by trusted scripts run, which covers module imports from component scripts.
-- Event handlers in component markup are not inline handler attributes as far as the browser is concerned (REALM removes the attribute and compiles the handler into the component's script), so you do not need `'unsafe-inline'` or `'unsafe-hashes'` for them.
+- Event handlers in component markup run through REALM, not as inline handler attributes: REALM compiles them into the component's script, so they work without `'unsafe-inline'` or `'unsafe-hashes'`. Whether the browser also logs a violation depends on where the definition is written (see below).
 - Component styles are constructable stylesheets. REALM itself also sets inline `style` custom properties for `--attr-*`, `--state-*` and `_--name` bindings. Allow inline styles if you use those.
+
+### Handler attributes and violation reports
+
+Chrome and Firefox report a `script-src-attr` violation (a console error and a `securitypolicyviolation` event) as soon as the HTML parser puts an `on*` attribute on an element of the page. Chrome reports it for any document the page creates, including `DOMParser` documents and `<template>` contents. The handler is not blocked, because REALM never lets the browser run it, but a strict "no CSP errors" check fails.
+
+| Definition | Violation logged? |
+| --- | --- |
+| Loaded with `<import-element>` | **No.** REALM renames `onclick` to `realm:onclick` in the file's text before parsing it, so no `on*` attribute ever exists |
+| Written in the page (`<custom-element>` in the HTML) | **Yes, once per handler** in Chrome and Firefox. The browser parses the page before REALM runs. WebKit logs nothing |
+| Written in the page with `realm:onclick="add()"` | **No.** `realm:on…` is the same handler under a name the browser does not treat as code |
+| Pre-assembled with `@realmorg/vite-plugin` | **No.** The build renames handlers to `realm:on…` |
+| `on*` attributes in sanitised HTML (`html` slots, `render`) | Chrome reports them while parsing. They are removed and never run |
+
+So under a strict policy, keep definitions in files loaded with `<import-element>`, pre-assemble them, or write handlers in page definitions as `realm:on…`.
 
 Limits:
 

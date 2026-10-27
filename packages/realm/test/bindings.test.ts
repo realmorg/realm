@@ -1,4 +1,5 @@
 import { afterEach, beforeEach, describe, expect, type MockInstance, test, vi } from "vitest";
+import { userEvent } from "vitest/browser";
 import { applyAttribute, compare } from "../src/bindings";
 import { instances } from "../src/element";
 import { parseReference, readReference, writeReference } from "../src/scope";
@@ -384,4 +385,23 @@ test("the repeat attribute on a top-level element keeps updating after the marku
   (shadow.querySelector("button") as HTMLButtonElement).click();
   await tick();
   expect([...shadow.querySelectorAll("p")].map((p) => p.textContent)).toEqual(["a", "b"]);
+});
+
+test("a typed value is not written back, so length limits still apply", async () => {
+  const name = tag("typed");
+  await define(`<custom-element name="${name}">
+    <script>const form = useState({ text: "" }); function typed(field) { form.text = field.value; }</script>
+    <input minlength="4" _value="#form.text" oninput="typed(this)">
+  </custom-element>`);
+  const host = render(`<${name}></${name}>`);
+  const input = root(host.querySelector(name)).querySelector("input") as HTMLInputElement;
+  input.focus();
+  await userEvent.keyboard("ab");
+  await tick();
+  expect(input.value).toBe("ab");
+  expect(input.validity.tooShort).toBe(true);
+  input.value = "";
+  input.dispatchEvent(new Event("input"));
+  await tick();
+  expect(input.value).toBe("");
 });
