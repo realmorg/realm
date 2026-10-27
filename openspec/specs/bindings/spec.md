@@ -21,7 +21,7 @@ A <slot> whose name starts with # or @ SHALL show that value as text. The html a
 - **THEN** REALM warns
 
 ### Requirement: Attribute bindings
-_name="#ref" SHALL bind an attribute to a reference, with an optional leading !. true SHALL add, and false or null SHALL remove, the attribute. aria-* SHALL receive "true"/"false". value/checked/selected/indeterminate SHALL set properties, and SHALL NOT write a property that already has the value, so a value the user typed keeps its `tooShort`/`tooLong` validity. Objects on custom elements SHALL be passed as properties. --name SHALL set a CSS custom property.
+_name="#ref" SHALL bind an attribute to a reference, with an optional leading !. true SHALL add, and false or null SHALL remove, the attribute. aria-* SHALL receive "true"/"false". value/checked/selected/indeterminate SHALL set properties, and SHALL NOT write (or track) a property that already has the value, so typed values keep `tooShort`/`tooLong` and are not overwritten. Objects on custom elements SHALL be passed as properties. --name SHALL set a CSS custom property.
 
 #### Scenario: covers every value rule
 - **WHEN** values of every kind are applied
@@ -38,6 +38,10 @@ _name="#ref" SHALL bind an attribute to a reference, with an optional leading !.
 #### Scenario: a typed value is not written back, so length limits still apply
 - **WHEN** a typed value flows into state and back into the bound input
 - **THEN** the input is not rewritten and reports tooShort
+
+#### Scenario: a bound value on a component keeps what the user types until state changes
+- **WHEN** the user types into a component whose value is bound to state that updates after a debounce
+- **THEN** the typed value is kept and reaches the handler
 
 ### Requirement: Event handlers in markup
 Native on<event> attributes in component markup SHALL run in the component's script scope with event and this. return false SHALL cancel. debounce and throttle attributes SHALL time handlers, and timers SHALL be cleared on removal. A repeat loop variable named event SHALL be the item inside the handlers of its loop.
