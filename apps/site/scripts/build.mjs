@@ -133,7 +133,6 @@ const SECTIONS = [
   { id: "components", label: "Components" },
   { id: "examples", label: "Examples" },
   { id: "blog", label: "Blog" },
-  { id: "integrations", label: "Integrations" },
   { id: "compare", label: "Comparisons" },
   { id: "alternatives", label: "Alternatives" },
   { id: "html", label: "HTML patterns" },
