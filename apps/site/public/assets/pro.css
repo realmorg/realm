@@ -305,7 +305,7 @@
 /* Catalogue */
 .pro-numbers {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   margin: 0 0 calc(var(--spacing) * 16);
   border-block: 1px solid var(--border);
 }
@@ -749,12 +749,10 @@
     margin-bottom: calc(var(--spacing) * 10);
   }
   .pro-numbers {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: minmax(0, 1fr);
   }
-  .pro-numbers div:nth-child(3) {
+  .pro-numbers div + div {
     border-inline-start: 0;
-  }
-  .pro-numbers div:nth-child(n + 3) {
     border-top: 1px solid var(--border);
   }
   .pro-numbers div {

@@ -192,6 +192,26 @@
       ]
     }
   ],
+  "componentList": [
+    {
+      "name": "pro-data-grid",
+      "title": "Data grid",
+      "group": "Data",
+      "description": "A spreadsheet-grade grid for 100,000 rows: sorting, filters, resizable and pinned columns, selection, keyboard editing and CSV export."
+    },
+    {
+      "name": "pro-date-range-picker",
+      "title": "Date range picker",
+      "group": "Forms",
+      "description": "Pick a start and end date on a two-month calendar with presets, full keyboard support, locale-aware formatting, min and max dates, and a form value."
+    },
+    {
+      "name": "pro-flipbook",
+      "title": "Flipbook",
+      "group": "Media",
+      "description": "A book from any HTML or images: drag or click to turn pages with a realistic curl, two-page spreads, thumbnails, zoom, full screen and deep links."
+    }
+  ],
   "themeList": [
     {
       "name": "Aurora",
