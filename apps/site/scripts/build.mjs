@@ -110,7 +110,12 @@ const VERSIONS = Object.fromEntries(
 // real catalogue, so no count on the page can drift from what buyers get.
 const PRO_FILE = join(root, "public/pro/landing/counts.json");
 const PRO = existsSync(PRO_FILE) ? JSON.parse(readFileSync(PRO_FILE, "utf8")) : null;
-const KIND_LABEL = { blocks: "blocks", layouts: "page layouts", components: "components", themes: "themes" };
+const KIND_LABEL = {
+  blocks: "blocks",
+  layouts: "page layouts",
+  components: "components",
+  themes: "themes",
+};
 const proCatalogue = () =>
   `<ui-tabs value="${PRO.jobs[0].id}" class="pro-catalogue">` +
   `<ui-tabs-list aria-label="Catalogue by job">${PRO.jobs
