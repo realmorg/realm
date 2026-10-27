@@ -10,12 +10,17 @@ nav: REALM Pro
 
 <section class="pro-hero">
 <div class="pro-wrap pro-hero-copy">
-<a class="pro-status" href="#pricing"><span class="pro-status-dot" aria-hidden="true"></span>Early-access pricing · {{pro:total}} items</a>
+<a class="pro-status" href="#pricing"><span class="pro-status-dot" aria-hidden="true"></span><span class="pro-shimmer">Early-access pricing · {{pro:total}} items</span></a>
 <hgroup class="pro-title">
 <h1>Premium web components</h1>
-<p>The UI kit for <strong>REALM</strong></p>
+<p>The UI kit for <strong>REALM</strong>, built on <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_components" rel="noopener">native web components</a></p>
 </hgroup>
-<p class="pro-lead">{{pro:components}} components, {{pro:blocks}} UI blocks, {{pro:layouts}} page templates and {{pro:themes}} themes. Pay once, use it in all your projects.</p>
+<ul class="pro-hero-stats">
+<li><strong>{{pro:components}} components</strong><span>Data grid, scheduler, charts, editor</span></li>
+<li><strong>{{pro:blocks}} UI blocks</strong><span>Heroes, pricing, forms, dashboards</span></li>
+<li><strong>{{pro:layouts}} page templates</strong><span>Apps, sign-in, marketing, docs</span></li>
+<li><strong>{{pro:themes}} themes</strong><span>Light and dark, WCAG AA contrast</span></li>
+</ul>
 <div class="pro-actions">
 <a class="action primary" href="https://buy.polar.sh/polar_cl_LGiAIgKHE9dVha4DOPmnF8UnAL8r6P0JDtOl81VgV0b">Buy REALM Pro, $149 <u-icon name="arrow-right"></u-icon></a>
 <a class="action outline" href="#catalogue"><u-icon name="layout-grid"></u-icon> See what’s included</a>

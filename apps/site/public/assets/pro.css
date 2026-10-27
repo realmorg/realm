@@ -63,6 +63,60 @@
   border-radius: var(--radius-full);
   background: var(--primary);
 }
+.pro-shimmer {
+  color: var(--muted-foreground);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .pro-shimmer {
+    background:
+      linear-gradient(
+        100deg,
+        var(--muted-foreground) 40%,
+        var(--primary) 50%,
+        var(--muted-foreground) 60%
+      )
+      0 0 / 250% 100%;
+    background-clip: text;
+    color: transparent;
+    animation: pro-shimmer 3s linear infinite;
+  }
+}
+@keyframes pro-shimmer {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: 0 0;
+  }
+}
+.pro-hero-stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: calc(var(--spacing) * 3);
+  width: min(100%, calc(var(--spacing) * 144));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  text-align: start;
+}
+.pro-hero-stats li {
+  display: grid;
+  gap: calc(var(--spacing) * 0.5);
+  padding: calc(var(--spacing) * 3) calc(var(--spacing) * 4);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: color-mix(in oklab, var(--card) 70%, transparent);
+}
+.pro-hero-stats strong {
+  font-size: var(--text-sm);
+  font-weight: var(--font-weight-semibold);
+  font-variant-numeric: tabular-nums;
+}
+.pro-hero-stats span {
+  color: var(--muted-foreground);
+  font-size: var(--text-xs);
+  line-height: 1.4;
+}
 .pro-hero h1 {
   max-width: calc(var(--spacing) * 220);
   margin: 0;
@@ -88,6 +142,16 @@
 .pro-title strong {
   color: var(--foreground);
   font-weight: inherit;
+}
+.pro-title a {
+  color: var(--foreground);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in oklab, var(--primary) 60%, transparent);
+  text-underline-offset: 0.18em;
+  text-decoration-thickness: 0.06em;
+}
+.pro-title a:hover {
+  color: var(--primary);
 }
 .pro-lead {
   max-width: calc(var(--spacing) * 168);
