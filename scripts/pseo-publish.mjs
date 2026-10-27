@@ -15,7 +15,15 @@
 // Publishing a few pages a day keeps the site from looking like a mass of generated pages to
 // search engines.
 import { execFileSync } from "node:child_process";
-import { cpSync, existsSync, readdirSync, readFileSync, rmSync, statSync } from "node:fs";
+import {
+  cpSync,
+  existsSync,
+  readdirSync,
+  readFileSync,
+  rmSync,
+  statSync,
+  writeFileSync,
+} from "node:fs";
 import { join, relative, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -85,8 +93,16 @@ const imageSources = (body) =>
     ([, src]) => src,
   );
 
+// A page can take over from raw example pages (a tutorial from its finished app): front matter
+// `supersedes: examples/todo/index.html examples/todo/cart.html`, paths under apps/. On the day it
+// is published those pages get noindex, follow, so search shows the page that explains them.
+const NOINDEX = '<meta name="robots" content="noindex, follow">';
+export const supersededBy = (page) => (page.meta.supersedes ?? "").split(/\s+/).filter(Boolean);
+export const withNoindex = (html) =>
+  html.includes('name="robots"') ? html : html.replace(/(\s*)<\/head>/, `$1  ${NOINDEX}$1</head>`);
+
 // Every problem with a batch. An empty list means it can be published.
-export const problemsOf = ({ date, batch, existing, assets = new Set() }) => {
+export const problemsOf = ({ date, batch, existing, assets = new Set(), exists = () => true }) => {
   const problems = [];
   if (batch.length > MAX_PAGES_PER_DAY)
     problems.push(
@@ -115,6 +131,8 @@ export const problemsOf = ({ date, batch, existing, assets = new Set() }) => {
     for (const href of internalLinks(body))
       if (!urls.has(href) && !href.startsWith("/dist/"))
         problems.push(`${path}: links to ${href}, which does not exist`);
+    for (const file of supersededBy(page))
+      if (!exists(file)) problems.push(`${path}: supersedes ${file}, which does not exist`);
     for (const src of imageSources(body))
       if (!assets.has(src)) problems.push(`${path}: shows ${src}, which does not exist`);
   }
@@ -153,7 +171,13 @@ const main = (args) => {
   const existing = markdownFiles(content).map((file) => read(content, file));
   const dayPublic = join(dayDir, "public");
   const assets = new Set([...assetsIn(sitePublic), ...assetsIn(dayPublic)]);
-  const problems = problemsOf({ date, batch, existing, assets });
+  const problems = problemsOf({
+    date,
+    batch,
+    existing,
+    assets,
+    exists: (file) => existsSync(join(repo, "apps", file)),
+  });
   if (problems.length) {
     console.error(`[pseo] ${date}: not published.\n- ${problems.join("\n- ")}`);
     process.exitCode = 1;
@@ -169,6 +193,9 @@ const main = (args) => {
   }
 
   const published = assetsIn(dayPublic).map((path) => join("apps/site/public", path));
+  const superseded = batch.flatMap(supersededBy).map((file) => join("apps", file));
+  for (const file of superseded)
+    writeFileSync(join(repo, file), withNoindex(readFileSync(join(repo, file), "utf8")));
   cpSync(dayDir, content, { recursive: true, filter: (path) => path !== dayPublic });
   if (existsSync(dayPublic)) cpSync(dayPublic, sitePublic, { recursive: true });
   try {
@@ -176,6 +203,7 @@ const main = (args) => {
   } catch (error) {
     for (const page of batch) rmSync(join(content, page.path));
     for (const path of published) rmSync(join(repo, path));
+    if (superseded.length) run("git", ["checkout", "--", ...superseded]);
     throw new Error(
       `[pseo] The site does not build with the ${date} pages, so nothing was published.`,
       {
@@ -189,7 +217,11 @@ const main = (args) => {
   run("git", ["commit", "--quiet", "-m", `seo: publish the ${date} pages`], join(repo, "pro"));
   run("git", ["push", "--quiet"], join(repo, "pro"));
 
-  const paths = [...batch.map((page) => join("apps/site/content", page.path)), ...published];
+  const paths = [
+    ...batch.map((page) => join("apps/site/content", page.path)),
+    ...published,
+    ...superseded,
+  ];
   run("git", ["add", ...paths, "pro"]);
   run("git", [
     "commit",

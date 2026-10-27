@@ -1,6 +1,14 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { frontmatter, MAX_PAGES_PER_DAY, MIN_WORDS, problemsOf, urlOf } from "./pseo-publish.mjs";
+import {
+  frontmatter,
+  MAX_PAGES_PER_DAY,
+  MIN_WORDS,
+  problemsOf,
+  supersededBy,
+  urlOf,
+  withNoindex,
+} from "./pseo-publish.mjs";
 
 const words = (count) => Array.from({ length: count }, (_, i) => `word${i}`).join(" ");
 const page = (path, meta = {}, body = words(MIN_WORDS)) => ({
@@ -91,4 +99,25 @@ test("a src inside a code sample is not an image on the page", () => {
     problemsOf({ date: "2026-11-02", batch: [page("docs/react.md", {}, body)], existing: [] }),
     [],
   );
+});
+
+test("a page that supersedes example pages marks them noindex, and they must exist", () => {
+  const tutorial = page("tutorials/todo-app.md", {
+    supersedes: "examples/todo/index.html  examples/todo/x.html",
+  });
+  assert.deepEqual(supersededBy(tutorial), ["examples/todo/index.html", "examples/todo/x.html"]);
+  assert.deepEqual(supersededBy(page("docs/a.md")), []);
+  const problems = problemsOf({
+    date: "2026-11-02",
+    batch: [tutorial],
+    existing: [],
+    exists: (file) => file === "examples/todo/index.html",
+  });
+  assert.deepEqual(problems, [
+    "tutorials/todo-app.md: supersedes examples/todo/x.html, which does not exist",
+  ]);
+  const html = "<html>\n  <head>\n    <title>Todo</title>\n  </head>\n</html>";
+  const marked = withNoindex(html);
+  assert.ok(marked.includes('<meta name="robots" content="noindex, follow">\n  </head>'));
+  assert.equal(withNoindex(marked), marked);
 });
