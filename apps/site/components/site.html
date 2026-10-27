@@ -265,8 +265,14 @@
           { id: "examples", label: "Examples", icon: "layout-grid" },
           { id: "unicons", label: "Unicons", icon: "sparkles" },
           { id: "blog", label: "Blog", icon: "newspaper" },
-          { id: "pro", label: "Pro", icon: "gem" },
+          { id: "pro", label: "Pro", icon: "crown" },
         ].map((link) => ({ ...link, href: `${props.root}${link.id}/`, current: link.id === props.section ? "page" : null }));
+      },
+      get free() {
+        return this.links.filter((link) => link.id !== "pro");
+      },
+      get pro() {
+        return this.links.find((link) => link.id === "pro");
       },
     });
   </script>
@@ -314,6 +320,23 @@
     .main-nav a:hover,
     .main-nav a[aria-current="page"] {
       color: var(--foreground);
+    }
+    .main-nav .pro {
+      display: inline-flex;
+      align-items: center;
+      gap: calc(var(--spacing) * 1.5);
+      color: var(--primary);
+      font-weight: var(--font-weight-semibold);
+    }
+    .main-nav .pro:hover,
+    .main-nav .pro[aria-current="page"] {
+      color: var(--primary);
+      text-decoration: underline;
+      text-underline-offset: calc(var(--spacing) * 1.5);
+    }
+    .sheet-nav a[href$="pro/"] {
+      color: var(--primary);
+      font-weight: var(--font-weight-semibold);
     }
     .menu {
       display: none;
@@ -390,9 +413,10 @@
     </div>
     <a class="home" _href="#nav.home" aria-label="REALM home"><realm-logo size="24"></realm-logo></a>
     <nav class="main-nav" aria-label="Main">
-      <repeat-list of="#nav.links" as="link" key="id">
+      <repeat-list of="#nav.free" as="link" key="id">
         <a _href="#link.href" _aria-current="#link.current"><slot name="#link.label"></slot></a>
       </repeat-list>
+      <a class="pro" _href="#nav.pro.href" _aria-current="#nav.pro.current"><u-icon name="crown"></u-icon>Pro</a>
     </nav>
     <div class="actions">
       <site-search _root="@root"></site-search>
