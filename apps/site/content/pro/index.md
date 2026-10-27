@@ -13,7 +13,7 @@ nav: REALM Pro
 <a class="pro-status" href="#pricing"><span class="pro-status-dot" aria-hidden="true"></span>Early-access pricing · {{pro:total}} items</a>
 <hgroup class="pro-title">
 <h1>Premium web components</h1>
-<p>The UI kit for <a href="{{root}}docs/">REALM</a></p>
+<p>The UI kit for <strong>REALM</strong></p>
 </hgroup>
 <p class="pro-lead">{{pro:components}} components, {{pro:blocks}} UI blocks, {{pro:layouts}} page templates and {{pro:themes}} themes. Pay once, use in every project.</p>
 <div class="pro-actions">

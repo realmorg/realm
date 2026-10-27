@@ -85,12 +85,9 @@
   font-weight: var(--font-weight-medium);
   letter-spacing: -0.02em;
 }
-.pro-title a {
+.pro-title strong {
   color: var(--foreground);
-  text-decoration: none;
-}
-.pro-title a:hover {
-  color: var(--primary);
+  font-weight: inherit;
 }
 .pro-lead {
   max-width: calc(var(--spacing) * 168);
