@@ -150,7 +150,7 @@ Things to know:
 
 ## Reading without subscribing
 
-`untrack(fn)` runs `fn` without subscribing the current observer to what it reads. `toRaw(proxy)` returns the original object behind a reactive proxy, which is useful before handing data to `structuredClone` or `JSON.stringify` in hot paths. Both are exported from `@realmorg/realm`:
+`untrack(fn)` runs `fn` without subscribing the current observer to what it reads. `toRaw(proxy)` returns the original object behind a reactive proxy, which is useful before handing data to `structuredClone` or `JSON.stringify` in hot paths. Both are script helpers, so component scripts use them without importing, which matters for large props: reading 100,000 rows through the proxy is much slower than reading `toRaw(props.rows)`. Outside components they are exported from `@realmorg/realm`:
 
 ```js
 import { toRaw, untrack } from "@realmorg/realm";

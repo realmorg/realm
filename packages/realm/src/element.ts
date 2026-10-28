@@ -5,7 +5,7 @@ import { bindPageHandler, definePageHandlerProperty } from "./handlers";
 import { report, warn } from "./log";
 import { prop } from "./props";
 import { attachProps } from "./props-runtime";
-import { effect, reactive, tick, untrack } from "./reactivity";
+import { effect, reactive, tick, toRaw, untrack } from "./reactivity";
 import { settingUp } from "./registry";
 import { defineStore } from "./store";
 import type { Context, Definition, SetupResult } from "./types";
@@ -125,6 +125,7 @@ const timers = (signal: AbortSignal) => {
 const createContext = (instance: Instance): Context => ({
   ...timers(instance.signal),
   untrack,
+  toRaw,
   defineProps: (schema) => attachProps(instance, schema) as never,
   useState: reactive,
   useChildren(selector, attributes = []) {

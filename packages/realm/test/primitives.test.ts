@@ -547,3 +547,28 @@ test("untrack lets an effect call other components without subscribing to them",
   await tick();
   expect(el.runs).toBe(runs);
 });
+
+test("toRaw gives component scripts the plain data behind a prop or state", async () => {
+  const name = tag("raw");
+  await define(`<custom-element name="${name}"><script>
+    const props = defineProps({ rows: prop.array().default([]) });
+    const state = useState({ list: [{ id: 1 }] });
+    defineMethods({
+      get rawRows() { return toRaw(props.rows); },
+      get rawList() { return toRaw(state.list); },
+      get proxied() { return props.rows; },
+    });
+  </script></custom-element>`);
+  const el = mount(name) as unknown as {
+    rows: object[];
+    rawRows: object[];
+    rawList: object[];
+    proxied: object[];
+  };
+  const rows = [{ id: 1 }, { id: 2 }];
+  el.rows = rows;
+  await tick();
+  expect(el.rawRows).toBe(rows);
+  expect(el.proxied).not.toBe(rows);
+  expect(structuredClone(el.rawList)).toEqual([{ id: 1 }]);
+});

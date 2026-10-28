@@ -45,6 +45,7 @@ export interface Context {
   clearTimeout(id?: number): void;
   clearInterval(id?: number): void;
   untrack<T>(fn: () => T): T;
+  toRaw<T>(value: T): T;
 }
 
 export type Setup = (context: Context) => SetupResult;

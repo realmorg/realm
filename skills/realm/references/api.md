@@ -445,7 +445,7 @@ document.body.append(document.createElement("sales-chart"));
 
 ### `toRaw`
 
-`toRaw<T>(value: T): T`. The original object behind a proxy, for `structuredClone`, `postMessage` and IndexedDB. Writes to it do not notify.
+`toRaw<T>(value: T): T`. The original object behind a proxy, for `structuredClone`, `postMessage` and IndexedDB. Writes to it do not notify. It is also a script helper: read large props as `toRaw(props.rows)` to skip the proxy on every item.
 
 ### `untrack`
 
