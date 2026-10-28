@@ -1,5 +1,11 @@
 # @realmorg/realm
 
+## 2.0.0-alpha.7
+
+### Patch Changes
+
+- 77cbcf4: `toRaw` is a script helper, like `untrack`, so a component can read a large prop as `toRaw(props.rows)` without going through the reactive proxy for every item.
+
 ## 2.0.0-alpha.6
 
 ### Minor Changes
