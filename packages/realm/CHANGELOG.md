@@ -1,5 +1,23 @@
 # @realmorg/realm
 
+## 2.0.0-alpha.6
+
+### Minor Changes
+
+- 03aa3a7: - Form-associated components have `validity`, `validationMessage`, `willValidate`, `checkValidity()` and `reportValidity()` like native fields, read from their `ElementInternals`. A component that defines its own with `defineMethods` keeps them.
+  - A value a page sets on an element before its definition loads, such as `tree.loader = fetchChildren`, now reaches the `defineMethods` setter of the same name, as it already did for props.
+  - The runtime budget is now under 17 KB gzip.
+
+### Patch Changes
+
+- 473cd13: - A bound `value` on a component, such as `<ui-input _value="#state.query" oninput="search(this.value)" debounce="200ms">`, no longer puts the old state value back while the user types.
+  - A form reset returns only form state (`value`, `checked`, `selected`, `indeterminate`) to its attribute. Data a page set as a property, such as an options array or a loader, is kept.
+- 511b8a2: Fixes found while building integration examples:
+  
+  - Components loaded with `<import-element>` no longer make Chrome log "Executing inline event handler violates … Content Security Policy" under a nonce policy. Chrome reports any `on*` attribute the moment it is parsed, even into an inert `DOMParser` document, so REALM now renames handlers to `realm:on…` in the file's text before parsing it. Definitions written in the page are parsed by the browser before REALM runs, so they still log one report per handler in Chrome and Firefox; write those handlers as `realm:onclick="…"`, load the definition from a file, or pre-assemble with `@realmorg/vite-plugin`. The security guide lists every case.
+  - `realm.css` no longer hides elements REALM never defines. Undefined elements are hidden only while the page still has an unread `<custom-element>`, before REALM starts, or while an `<import-element>` is loading, so an Angular `<app-root>` or another library's tags appear once REALM is done. `<import-element>` matches `:state(loading)` while it imports, and inline definitions stay in the page until they are defined.
+  - A bound `value` (or `checked`, `selected`, `indeterminate`) is no longer written back when it already matches, so a value the user typed keeps the browser's `tooShort`/`tooLong` checks and `minlength`/`maxlength` work on form-associated components.
+
 ## 2.0.0-alpha.5
 
 ### Patch Changes

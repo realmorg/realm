@@ -1,6 +1,6 @@
 {
   "name": "@realmorg/vite-plugin",
-  "version": "2.0.0-alpha.5",
+  "version": "2.0.0-alpha.6",
   "description": "Vite plugin that pre-assembles REALM components for strict Content Security Policies and writes a custom-elements.json manifest.",
   "license": "MIT",
   "type": "module",
