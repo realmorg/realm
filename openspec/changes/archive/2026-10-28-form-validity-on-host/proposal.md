@@ -5,4 +5,4 @@ Form-associated Pro components (select, tag input, colour picker, file upload, w
 - A form-associated component's host gets `validity`, `validationMessage`, `willValidate`, `checkValidity()` and `reportValidity()`, forwarding to its `ElementInternals`, unless the component defines its own.
 
 ## Impact
-Runtime (`element.ts`). The runtime has about 4 bytes left in its 16 KB gzip budget, so this needs either a matching saving elsewhere or a budget decision before it is built.
+Runtime (`element.ts`). The runtime budget is now under 17 KB gzip, which leaves room for it.

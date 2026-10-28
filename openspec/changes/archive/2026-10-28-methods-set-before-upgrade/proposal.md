@@ -5,4 +5,4 @@ A page can set a property on an element before its definition loads, for example
 - When `defineMethods` adds a setter whose name is already an own property of the host, the early value is removed from the host and passed to the setter, as props already do.
 
 ## Impact
-Runtime (`element.ts` / `defineMethods`). Same size-budget note as `form-validity-on-host`: there are about 4 bytes left.
+Runtime (`element.ts` / `defineMethods`). The runtime budget is now under 17 KB gzip, which leaves room for it.

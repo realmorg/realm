@@ -124,6 +124,29 @@ describe("form-associated automation", () => {
     expect(picker.options).toEqual(["a", "b"]);
   });
 
+  test("a form-associated component exposes validity like a native field", async () => {
+    const name = tag("valid");
+    const plain = tag("plain");
+    await define(`
+      <custom-element name="${name}" form-associated>
+        <script>defineProps({ value: prop.string().default("") });</script>
+        <input ref="control" required _value="@value">
+      </custom-element>
+      <custom-element name="${plain}"></custom-element>`);
+    const host = render(`<form><${name} name="v"></${name}></form><${plain}></${plain}>`);
+    const field = host.querySelector(name) as unknown as HTMLInputElement;
+    await tick();
+    expect(field.willValidate).toBe(true);
+    expect(field.checkValidity()).toBe(false);
+    expect(field.validity.valueMissing).toBe(true);
+    expect(field.validationMessage).not.toBe("");
+    expect(field.reportValidity()).toBe(false);
+    field.value = "filled";
+    await tick();
+    expect(field.checkValidity()).toBe(true);
+    expect("checkValidity" in (host.querySelector(plain) as Element)).toBe(false);
+  });
+
   test("form-associated components without value props still reset", async () => {
     const name = tag("plain-form");
     await define(
@@ -354,6 +377,22 @@ describe("defineMethods", () => {
     await tick();
     await new Promise((resolve) => setTimeout(resolve));
     expect("increment" in el).toBe(false);
+  });
+
+  test("a value set before upgrade reaches a defineMethods setter", async () => {
+    const name = tag("early");
+    const host = render(`<${name} id="early"></${name}><${name} id="late"></${name}>`);
+    const early = host.querySelector("#early") as unknown as { loader: string };
+    early.loader = "fetch-children";
+    await define(`<custom-element name="${name}">
+      <script>
+        const seen = useState({ loader: "none" });
+        defineMethods({ set loader(value) { seen.loader = value; }, get loader() { return seen.loader; } });
+      </script>
+    </custom-element>`);
+    await tick();
+    expect(early.loader).toBe("fetch-children");
+    expect((host.querySelector("#late") as unknown as { loader: string }).loader).toBe("none");
   });
 });
 

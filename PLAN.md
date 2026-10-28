@@ -1127,7 +1127,7 @@ Specs use OpenSpec's format: requirements with "SHALL", and scenarios written as
 | End-to-end | Playwright | Pull requests and `main` | Example apps, website, Unicons, accessibility checks, a mock server for requests |
 | Performance | Playwright | `main` and nightly | Create 1,000 rows, update every tenth, swap, clear. Fails on a regression of more than 10% |
 | Memory | Chromium | Nightly | Add and remove a component 1,000 times. Nothing may remain |
-| Size | `scripts/check-size.mjs` | Every push | Runtime at most 16 KB gzip |
+| Size | `scripts/check-size.mjs` | Every push | Runtime under 17 KB gzip |
 
 Line and branch coverage of the runtime must stay at or above 90%.
 

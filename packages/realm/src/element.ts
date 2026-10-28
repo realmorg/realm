@@ -153,7 +153,11 @@ const createContext = (instance: Instance): Context => ({
     const host = instance.host;
     const descriptors = Object.getOwnPropertyDescriptors(methods);
     for (const [name, descriptor] of Object.entries(descriptors)) {
+      // A value the page set before upgrade goes to the setter, as it does for props.
+      const early = descriptor.set && Object.hasOwn(host, name);
+      const value = (host as unknown as Record<string, unknown>)[name];
       Object.defineProperty(host, name, { ...descriptor, configurable: true });
+      if (early) (host as unknown as Record<string, unknown>)[name] = value;
     }
     instance.disposers.push(() => {
       for (const name of Object.keys(descriptors))
@@ -294,7 +298,33 @@ export class RealmElement extends HTMLElement {
   formStateRestoreCallback(state: unknown, mode: string) {
     for (const hook of this.#instance?.formStateRestore ?? []) hook(state, mode);
   }
+
+  static internalsOf(element: RealmElement) {
+    return element.#internals;
+  }
 }
+
+// Native fields have these members, so form-associated components get them from their internals.
+const FORM_MEMBERS = Object.getOwnPropertyDescriptors(
+  class {
+    get validity() {
+      return RealmElement.internalsOf(this as never).validity;
+    }
+    get validationMessage() {
+      return RealmElement.internalsOf(this as never).validationMessage;
+    }
+    get willValidate() {
+      return RealmElement.internalsOf(this as never).willValidate;
+    }
+    checkValidity() {
+      return RealmElement.internalsOf(this as never).checkValidity();
+    }
+    reportValidity() {
+      return RealmElement.internalsOf(this as never).reportValidity();
+    }
+  }.prototype,
+);
+delete (FORM_MEMBERS as { constructor?: unknown }).constructor;
 
 export const mountElementClass = (definition: Definition) => {
   const handlerAttributes = definition.events
@@ -307,5 +337,6 @@ export const mountElementClass = (definition: Definition) => {
   };
   for (const attribute of handlerAttributes)
     definePageHandlerProperty(ElementClass.prototype, attribute);
+  if (definition.formAssociated) Object.defineProperties(ElementClass.prototype, FORM_MEMBERS);
   customElements.define(definition.name, ElementClass);
 };

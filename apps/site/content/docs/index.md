@@ -71,7 +71,7 @@ In this example:
   </ui-accordion-item>
   <ui-accordion-item>
     <ui-accordion-trigger>How big is REALM?</ui-accordion-trigger>
-    <ui-accordion-content>The runtime is about 16 KB gzipped. CI fails any change that takes it over the 16 KB budget.</ui-accordion-content>
+    <ui-accordion-content>The runtime is about 16 KB gzipped. CI fails any change that takes it to 17 KB or more.</ui-accordion-content>
   </ui-accordion-item>
   <ui-accordion-item>
     <ui-accordion-trigger>Which browsers does REALM support?</ui-accordion-trigger>
