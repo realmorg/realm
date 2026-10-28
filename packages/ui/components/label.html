@@ -23,7 +23,10 @@
         return;
       }
       const control = field.shadowRoot ? field.shadowRoot.querySelector('[ref="control"]') : field;
-      if (control) control.ariaLabelledByElements = [host];
+      if (!control) return;
+      control.ariaLabelledByElements = [host];
+      // Inside a shadow root, also a plain name for tools that do not follow element references.
+      if (control !== field && !control.hasAttribute("aria-label")) control.setAttribute("aria-label", host.textContent.trim());
     }
 
     onConnected(labelField);

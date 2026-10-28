@@ -712,6 +712,7 @@ test("ui-label names the inner control without changing its target's attributes"
   const email = host.querySelector("#email") as HTMLElement;
   expect(email.getAttributeNames()).toEqual(["id"]);
   expect(part(email, "input").ariaLabelledByElements).toEqual([label("email")]);
+  expect(part(email, "input").getAttribute("aria-label")).toBe("Email");
   const agree = host.querySelector("#agree") as HTMLElement;
   expect(agree.hasAttribute("aria-label")).toBe(false);
   expect(shadow(agree).querySelector('[ref="control"]')?.ariaLabelledByElements).toEqual([
@@ -721,6 +722,7 @@ test("ui-label names the inner control without changing its target's attributes"
   expect((host.querySelector("#plain") as HTMLInputElement).ariaLabelledByElements).toEqual([
     label("plain"),
   ]);
+  expect(host.querySelector("#plain")?.hasAttribute("aria-label")).toBe(false);
   expect(host.querySelector("#bare")?.hasAttribute("aria-labelledby")).toBe(false);
   customElements.define(
     late,
