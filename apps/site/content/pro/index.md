@@ -15,7 +15,7 @@ nav: REALM Pro
 <h1>Premium web components</h1>
 <p>The UI kit for <strong>REALM</strong>, built on <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_components" rel="noopener">native web components</a></p>
 </hgroup>
-<ul class="ui-kit-hero-stats">
+<ul class="pro-hero-stats">
 <li><strong>{{pro:components}} components</strong><span>Data grid, scheduler, charts, editor</span></li>
 <li><strong>{{pro:blocks}} UI blocks</strong><span>Heroes, pricing, forms, dashboards</span></li>
 <li><strong>{{pro:layouts}} page templates</strong><span>Apps, sign-in, marketing, docs</span></li>
