@@ -7,11 +7,12 @@ layout: home
 <section class="hero">
   <realm-logo size="72"></realm-logo>
   <h1>The HTML framework for shipping MVPs</h1>
-  <p class="lead">REALM turns a <code>&lt;custom-element&gt;</code> tag into a working web component in the browser. Write the script, style and markup in plain HTML, load REALM from a CDN and open the file. There is no build step.</p>
+  <p class="lead">REALM turns a <code>&lt;custom-element&gt;</code> tag into a <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_components" rel="noopener">native web component</a> in the browser. Write the script, style and markup in plain HTML, load REALM from a CDN and open the file. There is no build step.</p>
   <div class="actions">
     <a class="action primary" href="{{root}}docs/quick-start/">Get started <u-icon name="arrow-right"></u-icon></a>
     <a class="action outline" href="{{root}}examples/"><u-icon name="layout-grid"></u-icon> Examples</a>
   </div>
+  <p class="hero-note"><u-icon name="code-xml" aria-hidden="true"></u-icon><span>This whole page is made of web components. Inspect any element to see them.</span></p>
 </section>
 
 <section class="home-section major" aria-labelledby="write-a-component">

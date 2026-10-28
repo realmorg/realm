@@ -403,6 +403,35 @@ theme-builder:not(:defined) {
   color: var(--muted-foreground);
   text-wrap: pretty;
 }
+.hero .lead a {
+  color: var(--foreground);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in oklab, var(--primary) 60%, transparent);
+  text-underline-offset: 0.18em;
+}
+.hero .lead a:hover {
+  color: var(--primary);
+}
+.hero-note {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(var(--spacing) * 2);
+  max-width: 100%;
+  margin: calc(var(--spacing) * 3) 0 0;
+  padding: calc(var(--spacing) * 1.5) calc(var(--spacing) * 3.5);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  color: var(--muted-foreground);
+  font-size: var(--text-xs);
+  line-height: 1.4;
+  text-align: start;
+}
+.hero-note u-icon {
+  flex: none;
+  width: calc(var(--spacing) * 3.5);
+  height: calc(var(--spacing) * 3.5);
+  color: var(--primary);
+}
 .home .actions {
   display: flex;
   flex-wrap: wrap;
