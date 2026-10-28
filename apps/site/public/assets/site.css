@@ -27,6 +27,19 @@ body {
 a {
   color: inherit;
 }
+/* Same-site page loads cross-fade, and the header stays in place while the content changes. */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition {
+    navigation: auto;
+  }
+}
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: calc(var(--default-transition-duration) * 1.5);
+}
+site-header {
+  view-transition-name: site-header;
+}
 /* Reserve the room custom elements take once defined, so the page does not move as they load. */
 site-header {
   display: block;
