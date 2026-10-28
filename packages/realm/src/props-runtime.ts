@@ -1,3 +1,4 @@
+import { FORM_PROPERTIES } from "./bindings";
 import type { Instance } from "./element";
 import { warn } from "./log";
 import { type PropType, type Result, toAttributeName } from "./props";
@@ -19,17 +20,16 @@ export const attachProps = (instance: Instance, schema: Record<string, PropType>
     }
   };
 
-  // Like a native reset: only the form value goes back to its attribute, so data a page set
+  // Like a native reset: only form state (value, checked…) goes back to its attribute, so data a page set
   // as a property (an options array, a loader) survives.
   const resetFormValue = () => {
-    for (const [attribute, key] of byAttribute) {
-      if (key !== "value" && key !== "checked") continue;
-      apply(
-        key,
-        schema[key] as PropType,
-        (schema[key] as PropType).parse(host.getAttribute(attribute)),
-      );
-    }
+    for (const [attribute, key] of byAttribute)
+      if (FORM_PROPERTIES.has(key))
+        apply(
+          key,
+          schema[key] as PropType,
+          (schema[key] as PropType).parse(host.getAttribute(attribute)),
+        );
   };
 
   for (const [key, type] of Object.entries(schema)) {

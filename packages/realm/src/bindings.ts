@@ -9,7 +9,7 @@ import { type Box, type Reference, readReference, requireReference, type Scope }
 import { childController } from "./signal";
 import { withTiming } from "./time";
 
-const FORM_PROPERTIES = new Set(["value", "checked", "selected", "indeterminate"]);
+export const FORM_PROPERTIES = new Set(["value", "checked", "selected", "indeterminate"]);
 const TRUE_FALSE_ATTRIBUTES = new Set(["draggable", "spellcheck", "contenteditable"]);
 const COMPARATORS = ["eq", "neq", "gt", "gte", "lt", "lte", "contains"] as const;
 type Comparator = (typeof COMPARATORS)[number];
@@ -41,10 +41,8 @@ export const applyAttribute = (el: Element, attribute: string, value: unknown) =
   } else if (FORM_PROPERTIES.has(name) && name in el) {
     // Writing a control's own value back would clear the browser's "changed by the user" flag,
     // which tooShort and tooLong depend on.
-    // Untracked, because on a component the property is a prop: tracking it would make the
-    // binding rerun on every keystroke and put the old state value back.
     const next = name === "value" ? (value ?? "") : Boolean(value);
-    if (untrack(() => target[name]) !== next) target[name] = next;
+    if (target[name] !== next) target[name] = next;
   } else if (el.localName.includes("-") && value !== null && typeof value === "object") {
     target[camelCase(name)] = value;
   } else if (
@@ -63,7 +61,13 @@ export const applyAttribute = (el: Element, attribute: string, value: unknown) =
 
 const bindAttribute = (el: Element, name: string, text: string, scope: Scope) => {
   const reference = requireReference(text, `_${name}`, scope);
-  if (reference) watch(scope, () => applyAttribute(el, name, readReference(reference, scope)));
+  // Applied untracked: reading a component's own value prop would make the binding rerun on
+  // every keystroke and put the old state value back.
+  if (reference)
+    watch(scope, () => {
+      const value = readReference(reference, scope);
+      untrack(() => applyAttribute(el, name, value));
+    });
 };
 
 const bindHandler = (el: Element, event: string, code: string, scope: Scope) => {
