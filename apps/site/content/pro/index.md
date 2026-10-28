@@ -15,7 +15,7 @@ nav: REALM Pro
 <h1>Premium web components</h1>
 <p>The UI kit for <strong>REALM</strong>, built on <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_components" rel="noopener">native web components</a></p>
 </hgroup>
-<ul class="pro-hero-stats">
+<ul class="ui-kit-hero-stats">
 <li><strong>{{pro:components}} components</strong><span>Data grid, scheduler, charts, editor</span></li>
 <li><strong>{{pro:blocks}} UI blocks</strong><span>Heroes, pricing, forms, dashboards</span></li>
 <li><strong>{{pro:layouts}} page templates</strong><span>Apps, sign-in, marketing, docs</span></li>
@@ -29,20 +29,20 @@ nav: REALM Pro
 </div>
 <div class="pro-wall" aria-label="Screens built with REALM Pro">
 <div class="pro-wall-row">
-<img src="{{root}}pro/landing/wall/pro-dashboard-sidebar-analytics.webp" alt="Analytics dashboard layout with revenue chart and sidebar" width="960" height="600" decoding="async">
-<img src="{{root}}pro/landing/wall/pro-pricing-three-tiers.webp" alt="Pricing block with three plans" width="960" height="600" decoding="async">
-<img src="{{root}}pro/landing/wall/pro-sign-in-split-social.webp" alt="Split sign-in page with a brand panel" width="960" height="600" decoding="async">
-<img src="{{root}}pro/landing/wall/pro-data-table-tabs-card.webp" alt="Invoices table with status tabs and row actions" width="960" height="600" decoding="async">
-<img src="{{root}}pro/landing/wall/pro-settings-profile-columns.webp" alt="Profile settings form" width="960" height="600" decoding="async">
-<img src="{{root}}pro/landing/wall/pro-hero-split-mock.webp" alt="Marketing hero with a product mock" width="960" height="600" decoding="async">
+<img src="{{root}}pro/landing/wall/ui-kit-dashboard-sidebar-analytics.webp" alt="Analytics dashboard layout with revenue chart and sidebar" width="960" height="600" decoding="async">
+<img src="{{root}}pro/landing/wall/ui-kit-pricing-three-tiers.webp" alt="Pricing block with three plans" width="960" height="600" decoding="async">
+<img src="{{root}}pro/landing/wall/ui-kit-sign-in-split-social.webp" alt="Split sign-in page with a brand panel" width="960" height="600" decoding="async">
+<img src="{{root}}pro/landing/wall/ui-kit-data-table-tabs-card.webp" alt="Invoices table with status tabs and row actions" width="960" height="600" decoding="async">
+<img src="{{root}}pro/landing/wall/ui-kit-settings-profile-columns.webp" alt="Profile settings form" width="960" height="600" decoding="async">
+<img src="{{root}}pro/landing/wall/ui-kit-hero-split-mock.webp" alt="Marketing hero with a product mock" width="960" height="600" decoding="async">
 </div>
 <div class="pro-wall-row reverse">
-<img src="{{root}}pro/landing/wall/pro-billing-usage-card.webp" alt="Billing usage meters" width="960" height="600" decoding="async">
-<img src="{{root}}pro/landing/wall/pro-activity-days.webp" alt="Activity feed grouped by day" width="960" height="600" decoding="async">
-<img src="{{root}}pro/landing/wall/pro-team-table.webp" alt="Team members table with roles" width="960" height="600" decoding="async">
-<img src="{{root}}pro/landing/wall/pro-features-bento.webp" alt="Bento grid of product features" width="960" height="600" decoding="async">
-<img src="{{root}}pro/landing/wall/pro-onboarding-checklist.webp" alt="Onboarding checklist with progress" width="960" height="600" decoding="async">
-<img src="{{root}}pro/landing/wall/pro-docs-guide.webp" alt="Three-column documentation page" width="960" height="600" decoding="async">
+<img src="{{root}}pro/landing/wall/ui-kit-billing-usage-card.webp" alt="Billing usage meters" width="960" height="600" decoding="async">
+<img src="{{root}}pro/landing/wall/ui-kit-activity-days.webp" alt="Activity feed grouped by day" width="960" height="600" decoding="async">
+<img src="{{root}}pro/landing/wall/ui-kit-team-table.webp" alt="Team members table with roles" width="960" height="600" decoding="async">
+<img src="{{root}}pro/landing/wall/ui-kit-features-bento.webp" alt="Bento grid of product features" width="960" height="600" decoding="async">
+<img src="{{root}}pro/landing/wall/ui-kit-onboarding-checklist.webp" alt="Onboarding checklist with progress" width="960" height="600" decoding="async">
+<img src="{{root}}pro/landing/wall/ui-kit-docs-guide.webp" alt="Three-column documentation page" width="960" height="600" decoding="async">
 </div>
 </div>
 </section>
@@ -55,7 +55,7 @@ nav: REALM Pro
 </header>
 <div class="pro-feature">
 <figure class="pro-video">
-<video src="{{root}}pro/landing/video/pro-data-grid.mp4" poster="{{root}}pro/landing/video/pro-data-grid.webp" width="1280" height="720" muted loop playsinline autoplay preload="none" aria-label="The data grid scrolling 100,000 orders, sorting by total and searching"></video>
+<video src="{{root}}pro/landing/video/ui-kit-data-grid.mp4" poster="{{root}}pro/landing/video/ui-kit-data-grid.webp" width="1280" height="720" muted loop playsinline autoplay preload="none" aria-label="The data grid scrolling 100,000 orders, sorting by total and searching"></video>
 </figure>
 <div class="pro-feature-copy">
 <code class="pro-tag">&lt;ui-kit-data-grid&gt;</code>
@@ -72,7 +72,7 @@ nav: REALM Pro
 </div>
 <div class="pro-feature reverse">
 <figure class="pro-video">
-<video src="{{root}}pro/landing/video/pro-scheduler.mp4" poster="{{root}}pro/landing/video/pro-scheduler.webp" width="1280" height="720" muted loop playsinline autoplay preload="none" aria-label="The scheduler switching between week, month, day and resource timeline views"></video>
+<video src="{{root}}pro/landing/video/ui-kit-scheduler.mp4" poster="{{root}}pro/landing/video/ui-kit-scheduler.webp" width="1280" height="720" muted loop playsinline autoplay preload="none" aria-label="The scheduler switching between week, month, day and resource timeline views"></video>
 </figure>
 <div class="pro-feature-copy">
 <code class="pro-tag">&lt;ui-kit-scheduler&gt;</code>
@@ -89,7 +89,7 @@ nav: REALM Pro
 </div>
 <div class="pro-feature">
 <figure class="pro-video">
-<video src="{{root}}pro/landing/video/pro-chart.mp4" poster="{{root}}pro/landing/video/pro-chart.webp" width="1280" height="720" muted loop playsinline autoplay preload="none" aria-label="Candlestick, treemap, sankey, gauge and heatmap charts with tooltips"></video>
+<video src="{{root}}pro/landing/video/ui-kit-chart.mp4" poster="{{root}}pro/landing/video/ui-kit-chart.webp" width="1280" height="720" muted loop playsinline autoplay preload="none" aria-label="Candlestick, treemap, sankey, gauge and heatmap charts with tooltips"></video>
 </figure>
 <div class="pro-feature-copy">
 <code class="pro-tag">&lt;ui-kit-chart&gt;</code>
@@ -142,22 +142,22 @@ nav: REALM Pro
 <div class="pro-layouts">
 <figure>
 <div class="pro-frames">
-<img class="desktop" src="{{root}}pro/landing/layouts/pro-dashboard-sidebar-orders-desktop.webp" alt="Orders dashboard on a desktop screen" width="1440" height="900" loading="lazy" decoding="async">
-<img class="phone" src="{{root}}pro/landing/layouts/pro-dashboard-sidebar-orders-phone.webp" alt="The same dashboard on a phone" width="390" height="844" loading="lazy" decoding="async">
+<img class="desktop" src="{{root}}pro/landing/layouts/ui-kit-dashboard-sidebar-orders-desktop.webp" alt="Orders dashboard on a desktop screen" width="1440" height="900" loading="lazy" decoding="async">
+<img class="phone" src="{{root}}pro/landing/layouts/ui-kit-dashboard-sidebar-orders-phone.webp" alt="The same dashboard on a phone" width="390" height="844" loading="lazy" decoding="async">
 </div>
 <figcaption>Dashboard with an orders table</figcaption>
 </figure>
 <figure>
 <div class="pro-frames">
-<img class="desktop" src="{{root}}pro/landing/layouts/pro-landing-saas-desktop.webp" alt="Software product landing page on a desktop screen" width="1440" height="900" loading="lazy" decoding="async">
-<img class="phone" src="{{root}}pro/landing/layouts/pro-landing-saas-phone.webp" alt="The same landing page on a phone" width="390" height="844" loading="lazy" decoding="async">
+<img class="desktop" src="{{root}}pro/landing/layouts/ui-kit-landing-saas-desktop.webp" alt="Software product landing page on a desktop screen" width="1440" height="900" loading="lazy" decoding="async">
+<img class="phone" src="{{root}}pro/landing/layouts/ui-kit-landing-saas-phone.webp" alt="The same landing page on a phone" width="390" height="844" loading="lazy" decoding="async">
 </div>
 <figcaption>Landing page for a software product</figcaption>
 </figure>
 <figure>
 <div class="pro-frames">
-<img class="desktop" src="{{root}}pro/landing/layouts/pro-docs-api-desktop.webp" alt="API reference page on a desktop screen" width="1440" height="900" loading="lazy" decoding="async">
-<img class="phone" src="{{root}}pro/landing/layouts/pro-docs-api-phone.webp" alt="The same API reference on a phone" width="390" height="844" loading="lazy" decoding="async">
+<img class="desktop" src="{{root}}pro/landing/layouts/ui-kit-docs-api-desktop.webp" alt="API reference page on a desktop screen" width="1440" height="900" loading="lazy" decoding="async">
+<img class="phone" src="{{root}}pro/landing/layouts/ui-kit-docs-api-phone.webp" alt="The same API reference on a phone" width="390" height="844" loading="lazy" decoding="async">
 </div>
 <figcaption>API reference with a request and response panel</figcaption>
 </figure>
@@ -326,7 +326,7 @@ nav: REALM Pro
 </section>
 
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"Product","name":"REALM Pro","description":"A UI kit for REALM: {{pro:components}} advanced web components such as a data grid, scheduler and charts, {{pro:blocks}} UI blocks, {{pro:layouts}} page templates and {{pro:themes}} themes.","brand":{"@type":"Brand","name":"REALM"},"url":"https://realm.js.org/pro/","image":"https://realm.js.org/pro/landing/wall/pro-dashboard-sidebar-analytics.webp","offers":[{"@type":"Offer","name":"Personal","price":"149","priceCurrency":"USD","availability":"https://schema.org/InStock","url":"https://buy.polar.sh/polar_cl_LGiAIgKHE9dVha4DOPmnF8UnAL8r6P0JDtOl81VgV0b","seller":{"@type":"Organization","name":"Taraxa Studio"}},{"@type":"Offer","name":"Team, up to 10 developers","price":"499","priceCurrency":"USD","availability":"https://schema.org/InStock","url":"https://buy.polar.sh/polar_cl_i06D1Rh91CpXAmLf2X0FLbwPxlVkuR2wjpIuz0x3y2Y","seller":{"@type":"Organization","name":"Taraxa Studio"}}]}
+{"@context":"https://schema.org","@type":"Product","name":"REALM Pro","description":"A UI kit for REALM: {{pro:components}} advanced web components such as a data grid, scheduler and charts, {{pro:blocks}} UI blocks, {{pro:layouts}} page templates and {{pro:themes}} themes.","brand":{"@type":"Brand","name":"REALM"},"url":"https://realm.js.org/pro/","image":"https://realm.js.org/pro/landing/wall/ui-kit-dashboard-sidebar-analytics.webp","offers":[{"@type":"Offer","name":"Personal","price":"149","priceCurrency":"USD","availability":"https://schema.org/InStock","url":"https://buy.polar.sh/polar_cl_LGiAIgKHE9dVha4DOPmnF8UnAL8r6P0JDtOl81VgV0b","seller":{"@type":"Organization","name":"Taraxa Studio"}},{"@type":"Offer","name":"Team, up to 10 developers","price":"499","priceCurrency":"USD","availability":"https://schema.org/InStock","url":"https://buy.polar.sh/polar_cl_i06D1Rh91CpXAmLf2X0FLbwPxlVkuR2wjpIuz0x3y2Y","seller":{"@type":"Organization","name":"Taraxa Studio"}}]}
 </script>
 
 <script type="module">
