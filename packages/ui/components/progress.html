@@ -27,17 +27,17 @@
       border: 0;
       border-radius: var(--radius-full);
       overflow: hidden;
-      background: color-mix(in oklab, var(--primary) 20%, transparent);
+      background: var(--progress-track, color-mix(in oklab, var(--primary) 20%, transparent));
     }
     progress::-webkit-progress-bar {
       background: transparent;
     }
     progress::-webkit-progress-value {
-      background: var(--primary);
+      background: var(--progress-fill, var(--primary));
       transition: inline-size 0.2s;
     }
     progress::-moz-progress-bar {
-      background: var(--primary);
+      background: var(--progress-fill, var(--primary));
     }
   </style>
 

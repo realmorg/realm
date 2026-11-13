@@ -61,61 +61,61 @@ Conventions shared by every component:
 | [Empty](#empty) | 1501-1564 | `empty.html` | `ui-empty`, `ui-empty-header`, `ui-empty-media`, `ui-empty-title`, `ui-empty-description`, `ui-empty-content` |
 | [Item](#item) | 1566-1620 | `item.html` | `ui-item`, `ui-item-group`, `ui-item-media`, `ui-item-content`, `ui-item-title`, `ui-item-description`, `ui-item-actions`, `ui-item-header`, `ui-item-footer` |
 | [Kbd](#kbd) | 1622-1660 | `kbd.html` | `ui-kbd`, `ui-kbd-group` |
-| [Progress](#progress) | 1662-1694 | `progress.html` | `ui-progress` |
-| [Separator](#separator) | 1696-1736 | `separator.html` | `ui-separator` |
-| [Skeleton](#skeleton) | 1738-1773 | `skeleton.html` | `ui-skeleton` |
-| [Spinner](#spinner) | 1775-1806 | `spinner.html` | `ui-spinner` |
-| [Table](#table) | 1808-1863 | `table.html` | `ui-table` |
+| [Progress](#progress) | 1662-1703 | `progress.html` | `ui-progress` |
+| [Separator](#separator) | 1705-1745 | `separator.html` | `ui-separator` |
+| [Skeleton](#skeleton) | 1747-1782 | `skeleton.html` | `ui-skeleton` |
+| [Spinner](#spinner) | 1784-1815 | `spinner.html` | `ui-spinner` |
+| [Table](#table) | 1817-1872 | `table.html` | `ui-table` |
 
 ### Overlays
 
 | Component | Lines | File | Tags |
 | --- | --- | --- | --- |
-| [Alert Dialog](#alert-dialog) | 1865-1962 | `alert-dialog.html` | `ui-alert-dialog`, `ui-alert-dialog-trigger`, `ui-alert-dialog-header`, `ui-alert-dialog-title`, `ui-alert-dialog-description`, `ui-alert-dialog-footer`, `ui-alert-dialog-action`, `ui-alert-dialog-cancel` |
-| [Command](#command) | 1964-2033 | `command.html` | `ui-command`, `ui-command-empty` |
-| [Context Menu](#context-menu) | 2035-2092 | `context-menu.html` | `ui-context-menu`, `ui-context-menu-trigger`, `ui-context-menu-content` |
-| [Dialog](#dialog) | 2094-2197 | `dialog.html` | `ui-dialog`, `ui-dialog-trigger`, `ui-dialog-close`, `ui-dialog-header`, `ui-dialog-title`, `ui-dialog-description`, `ui-dialog-footer` |
-| [Drawer](#drawer) | 2199-2282 | `drawer.html` | `ui-drawer`, `ui-drawer-trigger`, `ui-drawer-close`, `ui-drawer-header`, `ui-drawer-title`, `ui-drawer-description`, `ui-drawer-footer` |
-| [Dropdown Menu](#dropdown-menu) | 2284-2384 | `dropdown-menu.html` | `ui-dropdown-menu`, `ui-dropdown-menu-trigger`, `ui-dropdown-menu-content`, `ui-menu-item`, `ui-menu-checkbox-item`, `ui-menu-radio-group`, `ui-menu-radio-item`, `ui-menu-label`, `ui-menu-group`, `ui-menu-separator`, `ui-menu-shortcut` |
-| [Hover Card](#hover-card) | 2386-2442 | `hover-card.html` | `ui-hover-card`, `ui-hover-card-trigger`, `ui-hover-card-content` |
-| [Popover](#popover) | 2444-2522 | `popover.html` | `ui-popover`, `ui-popover-trigger`, `ui-popover-content`, `ui-popover-header`, `ui-popover-title`, `ui-popover-description` |
-| [Sheet](#sheet) | 2524-2615 | `sheet.html` | `ui-sheet`, `ui-sheet-trigger`, `ui-sheet-close`, `ui-sheet-header`, `ui-sheet-title`, `ui-sheet-description`, `ui-sheet-footer` |
-| [Toaster](#toaster) | 2617-2676 | `toaster.html` | `ui-toaster` |
-| [Tooltip](#tooltip) | 2678-2727 | `tooltip.html` | `ui-tooltip`, `ui-tooltip-trigger`, `ui-tooltip-content` |
+| [Alert Dialog](#alert-dialog) | 1874-1971 | `alert-dialog.html` | `ui-alert-dialog`, `ui-alert-dialog-trigger`, `ui-alert-dialog-header`, `ui-alert-dialog-title`, `ui-alert-dialog-description`, `ui-alert-dialog-footer`, `ui-alert-dialog-action`, `ui-alert-dialog-cancel` |
+| [Command](#command) | 1973-2042 | `command.html` | `ui-command`, `ui-command-empty` |
+| [Context Menu](#context-menu) | 2044-2101 | `context-menu.html` | `ui-context-menu`, `ui-context-menu-trigger`, `ui-context-menu-content` |
+| [Dialog](#dialog) | 2103-2206 | `dialog.html` | `ui-dialog`, `ui-dialog-trigger`, `ui-dialog-close`, `ui-dialog-header`, `ui-dialog-title`, `ui-dialog-description`, `ui-dialog-footer` |
+| [Drawer](#drawer) | 2208-2291 | `drawer.html` | `ui-drawer`, `ui-drawer-trigger`, `ui-drawer-close`, `ui-drawer-header`, `ui-drawer-title`, `ui-drawer-description`, `ui-drawer-footer` |
+| [Dropdown Menu](#dropdown-menu) | 2293-2393 | `dropdown-menu.html` | `ui-dropdown-menu`, `ui-dropdown-menu-trigger`, `ui-dropdown-menu-content`, `ui-menu-item`, `ui-menu-checkbox-item`, `ui-menu-radio-group`, `ui-menu-radio-item`, `ui-menu-label`, `ui-menu-group`, `ui-menu-separator`, `ui-menu-shortcut` |
+| [Hover Card](#hover-card) | 2395-2451 | `hover-card.html` | `ui-hover-card`, `ui-hover-card-trigger`, `ui-hover-card-content` |
+| [Popover](#popover) | 2453-2531 | `popover.html` | `ui-popover`, `ui-popover-trigger`, `ui-popover-content`, `ui-popover-header`, `ui-popover-title`, `ui-popover-description` |
+| [Sheet](#sheet) | 2533-2624 | `sheet.html` | `ui-sheet`, `ui-sheet-trigger`, `ui-sheet-close`, `ui-sheet-header`, `ui-sheet-title`, `ui-sheet-description`, `ui-sheet-footer` |
+| [Toaster](#toaster) | 2626-2685 | `toaster.html` | `ui-toaster` |
+| [Tooltip](#tooltip) | 2687-2736 | `tooltip.html` | `ui-tooltip`, `ui-tooltip-trigger`, `ui-tooltip-content` |
 
 ### Navigation
 
 | Component | Lines | File | Tags |
 | --- | --- | --- | --- |
-| [Accordion](#accordion) | 2729-2797 | `accordion.html` | `ui-accordion`, `ui-accordion-item`, `ui-accordion-trigger`, `ui-accordion-content` |
-| [Breadcrumb](#breadcrumb) | 2799-2864 | `breadcrumb.html` | `ui-breadcrumb`, `ui-breadcrumb-list`, `ui-breadcrumb-item`, `ui-breadcrumb-link`, `ui-breadcrumb-page`, `ui-breadcrumb-separator`, `ui-breadcrumb-ellipsis` |
-| [Collapsible](#collapsible) | 2866-2921 | `collapsible.html` | `ui-collapsible`, `ui-collapsible-trigger`, `ui-collapsible-content` |
-| [Menubar](#menubar) | 2923-2988 | `menubar.html` | `ui-menubar`, `ui-menubar-menu`, `ui-menubar-trigger`, `ui-menubar-content` |
-| [Navigation Menu](#navigation-menu) | 2990-3075 | `navigation-menu.html` | `ui-navigation-menu`, `ui-navigation-menu-list`, `ui-navigation-menu-item`, `ui-navigation-menu-trigger`, `ui-navigation-menu-content`, `ui-navigation-menu-link` |
-| [Pagination](#pagination) | 3077-3115 | `pagination.html` | `ui-pagination` |
-| [Sidebar](#sidebar) | 3117-3322 | `sidebar.html` | `ui-sidebar-layout`, `ui-sidebar`, `ui-sidebar-header`, `ui-sidebar-footer`, `ui-sidebar-content`, `ui-sidebar-group`, `ui-sidebar-group-label`, `ui-sidebar-menu`, `ui-sidebar-menu-item`, `ui-sidebar-menu-button`, `ui-sidebar-menu-badge`, `ui-sidebar-trigger`, `ui-sidebar-inset` |
-| [Tabs](#tabs) | 3324-3423 | `tabs.html` | `ui-tabs`, `ui-tabs-list`, `ui-tabs-trigger`, `ui-tabs-content` |
+| [Accordion](#accordion) | 2738-2806 | `accordion.html` | `ui-accordion`, `ui-accordion-item`, `ui-accordion-trigger`, `ui-accordion-content` |
+| [Breadcrumb](#breadcrumb) | 2808-2873 | `breadcrumb.html` | `ui-breadcrumb`, `ui-breadcrumb-list`, `ui-breadcrumb-item`, `ui-breadcrumb-link`, `ui-breadcrumb-page`, `ui-breadcrumb-separator`, `ui-breadcrumb-ellipsis` |
+| [Collapsible](#collapsible) | 2875-2930 | `collapsible.html` | `ui-collapsible`, `ui-collapsible-trigger`, `ui-collapsible-content` |
+| [Menubar](#menubar) | 2932-2997 | `menubar.html` | `ui-menubar`, `ui-menubar-menu`, `ui-menubar-trigger`, `ui-menubar-content` |
+| [Navigation Menu](#navigation-menu) | 2999-3084 | `navigation-menu.html` | `ui-navigation-menu`, `ui-navigation-menu-list`, `ui-navigation-menu-item`, `ui-navigation-menu-trigger`, `ui-navigation-menu-content`, `ui-navigation-menu-link` |
+| [Pagination](#pagination) | 3086-3124 | `pagination.html` | `ui-pagination` |
+| [Sidebar](#sidebar) | 3126-3331 | `sidebar.html` | `ui-sidebar-layout`, `ui-sidebar`, `ui-sidebar-header`, `ui-sidebar-footer`, `ui-sidebar-content`, `ui-sidebar-group`, `ui-sidebar-group-label`, `ui-sidebar-menu`, `ui-sidebar-menu-item`, `ui-sidebar-menu-button`, `ui-sidebar-menu-badge`, `ui-sidebar-trigger`, `ui-sidebar-inset` |
+| [Tabs](#tabs) | 3333-3432 | `tabs.html` | `ui-tabs`, `ui-tabs-list`, `ui-tabs-trigger`, `ui-tabs-content` |
 
 ### Layout
 
 | Component | Lines | File | Tags |
 | --- | --- | --- | --- |
-| [Aspect Ratio](#aspect-ratio) | 3425-3460 | `aspect-ratio.html` | `ui-aspect-ratio` |
-| [Carousel](#carousel) | 3462-3554 | `carousel.html` | `ui-carousel`, `ui-carousel-content`, `ui-carousel-item`, `ui-carousel-previous`, `ui-carousel-next` |
-| [Direction](#direction) | 3556-3601 | `direction.html` | `ui-direction` |
-| [Resizable](#resizable) | 3603-3673 | `resizable.html` | `ui-resizable`, `ui-resizable-panel`, `ui-resizable-handle` |
-| [Scroll Area](#scroll-area) | 3675-3737 | `scroll-area.html` | `ui-scroll-area` |
+| [Aspect Ratio](#aspect-ratio) | 3434-3469 | `aspect-ratio.html` | `ui-aspect-ratio` |
+| [Carousel](#carousel) | 3471-3563 | `carousel.html` | `ui-carousel`, `ui-carousel-content`, `ui-carousel-item`, `ui-carousel-previous`, `ui-carousel-next` |
+| [Direction](#direction) | 3565-3610 | `direction.html` | `ui-direction` |
+| [Resizable](#resizable) | 3612-3682 | `resizable.html` | `ui-resizable`, `ui-resizable-panel`, `ui-resizable-handle` |
+| [Scroll Area](#scroll-area) | 3684-3746 | `scroll-area.html` | `ui-scroll-area` |
 
 ### Chat and content
 
 | Component | Lines | File | Tags |
 | --- | --- | --- | --- |
-| [Attachment](#attachment) | 3739-3782 | `attachment.html` | `ui-attachment`, `ui-attachment-media`, `ui-attachment-actions` |
-| [Bubble](#bubble) | 3784-3826 | `bubble.html` | `ui-bubble`, `ui-bubble-reactions` |
-| [Code Block](#code-block) | 3828-3860 | `code-block.html` | `ui-code-block` |
-| [Marker](#marker) | 3862-3897 | `marker.html` | `ui-marker` |
-| [Message](#message) | 3899-3952 | `message.html` | `ui-message`, `ui-message-avatar`, `ui-message-header`, `ui-message-footer` |
-| [Message Scroller](#message-scroller) | 3954-4049 | `message-scroller.html` | `ui-message-scroller` |
+| [Attachment](#attachment) | 3748-3791 | `attachment.html` | `ui-attachment`, `ui-attachment-media`, `ui-attachment-actions` |
+| [Bubble](#bubble) | 3793-3835 | `bubble.html` | `ui-bubble`, `ui-bubble-reactions` |
+| [Code Block](#code-block) | 3837-3869 | `code-block.html` | `ui-code-block` |
+| [Marker](#marker) | 3871-3906 | `marker.html` | `ui-marker` |
+| [Message](#message) | 3908-3961 | `message.html` | `ui-message`, `ui-message-avatar`, `ui-message-header`, `ui-message-footer` |
+| [Message Scroller](#message-scroller) | 3963-4058 | `message-scroller.html` | `ui-message-scroller` |
 
 <a id="button"></a>
 
@@ -1692,6 +1692,15 @@ A horizontal bar showing how far a task has got, built on the native progress el
 | Part | Description |
 | --- | --- |
 | `bar` | The native `<progress>` element. Its height is `calc(var(--spacing) * 2)`. |
+
+### CSS custom properties
+
+| Property | Default | Description |
+| --- | --- | --- |
+| `--progress-fill` | `var(--primary)` | Colour of the filled part. |
+| `--progress-track` | `--primary` at 20% | Colour of the unfilled track. |
+
+Set them on `ui-progress` to show the bar on a coloured surface, for example `--progress-fill: var(--primary-foreground)` on a `var(--primary)` panel.
 
 <a id="separator"></a>
 

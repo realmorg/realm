@@ -116,6 +116,15 @@ The bar uses `var(--primary)`. Set `--primary` on a wrapping element to recolour
 | --- | --- |
 | `bar` | The native `<progress>` element. Its height is `calc(var(--spacing) * 2)`. |
 
+### CSS custom properties
+
+| Property | Default | Description |
+| --- | --- | --- |
+| `--progress-fill` | `var(--primary)` | Colour of the filled part. |
+| `--progress-track` | `--primary` at 20% | Colour of the unfilled track. |
+
+Set them on `ui-progress` to show the bar on a coloured surface, for example `--progress-fill: var(--primary-foreground)` on a `var(--primary)` panel.
+
 ### Accessibility
 
 The inner `<progress>` has the native `progressbar` role, with its value and maximum exposed to assistive

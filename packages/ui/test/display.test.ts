@@ -24,6 +24,17 @@ describe("display components", () => {
     expect(part<HTMLProgressElement>(host.querySelector("ui-progress"), "bar").value).toBe(40);
   });
 
+  test("ui-progress takes its track colour from --progress-track", async () => {
+    const host = await render(
+      `<ui-progress value="40"></ui-progress><ui-progress value="40" style="--progress-track: rgb(1, 2, 3); --progress-fill: rgb(4, 5, 6)"></ui-progress>`,
+    );
+    const [plain, custom] = [...host.querySelectorAll("ui-progress")].map((el) =>
+      getComputedStyle(part(el, "bar")),
+    );
+    expect(plain?.backgroundColor).not.toBe("rgb(1, 2, 3)");
+    expect(custom?.backgroundColor).toBe("rgb(1, 2, 3)");
+  });
+
   test("components scale with the global design tokens", async () => {
     const host = await render(
       `<ui-button>Default</ui-button><div style="--spacing: 0.5rem; --text-sm: 1rem; --radius-md: 14px"><ui-button>Scaled</ui-button></div>`,
