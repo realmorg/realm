@@ -104,6 +104,9 @@ export class PropType {
       if (this.rules.required) return fail("is required");
       return ok(this.kind === "boolean" ? false : value);
     }
+    // Like a native input's value, a string prop takes a number as its text.
+    if (this.kind === "string" && typeof value === "number" && Number.isFinite(value))
+      value = String(value);
     const message = this.#validate(value);
     return message ? fail(message) : ok(value);
   }

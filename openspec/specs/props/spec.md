@@ -40,6 +40,10 @@ prop.string, number, boolean, enum, array, object and date SHALL convert attribu
 - **WHEN** a prop is reflected
 - **THEN** its value serialises to attribute text
 
+#### Scenario: a number given to a string prop becomes its text
+- **WHEN** a finite number is given to a string prop
+- **THEN** the prop holds its text, and other types still fail
+
 ### Requirement: defineProps in components
 defineProps SHALL return a reactive, read-only object fed by attributes and properties. Invalid values SHALL warn and use the default. Properties set before upgrade SHALL be kept. Calling defineProps twice SHALL be an error.
 

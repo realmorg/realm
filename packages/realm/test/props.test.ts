@@ -20,7 +20,13 @@ describe("prop builder", () => {
     expect(value(prop.string().email().check("nope"))).toBe("must be an email address");
     expect(value(prop.string().url().check("https://x.dev"))).toBe("https://x.dev");
     expect(value(prop.string().url().check("x"))).toBe("must be a URL");
-    expect(value(prop.string().check(1))).toBe("expected a string, got number");
+    expect(value(prop.string().check(true))).toBe("expected a string, got boolean");
+  });
+
+  test("a number given to a string prop becomes its text", () => {
+    expect(value(prop.string().check(42))).toBe("42");
+    expect(value(prop.string().check(1.5))).toBe("1.5");
+    expect(value(prop.string().check(Number.NaN))).toBe("expected a string, got number");
   });
 
   test("number rules", () => {
@@ -57,7 +63,7 @@ describe("prop builder", () => {
   test("array and object shapes", () => {
     const tags = prop.array(prop.string());
     expect(value(tags.parse('["a"]'))).toEqual(["a"]);
-    expect(value(tags.parse("[1]"))).toBe("[0] expected a string, got number");
+    expect(value(tags.parse("[true]"))).toBe("[0] expected a string, got boolean");
     expect(value(tags.parse("{"))).toBe('"{" is not valid JSON');
     expect(value(tags.check({}))).toBe("expected an array");
     expect(value(prop.array().check([1, "a"]))).toEqual([1, "a"]);
