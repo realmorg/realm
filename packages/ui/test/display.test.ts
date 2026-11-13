@@ -24,6 +24,21 @@ describe("display components", () => {
     expect(part<HTMLProgressElement>(host.querySelector("ui-progress"), "bar").value).toBe(40);
   });
 
+  test("ui-alert puts a u-icon in its icon column, like an svg", async () => {
+    const host = await render(
+      `<ui-alert><u-icon name="info"></u-icon><ui-alert-title>Heads up</ui-alert-title><ui-alert-description>Saved.</ui-alert-description></ui-alert>`,
+    );
+    const icon = host.querySelector("u-icon") as Element;
+    const title = host.querySelector("ui-alert-title") as Element;
+    expect(getComputedStyle(title).gridColumnStart).toBe("2");
+    expect(icon.getBoundingClientRect().top).toBeLessThanOrEqual(
+      title.getBoundingClientRect().bottom,
+    );
+    expect(icon.getBoundingClientRect().right).toBeLessThanOrEqual(
+      title.getBoundingClientRect().left + 1,
+    );
+  });
+
   test("ui-progress takes its track colour from --progress-track", async () => {
     const host = await render(
       `<ui-progress value="40"></ui-progress><ui-progress value="40" style="--progress-track: rgb(1, 2, 3); --progress-fill: rgb(4, 5, 6)"></ui-progress>`,

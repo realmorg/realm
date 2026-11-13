@@ -30,14 +30,14 @@
     :host(:state(attr-variant-is-destructive)) {
       color: var(--destructive);
     }
-    ::slotted(svg) {
+    ::slotted(:is(svg, u-icon)) {
       width: calc(var(--spacing) * 4);
       height: calc(var(--spacing) * 4);
       margin-inline-end: calc(var(--spacing) * 3);
       translate: 0 calc(var(--spacing) * 0.5);
       grid-row: span 2;
     }
-    ::slotted(:not(svg)) {
+    ::slotted(:not(svg, u-icon)) {
       grid-column: 2;
     }
     :host(:state(attr-variant-is-destructive)) ::slotted(ui-alert-description) {

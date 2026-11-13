@@ -8,7 +8,7 @@ nav: Alert
 
 # Alert
 
-`ui-alert` shows a short message in a bordered box, with an optional icon on the left and `ui-alert-title` and
+`ui-alert` shows a short message in a bordered box, with an optional icon on the left (an `<svg>` or a `<u-icon>`) and `ui-alert-title` and
 `ui-alert-description` stacked beside it. The element has the ARIA role `alert`, so screen readers
 announce it when it is added to the page. It fills the width of its container.
 
