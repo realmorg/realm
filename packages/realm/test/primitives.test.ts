@@ -444,7 +444,40 @@ describe("implicit submission", () => {
       root(host.querySelector(`${name}[name="loose"]`)).querySelector("input") as Element,
       "Enter",
     );
+    await new Promise((resolve) => setTimeout(resolve));
     expect(submits).toBe(1);
+  });
+
+  test("a keydown handler on the page can cancel Enter's submission", async () => {
+    const name = tag("enter-cancel");
+    await define(
+      `<custom-element name="${name}" form-associated><script>defineProps({ value: prop.string() });</script><input ref="control"></custom-element>`,
+    );
+    const host = render(`<form><${name} name="a"></${name}><${name} name="b"></${name}></form>`);
+    const form = host.querySelector("form") as HTMLFormElement;
+    let submits = 0;
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      submits++;
+    });
+    const [first, second] = [...host.querySelectorAll(name)];
+    first?.addEventListener("keydown", (event) => event.preventDefault());
+    const enter = (el: Element | undefined) =>
+      root(el as Element)
+        .querySelector("input")
+        ?.dispatchEvent(
+          new KeyboardEvent("keydown", {
+            key: "Enter",
+            bubbles: true,
+            composed: true,
+            cancelable: true,
+          }),
+        );
+    enter(first);
+    enter(second);
+    second?.remove();
+    await new Promise((resolve) => setTimeout(resolve));
+    expect(submits).toBe(0);
   });
 });
 

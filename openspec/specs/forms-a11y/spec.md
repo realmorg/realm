@@ -46,6 +46,10 @@ An inner element with `ref="control"` SHALL be kept in sync with the host's valu
 - **WHEN** a `<label>` wraps the host
 - **THEN** the inner control gets the label text as its accessible name
 
+#### Scenario: a keydown handler on the page can cancel Enter's submission
+- **WHEN** a page keydown handler calls preventDefault on Enter in a delegated text control
+- **THEN** the form is not submitted
+
 ### Requirement: focusgroup
 Elements with the native `focusgroup` attribute SHALL move focus with arrow keys, Home and End across focusable items, including slotted items and hosts that delegate focus, honouring `inline`, `block`, `wrap` and right-to-left direction, and skipping disabled items.
 

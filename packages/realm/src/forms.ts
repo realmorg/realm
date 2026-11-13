@@ -47,8 +47,12 @@ export const bindControl = (instance: Instance) => {
       const form = instance.internals.form;
       if ((event as KeyboardEvent).key !== "Enter" || !form || !SUBMITS_ON_ENTER.has(control.type))
         return;
-      event.preventDefault();
-      HTMLFormElement.prototype.requestSubmit.call(form);
+      // As with native implicit submission, a keydown handler on the page may cancel it, so the
+      // form is submitted once the event has reached every listener.
+      setTimeout(() => {
+        if (!event.defaultPrevented && !signal.aborted)
+          HTMLFormElement.prototype.requestSubmit.call(form);
+      });
     },
     { signal },
   );
