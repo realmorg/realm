@@ -53,6 +53,13 @@ Tiptap is an MIT-licensed editor framework built on ProseMirror. `@tiptap/core` 
 
 `ui-kit-editor` is a finished editor, not a toolkit, and it is a form field. Give it a `name` and it submits HTML like a textarea, with `required`, `maxlength`, `placeholder`, `readonly`, `disabled` and form reset working as they do on native fields.
 
+<div class="pro-shots">
+  <figure>
+    <img src="/pro/components/ui-kit-editor/light-desktop.png" alt="REALM Pro rich text editor component, desktop, light mode" width="960" height="1925" loading="lazy">
+    <figcaption>REALM Pro rich text editor. <a href="/pro/components/ui-kit-editor/">See it in dark mode and on a phone</a>.</figcaption>
+  </figure>
+</div>
+
 ```html
 <ui-kit-editor name="body" required placeholder="Write your post"></ui-kit-editor>
 ```

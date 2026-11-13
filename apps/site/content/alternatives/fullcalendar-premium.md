@@ -28,6 +28,13 @@ People look for alternatives when:
 
 [`ui-kit-scheduler`](/pro/components/ui-kit-scheduler/) is a custom element in [REALM Pro](/pro/). It works in a plain page, a server-rendered app or alongside any framework.
 
+<div class="pro-shots">
+  <figure>
+    <img src="/pro/components/ui-kit-scheduler/light-desktop.png" alt="REALM Pro scheduler component, desktop, light mode" width="960" height="853" loading="lazy">
+    <figcaption>REALM Pro scheduler. <a href="/pro/components/ui-kit-scheduler/">See it in dark mode and on a phone</a>.</figcaption>
+  </figure>
+</div>
+
 ```html
 <ui-kit-scheduler
   view="timeline"

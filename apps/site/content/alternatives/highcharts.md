@@ -21,6 +21,13 @@ Facts about Highcharts were checked in October 2026 against the [licence page](h
 
 `ui-kit-chart` draws the chart types the free [REALM UI chart](/components/chart/) leaves out. Pick a type with the `type` attribute and pass data as JSON in `data`, as a property, or from a URL in `src`.
 
+<div class="pro-shots">
+  <figure>
+    <img src="/pro/components/ui-kit-chart/light-desktop.png" alt="REALM Pro charts component, desktop, light mode" width="960" height="5432" loading="lazy">
+    <figcaption>REALM Pro charts. <a href="/pro/components/ui-kit-chart/">See it in dark mode and on a phone</a>.</figcaption>
+  </figure>
+</div>
+
 ```html
 <ui-kit-chart
   type="candlestick"

@@ -21,6 +21,13 @@ Facts were checked in October 2026 against [introjs.com](https://introjs.com/), 
 
 `ui-kit-tour` is the product tour in REALM Pro. Steps are a list of objects, each with a CSS selector `target`, a `title`, `text` that may hold simple HTML formatting, a preferred `placement`, and optional `interactive` or `advanceOn` settings.
 
+<div class="pro-shots">
+  <figure>
+    <img src="/pro/components/ui-kit-tour/light-desktop.png" alt="REALM Pro product tour component, desktop, light mode" width="960" height="574" loading="lazy">
+    <figcaption>REALM Pro product tour. <a href="/pro/components/ui-kit-tour/">See it in dark mode and on a phone</a>.</figcaption>
+  </figure>
+</div>
+
 ```html
 <ui-kit-tour launcher></ui-kit-tour>
 

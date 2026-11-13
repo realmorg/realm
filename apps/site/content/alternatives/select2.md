@@ -21,6 +21,13 @@ Facts were checked in October 2026 against the [Select2 site](https://select2.or
 
 `ui-kit-select` is a searchable select in REALM Pro. It reads `<option>` and `<optgroup>` children like a native `<select>`, so existing markup moves across with a tag change.
 
+<div class="pro-shots">
+  <figure>
+    <img src="/pro/components/ui-kit-select/light-desktop.png" alt="REALM Pro searchable select component, desktop, light mode" width="960" height="642" loading="lazy">
+    <figcaption>REALM Pro searchable select. <a href="/pro/components/ui-kit-select/">See it in dark mode and on a phone</a>.</figcaption>
+  </figure>
+</div>
+
 ```html
 <form>
   <label for="reviewers">Reviewers</label>

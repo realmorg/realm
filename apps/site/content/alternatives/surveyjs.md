@@ -21,6 +21,13 @@ Facts about SurveyJS were checked in October 2026 against [surveyjs.io/licensing
 
 `ui-kit-form-builder` is the form builder in REALM Pro. A palette lists twelve kinds of field: short text, long text, email, number, dropdown, single choice, checkboxes, date, file upload, rating, a section heading and a page break. People drag fields onto a canvas, or add them with a click or Enter, and edit the selected one in a settings panel.
 
+<div class="pro-shots">
+  <figure>
+    <img src="/pro/components/ui-kit-form-builder/light-desktop.png" alt="REALM Pro form builder component, desktop, light mode" width="960" height="1816" loading="lazy">
+    <figcaption>REALM Pro form builder. <a href="/pro/components/ui-kit-form-builder/">See it in dark mode and on a phone</a>.</figcaption>
+  </figure>
+</div>
+
 ```html
 <form method="post" action="/forms">
   <ui-kit-form-builder name="schema" types='["text","email","select","checkbox","page"]'></ui-kit-form-builder>

@@ -27,6 +27,13 @@ That is a lot of grid, and it is why people search for alternatives. The common 
 
 [`ui-kit-data-grid`](/pro/components/ui-kit-data-grid/) is one of the components in [REALM Pro](/pro/). It is a custom element written with REALM, so it works in a plain HTML page, in a server-rendered app, or next to React, Vue or Angular as an ordinary tag.
 
+<div class="pro-shots">
+  <figure>
+    <img src="/pro/components/ui-kit-data-grid/light-desktop.png" alt="REALM Pro data grid component, desktop, light mode" width="960" height="645" loading="lazy">
+    <figcaption>REALM Pro data grid. <a href="/pro/components/ui-kit-data-grid/">See it in dark mode and on a phone</a>.</figcaption>
+  </figure>
+</div>
+
 ```html
 <ui-kit-data-grid
   name="orders"

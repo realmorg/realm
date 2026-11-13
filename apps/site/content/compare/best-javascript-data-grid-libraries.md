@@ -44,6 +44,13 @@ Four questions narrow the list quickly:
 
 [`ui-kit-data-grid`](/pro/components/ui-kit-data-grid/) is part of [REALM Pro](/pro/). It renders only the visible rows and stays smooth with 100,000 rows in the browser. With `src`, it requests blocks of rows from your server as people scroll, sending sort, filters, search text, offset and limit. It has multi-column sorting, per-column filters (text, range, value list), quick search, resizable, reorderable, pinnable and hideable columns, inline editing with a cancellable `celledit` event, row selection that submits with a `<form>`, and CSV export of the current view. It follows the ARIA grid pattern with full keyboard support, and takes its look from your design tokens, including dark mode.
 
+<div class="pro-shots">
+  <figure>
+    <img src="/pro/components/ui-kit-data-grid/light-desktop.png" alt="REALM Pro data grid component, desktop, light mode" width="960" height="645" loading="lazy">
+    <figcaption>REALM Pro data grid. <a href="/pro/components/ui-kit-data-grid/">See it in dark mode and on a phone</a>.</figcaption>
+  </figure>
+</div>
+
 It has no grouping, aggregation, pivoting, tree data, Excel export or clipboard. REALM Pro is in early access and REALM is in alpha.
 
 **Pick it when** you need a solid, accessible table for admin screens or back offices, want it to match your design system, and would rather pay $149 once for the grid, scheduler, charts and the rest of the kit than a yearly seat per developer.

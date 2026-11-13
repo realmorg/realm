@@ -22,6 +22,13 @@ Facts about Pintura were checked in October 2026 against its [product page](http
 
 `ui-kit-image-editor` is the image editor in REALM Pro. It opens an image from `src`, a file picker or a dropped file, and offers six tools in one toolbar: Crop, Adjust, Filters, Annotate, Redact and Resize. It is a form-associated element, so the edited image is a real file in the form.
 
+<div class="pro-shots">
+  <figure>
+    <img src="/pro/components/ui-kit-image-editor/light-desktop.png" alt="REALM Pro image editor component, desktop, light mode" width="960" height="677" loading="lazy">
+    <figcaption>REALM Pro image editor. <a href="/pro/components/ui-kit-image-editor/">See it in dark mode and on a phone</a>.</figcaption>
+  </figure>
+</div>
+
 ```html
 <form method="post" enctype="multipart/form-data" action="/listings/photo">
   <label for="photo">Listing photo</label>

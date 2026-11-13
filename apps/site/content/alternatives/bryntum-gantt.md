@@ -26,6 +26,13 @@ People look elsewhere when:
 
 [`ui-kit-gantt`](/pro/components/ui-kit-gantt/) is a custom element in [REALM Pro](/pro/).
 
+<div class="pro-shots">
+  <figure>
+    <img src="/pro/components/ui-kit-gantt/light-desktop.png" alt="REALM Pro gantt chart component, desktop, light mode" width="960" height="708" loading="lazy">
+    <figcaption>REALM Pro gantt chart. <a href="/pro/components/ui-kit-gantt/">See it in dark mode and on a phone</a>.</figcaption>
+  </figure>
+</div>
+
 ```html
 <ui-kit-gantt label="Website relaunch" zoom="week" baselines critical></ui-kit-gantt>
 ```

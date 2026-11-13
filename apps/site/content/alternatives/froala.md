@@ -22,6 +22,13 @@ Facts about Froala were checked in October 2026 against Froala's [product page](
 
 `ui-kit-editor` is the rich text editor in REALM Pro. It is a custom element that takes part in forms by itself: give it a `name` and it submits its HTML like a textarea. `required`, `maxlength`, `placeholder`, `readonly` and `disabled` behave as they do on native fields, form reset restores the starting text, and a counter shows words and characters.
 
+<div class="pro-shots">
+  <figure>
+    <img src="/pro/components/ui-kit-editor/light-desktop.png" alt="REALM Pro rich text editor component, desktop, light mode" width="960" height="1925" loading="lazy">
+    <figcaption>REALM Pro rich text editor. <a href="/pro/components/ui-kit-editor/">See it in dark mode and on a phone</a>.</figcaption>
+  </figure>
+</div>
+
 ```html
 <form method="post" action="/articles">
   <ui-kit-editor

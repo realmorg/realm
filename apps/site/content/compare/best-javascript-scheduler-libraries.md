@@ -47,6 +47,13 @@ Check these before you choose:
 
 [`ui-kit-scheduler`](/pro/components/ui-kit-scheduler/) is part of [REALM Pro](/pro/). It has month, week, day, list and resource timeline views; drag to move, resize and create, snapped to your slot length; reassigning by dragging to another row; and cancellable `eventchange`, `rangeselect` and `eventcreate` events so your code can refuse a change. Recurrence follows RRULE with weekdays, "last Friday" style rules, counts, end dates and exceptions, and moving one occurrence leaves the series alone. `time-zone` takes any IANA name. With `src` it fetches the visible range from your API. It exports the visible range as `.ics`, and the keyboard can book, move, resize and delete events with screen reader announcements. The timeline only builds visible rows, so hundreds of resources scroll smoothly.
 
+<div class="pro-shots">
+  <figure>
+    <img src="/pro/components/ui-kit-scheduler/light-desktop.png" alt="REALM Pro scheduler component, desktop, light mode" width="960" height="853" loading="lazy">
+    <figcaption>REALM Pro scheduler. <a href="/pro/components/ui-kit-scheduler/">See it in dark mode and on a phone</a>.</figcaption>
+  </figure>
+</div>
+
 It has no year view, no print layout, no iCalendar import and no grouped resource rows, and the timeline shows up to 14 days at a time. REALM Pro is in early access.
 
 **Pick it when** you build booking for clinics, salons, rooms or field teams, want it to follow your design tokens, and would rather pay once for the scheduler, data grid, charts and the rest of the kit.

@@ -22,6 +22,13 @@ Facts about TinyMCE were checked in October 2026 against [tiny.cloud/pricing](ht
 
 `ui-kit-editor` is the rich text editor in REALM Pro. It is a form-associated custom element: give it a `name` and it submits its HTML with the form like a textarea, with `required`, `maxlength`, `placeholder`, `readonly` and `disabled` working the way they do on native fields. Form reset restores the starting text, and a counter shows words and characters.
 
+<div class="pro-shots">
+  <figure>
+    <img src="/pro/components/ui-kit-editor/light-desktop.png" alt="REALM Pro rich text editor component, desktop, light mode" width="960" height="1925" loading="lazy">
+    <figcaption>REALM Pro rich text editor. <a href="/pro/components/ui-kit-editor/">See it in dark mode and on a phone</a>.</figcaption>
+  </figure>
+</div>
+
 ```html
 <form method="post" action="/posts">
   <ui-kit-editor name="body" required maxlength="20000" placeholder="Write your post"></ui-kit-editor>
