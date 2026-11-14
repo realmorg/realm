@@ -1,5 +1,13 @@
 # @realmorg/realm
 
+## 2.0.0-alpha.7
+
+### Patch Changes
+
+- 8e73f98: Enter in a form-associated text field submits the form after the keydown event finishes, so a page can cancel it with `preventDefault()`, as with a native input.
+- 849e728: A string prop takes a number as its text, like a native input: `<ui-input _value="#cart.quantity">` shows `3` instead of warning and staying empty.
+- 77cbcf4: `toRaw` is a script helper, like `untrack`, so a component can read a large prop as `toRaw(props.rows)` without going through the reactive proxy for every item.
+
 ## 2.0.0-alpha.6
 
 ### Minor Changes
