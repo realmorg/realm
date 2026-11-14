@@ -1,5 +1,18 @@
 # @realmorg/ui
 
+## 2.0.0-alpha.6
+
+### Patch Changes
+
+- 874f878: `ui-alert` puts a `<u-icon>` in its icon column, the same as an `<svg>`, instead of on its own line above the title.
+- 3b128e8: `ui-progress` takes `--progress-fill` and `--progress-track`, so the bar can be shown on a coloured surface.
+- 61be80b: - The chosen `ui-tabs-trigger` matches `:state(selected)`, so a page can style it.
+  - `ui-radio-group` circles keep their size when a label wraps onto several lines.
+- Updated dependencies [8e73f98]
+- Updated dependencies [849e728]
+- Updated dependencies [77cbcf4]
+  - @realmorg/realm@2.0.0-alpha.7
+
 ## 2.0.0-alpha.5
 
 ### Minor Changes
