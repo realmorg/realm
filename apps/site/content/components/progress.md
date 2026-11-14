@@ -116,7 +116,7 @@ The bar uses `var(--primary)`. Set `--primary` on a wrapping element to recolour
 | --- | --- |
 | `bar` | The native `<progress>` element. Its height is `calc(var(--spacing) * 2)`. |
 
-### CSS custom properties
+### CSS states and custom properties
 
 | Property | Default | Description |
 | --- | --- | --- |

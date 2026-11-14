@@ -215,6 +215,12 @@ dashboard example uses this to switch the data of a chart.
 `ui-tabs` watches its `ui-tabs-list` and `ui-tabs-content` children and the `value` and `disabled` attributes of
 the triggers and panels, so tabs can be added, removed or renamed at any time.
 
+### CSS states and custom properties
+
+| Name | Description |
+| --- | --- |
+| `ui-tabs-trigger:state(selected)` | Set on the trigger whose panel is showing, so a page can style the chosen tab. |
+
 ### CSS parts
 
 | Part | Element | Description |

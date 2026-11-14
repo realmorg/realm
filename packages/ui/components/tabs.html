@@ -104,6 +104,12 @@
         return this.selected ? 0 : -1;
       },
     });
+
+    // Lets a page style the chosen trigger: ui-tabs-trigger:state(selected).
+    observe(() => {
+      if (tab.selected) internals.states.add("selected");
+      else internals.states.delete("selected");
+    });
   </script>
 
   <style>

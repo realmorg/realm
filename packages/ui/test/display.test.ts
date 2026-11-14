@@ -39,6 +39,27 @@ describe("display components", () => {
     );
   });
 
+  test("the chosen ui-tabs-trigger matches :state(selected)", async () => {
+    const host = await render(
+      `<ui-tabs value="a"><ui-tabs-list><ui-tabs-trigger value="a">A</ui-tabs-trigger><ui-tabs-trigger value="b">B</ui-tabs-trigger></ui-tabs-list><ui-tabs-content value="a">One</ui-tabs-content><ui-tabs-content value="b">Two</ui-tabs-content></ui-tabs>`,
+    );
+    const [a, b] = [...host.querySelectorAll("ui-tabs-trigger")];
+    expect(a?.matches(":state(selected)")).toBe(true);
+    expect(b?.matches(":state(selected)")).toBe(false);
+    host.querySelector("ui-tabs")?.setAttribute("value", "b");
+    await tick();
+    expect(a?.matches(":state(selected)")).toBe(false);
+    expect(b?.matches(":state(selected)")).toBe(true);
+  });
+
+  test("a ui-radio-group circle keeps its size when the label wraps", async () => {
+    const host = await render(
+      `<div style="width: 120px"><ui-radio-group><option value="a">A very long label that has to wrap onto several lines</option></ui-radio-group></div>`,
+    );
+    const control = part(host.querySelector("ui-radio-group"), "control");
+    expect(control.getBoundingClientRect().width).toBe(16);
+  });
+
   test("ui-progress takes its track colour from --progress-track", async () => {
     const host = await render(
       `<ui-progress value="40"></ui-progress><ui-progress value="40" style="--progress-track: rgb(1, 2, 3); --progress-fill: rgb(4, 5, 6)"></ui-progress>`,

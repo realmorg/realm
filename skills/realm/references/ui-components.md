@@ -94,28 +94,28 @@ Conventions shared by every component:
 | [Navigation Menu](#navigation-menu) | 2999-3084 | `navigation-menu.html` | `ui-navigation-menu`, `ui-navigation-menu-list`, `ui-navigation-menu-item`, `ui-navigation-menu-trigger`, `ui-navigation-menu-content`, `ui-navigation-menu-link` |
 | [Pagination](#pagination) | 3086-3124 | `pagination.html` | `ui-pagination` |
 | [Sidebar](#sidebar) | 3126-3331 | `sidebar.html` | `ui-sidebar-layout`, `ui-sidebar`, `ui-sidebar-header`, `ui-sidebar-footer`, `ui-sidebar-content`, `ui-sidebar-group`, `ui-sidebar-group-label`, `ui-sidebar-menu`, `ui-sidebar-menu-item`, `ui-sidebar-menu-button`, `ui-sidebar-menu-badge`, `ui-sidebar-trigger`, `ui-sidebar-inset` |
-| [Tabs](#tabs) | 3333-3432 | `tabs.html` | `ui-tabs`, `ui-tabs-list`, `ui-tabs-trigger`, `ui-tabs-content` |
+| [Tabs](#tabs) | 3333-3438 | `tabs.html` | `ui-tabs`, `ui-tabs-list`, `ui-tabs-trigger`, `ui-tabs-content` |
 
 ### Layout
 
 | Component | Lines | File | Tags |
 | --- | --- | --- | --- |
-| [Aspect Ratio](#aspect-ratio) | 3434-3469 | `aspect-ratio.html` | `ui-aspect-ratio` |
-| [Carousel](#carousel) | 3471-3563 | `carousel.html` | `ui-carousel`, `ui-carousel-content`, `ui-carousel-item`, `ui-carousel-previous`, `ui-carousel-next` |
-| [Direction](#direction) | 3565-3610 | `direction.html` | `ui-direction` |
-| [Resizable](#resizable) | 3612-3682 | `resizable.html` | `ui-resizable`, `ui-resizable-panel`, `ui-resizable-handle` |
-| [Scroll Area](#scroll-area) | 3684-3746 | `scroll-area.html` | `ui-scroll-area` |
+| [Aspect Ratio](#aspect-ratio) | 3440-3475 | `aspect-ratio.html` | `ui-aspect-ratio` |
+| [Carousel](#carousel) | 3477-3569 | `carousel.html` | `ui-carousel`, `ui-carousel-content`, `ui-carousel-item`, `ui-carousel-previous`, `ui-carousel-next` |
+| [Direction](#direction) | 3571-3616 | `direction.html` | `ui-direction` |
+| [Resizable](#resizable) | 3618-3688 | `resizable.html` | `ui-resizable`, `ui-resizable-panel`, `ui-resizable-handle` |
+| [Scroll Area](#scroll-area) | 3690-3752 | `scroll-area.html` | `ui-scroll-area` |
 
 ### Chat and content
 
 | Component | Lines | File | Tags |
 | --- | --- | --- | --- |
-| [Attachment](#attachment) | 3748-3791 | `attachment.html` | `ui-attachment`, `ui-attachment-media`, `ui-attachment-actions` |
-| [Bubble](#bubble) | 3793-3835 | `bubble.html` | `ui-bubble`, `ui-bubble-reactions` |
-| [Code Block](#code-block) | 3837-3869 | `code-block.html` | `ui-code-block` |
-| [Marker](#marker) | 3871-3906 | `marker.html` | `ui-marker` |
-| [Message](#message) | 3908-3961 | `message.html` | `ui-message`, `ui-message-avatar`, `ui-message-header`, `ui-message-footer` |
-| [Message Scroller](#message-scroller) | 3963-4058 | `message-scroller.html` | `ui-message-scroller` |
+| [Attachment](#attachment) | 3754-3797 | `attachment.html` | `ui-attachment`, `ui-attachment-media`, `ui-attachment-actions` |
+| [Bubble](#bubble) | 3799-3841 | `bubble.html` | `ui-bubble`, `ui-bubble-reactions` |
+| [Code Block](#code-block) | 3843-3875 | `code-block.html` | `ui-code-block` |
+| [Marker](#marker) | 3877-3912 | `marker.html` | `ui-marker` |
+| [Message](#message) | 3914-3967 | `message.html` | `ui-message`, `ui-message-avatar`, `ui-message-header`, `ui-message-footer` |
+| [Message Scroller](#message-scroller) | 3969-4064 | `message-scroller.html` | `ui-message-scroller` |
 
 <a id="button"></a>
 
@@ -1693,7 +1693,7 @@ A horizontal bar showing how far a task has got, built on the native progress el
 | --- | --- |
 | `bar` | The native `<progress>` element. Its height is `calc(var(--spacing) * 2)`. |
 
-### CSS custom properties
+### CSS states and custom properties
 
 | Property | Default | Description |
 | --- | --- | --- |
@@ -3423,6 +3423,12 @@ A set of panels shown one at a time, switched with a row or column of tab button
 
 `ui-tabs` watches its `ui-tabs-list` and `ui-tabs-content` children and the `value` and `disabled` attributes of
 the triggers and panels, so tabs can be added, removed or renamed at any time.
+
+### CSS states and custom properties
+
+| Name | Description |
+| --- | --- |
+| `ui-tabs-trigger:state(selected)` | Set on the trigger whose panel is showing, so a page can style the chosen tab. |
 
 ### CSS parts
 
